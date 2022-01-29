@@ -7,4 +7,8 @@ export class GitIgnore extends XFile {
 
     this.writeFile(paths.join("\n"));
   }
+
+  add(path: string) {
+    this.appendFile(path);
+  }
 }

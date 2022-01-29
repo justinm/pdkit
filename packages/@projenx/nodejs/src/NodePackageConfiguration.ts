@@ -2,6 +2,7 @@ import { XManifest } from "../../core/src/constructs/XManifest";
 import { Construct } from "constructs";
 
 export interface NodePackageConfigurationProps {
+  readonly name?: string;
   readonly description?: string;
   readonly homepath?: string;
   readonly repository?: string;
@@ -23,8 +24,6 @@ export interface NodePackageConfigurationProps {
 export class NodePackageConfiguration extends XManifest {
   constructor(scope: Construct, id: string, props?: NodePackageConfigurationProps) {
     super(scope, id, { path: "package.json" });
-
-    console.log("Package props", props);
 
     if (props) {
       this.addFields(props);
