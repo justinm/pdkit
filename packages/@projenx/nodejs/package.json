@@ -1,0 +1,26 @@
+{
+  "name": "@projenx/nodejs",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "private": true,
+  "license": "MIT",
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts",
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
+  ],
+  "dependencies": {
+    "constructs": "^10.0.47",
+    "deepmerge": "^4.2.2",
+    "dependency-graph": "^0.11.0"
+  },
+  "devDependencies": {
+    "@projenx/core": "^0.0.0",
+    "prettier": "^2.5.1"
+  },
+  "packageManager": "yarn@3.1.1",
+  "workspaces": [
+    "packages/**/*"
+  ]
+}
