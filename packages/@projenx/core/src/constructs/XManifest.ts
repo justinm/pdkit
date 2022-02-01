@@ -10,7 +10,6 @@ export interface IXManifest extends IXConstruct {
    * Specify the entries path relative to the project root
    */
   readonly path: string;
-  _synthesize(): any;
 }
 
 export interface ManifestProps {
@@ -51,16 +50,15 @@ export class XManifest extends XFile implements IXManifest {
     return construct instanceof this;
   }
 
-  _synthesize() {
+  get content() {
     const entries = XProject.of(this)
       .node.children.filter((c) => c instanceof XManifestEntry)
       .map((c) => c as XManifestEntry);
+
     for (const entry of entries) {
       this.addFields(entry.fields);
     }
 
-    this.writeFile(JSON.stringify(this.fields, null, 2));
-
-    return super._synthesize();
+    return JSON.stringify(this.fields, null, 2);
   }
 }

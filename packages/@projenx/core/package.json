@@ -8,5 +8,8 @@
     "dist/*.d.ts",
     "dist/**/*.js",
     "dist/**/*.d.ts"
-  ]
+  ],
+  "dependencies": {
+    "memfs": "^3.4.1"
+  }
 }

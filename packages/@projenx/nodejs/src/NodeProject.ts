@@ -1,39 +1,39 @@
 import { GitIgnore } from "./GitIgnore";
 import { XFileSystemSynthesizer } from "../../core/src/synthesizers/XFileSystemSynthesizer";
-import { NodePackageConfiguration, NodePackageConfigurationProps } from "./NodePackageConfiguration";
-import { XProject } from "../../core/src/constructs/XProject";
+import { NodePackageJson, NodePackageJsonProps } from "./NodePackageJson";
+import { XProject, XProjectProps } from "../../core/src/constructs/XProject";
 import { Author } from "./Author";
-import { Construct } from "constructs";
 import { Workspace } from "../../core/src/Workspace";
 import { NodePackageManager } from "./constructs/NodePackageManager";
 import { YarnSupport } from "./YarnSupport";
 
-export enum PackageManager {
+export enum PackageManagerType {
   YARN,
   NPM,
 }
 
-export interface NodeProjectProps extends NodePackageConfigurationProps {
-  packageManager?: PackageManager;
+export interface NodeProjectProps extends XProjectProps {
+  readonly packageJson?: NodePackageJsonProps;
+  readonly packageManagerType?: PackageManagerType;
 }
 
 export class NodeProject extends XProject {
   readonly gitignore: GitIgnore;
-  readonly packageJson: NodePackageConfiguration;
+  readonly packageJson: NodePackageJson;
   readonly packageManager: NodePackageManager;
 
-  constructor(scope: Construct, id: string, props?: NodeProjectProps) {
-    super(scope, id);
+  constructor(scope: Workspace, id: string, props?: NodeProjectProps) {
+    super(scope, id, props);
 
     new XFileSystemSynthesizer(this, "FileSystemSynthesizer");
-    this.gitignore = new GitIgnore(this, "Ignore", ["test?", "test", "cdk.out"]);
-    this.packageJson = new NodePackageConfiguration(this, "Name", {
-      ...props,
+    this.gitignore = new GitIgnore(this, "StandardIgnore", ["test?", "test", "cdk.out"]);
+    this.packageJson = new NodePackageJson(this, "PackageJson", {
+      ...props?.packageJson,
       name: id,
     });
 
-    switch (props?.packageManager) {
-      case PackageManager.YARN:
+    switch (props?.packageManagerType) {
+      case PackageManagerType.YARN:
       default:
         this.packageManager = new YarnSupport(this, "Yarn");
     }
@@ -41,11 +41,10 @@ export class NodeProject extends XProject {
     this.node.addValidation({
       validate: () => {
         const errors: string[] = [];
-        const rootProject = this.node.scopes.reverse().find((s) => s instanceof NodeProject);
-        const hasPackageManager = !!rootProject?.node.children.find((c) => c instanceof NodePackageManager);
+        const hasPackageManager = !!this.node.children.find((c) => c instanceof NodePackageManager);
 
         if (!hasPackageManager) {
-          errors.push("The root node project must contain a package manager");
+          errors.push("The root project must contain a package manager");
         }
 
         return errors;

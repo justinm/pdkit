@@ -1,7 +1,7 @@
 import { XManifest } from "../../core/src/constructs/XManifest";
 import { Construct } from "constructs";
 
-export interface NodePackageConfigurationProps {
+export interface NodePackageJsonProps {
   readonly name?: string;
   readonly description?: string;
   readonly homepath?: string;
@@ -21,8 +21,8 @@ export interface NodePackageConfigurationProps {
   readonly man?: string[];
 }
 
-export class NodePackageConfiguration extends XManifest {
-  constructor(scope: Construct, id: string, props?: NodePackageConfigurationProps) {
+export class NodePackageJson extends XManifest {
+  constructor(scope: Construct, id: string, props?: NodePackageJsonProps) {
     super(scope, id, { path: "package.json" });
 
     if (props) {

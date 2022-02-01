@@ -1,28 +1,73 @@
 import { Construct } from "constructs";
 import { IXConstruct, XConstruct } from "./XConstruct";
 import { XSynthesizer } from "../synthesizers/XSynthesizer";
+import { NodePackageManager } from "../../../nodejs/src/constructs/NodePackageManager";
+import { Workspace } from "../Workspace";
+import { XSynthesizableConstruct } from "./XSynthesizableConstruct";
+import path from "path";
 
 export interface IXProject extends IXConstruct {
+  readonly sourcePath: string;
   _synthesize(): void;
 }
 
-export abstract class XProject extends Construct implements IXProject {
+export interface XProjectProps {
+  readonly sourcePath?: string;
+}
+
+export abstract class XProject extends XSynthesizableConstruct implements IXProject {
+  readonly _sourcePath?: string;
+
+  constructor(scope: Workspace, id: string, props?: XProjectProps) {
+    super(scope, id);
+
+    this._sourcePath = props?.sourcePath;
+
+    this.node.addValidation({
+      validate: () => {
+        const errors: string[] = [];
+        const hasParentProject = !!this.node.scopes.reverse().find((s) => s instanceof XProject);
+        const hasPackageManager = !!this.node.children.find((c) => c instanceof NodePackageManager);
+
+        if (!hasParentProject && !this._sourcePath) {
+          errors.push("Nested projected must explicitly define a sourcePath");
+        }
+
+        if (!hasPackageManager) {
+          errors.push("The root project must contain a package manager");
+        }
+
+        return errors;
+      },
+    });
+  }
+
+  get sourcePath(): string {
+    const parent = this.node.scopes.find((scope) => scope !== this && scope instanceof XProject) as
+      | XProject
+      | undefined;
+
+    return path.join(parent ? parent.sourcePath : "/", this._sourcePath ?? "");
+  }
+
   public static is(construct: any) {
     return construct instanceof this;
   }
 
-  public static of(construct: any) {
+  public static of(construct: any): XProject {
     if (!(construct instanceof Construct)) {
       throw new Error(`${construct} is not a construct`);
     }
 
-    const project = (construct as Construct).node.scopes.find((scope) => scope instanceof XProject);
+    const project = (construct as Construct).node.scopes.find(
+      (scope) => scope !== construct && scope instanceof XProject
+    );
 
     if (!project) {
       throw new Error(`${construct} must be a child of a project`);
     }
 
-    return project;
+    return project as XProject;
   }
 
   _synthesize() {

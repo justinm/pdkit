@@ -1,8 +1,9 @@
 import { Construct } from "constructs";
 import { XSynthesizer } from "./XSynthesizer";
 import { IXFile, XFile } from "../constructs/XFile";
-import * as path from "path";
 import { IXConstruct } from "../constructs/XConstruct";
+import { VirtualFileSystemManager } from "../util/VirtualFileSystemManager";
+import { Workspace } from "../Workspace";
 
 export interface IXFileSystemSynthesizer {
   /**
@@ -20,6 +21,7 @@ export interface XFileSystemSynthesizerProps {
 
 export class XFileSystemSynthesizer extends XSynthesizer implements IXFileSystemSynthesizer {
   readonly projectRelativePath: string;
+  private fs?: VirtualFileSystemManager;
 
   constructor(scope: Construct, id: string, props?: XFileSystemSynthesizerProps) {
     super(scope, id);
@@ -31,13 +33,16 @@ export class XFileSystemSynthesizer extends XSynthesizer implements IXFileSystem
   }
 
   _synthesize(construct: IXFile) {
-    const realpath = path.join(this.projectRelativePath, construct.path);
-    const content = construct._synthesize();
+    const workspace = Workspace.of(this);
 
-    console.log(`FS: ${realpath} = ${content}`);
+    this.fs = new VirtualFileSystemManager(workspace.rootPath);
+
+    this.fs.writeFile(construct);
   }
 
-  _finalize() {}
+  _finalize() {
+    this.fs?.syncToDisk();
+  }
 
   protected deriveProjectRelativePath() {
     return "/";
