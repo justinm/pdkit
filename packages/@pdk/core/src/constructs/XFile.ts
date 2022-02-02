@@ -13,16 +13,11 @@ export interface IXFile extends IXConstruct {
   readonly content: string;
 }
 
-export interface FileProps {
+export interface XFileProps {
   /**
    * Specify the entries path relative to the project root
    */
   readonly path: string;
-  /**
-   * A dually owned file allows for developers to manually modify files while also maintaining part of the files
-   * state.
-   */
-  readonly dualOwnership?: boolean;
 }
 
 export abstract class XFile extends XConstruct implements IXFile {
@@ -32,32 +27,50 @@ export abstract class XFile extends XConstruct implements IXFile {
   public readonly path: string;
 
   /**
-   * A dually owned file allows for developers to manually modify files while also maintaining part of the files
-   * state.
+   * Holds the real contents temporarily until synthesis.
+   * @protected
    */
-  public readonly dualOwnership: boolean;
   protected _content: string;
 
-  protected constructor(scope: Construct, id: string, props: FileProps) {
+  protected constructor(scope: Construct, id: string, props: XFileProps) {
     super(scope, id);
 
     this.path = props.path;
-    this.dualOwnership = props.dualOwnership ?? false;
     this._content = "";
   }
 
+  /**
+   * Determine's if an object is of this construct type.
+   *
+   * @param construct
+   */
   public static is(construct: Construct) {
     return construct instanceof this;
   }
 
+  /**
+   * Prepares the construct with data to write to disk. The data is not written to disk until after
+   * synthesis.
+   *
+   * @param text
+   */
   writeFile(text: string) {
     this._content = text + "\n";
   }
 
+  /**
+   * Prepares the construct with data to write to disk. The data is not written to disk until after
+   * synthesis.
+   *
+   * @param text
+   */
   appendFile(text: string) {
     this._content += text;
   }
 
+  /**
+   * Returns the file contents.
+   */
   get content() {
     return this._content;
   }

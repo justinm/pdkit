@@ -4,6 +4,7 @@ import { Construct } from "constructs";
 export interface NodePackageJsonProps {
   readonly name?: string;
   readonly description?: string;
+  readonly private?: boolean;
   readonly homepath?: string;
   readonly repository?: string;
   readonly dependencies?: string[];

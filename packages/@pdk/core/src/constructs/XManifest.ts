@@ -59,6 +59,8 @@ export class XManifest extends XFile implements IXManifest {
       this.addFields(entry.fields);
     }
 
+    console.log(JSON.stringify(this.fields, null, 2));
+
     return JSON.stringify(this.fields, null, 2);
   }
 }

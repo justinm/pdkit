@@ -2,30 +2,41 @@ import { Construct } from "constructs";
 import { XSynthesizer } from "./XSynthesizer";
 import { IXFile, XFile } from "../constructs/XFile";
 import { IXConstruct } from "../constructs/XConstruct";
-import { VirtualFileSystemManager } from "../util/VirtualFileSystemManager";
+import { XProject } from "../constructs/XProject";
 import { Workspace } from "../Workspace";
 
 export interface IXFileSystemSynthesizer {
   /**
    * The root of the project relative to the root project's path. The path will be derived automatically if not provided.
    */
-  readonly projectRelativePath?: string;
 }
 
 export interface XFileSystemSynthesizerProps {
   /**
    * The root of the project relative to the root project's path. The path will be derived automatically if not provided.
    */
-  readonly projectRelativePath?: string;
 }
 
 export class XFileSystemSynthesizer extends XSynthesizer implements IXFileSystemSynthesizer {
-  readonly projectRelativePath: string;
-  private fs?: VirtualFileSystemManager;
-
   constructor(scope: Construct, id: string, props?: XFileSystemSynthesizerProps) {
     super(scope, id);
-    this.projectRelativePath = props?.projectRelativePath ?? this.deriveProjectRelativePath();
+
+    this.node.addValidation({
+      validate: () => {
+        const project = XProject.of(this);
+        const synthesizers = project.synthesizers;
+
+        if (synthesizers.find((s) => s !== this)) {
+          return ["Only one XFileSystemSynthesizer is allowed per workspace"];
+        }
+
+        return [];
+      },
+    });
+  }
+
+  get vfs() {
+    return Workspace.of(this).vfs;
   }
 
   _willHandleConstruct(construct: IXConstruct): boolean {
@@ -33,18 +44,10 @@ export class XFileSystemSynthesizer extends XSynthesizer implements IXFileSystem
   }
 
   _synthesize(construct: IXFile) {
-    const workspace = Workspace.of(this);
+    const project = XProject.of(construct);
 
-    this.fs = new VirtualFileSystemManager(workspace.rootPath);
-
-    this.fs.writeFile(construct);
+    this.vfs.writeFile(project, construct);
   }
 
-  _finalize() {
-    this.fs?.syncToDisk();
-  }
-
-  protected deriveProjectRelativePath() {
-    return "/";
-  }
+  _finalize() {}
 }

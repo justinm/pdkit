@@ -1,8 +1,6 @@
 import { GitIgnore } from "./GitIgnore";
-import { XFileSystemSynthesizer } from "../../core/src/synthesizers/XFileSystemSynthesizer";
 import { NodePackageJson, NodePackageJsonProps } from "./NodePackageJson";
 import { XProject, XProjectProps } from "../../core/src/constructs/XProject";
-import { Author } from "./Author";
 import { Workspace } from "../../core/src/Workspace";
 import { NodePackageManager } from "./constructs/NodePackageManager";
 import { YarnSupport } from "./YarnSupport";
@@ -13,6 +11,7 @@ export enum PackageManagerType {
 }
 
 export interface NodeProjectProps extends XProjectProps {
+  readonly packageName?: string;
   readonly packageJson?: NodePackageJsonProps;
   readonly packageManagerType?: PackageManagerType;
 }
@@ -22,14 +21,13 @@ export class NodeProject extends XProject {
   readonly packageJson: NodePackageJson;
   readonly packageManager: NodePackageManager;
 
-  constructor(scope: Workspace, id: string, props?: NodeProjectProps) {
+  constructor(scope: Workspace | XProject, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
 
-    new XFileSystemSynthesizer(this, "FileSystemSynthesizer");
     this.gitignore = new GitIgnore(this, "StandardIgnore", ["test?", "test", "cdk.out"]);
     this.packageJson = new NodePackageJson(this, "PackageJson", {
       ...props?.packageJson,
-      name: id,
+      name: props?.packageName ?? props?.packageJson?.name ?? id,
     });
 
     switch (props?.packageManagerType) {
@@ -52,13 +50,3 @@ export class NodeProject extends XProject {
     });
   }
 }
-
-const workspace = new Workspace("projenx");
-const project = new NodeProject(workspace, "@projenx/core");
-
-new Author(project, "Author", {
-  name: "Justin McCormick",
-  email: "me@justinmccormick.com",
-});
-
-workspace.synthesize();

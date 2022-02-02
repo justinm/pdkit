@@ -1,5 +1,5 @@
 {
-  "name": "@projenx/nodejs",
+  "name": "@pdk/nodejs",
   "version": "0.0.0",
   "main": "dist/index.js",
   "private": true,
@@ -16,7 +16,7 @@
     "dependency-graph": "^0.11.0"
   },
   "devDependencies": {
-    "@projenx/core": "^0.0.0",
+    "@pdk/core": "^0.0.0",
     "prettier": "^2.5.1"
   },
   "packageManager": "yarn@3.1.1",
