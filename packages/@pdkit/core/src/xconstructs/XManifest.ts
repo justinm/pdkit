@@ -4,6 +4,7 @@ import deepmerge from "deepmerge";
 import { XFile } from "./XFile";
 import { XProject } from "./XProject";
 import { XManifestEntry } from "./XManifestEntry";
+import { XInheritableManifestEntry } from "./XInheritableManifestEntry";
 
 export interface IXManifest extends IXConstruct {
   /**
@@ -62,11 +63,19 @@ export class XManifest extends XFile implements IXManifest {
    * Returns the calculated content for the manifest.
    */
   get content() {
+    const parentManifests = this.node.scopes
+      .filter((s) => XProject.is(s))
+      .map((s) => s as XProject)
+      .map((s) =>
+        s.node.children.filter((c) => XInheritableManifestEntry.is(c)).map((c) => c as XInheritableManifestEntry)
+      )
+      .flat();
+
     const entries = XProject.of(this)
       .node.children.filter((c) => c instanceof XManifestEntry)
       .map((c) => c as XManifestEntry);
 
-    for (const entry of entries) {
+    for (const entry of parentManifests.concat(entries)) {
       this.addFields(entry.fields);
     }
 
