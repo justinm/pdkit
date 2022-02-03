@@ -28,7 +28,7 @@
 <div align="center">
   <h3 align="center">PDKit - The Project Development Kit</h3>
   <p align="center">
-    A construct driven approach to project management.
+    A construct driven approach to project and repository management.
   </p>
 </div>
 
@@ -62,7 +62,7 @@
 ## About The Project
 
 PDKit, or the Project Development Kit, is a new way of managing your projects using code. Based on the idea of constructs,
-PDKit allows you to manage single or mono-repo's through code.
+PDKit allows you to manage single or monorepos through code.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
