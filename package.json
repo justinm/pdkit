@@ -1,9 +1,9 @@
 {
-  "name": "projenx",
+  "name": "pdkit",
   "version": "0.0.0",
   "main": "index.js",
   "private": true,
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@pdkit/nodejs": "^0.0.0",
     "@types/mustache": "^4.1.2",
