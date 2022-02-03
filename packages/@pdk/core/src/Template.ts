@@ -1,6 +1,6 @@
 import mustache from "mustache";
-import { IXFile, XFile, XFileProps } from "./constructs/XFile";
-import { XProject } from "./constructs/XProject";
+import { IXFile, XFile, XFileProps } from "./xconstructs/XFile";
+import { XProject } from "./xconstructs/XProject";
 
 export interface ITemplate extends IXFile {
   readonly variables?: Record<string, any>;

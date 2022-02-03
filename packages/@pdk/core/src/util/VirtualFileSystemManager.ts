@@ -1,10 +1,13 @@
 import path from "path";
-import { IXFile } from "../constructs/XFile";
+import { IXFile } from "../xconstructs/XFile";
 import { Volume } from "memfs/lib/volume";
-import { IXProject } from "../constructs/XProject";
+import { IXProject } from "../xconstructs/XProject";
 import { Workspace } from "../Workspace";
 import { ConstructError } from "./ConstructError";
 
+/**
+ * The VirtualFileSystemManager provides a staging area for writing files prior to persisting changes to disk.
+ */
 export class VirtualFileSystemManager {
   readonly fs: Volume;
   private readonly creators: { [key: string]: { project: IXProject; files: string[] } } = {};

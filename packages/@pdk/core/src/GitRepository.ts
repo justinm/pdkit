@@ -1,4 +1,4 @@
-import { XRepository } from "./constructs/XRepository";
+import { XRepository } from "./xconstructs/XRepository";
 import { Construct } from "constructs";
 
 export interface GitRepositoryProps {

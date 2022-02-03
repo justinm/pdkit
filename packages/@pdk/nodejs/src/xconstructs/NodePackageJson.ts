@@ -1,5 +1,5 @@
-import { XManifest } from "../../core/src/constructs/XManifest";
-import { Construct } from "constructs";
+import { XManifest } from "../../../core/src/xconstructs/XManifest";
+import { Construct } from "";
 
 export interface NodePackageJsonProps {
   readonly name?: string;

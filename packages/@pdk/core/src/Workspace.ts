@@ -1,6 +1,6 @@
 import { Construct, IConstruct } from "constructs";
 import { VirtualFileSystemManager } from "./util/VirtualFileSystemManager";
-import { XProject } from "./constructs/XProject";
+import { XProject } from "./xconstructs/XProject";
 import { XFileSystemSynthesizer } from "./synthesizers/XFileSystemSynthesizer";
 
 export interface IWorkspace extends IConstruct {

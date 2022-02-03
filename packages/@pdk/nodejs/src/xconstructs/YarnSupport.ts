@@ -1,4 +1,4 @@
-import { NodePackageManager } from "./constructs/NodePackageManager";
+import { NodePackageManager } from "./NodePackageManager";
 import { Construct } from "constructs";
 
 export class YarnSupport extends NodePackageManager {

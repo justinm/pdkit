@@ -19,6 +19,9 @@ export interface ManifestProps {
   readonly path: string;
 }
 
+/**
+ * XManifest represents a JSON manifest for a given project. Only one manifest may be present per project.
+ */
 export class XManifest extends XFile implements IXManifest {
   public readonly path: string;
   protected fields: Record<string, unknown>;
@@ -40,6 +43,11 @@ export class XManifest extends XFile implements IXManifest {
     });
   }
 
+  /**
+   * Deep merge new fields into the constructing manifest. Existing fields may be overwritten by this call.
+   *
+   * @param fields
+   */
   public addFields(fields?: Record<string, unknown> | {}) {
     if (fields) {
       this.fields = deepmerge(this.fields, fields);
@@ -50,6 +58,9 @@ export class XManifest extends XFile implements IXManifest {
     return construct instanceof this;
   }
 
+  /**
+   * Returns the calculated content for the manifest.
+   */
   get content() {
     const entries = XProject.of(this)
       .node.children.filter((c) => c instanceof XManifestEntry)

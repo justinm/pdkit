@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { XConstruct } from "../../../core/src/constructs/XConstruct";
+import { XConstruct } from "../../../core/src/xconstructs/XConstruct";
 
 export interface XPackageManagerProps {
   readonly installCommand: string;

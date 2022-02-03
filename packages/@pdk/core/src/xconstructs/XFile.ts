@@ -20,6 +20,10 @@ export interface XFileProps {
   readonly path: string;
 }
 
+/**
+ * XFiles are simple constructs for writing files to disk. Only one XFile for a
+ * given path may exist at any one time.
+ */
 export abstract class XFile extends XConstruct implements IXFile {
   /**
    * Specify the files path relative to the parent project's source root.

@@ -8,6 +8,10 @@ export interface IXManifestEntryProps extends IXConstruct {
   readonly fields?: Record<string, unknown>;
 }
 
+/**
+ * A ManifestEntry is an additional way of adding arbitrary fields to the projects
+ * main manifest.
+ */
 export class XManifestEntry extends XConstruct implements IXManifestEntryProps {
   public fields: Record<string, unknown>;
 
@@ -39,6 +43,10 @@ export class XManifestEntry extends XConstruct implements IXManifestEntryProps {
     });
   }
 
+  /**
+   * Deepmerges the given fields with entries existing data
+   * @param fields
+   */
   public addFields(fields: Record<string, unknown> | {}) {
     this.fields = deepmerge(this.fields, fields);
   }

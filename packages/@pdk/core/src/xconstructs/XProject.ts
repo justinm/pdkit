@@ -1,11 +1,11 @@
 import { Construct } from "constructs";
 import { IXConstruct, XConstruct } from "./XConstruct";
 import { XSynthesizer } from "../synthesizers/XSynthesizer";
-import { NodePackageManager } from "../../../nodejs/src/constructs/NodePackageManager";
+import { NodePackageManager } from "../../../nodejs/src/xconstructs/NodePackageManager";
 import { Workspace } from "../Workspace";
 import { XSynthesizableConstruct } from "./XSynthesizableConstruct";
 import path from "path";
-import { Author } from "../../../nodejs/src/Author";
+import { Author } from "../../../nodejs/src/xconstructs/Author";
 import { ConstructError } from "../util/ConstructError";
 
 export interface IXProject extends IXConstruct {

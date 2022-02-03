@@ -71,7 +71,10 @@ PDKit allows you to manage single or mono-repo's through code.
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-* [constructs](https://github.com/aws/constructs)
+* [Typescript](https://github.com/microsoft/TypeScript)
+* [Constructs](https://github.com/aws/constructs)
+* [Yarn](https://yarnpkg.com/)
+* [Prettier](https://prettier.io/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

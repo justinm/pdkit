@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { XFile } from "../../core/src/constructs/XFile";
+import { XFile } from "./xconstructs/XFile";
 
 export class GitIgnore extends XFile {
   constructor(scope: Construct, id: string, paths: string[]) {

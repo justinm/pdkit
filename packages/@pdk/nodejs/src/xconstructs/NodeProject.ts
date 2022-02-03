@@ -1,8 +1,8 @@
-import { GitIgnore } from "./GitIgnore";
+import { GitIgnore } from "../../../core/src/GitIgnore";
 import { NodePackageJson, NodePackageJsonProps } from "./NodePackageJson";
-import { XProject, XProjectProps } from "../../core/src/constructs/XProject";
-import { Workspace } from "../../core/src/Workspace";
-import { NodePackageManager } from "./constructs/NodePackageManager";
+import { XProject, XProjectProps } from "../../../core/src/xconstructs/XProject";
+import { Workspace } from "../../../core/src/Workspace";
+import { NodePackageManager } from "./NodePackageManager";
 import { YarnSupport } from "./YarnSupport";
 
 export enum PackageManagerType {

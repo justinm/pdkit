@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { IXConstruct } from "../constructs/XConstruct";
+import { IXConstruct } from "../xconstructs/XConstruct";
 
 export interface IXSynthesizer {
   _synthesize(construct: IXConstruct): any;

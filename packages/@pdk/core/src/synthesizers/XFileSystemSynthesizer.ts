@@ -1,8 +1,8 @@
 import { Construct } from "constructs";
 import { XSynthesizer } from "./XSynthesizer";
-import { IXFile, XFile } from "../constructs/XFile";
-import { IXConstruct } from "../constructs/XConstruct";
-import { XProject } from "../constructs/XProject";
+import { IXFile, XFile } from "../xconstructs/XFile";
+import { IXConstruct } from "../xconstructs/XConstruct";
+import { XProject } from "../xconstructs/XProject";
 import { Workspace } from "../Workspace";
 
 export interface IXFileSystemSynthesizer {
@@ -11,14 +11,8 @@ export interface IXFileSystemSynthesizer {
    */
 }
 
-export interface XFileSystemSynthesizerProps {
-  /**
-   * The root of the project relative to the root project's path. The path will be derived automatically if not provided.
-   */
-}
-
 export class XFileSystemSynthesizer extends XSynthesizer implements IXFileSystemSynthesizer {
-  constructor(scope: Construct, id: string, props?: XFileSystemSynthesizerProps) {
+  constructor(scope: Construct, id: string) {
     super(scope, id);
 
     this.node.addValidation({
