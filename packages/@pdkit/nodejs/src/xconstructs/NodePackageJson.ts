@@ -1,17 +1,12 @@
 import { XManifest } from "../../../core/src/xconstructs/XManifest";
 import { Construct } from "constructs";
 
-export type Dependencies = string[] | { [key: string]: string };
-
 export interface NodePackageJsonProps {
   readonly name?: string;
   readonly description?: string;
   readonly private?: boolean;
   readonly homepath?: string;
   readonly repository?: string;
-  readonly dependencies?: Dependencies;
-  readonly devDependencies?: Dependencies;
-  readonly peerDependencies?: Dependencies;
   readonly keywords?: string[];
   readonly main?: string;
   readonly bin?: Record<string, string>;
@@ -26,10 +21,23 @@ export interface NodePackageJsonProps {
 
 export class NodePackageJson extends XManifest {
   constructor(scope: Construct, id: string, props?: NodePackageJsonProps) {
-    super(scope, id, { path: "package.json" });
+    super(scope, id, "package.json");
 
     if (props) {
-      this.addFields(props);
+      this.addFields({
+        name: props.name,
+        description: props.description,
+        private: props.private,
+        homepath: props.homepath,
+        repository: props.repository,
+        keywords: props.keywords,
+        main: props.main,
+        bin: props.bin,
+        scripts: props.scripts,
+        bugs: props.bugs,
+        files: props.files,
+        man: props.man,
+      });
     }
   }
 }

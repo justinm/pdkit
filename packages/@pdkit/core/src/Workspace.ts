@@ -1,7 +1,6 @@
 import { Construct, IConstruct } from "constructs";
 import { VirtualFileSystemManager } from "./util/VirtualFileSystemManager";
 import { XProject } from "./xconstructs/XProject";
-import { XFileSystemSynthesizer } from "./synthesizers/XFileSystemSynthesizer";
 
 export interface IWorkspace extends IConstruct {
   readonly rootPath: string;
@@ -22,8 +21,6 @@ export class Workspace extends XProject implements IWorkspace {
 
     this.rootPath = props?.rootPath ?? process.cwd();
     this.vfs = new VirtualFileSystemManager();
-
-    new XFileSystemSynthesizer(this, "FileSystemSynthesizer");
   }
 
   synth() {

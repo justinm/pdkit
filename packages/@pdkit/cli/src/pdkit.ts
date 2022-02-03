@@ -38,7 +38,7 @@ function wrapCommand<T extends CommandModule>(command: T): T {
     try {
       return handler(args);
     } catch (err) {
-      console.error(chalk.redBright((err as Error).message));
+      console.error(chalk.redBright((err as Error).stack));
       process.exit(1);
     }
   };

@@ -1,5 +1,7 @@
 import { IXConstruct, XConstruct } from "./XConstruct";
 import { Construct } from "constructs";
+import { XProject } from "./XProject";
+import { Workspace } from "../Workspace";
 
 export interface IXFile extends IXConstruct {
   /**
@@ -11,13 +13,6 @@ export interface IXFile extends IXConstruct {
    * The contents of the file, modified via writeFile or appendFile.
    */
   readonly content: string;
-}
-
-export interface XFileProps {
-  /**
-   * Specify the entries path relative to the project root
-   */
-  readonly path: string;
 }
 
 /**
@@ -36,10 +31,10 @@ export abstract class XFile extends XConstruct implements IXFile {
    */
   protected _content: string;
 
-  protected constructor(scope: Construct, id: string, props: XFileProps) {
+  protected constructor(scope: Construct, id: string, path: string) {
     super(scope, id);
 
-    this.path = props.path;
+    this.path = path;
     this._content = "";
   }
 
@@ -77,5 +72,12 @@ export abstract class XFile extends XConstruct implements IXFile {
    */
   get content() {
     return this._content;
+  }
+
+  _synth() {
+    const workspace = Workspace.of(this);
+    const project = XProject.of(this);
+
+    workspace.vfs.writeFile(project, this);
   }
 }

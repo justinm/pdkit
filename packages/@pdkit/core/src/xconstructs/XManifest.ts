@@ -13,24 +13,15 @@ export interface IXManifest extends IXConstruct {
   readonly path: string;
 }
 
-export interface ManifestProps {
-  /**
-   * Specify the entries path relative to the project root
-   */
-  readonly path: string;
-}
-
 /**
  * XManifest represents a JSON manifest for a given project. Only one manifest may be present per project.
  */
 export class XManifest extends XFile implements IXManifest {
-  public readonly path: string;
   protected fields: Record<string, unknown>;
 
-  constructor(scope: Construct, id: string, props: ManifestProps) {
-    super(scope, id, props);
+  constructor(scope: Construct, id: string, path: string) {
+    super(scope, id, path);
 
-    this.path = props.path;
     this.fields = {};
 
     this.node.addValidation({

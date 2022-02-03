@@ -6,6 +6,9 @@ export const workspace = new YarnMonoRepo("pdkit", {
   authorName: "Justin McCormick",
   authorEmail: "me@justinmccormick.com",
   authorOrganization: true,
+  dependencies: {
+    mustache: "^4.2.0",
+  },
   devDependencies: {
     "@pdkit/nodejs": "^0.0.0",
     "@types/mustache": "^4.1.2",
@@ -22,4 +25,7 @@ new NodeProject(workspace, "core", {
   projectPath: "packages/@pdkit/core",
 });
 
-new NodeProject(workspace, "nodejs", { packageName: "@pdkit/nodejs", projectPath: "packages/@pdkit/nodejs" });
+// new NodeProject(workspace, "nodejs", {
+//   packageName: "@pdkit/nodejs",
+//   projectPath: "packages/@pdkit/nodejs",
+// });

@@ -1,18 +1,13 @@
 import { Construct } from "constructs";
 import { IXConstruct, XConstruct } from "./XConstruct";
-import { XSynthesizer } from "../synthesizers/XSynthesizer";
 import { NodePackageManager } from "../../../nodejs/src/xconstructs/NodePackageManager";
 import { Workspace } from "../Workspace";
-import { XSynthesizableConstruct } from "./XSynthesizableConstruct";
 import path from "path";
-import { Author } from "../../../nodejs/src/xconstructs/Author";
 import { ConstructError } from "../util/ConstructError";
-import { GitIgnore } from "../GitIgnore";
 
 export interface IXProject extends IXConstruct {
   readonly sourcePath: string;
   readonly projectPath: string;
-  readonly synthesizers: XSynthesizer[];
   _onSynth(): void;
   _synth(): void;
 }
@@ -27,8 +22,7 @@ export interface XProjectProps {
   readonly gitignore?: string[];
 }
 
-export abstract class XProject extends XSynthesizableConstruct implements IXProject {
-  readonly gitignore: GitIgnore;
+export abstract class XProject extends XConstruct implements IXProject {
   readonly _projectPath?: string;
   readonly _sourcePath: string;
 
@@ -37,17 +31,6 @@ export abstract class XProject extends XSynthesizableConstruct implements IXProj
 
     this._projectPath = props?.projectPath;
     this._sourcePath = props?.sourcePath ?? "src";
-
-    if (props?.authorName || props?.authorEmail || props?.authorUrl || props?.authorOrganization) {
-      new Author(this, "Author", {
-        email: props.authorEmail,
-        name: props.authorName,
-        url: props.authorUrl,
-        organization: props.authorOrganization,
-      });
-    }
-
-    this.gitignore = new GitIgnore(this, "StandardIgnore", props?.gitignore ?? []);
 
     this.node.addValidation({
       validate: () => {
@@ -104,60 +87,29 @@ export abstract class XProject extends XSynthesizableConstruct implements IXProj
     return this.node.children.filter((c) => XProject.is(c)).map((c) => c as XProject);
   }
 
-  get synthesizers(): XSynthesizer[] {
-    const localSynthesizers = this.node.children.filter((c) => XSynthesizer.is(c)).map((c) => c as XSynthesizer);
-    const parentProject = this.node.scopes
-      .reverse()
-      .find((scope) => scope !== this && scope instanceof XProject) as XProject;
-
-    return [localSynthesizers, parentProject ? parentProject.synthesizers : []].flat();
+  _onSynth() {
+    // Allow each construct one more chance to do something before synthesis
+    this.node.children
+      .filter((c) => XConstruct.is(c))
+      .map((c) => c as XConstruct)
+      .forEach((c) => c._onSynth());
   }
 
   _synth() {
-    const synthesizers = this.synthesizers;
     const constructs = this.node.children.filter((c) => XConstruct.is(c)).map((c) => c as XConstruct);
 
     if (!constructs.length) {
       throw new ConstructError(this, "No constructs were found in the project");
     }
 
-    if (!synthesizers.length) {
-      throw new ConstructError(this, "No synthesizers were found for the project");
-    }
-
-    this._onSynth();
-
     for (const construct of constructs) {
-      let handled = false;
-
       const errors = construct.node.validate();
 
       if (errors.length) {
         throw new ConstructError(construct, "Construct did not validate: " + errors[0]);
       }
 
-      for (const synthesizer of synthesizers) {
-        if (synthesizer._willHandleConstruct(construct)) {
-          synthesizer._synthesize(construct);
-
-          handled = true;
-          break;
-        }
-      }
-
-      if (XProject.is(construct)) {
-        (construct as XProject)._synth();
-      }
-
-      if (!handled && (handled as any)._synthesize) {
-        throw new ConstructError(construct, `Construct was not synthesized`);
-      }
-    }
-
-    for (const synthesizer of synthesizers) {
-      synthesizer._finalize();
+      construct._synth();
     }
   }
-
-  _onSynth() {}
 }
