@@ -5,8 +5,9 @@ import { NodePackageManager } from "./NodePackageManager";
 import { YarnSupport } from "./YarnSupport";
 import { Author } from "./Author";
 import { GitIgnore } from "../../../core/src/GitIgnore";
+import { PackageDependency, PackageDependencyType } from "./PackageDependency";
 
-export type Dependencies = string[] | { [key: string]: string };
+export type Dependencies = { [key: string]: string } | string[];
 
 export enum PackageManagerType {
   YARN,
@@ -44,6 +45,26 @@ export class NodeProject extends XProject {
       name: props?.packageName ?? id,
       ...props,
     });
+
+    const addDependencies = (deps: Dependencies, type?: PackageDependencyType) => {
+      if (Array.isArray(deps)) {
+        deps.forEach((dep) => new PackageDependency(this, dep));
+      } else {
+        Object.keys(deps).forEach((dep) => new PackageDependency(this, dep, { version: deps[dep], type }));
+      }
+    };
+
+    if (props?.dependencies) {
+      addDependencies(props?.dependencies);
+    }
+
+    if (props?.devDependencies) {
+      addDependencies(props?.devDependencies, PackageDependencyType.DEV);
+    }
+
+    if (props?.peerDependencies) {
+      addDependencies(props?.peerDependencies, PackageDependencyType.PEER);
+    }
 
     switch (props?.packageManagerType) {
       case PackageManagerType.YARN:
