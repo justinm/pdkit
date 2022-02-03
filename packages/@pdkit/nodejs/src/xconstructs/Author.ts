@@ -1,4 +1,4 @@
-import { Construct } from "";
+import { Construct } from "constructs";
 import { XManifestEntry } from "../../../core/src/xconstructs/XManifestEntry";
 
 /**

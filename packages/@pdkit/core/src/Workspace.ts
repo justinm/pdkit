@@ -5,10 +5,12 @@ import { XFileSystemSynthesizer } from "./synthesizers/XFileSystemSynthesizer";
 
 export interface IWorkspace extends IConstruct {
   readonly rootPath: string;
+  synth(): void;
 }
 
 export interface WorkspaceProps {
-  readonly rootPath: string;
+  readonly rootPath?: string;
+  readonly vfs?: VirtualFileSystemManager;
 }
 
 export class Workspace extends XProject implements IWorkspace {
@@ -24,21 +26,8 @@ export class Workspace extends XProject implements IWorkspace {
     new XFileSystemSynthesizer(this, "FileSystemSynthesizer");
   }
 
-  synthesize() {
-    return this._synthesize();
-    // const constructs = this.node.children.filter((c) => (c as any)._synthesize);
-    //
-    // for (const construct of constructs) {
-    //   const errors = construct.node.validate();
-    //
-    //   if (errors.length) {
-    //     throw new Error("Construct did not validate: " + errors[0]);
-    //   }
-    //
-    //   (construct as any)._synthesize();
-    // }
-    //
-    // this.vfs.syncToDisk(this);
+  synth() {
+    return this._synth();
   }
 
   public static of(construct: any) {

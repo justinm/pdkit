@@ -1,5 +1,7 @@
 import { XManifest } from "../../../core/src/xconstructs/XManifest";
-import { Construct } from "";
+import { Construct } from "constructs";
+
+export type Dependencies = string[] | { [key: string]: string };
 
 export interface NodePackageJsonProps {
   readonly name?: string;
@@ -7,9 +9,9 @@ export interface NodePackageJsonProps {
   readonly private?: boolean;
   readonly homepath?: string;
   readonly repository?: string;
-  readonly dependencies?: string[];
-  readonly devDependencies?: string[];
-  readonly peerDependencies?: string[];
+  readonly dependencies?: Dependencies;
+  readonly devDependencies?: Dependencies;
+  readonly peerDependencies?: Dependencies;
   readonly keywords?: string[];
   readonly main?: string;
   readonly bin?: Record<string, string>;

@@ -1,4 +1,3 @@
-import { GitIgnore } from "../../../core/src/GitIgnore";
 import { NodePackageJson, NodePackageJsonProps } from "./NodePackageJson";
 import { XProject, XProjectProps } from "../../../core/src/xconstructs/XProject";
 import { Workspace } from "../../../core/src/Workspace";
@@ -10,24 +9,27 @@ export enum PackageManagerType {
   NPM,
 }
 
-export interface NodeProjectProps extends XProjectProps {
+export interface NodeProjectProps
+  extends XProjectProps,
+    Pick<NodePackageJsonProps, "dependencies" | "devDependencies" | "peerDependencies"> {
   readonly packageName?: string;
   readonly packageJson?: NodePackageJsonProps;
   readonly packageManagerType?: PackageManagerType;
 }
 
 export class NodeProject extends XProject {
-  readonly gitignore: GitIgnore;
   readonly packageJson: NodePackageJson;
   readonly packageManager: NodePackageManager;
 
   constructor(scope: Workspace | XProject, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
 
-    this.gitignore = new GitIgnore(this, "StandardIgnore", ["test?", "test", "cdk.out"]);
     this.packageJson = new NodePackageJson(this, "PackageJson", {
-      ...props?.packageJson,
+      dependencies: props?.dependencies ?? props?.packageJson?.dependencies,
+      devDependencies: props?.devDependencies ?? props?.packageJson?.devDependencies,
+      peerDependencies: props?.peerDependencies ?? props?.packageJson?.peerDependencies,
       name: props?.packageName ?? props?.packageJson?.name ?? id,
+      ...props?.packageJson,
     });
 
     switch (props?.packageManagerType) {

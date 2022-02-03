@@ -7,12 +7,14 @@ import { XSynthesizableConstruct } from "./XSynthesizableConstruct";
 import path from "path";
 import { Author } from "../../../nodejs/src/xconstructs/Author";
 import { ConstructError } from "../util/ConstructError";
+import { GitIgnore } from "../GitIgnore";
 
 export interface IXProject extends IXConstruct {
   readonly sourcePath: string;
   readonly projectPath: string;
   readonly synthesizers: XSynthesizer[];
-  _synthesize(): void;
+  _onSynth(): void;
+  _synth(): void;
 }
 
 export interface XProjectProps {
@@ -22,9 +24,11 @@ export interface XProjectProps {
   readonly authorEmail?: string;
   readonly authorOrganization?: boolean;
   readonly authorUrl?: string;
+  readonly gitignore?: string[];
 }
 
 export abstract class XProject extends XSynthesizableConstruct implements IXProject {
+  readonly gitignore: GitIgnore;
   readonly _projectPath?: string;
   readonly _sourcePath: string;
 
@@ -42,6 +46,8 @@ export abstract class XProject extends XSynthesizableConstruct implements IXProj
         organization: props.authorOrganization,
       });
     }
+
+    this.gitignore = new GitIgnore(this, "StandardIgnore", props?.gitignore ?? []);
 
     this.node.addValidation({
       validate: () => {
@@ -94,6 +100,10 @@ export abstract class XProject extends XSynthesizableConstruct implements IXProj
     return project as XProject;
   }
 
+  get subprojects(): XProject[] {
+    return this.node.children.filter((c) => XProject.is(c)).map((c) => c as XProject);
+  }
+
   get synthesizers(): XSynthesizer[] {
     const localSynthesizers = this.node.children.filter((c) => XSynthesizer.is(c)).map((c) => c as XSynthesizer);
     const parentProject = this.node.scopes
@@ -103,7 +113,7 @@ export abstract class XProject extends XSynthesizableConstruct implements IXProj
     return [localSynthesizers, parentProject ? parentProject.synthesizers : []].flat();
   }
 
-  _synthesize() {
+  _synth() {
     const synthesizers = this.synthesizers;
     const constructs = this.node.children.filter((c) => XConstruct.is(c)).map((c) => c as XConstruct);
 
@@ -114,6 +124,8 @@ export abstract class XProject extends XSynthesizableConstruct implements IXProj
     if (!synthesizers.length) {
       throw new ConstructError(this, "No synthesizers were found for the project");
     }
+
+    this._onSynth();
 
     for (const construct of constructs) {
       let handled = false;
@@ -134,7 +146,7 @@ export abstract class XProject extends XSynthesizableConstruct implements IXProj
       }
 
       if (XProject.is(construct)) {
-        (construct as XProject)._synthesize();
+        (construct as XProject)._synth();
       }
 
       if (!handled && (handled as any)._synthesize) {
@@ -146,4 +158,6 @@ export abstract class XProject extends XSynthesizableConstruct implements IXProj
       synthesizer._finalize();
     }
   }
+
+  _onSynth() {}
 }

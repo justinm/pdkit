@@ -18,6 +18,4 @@ export class GitRepository extends XRepository {
     this.repositoryUrl = props?.repositoryUrl;
     this.mainBranch = props?.mainBranch;
   }
-
-  synthesize(): any {}
 }

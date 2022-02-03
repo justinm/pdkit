@@ -1,7 +1,7 @@
 import { XConstruct } from "./XConstruct";
 
 export interface IXSynthesizableConstruct {
-  _synthesize(): unknown;
+  _synth(): unknown;
 }
 
 export abstract class XSynthesizableConstruct extends XConstruct implements IXSynthesizableConstruct {
@@ -9,5 +9,5 @@ export abstract class XSynthesizableConstruct extends XConstruct implements IXSy
     return construct instanceof this;
   }
 
-  abstract _synthesize(): unknown;
+  abstract _synth(): unknown;
 }

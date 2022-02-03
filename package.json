@@ -4,6 +4,9 @@
   "main": "index.js",
   "private": true,
   "license": "Apache-2.0",
+  "scripts": {
+    "pdkit": "ts-node packages/@pdkit/cli/src/pdkit.ts"
+  },
   "devDependencies": {
     "@pdkit/nodejs": "^0.0.0",
     "@types/mustache": "^4.1.2",

@@ -19,7 +19,7 @@ export const handler = function (argv: Args) {
 
   const { workspace } = require(config);
 
-  workspace.synthesize();
+  workspace.synth();
 
   console.log(chalk.greenBright("Project synthesis complete!"));
 };
