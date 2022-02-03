@@ -1,6 +1,15 @@
 {
-  "name": "cli",
+  "name": "@pdkit/cli",
   "packageManager": "yarn@3.1.1",
+  "bin": {
+    "pdkit": "dist/pdkit.js"
+  },
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts",
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
+  ],
   "dependencies": {
     "chalk": "^4.1.2",
     "glob": "^7.2.0",

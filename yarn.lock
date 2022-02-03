@@ -76,9 +76,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pdk/core@^0.0.0, @pdk/core@workspace:packages/@pdk/core":
+"@pdkit/cli@workspace:packages/@pdkit/cli":
   version: 0.0.0-use.local
-  resolution: "@pdk/core@workspace:packages/@pdk/core"
+  resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
+  dependencies:
+    "@types/glob": ^7.2.0
+    "@types/yargs": ^17.0.8
+    chalk: ^4.1.2
+    glob: ^7.2.0
+    glob-regex: ^0.3.2
+    prompt: ^1.2.1
+    yargs: ^17.3.1
+  bin:
+    pdkit: dist/pdkit.js
+  languageName: unknown
+  linkType: soft
+
+"@pdkit/core@^0.0.0, @pdkit/core@workspace:packages/@pdkit/core":
+  version: 0.0.0-use.local
+  resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
     memfs: ^3.4.1
     mustache: ^4.2.0
@@ -86,11 +102,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdk/nodejs@^0.0.0, @pdk/nodejs@workspace:packages/@pdk/nodejs":
+"@pdkit/nodejs@^0.0.0, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
-  resolution: "@pdk/nodejs@workspace:packages/@pdk/nodejs"
+  resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
-    "@pdk/core": ^0.0.0
+    "@pdkit/core": ^0.0.0
     constructs: ^10.0.47
     deepmerge: ^4.2.2
     dependency-graph: ^0.11.0
@@ -282,20 +298,6 @@ __metadata:
   checksum: fe75c9d5c76a7a98d45495b91b2172fa3b7a09e0cc9370e5c8feb1c567b85c4288e2b3fded7cfdd7359ac28d6b3844feb8b82b8686842e93d23c827c417e83fc
   languageName: node
   linkType: hard
-
-"cli@workspace:packages/@pdk/cli":
-  version: 0.0.0-use.local
-  resolution: "cli@workspace:packages/@pdk/cli"
-  dependencies:
-    "@types/glob": ^7.2.0
-    "@types/yargs": ^17.0.8
-    chalk: ^4.1.2
-    glob: ^7.2.0
-    glob-regex: ^0.3.2
-    prompt: ^1.2.1
-    yargs: ^17.3.1
-  languageName: unknown
-  linkType: soft
 
 "cliui@npm:^7.0.2":
   version: 7.0.4
@@ -820,7 +822,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "projenx@workspace:."
   dependencies:
-    "@pdk/nodejs": ^0.0.0
+    "@pdkit/nodejs": ^0.0.0
     "@types/mustache": ^4.1.2
     "@types/node": ^17.0.13
     mustache: ^4.2.0

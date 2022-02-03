@@ -1,5 +1,5 @@
-import { Workspace } from "./packages/@pdk/core/src/Workspace";
-import { NodeProject } from "./packages/@pdk/nodejs/src/xconstructs/NodeProject";
+import { Workspace } from "./packages/@pdkit/core/src/Workspace";
+import { NodeProject } from "./packages/@pdkit/nodejs/src/xconstructs/NodeProject";
 
 export const workspace = new Workspace("pdk");
 

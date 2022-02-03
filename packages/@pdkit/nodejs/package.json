@@ -1,5 +1,5 @@
 {
-  "name": "@pdk/nodejs",
+  "name": "@pdkit/nodejs",
   "version": "0.0.0",
   "main": "dist/index.js",
   "private": true,
@@ -16,7 +16,7 @@
     "dependency-graph": "^0.11.0"
   },
   "devDependencies": {
-    "@pdk/core": "^0.0.0",
+    "@pdkit/core": "^0.0.0",
     "prettier": "^2.5.1"
   },
   "packageManager": "yarn@3.1.1",

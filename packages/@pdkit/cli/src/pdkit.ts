@@ -51,7 +51,7 @@ parser
   .demandCommand()
   .check((args) => {
     if (!fs.existsSync(args.config)) {
-      throw new Error("Unable to locate pdk configuration at " + args.config);
+      throw new Error("Unable to locate configuration at " + args.config);
     }
 
     return true;

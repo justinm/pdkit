@@ -1,5 +1,5 @@
 import yargs from "yargs";
-import { AppArguments } from "../pdk";
+import { AppArguments } from "../pdkit";
 import chalk from "chalk";
 import path from "path";
 
