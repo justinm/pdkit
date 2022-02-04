@@ -1,7 +1,8 @@
-import { Construct } from "constructs";
 import { XFile } from "./xconstructs/XFile";
 import request from "sync-request";
+import { XProject } from "./xconstructs/XProject";
 
+// TODO extend based on https://github.com/github/choosealicense.com/tree/gh-pages/_licenses
 export type ValidLicense =
   | "AGPL-3.0"
   | "Apache-2.0"
@@ -20,15 +21,20 @@ export type ValidLicense =
 export class License extends XFile {
   readonly license: ValidLicense;
 
-  constructor(scope: Construct, id: string, license: ValidLicense) {
+  constructor(scope: XProject, id: string, license: ValidLicense) {
     super(scope, id, "LICENSE.md");
 
     this.license = license;
   }
 
   get content() {
-    const licenseData = request("GET", "https://api.github.com/licenses/" + this.license);
+    const licenseData = request(
+      "GET",
+      `https://raw.githubusercontent.com/github/choosealicense.com/gh-pages/_licenses/${this.license.toLowerCase()}.txt`
+    );
 
-    return licenseData.body.toString("utf8");
+    const license = licenseData.body.toString("utf8");
+
+    return license.substring(license.indexOf("---", 4) + 3);
   }
 }

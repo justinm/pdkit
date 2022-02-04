@@ -6,6 +6,7 @@ export const workspace = new YarnMonoRepo("pdkit", {
   authorName: "Justin McCormick",
   authorEmail: "me@justinmccormick.com",
   authorOrganization: true,
+  license: "Apache-2.0",
   dependencies: {
     mustache: "^4.2.0",
   },

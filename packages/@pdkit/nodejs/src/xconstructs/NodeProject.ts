@@ -1,11 +1,12 @@
 import { NodePackageJson, NodePackageJsonProps } from "./NodePackageJson";
-import { XProject, XProjectProps } from "../../../core/src/xconstructs/XProject";
+import { XProject } from "../../../core/src/xconstructs/XProject";
 import { Workspace } from "../../../core/src/Workspace";
 import { NodePackageManager } from "./NodePackageManager";
 import { YarnSupport } from "./YarnSupport";
 import { Author } from "./Author";
 import { GitIgnore } from "../../../core/src/GitIgnore";
 import { PackageDependency, PackageDependencyType } from "./PackageDependency";
+import { Project, ProjectProps } from "../../../core/src/Project";
 
 export type Dependencies = { [key: string]: string } | string[];
 
@@ -14,7 +15,7 @@ export enum PackageManagerType {
   NPM,
 }
 
-export interface NodeProjectProps extends XProjectProps, NodePackageJsonProps {
+export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly packageName?: string;
   readonly packageManagerType?: PackageManagerType;
   readonly dependencies?: Dependencies;
@@ -22,7 +23,7 @@ export interface NodeProjectProps extends XProjectProps, NodePackageJsonProps {
   readonly peerDependencies?: Dependencies;
 }
 
-export class NodeProject extends XProject {
+export class NodeProject extends Project {
   readonly gitignore: GitIgnore;
   readonly packageJson: NodePackageJson;
   readonly packageManager: NodePackageManager;

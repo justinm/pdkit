@@ -1,5 +1,5 @@
 import { Construct, IConstruct } from "constructs";
-import { VirtualFileSystemManager } from "./util/VirtualFileSystemManager";
+import { XVirtualFS } from "./xconstructs/XVirtualFS";
 import { XProject } from "./xconstructs/XProject";
 
 export interface IWorkspace extends IConstruct {
@@ -13,16 +13,18 @@ export interface WorkspaceProps {
 
 export class Workspace extends XProject implements IWorkspace {
   public readonly rootPath: string;
-  public readonly vfs: VirtualFileSystemManager;
+  public readonly vfs: XVirtualFS;
 
   constructor(id: string, props?: WorkspaceProps) {
     super(undefined as any, id);
 
     this.rootPath = props?.rootPath ?? process.cwd();
-    this.vfs = new VirtualFileSystemManager(this, "Vfs");
+    this.vfs = new XVirtualFS(this, "Vfs");
   }
 
   synth() {
+    this.node.validate();
+
     return this._synth();
   }
 

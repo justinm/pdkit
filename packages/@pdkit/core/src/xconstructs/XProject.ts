@@ -1,15 +1,12 @@
 import { Construct } from "constructs";
 import { IXConstruct, XConstruct } from "./XConstruct";
 import { NodePackageManager } from "../../../nodejs/src/xconstructs/NodePackageManager";
-import { Workspace } from "../Workspace";
 import path from "path";
 import { ConstructError } from "../util/ConstructError";
 
 export interface IXProject extends IXConstruct {
   readonly sourcePath: string;
   readonly projectPath: string;
-  _onSynth(): void;
-  _synth(): void;
 }
 
 export interface XProjectProps {
@@ -26,7 +23,7 @@ export abstract class XProject extends XConstruct implements IXProject {
   readonly _projectPath?: string;
   readonly _sourcePath: string;
 
-  constructor(scope: Workspace | XProject, id: string, props?: XProjectProps) {
+  constructor(scope: XProject, id: string, props?: XProjectProps) {
     super(scope, id);
 
     this._projectPath = props?.projectPath;
@@ -93,23 +90,5 @@ export abstract class XProject extends XConstruct implements IXProject {
       .filter((c) => XConstruct.is(c))
       .map((c) => c as XConstruct)
       .forEach((c) => c._onSynth());
-  }
-
-  _synth() {
-    const constructs = this.node.children.filter((c) => XConstruct.is(c)).map((c) => c as XConstruct);
-
-    if (!constructs.length) {
-      throw new ConstructError(this, "No constructs were found in the project");
-    }
-
-    for (const construct of constructs) {
-      const errors = construct.node.validate();
-
-      if (errors.length) {
-        throw new ConstructError(construct, "Construct did not validate: " + errors[0]);
-      }
-
-      construct._synth();
-    }
   }
 }

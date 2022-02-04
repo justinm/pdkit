@@ -1,5 +1,5 @@
-import { Construct } from "constructs";
 import { XManifestEntry } from "../../../core/src/xconstructs/XManifestEntry";
+import { XProject } from "../../../core/src/xconstructs/XProject";
 
 export interface PackageDependencyProps {
   readonly type?: PackageDependencyType;
@@ -12,7 +12,7 @@ export enum PackageDependencyType {
 }
 
 export class PackageDependency extends XManifestEntry {
-  constructor(scope: Construct, id: string, props?: PackageDependencyProps) {
+  constructor(scope: XProject, id: string, props?: PackageDependencyProps) {
     super(scope, id);
 
     let keyName: string;

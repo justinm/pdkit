@@ -1,5 +1,5 @@
-import { Construct } from "constructs";
 import { XInheritableManifestEntry } from "../../../core/src/xconstructs/XInheritableManifestEntry";
+import { XProject } from "../../../core/src/xconstructs/XProject";
 
 /**
  * The properties required to construct an author construct.
@@ -27,7 +27,7 @@ export interface AuthorProps {
  * Defines an author for a given project tree. Only one Author may be present per project.
  */
 export class Author extends XInheritableManifestEntry {
-  constructor(scope: Construct, id: string, props: AuthorProps) {
+  constructor(scope: XProject, id: string, props: AuthorProps) {
     super(scope, id);
 
     this.addFields({

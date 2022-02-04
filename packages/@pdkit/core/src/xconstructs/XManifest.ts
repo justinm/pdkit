@@ -5,6 +5,7 @@ import { XFile } from "./XFile";
 import { XProject } from "./XProject";
 import { XManifestEntry } from "./XManifestEntry";
 import { XInheritableManifestEntry } from "./XInheritableManifestEntry";
+import logger from "../util/logger";
 
 export interface IXManifest extends IXConstruct {
   /**
@@ -19,18 +20,20 @@ export interface IXManifest extends IXConstruct {
 export class XManifest extends XFile implements IXManifest {
   protected fields: Record<string, unknown>;
 
-  constructor(scope: Construct, id: string, path: string) {
+  constructor(scope: XProject, id: string, path: string) {
     super(scope, id, path);
 
     this.fields = {};
 
     this.node.addValidation({
       validate: (): string[] => {
+        const errors: string[] = [];
+
         if (!this.fields) {
-          return ["No data was written to file"];
+          errors.push("The manifest does not contain any data to write");
         }
 
-        return [];
+        return errors;
       },
     });
   }
@@ -44,10 +47,6 @@ export class XManifest extends XFile implements IXManifest {
     if (fields) {
       this.fields = deepmerge(this.fields, fields);
     }
-  }
-
-  public static is(construct: Construct) {
-    return construct instanceof this;
   }
 
   /**
@@ -70,8 +69,17 @@ export class XManifest extends XFile implements IXManifest {
       this.addFields(entry.fields);
     }
 
-    console.log(JSON.stringify(this.fields, null, 2));
+    logger.debug(JSON.stringify(this.fields, null, 2));
 
     return JSON.stringify(this.fields, null, 2);
+  }
+
+  /**
+   * Check if a given construct is a XManifest.
+   *
+   * @param construct
+   */
+  public static is(construct: Construct) {
+    return construct instanceof this;
   }
 }

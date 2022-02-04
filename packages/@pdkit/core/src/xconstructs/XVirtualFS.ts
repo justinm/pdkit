@@ -1,16 +1,17 @@
 import path from "path";
-import { IXFile } from "../xconstructs/XFile";
+import { IXFile } from "./XFile";
 import { Volume } from "memfs/lib/volume";
-import { IXProject, XProject } from "../xconstructs/XProject";
+import { IXProject, XProject } from "./XProject";
 import { Workspace } from "../Workspace";
-import { ConstructError } from "./ConstructError";
-import { XConstruct } from "../xconstructs/XConstruct";
+import { ConstructError } from "../util/ConstructError";
+import { XConstruct } from "./XConstruct";
 import { Construct } from "constructs";
+import logger from "../util/logger";
 
 /**
- * The VirtualFileSystemManager provides a staging area for writing files prior to persisting changes to disk.
+ * The XVirtualFS provides a staging area for writing files prior to persisting changes to disk.
  */
-export class VirtualFileSystemManager extends XConstruct {
+export class XVirtualFS extends XConstruct {
   readonly fs: Volume;
   private readonly creators: { [key: string]: { project: IXProject; files: string[] } } = {};
 
@@ -35,7 +36,7 @@ export class VirtualFileSystemManager extends XConstruct {
     const project = XProject.of(file);
     const filePath = path.join(project.projectPath, file.path);
 
-    console.log(`${project.node.path} is attempting write to ${filePath}`);
+    logger.debug(`${project.node.path} is attempting write to ${filePath}`);
 
     if (this.fs.existsSync(filePath)) {
       const creator = this.creatorOf(filePath);
@@ -47,6 +48,8 @@ export class VirtualFileSystemManager extends XConstruct {
     this.ensureDirectory(filePath);
 
     this.fs.writeFileSync(filePath, file.content);
+
+    logger.debug(file.content);
   }
 
   creatorOf(filePath: string): IXProject | undefined {
@@ -82,7 +85,7 @@ export class VirtualFileSystemManager extends XConstruct {
         const realPath = path.join(rootPath, virtualPath);
 
         if (!this.fs.statSync(virtualPath).isDirectory()) {
-          console.log(`Would write ${virtualPath} to ${realPath}`);
+          console.debug(`Would write ${virtualPath} to ${realPath}`);
         } else {
           writeDirToDisk(virtualPath);
         }

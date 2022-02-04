@@ -1,6 +1,5 @@
 import { IXConstruct, XConstruct } from "./XConstruct";
-import { Construct } from "constructs";
-import { VirtualFileSystemManager } from "../util/VirtualFileSystemManager";
+import { XVirtualFS } from "./XVirtualFS";
 
 export interface IXFile extends IXConstruct {
   /**
@@ -30,20 +29,11 @@ export abstract class XFile extends XConstruct implements IXFile {
    */
   protected _content: string;
 
-  protected constructor(scope: Construct, id: string, path: string) {
+  protected constructor(scope: XConstruct, id: string, path: string) {
     super(scope, id);
 
     this.path = path;
     this._content = "";
-  }
-
-  /**
-   * Determine's if an object is of this construct type.
-   *
-   * @param construct
-   */
-  public static is(construct: Construct) {
-    return construct instanceof this;
   }
 
   /**
@@ -74,6 +64,15 @@ export abstract class XFile extends XConstruct implements IXFile {
   }
 
   _synth() {
-    VirtualFileSystemManager.of(this).writeFile(this);
+    XVirtualFS.of(this).writeFile(this);
+  }
+
+  /**
+   * Determine if an object inherits this a XFile.
+   *
+   * @param construct
+   */
+  public static is(construct: any) {
+    return construct instanceof this;
   }
 }

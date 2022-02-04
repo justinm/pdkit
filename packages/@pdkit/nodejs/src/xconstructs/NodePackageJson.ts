@@ -1,6 +1,6 @@
 import { XManifest } from "../../../core/src/xconstructs/XManifest";
-import { Construct } from "constructs";
 import { ValidLicense } from "../../../core/src/License";
+import { XProject } from "../../../core/src/xconstructs/XProject";
 
 export interface NodePackageJsonProps {
   readonly name?: string;
@@ -22,7 +22,7 @@ export interface NodePackageJsonProps {
 }
 
 export class NodePackageJson extends XManifest {
-  constructor(scope: Construct, id: string, props?: NodePackageJsonProps) {
+  constructor(scope: XProject, id: string, props?: NodePackageJsonProps) {
     super(scope, id, "package.json");
 
     if (props) {

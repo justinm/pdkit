@@ -1,16 +1,17 @@
 import mustache from "mustache";
-import { IXFile, XFile, XFileProps } from "./xconstructs/XFile";
+import { IXFile, XFile } from "./xconstructs/XFile";
 import { XProject } from "./xconstructs/XProject";
 
 export interface ITemplate extends IXFile {
   readonly variables?: Record<string, any>;
 }
 
-export interface TemplateProps extends XFileProps {
-  /**
-   *
-   */
+/**
+ * See mustache
+ */
+export interface TemplateProps {
   readonly variables?: Record<string, any>;
+  readonly path: string;
 }
 
 /**
@@ -20,7 +21,7 @@ export class Template extends XFile {
   public readonly variables?: Record<string, any>;
 
   constructor(scope: XProject, id: string, props: TemplateProps) {
-    super(scope, id, props);
+    super(scope, id, props.path);
   }
 
   /**

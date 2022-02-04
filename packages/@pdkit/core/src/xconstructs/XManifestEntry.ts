@@ -1,5 +1,4 @@
 import { IXConstruct, XConstruct } from "./XConstruct";
-import { Construct } from "constructs";
 import deepmerge from "deepmerge";
 import { XProject } from "./XProject";
 import { XManifest } from "./XManifest";
@@ -15,7 +14,7 @@ export interface IXManifestEntryProps extends IXConstruct {
 export class XManifestEntry extends XConstruct implements IXManifestEntryProps {
   public fields: Record<string, unknown>;
 
-  constructor(scope: Construct, id: string, fields?: Record<string, unknown>) {
+  constructor(scope: XConstruct, id: string, fields?: Record<string, unknown>) {
     super(scope, id);
 
     this.fields = fields ?? {};
@@ -27,7 +26,6 @@ export class XManifestEntry extends XConstruct implements IXManifestEntryProps {
         }
 
         const project = XProject.of(this);
-
         const siblings = project.node.children.filter((c) => c !== this && c instanceof XManifest);
 
         if (!siblings.length) {
@@ -51,7 +49,7 @@ export class XManifestEntry extends XConstruct implements IXManifestEntryProps {
     this.fields = deepmerge(this.fields, fields);
   }
 
-  public static is(construct: Construct) {
+  public static is(construct: any) {
     return construct instanceof this;
   }
 
