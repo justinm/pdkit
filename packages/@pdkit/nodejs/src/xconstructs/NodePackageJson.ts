@@ -1,10 +1,12 @@
 import { XManifest } from "../../../core/src/xconstructs/XManifest";
 import { Construct } from "constructs";
+import { ValidLicense } from "../../../core/src/License";
 
 export interface NodePackageJsonProps {
   readonly name?: string;
   readonly description?: string;
   readonly private?: boolean;
+  readonly license?: ValidLicense;
   readonly homepath?: string;
   readonly repository?: string;
   readonly keywords?: string[];

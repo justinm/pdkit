@@ -1,22 +1,27 @@
 import path from "path";
 import { IXFile } from "../xconstructs/XFile";
 import { Volume } from "memfs/lib/volume";
-import { IXProject } from "../xconstructs/XProject";
+import { IXProject, XProject } from "../xconstructs/XProject";
 import { Workspace } from "../Workspace";
 import { ConstructError } from "./ConstructError";
+import { XConstruct } from "../xconstructs/XConstruct";
+import { Construct } from "constructs";
 
 /**
  * The VirtualFileSystemManager provides a staging area for writing files prior to persisting changes to disk.
  */
-export class VirtualFileSystemManager {
+export class VirtualFileSystemManager extends XConstruct {
   readonly fs: Volume;
   private readonly creators: { [key: string]: { project: IXProject; files: string[] } } = {};
 
-  constructor() {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+
     this.fs = new Volume();
   }
 
-  readFile(project: IXProject, file: IXFile) {
+  readFile(file: IXFile) {
+    const project = XProject.of(file);
     const filePath = path.join(project.projectPath, file.path);
 
     if (!this.fs.existsSync(filePath)) {
@@ -26,7 +31,8 @@ export class VirtualFileSystemManager {
     return undefined;
   }
 
-  writeFile(project: IXProject, file: IXFile) {
+  writeFile(file: IXFile) {
+    const project = XProject.of(file);
     const filePath = path.join(project.projectPath, file.path);
 
     console.log(`${project.node.path} is attempting write to ${filePath}`);
@@ -64,7 +70,8 @@ export class VirtualFileSystemManager {
     }
   }
 
-  syncToDisk(workspace: Workspace) {
+  syncToDisk() {
+    const workspace = Workspace.of(this);
     const rootPath = workspace.rootPath;
 
     const writeDirToDisk = (dir: string) => {
@@ -83,5 +90,11 @@ export class VirtualFileSystemManager {
     };
 
     writeDirToDisk("/");
+  }
+
+  static of(construct: any) {
+    const workspace = Workspace.of(construct);
+
+    return workspace.vfs;
   }
 }

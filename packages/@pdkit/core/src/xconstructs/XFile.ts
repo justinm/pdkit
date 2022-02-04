@@ -1,7 +1,6 @@
 import { IXConstruct, XConstruct } from "./XConstruct";
 import { Construct } from "constructs";
-import { XProject } from "./XProject";
-import { Workspace } from "../Workspace";
+import { VirtualFileSystemManager } from "../util/VirtualFileSystemManager";
 
 export interface IXFile extends IXConstruct {
   /**
@@ -75,9 +74,6 @@ export abstract class XFile extends XConstruct implements IXFile {
   }
 
   _synth() {
-    const workspace = Workspace.of(this);
-    const project = XProject.of(this);
-
-    workspace.vfs.writeFile(project, this);
+    VirtualFileSystemManager.of(this).writeFile(this);
   }
 }

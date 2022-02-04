@@ -9,7 +9,6 @@ export interface IWorkspace extends IConstruct {
 
 export interface WorkspaceProps {
   readonly rootPath?: string;
-  readonly vfs?: VirtualFileSystemManager;
 }
 
 export class Workspace extends XProject implements IWorkspace {
@@ -20,7 +19,7 @@ export class Workspace extends XProject implements IWorkspace {
     super(undefined as any, id);
 
     this.rootPath = props?.rootPath ?? process.cwd();
-    this.vfs = new VirtualFileSystemManager();
+    this.vfs = new VirtualFileSystemManager(this, "Vfs");
   }
 
   synth() {
