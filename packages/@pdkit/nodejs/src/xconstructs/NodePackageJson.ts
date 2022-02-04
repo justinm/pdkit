@@ -1,6 +1,4 @@
-import { XManifest } from "../../../core/src/xconstructs/XManifest";
-import { ValidLicense } from "../../../core/src/License";
-import { XProject } from "../../../core/src/xconstructs/XProject";
+import { ValidLicense, XManifest, XProject } from "../../../core/src";
 
 export interface NodePackageJsonProps {
   readonly name?: string;

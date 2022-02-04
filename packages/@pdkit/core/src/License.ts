@@ -1,6 +1,5 @@
-import { XFile } from "./xconstructs/XFile";
+import { XFile, XProject, XInheritableManifestEntry } from "./xconstructs";
 import request from "sync-request";
-import { XProject } from "./xconstructs/XProject";
 
 // TODO extend based on https://github.com/github/choosealicense.com/tree/gh-pages/_licenses
 export type ValidLicense =
@@ -18,16 +17,19 @@ export type ValidLicense =
   | "MPL-2.0"
   | "Unlicense";
 
-export class License extends XFile {
+export class License extends XInheritableManifestEntry {
   readonly license: ValidLicense;
 
   constructor(scope: XProject, id: string, license: ValidLicense) {
-    super(scope, id, "LICENSE.md");
+    super(scope, id, { license: license });
 
     this.license = license;
+
+    new XFile(this, "License", "LICENSE.md").writeFile(this.content);
   }
 
   get content() {
+    // TODO this is a terrible way to retrieve licenses...
     const licenseData = request(
       "GET",
       `https://raw.githubusercontent.com/github/choosealicense.com/gh-pages/_licenses/${this.license.toLowerCase()}.txt`

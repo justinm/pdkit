@@ -1,4 +1,4 @@
-import { XProject, XProjectProps } from "./xconstructs/XProject";
+import { XProject, XProjectProps } from "./xconstructs";
 import { Workspace } from "./Workspace";
 import { License, ValidLicense } from "./License";
 import logger from "./util/logger";
@@ -8,12 +8,13 @@ export interface ProjectProps extends XProjectProps {
 }
 
 export class Project extends XProject {
-  readonly license?: License;
+  protected readonly _license?: License;
+
   constructor(scope: Workspace | XProject, id: string, props?: ProjectProps) {
     super(scope, id, props);
 
     if (props?.license) {
-      this.license = new License(this, "License", props.license);
+      this._license = new License(this, "License", props.license);
     }
 
     this.node.addValidation({
@@ -25,6 +26,12 @@ export class Project extends XProject {
         return [];
       },
     });
+  }
+
+  get license(): License | undefined {
+    const project = XProject.of(this) as Project;
+
+    return project.license ? project.license : this._license;
   }
 
   public static is(construct: any) {

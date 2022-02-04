@@ -1,7 +1,5 @@
-import { Workspace } from "../../core/src/Workspace";
+import { Workspace, XManifestEntry, XProject } from "../../core/src";
 import { NodeProject, NodeProjectProps } from "./xconstructs/NodeProject";
-import { XManifestEntry } from "../../core/src/xconstructs/XManifestEntry";
-import { XProject } from "../../core/src/xconstructs/XProject";
 
 export interface IYarnMonoRepo {
   synth(): void;

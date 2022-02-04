@@ -1,5 +1,4 @@
-import { XInheritableManifestEntry } from "../../../core/src/xconstructs/XInheritableManifestEntry";
-import { XProject } from "../../../core/src/xconstructs/XProject";
+import { XInheritableManifestEntry, XProject } from "../../../core/src";
 
 /**
  * The properties required to construct an author construct.

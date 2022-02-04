@@ -52,8 +52,4 @@ export class XManifestEntry extends XConstruct implements IXManifestEntryProps {
   public static is(construct: any) {
     return construct instanceof this;
   }
-
-  _synthesize() {
-    return this.fields;
-  }
 }

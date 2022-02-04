@@ -1,5 +1,4 @@
-import { Construct } from "constructs";
-import { XConstruct } from "../../../core/src/xconstructs/XConstruct";
+import { XConstruct } from "../../../core/src";
 
 export interface XPackageManagerProps {
   readonly installCommand: string;
@@ -8,7 +7,7 @@ export interface XPackageManagerProps {
 export class NodePackageManager extends XConstruct {
   readonly installCommand: string;
 
-  constructor(scope: Construct, id: string, props: XPackageManagerProps) {
+  constructor(scope: XConstruct, id: string, props: XPackageManagerProps) {
     super(scope, id);
 
     this.installCommand = props.installCommand;

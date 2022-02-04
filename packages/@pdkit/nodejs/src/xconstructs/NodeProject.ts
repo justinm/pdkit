@@ -1,12 +1,9 @@
 import { NodePackageJson, NodePackageJsonProps } from "./NodePackageJson";
-import { XProject } from "../../../core/src/xconstructs/XProject";
-import { Workspace } from "../../../core/src/Workspace";
+import { GitIgnore, Project, ProjectProps, Workspace, XProject } from "../../../core/src";
 import { NodePackageManager } from "./NodePackageManager";
 import { YarnSupport } from "./YarnSupport";
 import { Author } from "./Author";
-import { GitIgnore } from "../../../core/src/GitIgnore";
 import { PackageDependency, PackageDependencyType } from "./PackageDependency";
-import { Project, ProjectProps } from "../../../core/src/Project";
 
 export type Dependencies = { [key: string]: string } | string[];
 

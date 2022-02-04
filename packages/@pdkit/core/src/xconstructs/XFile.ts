@@ -17,7 +17,7 @@ export interface IXFile extends IXConstruct {
  * XFiles are simple constructs for writing files to disk. Only one XFile for a
  * given path may exist at any one time.
  */
-export abstract class XFile extends XConstruct implements IXFile {
+export class XFile extends XConstruct implements IXFile {
   /**
    * Specify the files path relative to the parent project's source root.
    */
@@ -29,7 +29,7 @@ export abstract class XFile extends XConstruct implements IXFile {
    */
   protected _content: string;
 
-  protected constructor(scope: XConstruct, id: string, path: string) {
+  constructor(scope: XConstruct, id: string, path: string) {
     super(scope, id);
 
     this.path = path;

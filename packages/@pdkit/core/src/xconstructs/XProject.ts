@@ -1,6 +1,5 @@
 import { Construct } from "constructs";
 import { IXConstruct, XConstruct } from "./XConstruct";
-import { NodePackageManager } from "../../../nodejs/src/xconstructs/NodePackageManager";
 import path from "path";
 import { ConstructError } from "../util/ConstructError";
 
@@ -33,14 +32,9 @@ export abstract class XProject extends XConstruct implements IXProject {
       validate: () => {
         const errors: string[] = [];
         const hasParentProject = !!this.node.scopes.reverse().find((s) => s instanceof XProject);
-        const hasPackageManager = !!this.node.children.find((c) => c instanceof NodePackageManager);
 
         if (hasParentProject && !this._projectPath) {
           errors.push("Nested projected must explicitly define a sourcePath");
-        }
-
-        if (!hasPackageManager) {
-          errors.push("The root project must contain a package manager");
         }
 
         return errors;

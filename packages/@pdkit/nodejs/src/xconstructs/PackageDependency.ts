@@ -1,5 +1,4 @@
-import { XManifestEntry } from "../../../core/src/xconstructs/XManifestEntry";
-import { XProject } from "../../../core/src/xconstructs/XProject";
+import { XManifestEntry, XProject } from "../../../core/src";
 
 export interface PackageDependencyProps {
   readonly type?: PackageDependencyType;

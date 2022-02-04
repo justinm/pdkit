@@ -1,9 +1,10 @@
 import { NodePackageManager } from "./NodePackageManager";
-import { Construct } from "constructs";
+import { XConstruct } from "../../../core/src";
 
 export class YarnSupport extends NodePackageManager {
   readonly berry: boolean = true;
-  constructor(scope: Construct, id: string) {
+
+  constructor(scope: XConstruct, id: string) {
     super(scope, id, {
       installCommand: "yarn",
     });
