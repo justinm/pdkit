@@ -1,7 +1,9 @@
-import { IXConstruct, XConstruct } from "./XConstruct";
-import { XVirtualFS } from "./XVirtualFS";
+import { IXConstruct, XConstruct } from "../base/XConstruct";
+import { Project } from "../Project";
+import path from "path";
+import { VirtualFS } from "./VirtualFS";
 
-export interface IXFile extends IXConstruct {
+export interface IFile extends IXConstruct {
   /**
    * Specify the entries path relative to the project root
    */
@@ -11,13 +13,18 @@ export interface IXFile extends IXConstruct {
    * The contents of the file, modified via writeFile or appendFile.
    */
   readonly content: string;
+
+  /**
+   * The calculated path for the file based on it's parent project
+   */
+  readonly realPath: string;
 }
 
 /**
- * XFiles are simple constructs for writing files to disk. Only one XFile for a
+ * XFiles are simple constructs for writing files to disk. Only one File for a
  * given path may exist at any one time.
  */
-export class XFile extends XConstruct implements IXFile {
+export class File extends XConstruct implements IFile {
   /**
    * Specify the files path relative to the parent project's source root.
    */
@@ -63,12 +70,20 @@ export class XFile extends XConstruct implements IXFile {
     return this._content;
   }
 
+  get realPath() {
+    const project = Project.of(this);
+
+    return path.join(project.projectPath, this.path);
+  }
+
   _synth() {
-    XVirtualFS.of(this).writeFile(this);
+    super._synth();
+
+    VirtualFS.of(this).writeFile(this);
   }
 
   /**
-   * Determine if an object inherits this a XFile.
+   * Determine if an object inherits this a File.
    *
    * @param construct
    */

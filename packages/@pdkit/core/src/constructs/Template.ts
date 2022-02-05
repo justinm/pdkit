@@ -1,8 +1,8 @@
 import mustache from "mustache";
-import { IXFile, XFile } from "./xconstructs/XFile";
-import { XProject } from "./xconstructs/XProject";
+import { IFile, File } from "./File";
+import { Project } from "../Project";
 
-export interface ITemplate extends IXFile {
+export interface ITemplate extends IFile {
   readonly variables?: Record<string, any>;
 }
 
@@ -17,10 +17,10 @@ export interface TemplateProps {
 /**
  * An XTemplate allows copying data to disk using the Mustache templating engine.
  */
-export class Template extends XFile {
+export class Template extends File {
   public readonly variables?: Record<string, any>;
 
-  constructor(scope: XProject, id: string, props: TemplateProps) {
+  constructor(scope: Project, id: string, props: TemplateProps) {
     super(scope, id, props.path);
   }
 

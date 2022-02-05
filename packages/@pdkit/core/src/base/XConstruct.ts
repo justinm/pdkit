@@ -1,16 +1,22 @@
 import { Construct, IConstruct } from "constructs";
 import { ConstructError } from "../util/ConstructError";
+import logger from "../util/logger";
 
 export interface IXConstruct extends IConstruct {
-  _onSynth(): void;
+  readonly binds: IXConstruct[];
+
+  _beforeSynth(): void;
   _synth(): void;
+  _bind(construct: IXConstruct): void;
 }
 
 /**
  * The XConstruct, the base of all constructs for pdkit.
  */
 export abstract class XConstruct extends Construct implements IXConstruct {
-  constructor(scope: Construct, id: string) {
+  private readonly _binds: IXConstruct[] = [];
+
+  constructor(scope: XConstruct, id: string) {
     super(scope, id.replace("/", "-"));
   }
 
@@ -23,7 +29,27 @@ export abstract class XConstruct extends Construct implements IXConstruct {
     return construct instanceof this;
   }
 
-  public _onSynth(): void {}
+  get binds() {
+    return this._binds;
+  }
+
+  public _bind(construct: IXConstruct) {
+    logger.debug(`${construct.constructor.name}(${construct.node.path}) bound itself to ${this.node.path}`);
+    if (this._binds.indexOf(construct) !== -1) {
+      throw new ConstructError(construct, `Construct was already bound to ${this.node.path}`);
+    }
+
+    this._binds.push(construct);
+  }
+
+  public _beforeSynth(): void {
+    const constructs = this.node.children.filter((c) => XConstruct.is(c)).map((c) => c as XConstruct);
+
+    for (const construct of constructs) {
+      construct._beforeSynth();
+    }
+  }
+
   public _synth(): void {
     const constructs = this.node.children.filter((c) => XConstruct.is(c)).map((c) => c as XConstruct);
 

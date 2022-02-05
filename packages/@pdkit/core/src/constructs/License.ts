@@ -1,5 +1,7 @@
-import { XFile, XProject, XInheritableManifestEntry } from "./xconstructs";
 import request from "sync-request";
+import { ManifestEntry } from "./ManifestEntry";
+import { XConstruct } from "../base/XConstruct";
+import { File } from "./File";
 
 // TODO extend based on https://github.com/github/choosealicense.com/tree/gh-pages/_licenses
 export type ValidLicense =
@@ -17,15 +19,15 @@ export type ValidLicense =
   | "MPL-2.0"
   | "Unlicense";
 
-export class License extends XInheritableManifestEntry {
+export class License extends ManifestEntry {
   readonly license: ValidLicense;
 
-  constructor(scope: XProject, id: string, license: ValidLicense) {
-    super(scope, id, { license: license });
+  constructor(scope: XConstruct, id: string, license: ValidLicense, propagate?: boolean) {
+    super(scope, id, { license: license }, propagate);
 
     this.license = license;
 
-    new XFile(this, "License", "LICENSE.md").writeFile(this.content);
+    new File(this, "License", "LICENSE.md").writeFile(this.content);
   }
 
   get content() {

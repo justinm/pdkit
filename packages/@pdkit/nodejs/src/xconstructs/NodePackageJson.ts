@@ -1,4 +1,5 @@
-import { ValidLicense, XManifest, XProject } from "../../../core/src";
+import { ValidLicense, Manifest } from "../../../core/src";
+import { NodeProject } from "./NodeProject";
 
 export interface NodePackageJsonProps {
   readonly name?: string;
@@ -19,8 +20,8 @@ export interface NodePackageJsonProps {
   readonly man?: string[];
 }
 
-export class NodePackageJson extends XManifest {
-  constructor(scope: XProject, id: string, props?: NodePackageJsonProps) {
+export class NodePackageJson extends Manifest {
+  constructor(scope: NodeProject, id: string, props?: NodePackageJsonProps) {
     super(scope, id, "package.json");
 
     if (props) {

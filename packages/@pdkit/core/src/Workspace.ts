@@ -1,6 +1,6 @@
 import { Construct, IConstruct } from "constructs";
-import { XVirtualFS } from "./xconstructs/XVirtualFS";
-import { XProject } from "./xconstructs/XProject";
+import { ConstructError } from "./util/ConstructError";
+import { XConstruct } from "./base/XConstruct";
 
 export interface IWorkspace extends IConstruct {
   readonly rootPath: string;
@@ -11,21 +11,32 @@ export interface WorkspaceProps {
   readonly rootPath?: string;
 }
 
-export class Workspace extends XProject implements IWorkspace {
+export class Workspace extends XConstruct implements IWorkspace {
   public readonly rootPath: string;
-  public readonly vfs: XVirtualFS;
 
   constructor(id: string, props?: WorkspaceProps) {
     super(undefined as any, id);
 
     this.rootPath = props?.rootPath ?? process.cwd();
-    this.vfs = new XVirtualFS(this, "Vfs");
+
+    this.node.addValidation({
+      validate: () => {
+        const errors: string[] = [];
+
+        if (this.node.scopes.length > 0) {
+          errors.push("A workspace must be the top-most construct");
+        }
+
+        return errors;
+      },
+    });
   }
 
   synth() {
     this.node.validate();
 
-    return this._synth();
+    this._beforeSynth();
+    this._synth();
   }
 
   public static of(construct: any) {
@@ -33,14 +44,12 @@ export class Workspace extends XProject implements IWorkspace {
       throw new Error(`${construct} is not a construct`);
     }
 
-    const workspace = (construct as Construct).node.scopes.find(
-      (scope) => scope !== construct && scope instanceof Workspace
-    );
+    const workspace = (construct as Construct).node.scopes[0];
 
-    if (!workspace) {
-      throw new Error(`${construct} must be a child of a project`);
+    if (!workspace || !(workspace instanceof Workspace)) {
+      throw new ConstructError(construct, `Not a child of a workspace`);
     }
 
-    return workspace as Workspace;
+    return workspace as unknown as Workspace;
   }
 }

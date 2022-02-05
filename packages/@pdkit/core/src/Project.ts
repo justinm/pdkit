@@ -1,40 +1,81 @@
-import { XProject, XProjectProps } from "./xconstructs";
+import path from "path";
+import { ConstructError } from "./util/ConstructError";
+import { IXConstruct, XConstruct } from "./base/XConstruct";
 import { Workspace } from "./Workspace";
-import { License, ValidLicense } from "./License";
-import logger from "./util/logger";
 
-export interface ProjectProps extends XProjectProps {
-  readonly license?: ValidLicense;
+export interface IProject extends IXConstruct {
+  readonly sourcePath: string;
+  readonly projectPath: string;
 }
 
-export class Project extends XProject {
-  protected readonly _license?: License;
+export interface ProjectProps {
+  readonly projectPath?: string;
+  readonly sourcePath?: string;
+}
 
-  constructor(scope: Workspace | XProject, id: string, props?: ProjectProps) {
-    super(scope, id, props);
+export abstract class Project extends XConstruct implements IProject {
+  private readonly _projectPath?: string;
+  private readonly _sourcePath: string;
 
-    if (props?.license) {
-      this._license = new License(this, "License", props.license);
-    }
+  protected constructor(scope: XConstruct, id: string, props?: ProjectProps) {
+    super(scope, id);
+
+    this._projectPath = props?.projectPath;
+    this._sourcePath = props?.sourcePath ?? "src";
+
+    Workspace.of(this)._bind(this);
 
     this.node.addValidation({
       validate: () => {
-        if (!this.license) {
-          logger.warn(`Project ${id} does not have a license defined`);
+        const errors: string[] = [];
+        const hasParentProject = !!this.node.scopes.reverse().find((s) => s instanceof Project);
+
+        if (hasParentProject && !this._projectPath) {
+          errors.push("Nested projects must explicitly define a projectPath");
         }
 
-        return [];
+        return errors;
       },
     });
   }
 
-  get license(): License | undefined {
-    const project = XProject.of(this) as Project;
+  get projectPath(): string {
+    const parent = this.node.scopes.reverse().find((scope) => scope !== this && Project.is(scope)) as
+      | Project
+      | undefined;
 
-    return project.license ? project.license : this._license;
+    return path.join(parent ? parent.projectPath : "/", this._projectPath ?? "");
+  }
+
+  get sourcePath(): string {
+    return path.join(this.projectPath, this._sourcePath);
+  }
+
+  get subprojects(): Project[] {
+    return this.node.children.filter((c) => Project.is(c)).map((c) => c as Project);
   }
 
   public static is(construct: any) {
     return construct instanceof this;
+  }
+
+  public static of(construct: any): Project {
+    if (!(construct instanceof XConstruct)) {
+      throw new Error(`${construct} is not a construct`);
+    }
+
+    if (construct instanceof Project) {
+      return construct;
+    }
+
+    const project = (construct as XConstruct).node.scopes
+      .reverse()
+      .find((scope) => scope !== construct && (scope instanceof Project || scope instanceof Workspace));
+
+    if (!project) {
+      throw new ConstructError(construct, `Construct must be a child of a project or workspace`);
+    }
+
+    return project as Project;
   }
 }

@@ -1,9 +1,11 @@
 import { NodePackageJson, NodePackageJsonProps } from "./NodePackageJson";
-import { GitIgnore, Project, ProjectProps, Workspace, XProject } from "../../../core/src";
+import { License, Project, ProjectProps, ValidLicense, XConstruct } from "../../../core/src";
 import { NodePackageManager } from "./NodePackageManager";
 import { YarnSupport } from "./YarnSupport";
-import { Author } from "./Author";
+import { Author, AuthorProps } from "./Author";
 import { PackageDependency, PackageDependencyType } from "./PackageDependency";
+import { StandardValidator } from "../../../core/src/validation/StandardValidator";
+import { VirtualFS } from "../../../core/src/constructs/VirtualFS";
 
 export type Dependencies = { [key: string]: string } | string[];
 
@@ -18,26 +20,27 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly dependencies?: Dependencies;
   readonly devDependencies?: Dependencies;
   readonly peerDependencies?: Dependencies;
+  readonly author?: AuthorProps;
+  readonly license?: ValidLicense;
 }
 
 export class NodeProject extends Project {
-  readonly gitignore: GitIgnore;
   readonly packageJson: NodePackageJson;
   readonly packageManager: NodePackageManager;
 
-  constructor(scope: Workspace | XProject, id: string, props?: NodeProjectProps) {
+  constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
 
-    if (props?.authorName || props?.authorEmail || props?.authorUrl || props?.authorOrganization) {
-      new Author(this, "Author", {
-        email: props.authorEmail,
-        name: props.authorName,
-        url: props.authorUrl,
-        organization: props.authorOrganization,
-      });
+    new VirtualFS(this, "VirtualFS");
+    new StandardValidator(this, "StandardValidator");
+
+    if (props?.license) {
+      new License(this, "License", props.license);
     }
 
-    this.gitignore = new GitIgnore(this, "StandardIgnore", props?.gitignore ?? []);
+    if (props?.author) {
+      new Author(this, "Author", props.author);
+    }
 
     this.packageJson = new NodePackageJson(this, "PackageJson", {
       name: props?.packageName ?? id,

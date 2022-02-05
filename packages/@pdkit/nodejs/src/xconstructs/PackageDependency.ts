@@ -1,4 +1,5 @@
-import { XManifestEntry, XProject } from "../../../core/src";
+import { ManifestEntry } from "../../../core/src/constructs/ManifestEntry";
+import { Project } from "../../../core/src";
 
 export interface PackageDependencyProps {
   readonly type?: PackageDependencyType;
@@ -10,8 +11,8 @@ export enum PackageDependencyType {
   PEER,
 }
 
-export class PackageDependency extends XManifestEntry {
-  constructor(scope: XProject, id: string, props?: PackageDependencyProps) {
+export class PackageDependency extends ManifestEntry {
+  constructor(scope: Project, id: string, props?: PackageDependencyProps) {
     super(scope, id);
 
     let keyName: string;

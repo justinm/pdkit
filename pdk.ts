@@ -2,11 +2,12 @@ import { NodeProject } from "./packages/@pdkit/nodejs/src/xconstructs/NodeProjec
 import { YarnMonoRepo } from "./packages/@pdkit/nodejs/src/YarnMonoRepo";
 
 export const workspace = new YarnMonoRepo("pdkit", {
-  projectPath: "packages/@pdk/core",
-  authorName: "Justin McCormick",
-  authorEmail: "me@justinmccormick.com",
-  authorOrganization: true,
-  license: "Apache-2.0",
+  author: {
+    name: "Justin McCormick",
+    email: "me@justinmccormick.com",
+    organization: true,
+  },
+  // license: "Apache-2.0",
   dependencies: {
     mustache: "^4.2.0",
   },
