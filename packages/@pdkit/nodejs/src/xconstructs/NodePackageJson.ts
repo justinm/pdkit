@@ -1,4 +1,4 @@
-import { ValidLicense, Manifest } from "../../../core/src";
+import { ValidLicense, Manifest, XConstruct } from "../../../core/src";
 import { NodeProject } from "./NodeProject";
 
 export interface NodePackageJsonProps {
@@ -22,7 +22,7 @@ export interface NodePackageJsonProps {
 }
 
 export class NodePackageJson extends Manifest {
-  constructor(scope: NodeProject, id: string, props?: NodePackageJsonProps) {
+  constructor(scope: XConstruct, id: string, props?: NodePackageJsonProps) {
     super(scope, id, "package.json");
 
     if (props) {
@@ -42,5 +42,32 @@ export class NodePackageJson extends Manifest {
         man: props.man,
       });
     }
+  }
+
+  _synth() {
+    super._synth();
+
+    const existingPackageFile = NodeProject.of(this).tryReadFile("package.json");
+    let packageJson: { [key: string]: any } = {};
+
+    if (existingPackageFile) {
+      packageJson = JSON.parse(existingPackageFile.toString("utf8"));
+    }
+
+    ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
+      if (this.fields[key]) {
+        const deps = this.fields[key] as { [key: string]: string };
+
+        Object.keys(deps).forEach((d) => {
+          if (deps[d] === "*" && packageJson[key] && packageJson[key][d]) {
+            this.addFields({
+              [key]: {
+                [d]: packageJson[key][d],
+              },
+            });
+          }
+        });
+      }
+    });
   }
 }

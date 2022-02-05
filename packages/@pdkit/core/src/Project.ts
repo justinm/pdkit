@@ -2,6 +2,7 @@ import path from "path";
 import { ConstructError } from "./util/ConstructError";
 import { IXConstruct, XConstruct } from "./base/XConstruct";
 import { Workspace } from "./Workspace";
+import fs from "fs";
 
 export interface IProject extends IXConstruct {
   readonly sourcePath: string;
@@ -37,6 +38,16 @@ export abstract class Project extends XConstruct implements IProject {
         return errors;
       },
     });
+  }
+
+  public tryReadFile(filePath: string) {
+    const realPath = path.join(this.projectPath, filePath);
+
+    if (fs.existsSync(realPath)) {
+      return fs.readFileSync(realPath);
+    }
+
+    return null;
   }
 
   get projectPath(): string {

@@ -10,7 +10,7 @@ export const workspace = new YarnMonoRepo("pdkit", {
   // license: "Apache-2.0",
   dependencies: ["mustache"],
   devDependencies: [
-    { name: "@pdkit/nodejs", version: "0.0.0" },
+    { name: "@pdkit/nodejs", version: "^0.0.0" },
     "@types/mustache",
     "@types/node",
     "prettier",
