@@ -27,7 +27,7 @@ export class License extends ManifestEntry {
 
     this.license = license;
 
-    new File(this, "License", "LICENSE.md").writeFile(this.content);
+    new File(this, "License", "LICENSE").writeFile(this.content);
   }
 
   get content() {
