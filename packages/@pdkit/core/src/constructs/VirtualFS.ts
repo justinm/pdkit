@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs";
 import { Volume } from "memfs/lib/volume";
 import { ConstructError } from "../util/ConstructError";
 import logger from "../util/logger";
@@ -52,13 +53,6 @@ export class VirtualFS extends XConstruct {
     return this.binds.filter((b) => b instanceof File).find((f) => (f as File).path === filePath) as IFile | undefined;
   }
 
-  protected ensureDirectory(filePath: string) {
-    const dirname = path.dirname(filePath);
-    if (!this.fs.existsSync(dirname)) {
-      this.fs.mkdirpSync(dirname);
-    }
-  }
-
   get files() {
     const ret: string[] = [];
 
@@ -71,7 +65,7 @@ export class VirtualFS extends XConstruct {
         if (this.fs.statSync(virtualPath).isDirectory()) {
           scanFileSystem(virtualPath);
         } else {
-          ret.push(virtualPath);
+          ret.push(virtualPath.substring(1));
         }
       }
     };
@@ -79,6 +73,40 @@ export class VirtualFS extends XConstruct {
     scanFileSystem("/");
 
     return ret;
+  }
+
+  checkPathConflicts(filePath: string): string | null {
+    const rootPath = Workspace.of(this).rootPath;
+    const realPath = path.join(rootPath, filePath);
+
+    if (fs.existsSync(realPath)) {
+      const stat = fs.statSync(realPath);
+
+      if (!stat.isFile()) {
+        throw new Error(`${filePath}: is a directory`);
+      } else {
+        if (stat.mode !== 0o600) {
+          return "file may have external modifications";
+        }
+      }
+    }
+
+    return null;
+  }
+
+  syncPathToDisk(filePath: string) {
+    const rootPath = Workspace.of(this).rootPath;
+
+    fs.writeFileSync(path.join(rootPath, filePath), this.fs.readFileSync(filePath), {
+      mode: 0o666,
+    });
+  }
+
+  protected ensureDirectory(filePath: string) {
+    const dirname = path.dirname(filePath);
+    if (!this.fs.existsSync(dirname)) {
+      this.fs.mkdirpSync(dirname);
+    }
   }
 
   static of(construct: any): VirtualFS {
