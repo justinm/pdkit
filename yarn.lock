@@ -56,7 +56,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
-    choosealicense-list: ^1.2.0
     memfs: ^3.4.1
     mustache: ^4.2.0
     sync-request: ^6.1.0
@@ -64,7 +63,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/nodejs@^0.0.0, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
+"@pdkit/nodejs@0.0.0, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
   resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
@@ -139,17 +138,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mustache@npm:^4.1.2":
+"@types/mustache@npm:*":
   version: 4.1.2
   resolution: "@types/mustache@npm:4.1.2"
   checksum: 1f37849aae39b3188dbeac71734393586db80faa798795ea730db8e40d393c1d4d6a65ad8735a5ccf6dfc8b920d0792af1e6ef13e3ed2e02d204259678545240
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^17.0.13":
-  version: 17.0.13
-  resolution: "@types/node@npm:17.0.13"
-  checksum: 8b87c850c1604c65e3474bd03d122914464b7970caed20f65f4a7706ab429353b896a3916be4d2581164eccda9e3dd95c338fbccf686ff85a824c40d15e8f3fa
+"@types/node@npm:*":
+  version: 17.0.15
+  resolution: "@types/node@npm:17.0.15"
+  checksum: aa64ecf4fbcf9888e794dcdc20e98c49cdcb102b17e57c44ca56943904732d6cc250e766f8448a3cd71d6a40a4b597bd83c565e5bd9b982733fa3f9813d5c291
   languageName: node
   linkType: hard
 
@@ -394,13 +393,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"choosealicense-list@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "choosealicense-list@npm:1.2.0"
-  checksum: 4ff869e4a8282d48aaa78b12bc06ea87972141b2e7a0da430f38037b07738826aa45483ffef98e187283e1be58743543d95c859604fcae9828693bba8b387c51
-  languageName: node
-  linkType: hard
-
 "cli-cursor@npm:^3.1.0":
   version: 3.1.0
   resolution: "cli-cursor@npm:3.1.0"
@@ -549,9 +541,9 @@ __metadata:
   linkType: hard
 
 "constructs@npm:^10.0.47":
-  version: 10.0.47
-  resolution: "constructs@npm:10.0.47"
-  checksum: 7248170438e747a782b446fa01238c35335e4a2bd6b193e9c9b21f78af5e1c013586f9cced097e78fdbfb737b7553c68b5f83260b1cc41b77e337c013b2ae94e
+  version: 10.0.53
+  resolution: "constructs@npm:10.0.53"
+  checksum: 2c24625ac4fd7d367f105b8209dafe7d417b447b6c7274a4c007273722efe5cf071d860c2d75444c1b1c73a78bf7957caf060d228d99f22a3f4c27f107b399f7
   languageName: node
   linkType: hard
 
@@ -966,7 +958,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mustache@npm:^4.2.0":
+"mustache@npm:*, mustache@npm:^4.2.0":
   version: 4.2.0
   resolution: "mustache@npm:4.2.0"
   bin:
@@ -1016,7 +1008,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ora@npm:*, ora@npm:^6.0.1":
+"ora@npm:*":
   version: 6.0.1
   resolution: "ora@npm:6.0.1"
   dependencies:
@@ -1068,19 +1060,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pdkit@workspace:."
   dependencies:
-    "@pdkit/nodejs": ^0.0.0
-    "@types/mustache": ^4.1.2
-    "@types/node": ^17.0.13
-    "@types/ora": ^3.2.0
-    mustache: ^4.2.0
-    ora: ^6.0.1
-    prettier: ^2.5.1
-    ts-node: ^10.4.0
-    typescript: ^4.5.5
+    "@pdkit/nodejs": 0.0.0
+    "@types/mustache": "*"
+    "@types/node": "*"
+    mustache: "*"
+    prettier: "*"
+    ts-node: "*"
+    typescript: "*"
   languageName: unknown
   linkType: soft
 
-"prettier@npm:^2.5.1":
+"prettier@npm:*, prettier@npm:^2.5.1":
   version: 2.5.1
   resolution: "prettier@npm:2.5.1"
   bin:
@@ -1161,7 +1151,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^3.4.0":
+"readable-stream@npm:^3.4.0, readable-stream@npm:^3.6.0":
   version: 3.6.0
   resolution: "readable-stream@npm:3.6.0"
   dependencies:
@@ -1377,14 +1367,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"triple-beam@npm:^1.2.0, triple-beam@npm:^1.3.0":
+"triple-beam@npm:^1.3.0":
   version: 1.3.0
   resolution: "triple-beam@npm:1.3.0"
   checksum: 7d7b77d8625fb252c126c24984a68de462b538a8fcd1de2abd0a26421629cf3527d48e23b3c2264f08f4a6c3bc40a478a722176f4d7b6a1acc154cb70c359f2b
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.4.0":
+"ts-node@npm:*":
   version: 10.4.0
   resolution: "ts-node@npm:10.4.0"
   dependencies:
@@ -1427,7 +1417,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.5.5":
+"typescript@npm:*":
   version: 4.5.5
   resolution: "typescript@npm:4.5.5"
   bin:
@@ -1437,7 +1427,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@*#~builtin<compat/typescript>":
   version: 4.5.5
   resolution: "typescript@patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=493e53"
   bin:
@@ -1464,13 +1454,13 @@ __metadata:
   linkType: hard
 
 "winston-transport@npm:^4.4.2":
-  version: 4.4.2
-  resolution: "winston-transport@npm:4.4.2"
+  version: 4.5.0
+  resolution: "winston-transport@npm:4.5.0"
   dependencies:
     logform: ^2.3.2
-    readable-stream: ^3.4.0
-    triple-beam: ^1.2.0
-  checksum: 1f1732d12f4e28d7cd0be110482035b3a3647f8ed07d681e9b79b4b2e168aaa34d91a3bbe9c7374d8df2ef9d6fd38f4add70d66798930d4c7cebb555ff8496f9
+    readable-stream: ^3.6.0
+    triple-beam: ^1.3.0
+  checksum: a56e5678a80b88a73e77ed998fc6e19d0db19c989a356b137ec236782f2bf58ae4511b11c29163f99391fa4dc12102c7bc5738dcb6543f28877fa2819adc3ee9
   languageName: node
   linkType: hard
 

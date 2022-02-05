@@ -1,27 +1,33 @@
 {
   "name": "pdkit",
   "version": "0.0.0",
-  "main": "index.js",
   "private": true,
-  "license": "Apache-2.0",
   "scripts": {
     "pdkit": "ts-node packages/@pdkit/cli/src/pdkit.ts"
   },
-  "devDependencies": {
-    "@pdkit/nodejs": "^0.0.0",
-    "@types/mustache": "^4.1.2",
-    "@types/node": "^17.0.13",
-    "@types/ora": "^3.2.0",
-    "prettier": "^2.5.1",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.5"
-  },
-  "packageManager": "yarn@3.1.1",
-  "workspaces": [
-    "packages/**/*"
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts",
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
   ],
+  "author": {
+    "name": "Justin McCormick",
+    "email": "me@justinmccormick.com",
+    "organization": true
+  },
   "dependencies": {
-    "mustache": "^4.2.0",
-    "ora": "^6.0.1"
-  }
+    "@pdkit/nodejs": "0.0.0",
+    "@types/mustache": "*",
+    "@types/node": "*",
+    "mustache": "*",
+    "prettier": "*",
+    "ts-node": "*",
+    "typescript": "*"
+  },
+  "workspaces": [
+    "packages/@pdkit/core",
+    "packages/@pdkit/cli",
+    "packages/@pdkit/nodejs"
+  ]
 }

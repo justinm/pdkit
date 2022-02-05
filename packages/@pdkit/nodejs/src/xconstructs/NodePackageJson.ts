@@ -4,6 +4,7 @@ import { NodeProject } from "./NodeProject";
 export interface NodePackageJsonProps {
   readonly name?: string;
   readonly description?: string;
+  readonly version?: string;
   readonly private?: boolean;
   readonly license?: ValidLicense;
   readonly homepath?: string;
@@ -28,6 +29,7 @@ export class NodePackageJson extends Manifest {
       this.addFields({
         name: props.name,
         description: props.description,
+        version: props.version ?? "0.0.0",
         private: props.private,
         homepath: props.homepath,
         repository: props.repository,

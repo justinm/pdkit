@@ -8,18 +8,15 @@ export const workspace = new YarnMonoRepo("pdkit", {
     organization: true,
   },
   // license: "Apache-2.0",
-  dependencies: {
-    mustache: "^4.2.0",
-  },
-  devDependencies: {
-    "@pdkit/nodejs": "^0.0.0",
-    "@types/mustache": "^4.1.2",
-    "@types/node": "^17.0.13",
-    prettier: "^2.5.1",
-    projen: "^0.52.5",
-    "ts-node": "^10.4.0",
-    typescript: "^4.5.5",
-  },
+  dependencies: ["mustache"],
+  devDependencies: [
+    { name: "@pdkit/nodejs", version: "0.0.0" },
+    "@types/mustache",
+    "@types/node",
+    "prettier",
+    "ts-node",
+    "typescript",
+  ],
   scripts: {
     pdkit: "ts-node packages/@pdkit/cli/src/pdkit.ts",
   },

@@ -85,8 +85,8 @@ export class VirtualFS extends XConstruct {
       if (!stat.isFile()) {
         throw new Error(`${filePath}: is a directory`);
       } else {
-        if (stat.mode !== 0o600) {
-          return "file may have external modifications";
+        if (stat.mode & 600) {
+          return "file may have external modifications " + stat.mode;
         }
       }
     }
@@ -96,10 +96,13 @@ export class VirtualFS extends XConstruct {
 
   syncPathToDisk(filePath: string) {
     const rootPath = Workspace.of(this).rootPath;
+    const realPath = path.join(rootPath, filePath);
 
-    fs.writeFileSync(path.join(rootPath, filePath), this.fs.readFileSync(filePath), {
-      mode: 0o666,
+    fs.writeFileSync(realPath, this.fs.readFileSync(path.join("/", filePath)), {
+      mode: 0o600,
     });
+
+    fs.chmodSync(realPath, 0o600);
   }
 
   protected ensureDirectory(filePath: string) {

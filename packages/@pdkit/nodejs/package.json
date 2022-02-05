@@ -1,9 +1,6 @@
 {
   "name": "@pdkit/nodejs",
   "version": "0.0.0",
-  "main": "dist/index.js",
-  "private": true,
-  "license": "Apache-2.0",
   "files": [
     "dist/*.js",
     "dist/*.d.ts",
@@ -19,8 +16,9 @@
     "@pdkit/core": "^0.0.0",
     "prettier": "^2.5.1"
   },
-  "packageManager": "yarn@3.1.1",
-  "workspaces": [
-    "packages/**/*"
-  ]
+  "author": {
+    "name": "Justin McCormick",
+    "email": "me@justinmccormick.com",
+    "organization": true
+  }
 }

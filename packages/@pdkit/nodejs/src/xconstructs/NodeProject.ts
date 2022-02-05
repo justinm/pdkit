@@ -7,7 +7,7 @@ import { PackageDependency, PackageDependencyType } from "./PackageDependency";
 import { StandardValidator } from "../../../core/src/validation/StandardValidator";
 import { VirtualFS } from "../../../core/src/constructs/VirtualFS";
 
-export type Dependencies = { [key: string]: string } | string[];
+export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
 
 export enum PackageManagerType {
   YARN,
@@ -49,7 +49,15 @@ export class NodeProject extends Project {
 
     const addDependencies = (deps: Dependencies, type?: PackageDependencyType) => {
       if (Array.isArray(deps)) {
-        deps.forEach((dep) => new PackageDependency(this, dep));
+        deps.forEach((dep) => {
+          const d = dep as { name: string; version?: string };
+
+          if (d.name) {
+            new PackageDependency(this, d.name, { version: d.version });
+          } else {
+            new PackageDependency(this, dep as string);
+          }
+        });
       } else {
         Object.keys(deps).forEach((dep) => new PackageDependency(this, dep, { version: deps[dep], type }));
       }

@@ -4,6 +4,7 @@ import path from "path";
 import { VirtualFS } from "../../../core/src/constructs/VirtualFS";
 import prompts from "prompts";
 import ora from "ora";
+import logger from "../../../core/src/util/logger";
 
 export const command = "synth";
 export const desc = "Synthesizes the projects configuration";
@@ -34,6 +35,7 @@ export const handler = async function (argv: Args) {
     spinner.start(`Writing file ${filePath}`);
 
     const conflict = vfs.checkPathConflicts(filePath);
+    let skip = false;
 
     if (conflict) {
       spinner.warn(`${filePath}: ${conflict}`);
@@ -50,12 +52,21 @@ export const handler = async function (argv: Args) {
         }
       );
 
-      if (answer.confirm) {
-        filesWritten.push(filePath);
+      skip = answer.confirm;
+    }
+
+    if (!skip) {
+      filesWritten.push(filePath);
+      try {
+        vfs.syncPathToDisk(filePath);
+
         spinner.succeed(`${filePath}: written successfully`);
-      } else {
-        spinner.fail(`${filePath}: file was skipped`);
+      } catch (err) {
+        logger.error((err as Error).stack);
+        spinner.fail(`${filePath}: file write failure`);
       }
+    } else {
+      spinner.fail(`${filePath}: file was skipped`);
     }
   }
 
