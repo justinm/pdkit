@@ -1,7 +1,7 @@
 import { NodeProject } from "./packages/@pdkit/nodejs/src/constructs/NodeProject";
 import { YarnMonoRepo } from "./packages/@pdkit/nodejs/src/YarnMonoRepo";
 
-export const workspace = new YarnMonoRepo("pdkit", {
+const workspace = new YarnMonoRepo("pdkit", {
   author: {
     name: "Justin McCormick",
     email: "me@justinmccormick.com",
@@ -75,3 +75,5 @@ new NodeProject(workspace, "nodejs", {
 
   files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
 });
+
+export default workspace;

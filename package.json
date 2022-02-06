@@ -17,10 +17,10 @@
     "organization": true
   },
   "dependencies": {
-    "mustache": "*",
     "@pdkit/nodejs": "^0.0.0",
     "@types/mustache": "*",
     "@types/node": "*",
+    "mustache": "*",
     "prettier": "*",
     "ts-node": "*",
     "typescript": "*"

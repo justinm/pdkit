@@ -1,6 +1,7 @@
 import { NodeProject, NodeProjectProps } from "./constructs/NodeProject";
 import { ManifestEntry } from "../../core/src/constructs/ManifestEntry";
 import { Project, Workspace, WorkspaceProps } from "../../core/src";
+import { YarnSupport } from "./constructs/YarnSupport";
 
 export interface IYarnMonoRepo {
   synth(): void;
@@ -17,15 +18,16 @@ export class YarnMonoRepo extends NodeProject implements IYarnMonoRepo {
 
   constructor(id: string, props?: YarnMonoRepoProps) {
     const workspace = props?.workspace ?? new Workspace("Workspace");
-    super(workspace, id, { ...props, projectPath: "./" });
+    super(workspace, id, { ...props, projectPath: "./", packageManagerType: undefined });
+
+    new YarnSupport(this, "Yarn");
 
     this.workspace = workspace;
   }
 
   _beforeSynth() {
-    const projectPaths = this.workspace.binds
-      .filter((b) => Project.is(b) && b !== this)
-      .map((p) => (p as Project).projectPath.substring(1));
+    const projects = this.workspace.binds.filter((b) => Project.is(b) && b !== this);
+    const projectPaths = projects.map((p) => (p as Project).projectPath.substring(1));
 
     new ManifestEntry(this, "WorkspaceFields", {
       workspaces: projectPaths,

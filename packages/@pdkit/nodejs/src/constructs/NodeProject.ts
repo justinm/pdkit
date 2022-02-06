@@ -1,6 +1,5 @@
 import { NodePackageJson, NodePackageJsonProps } from "./NodePackageJson";
 import { License, Project, ProjectProps, ValidLicense, XConstruct } from "../../../core/src";
-import { NodePackageManager } from "./NodePackageManager";
 import { YarnSupport } from "./YarnSupport";
 import { Author, AuthorProps } from "./Author";
 import { PackageDependency, PackageDependencyType } from "./PackageDependency";
@@ -13,6 +12,7 @@ export type Dependencies = { [key: string]: string } | (string | { name: string;
 export enum PackageManagerType {
   YARN,
   NPM,
+  NONE,
 }
 
 export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
@@ -27,7 +27,6 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
 
 export class NodeProject extends Project {
   readonly packageJson: NodePackageJson;
-  readonly packageManager: NodePackageManager;
 
   constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
@@ -35,6 +34,12 @@ export class NodeProject extends Project {
     new VirtualFS(this, "VirtualFS");
     new StandardValidator(this, "StandardValidator");
     new TaskManager(this, "TaskManager");
+
+    switch (props?.packageManagerType) {
+      case PackageManagerType.YARN:
+        new YarnSupport(this, "Yarn");
+        break;
+    }
 
     if (props?.license) {
       new License(this, "License", props.license);
@@ -76,24 +81,5 @@ export class NodeProject extends Project {
     if (props?.peerDependencies) {
       addDependencies(props?.peerDependencies, PackageDependencyType.PEER);
     }
-
-    switch (props?.packageManagerType) {
-      case PackageManagerType.YARN:
-      default:
-        this.packageManager = new YarnSupport(this, "Yarn");
-    }
-
-    this.node.addValidation({
-      validate: () => {
-        const errors: string[] = [];
-        const hasPackageManager = !!this.node.children.find((c) => c instanceof NodePackageManager);
-
-        if (!hasPackageManager) {
-          errors.push("The root project must contain a package manager");
-        }
-
-        return errors;
-      },
-    });
   }
 }
