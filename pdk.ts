@@ -1,4 +1,4 @@
-import { NodeProject } from "./packages/@pdkit/nodejs/src/xconstructs/NodeProject";
+import { NodeProject } from "./packages/@pdkit/nodejs/src/constructs/NodeProject";
 import { YarnMonoRepo } from "./packages/@pdkit/nodejs/src/YarnMonoRepo";
 
 export const workspace = new YarnMonoRepo("pdkit", {

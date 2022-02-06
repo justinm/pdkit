@@ -1,4 +1,4 @@
-import { NodeProject, NodeProjectProps } from "./xconstructs/NodeProject";
+import { NodeProject, NodeProjectProps } from "./constructs/NodeProject";
 import { ManifestEntry } from "../../core/src/constructs/ManifestEntry";
 import { Project, Workspace, WorkspaceProps } from "../../core/src";
 
