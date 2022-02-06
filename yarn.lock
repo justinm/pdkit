@@ -56,6 +56,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
+    dependency-graph: ^0.11.0
     memfs: ^3.4.1
     mustache: ^4.2.0
     sync-request: ^6.1.0
@@ -63,7 +64,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/nodejs@0.0.0, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
+"@pdkit/nodejs@^0.0.0, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
   resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
@@ -1060,7 +1061,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pdkit@workspace:."
   dependencies:
-    "@pdkit/nodejs": 0.0.0
+    "@pdkit/nodejs": ^0.0.0
     "@types/mustache": "*"
     "@types/node": "*"
     mustache: "*"

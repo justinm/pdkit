@@ -12,11 +12,15 @@ export const desc = "Synthesizes the projects configuration";
 interface Args extends AppArguments {}
 
 export const builder: yargs.CommandBuilder<any, any> = function (yargs) {
-  return yargs;
+  return yargs.option("dryrun", {
+    alias: "n",
+    type: "boolean",
+  });
 };
 
 export const handler = async function (argv: Args) {
   const config = argv.config as string;
+  const dryrun = (argv.dryrun as boolean) ?? false;
   const spinner = ora("Synthesizing project...").start();
 
   process.chdir(path.dirname(config));
@@ -58,9 +62,13 @@ export const handler = async function (argv: Args) {
     if (!skip) {
       filesWritten.push(filePath);
       try {
-        vfs.syncPathToDisk(filePath);
+        if (!dryrun) {
+          vfs.syncPathToDisk(filePath);
 
-        spinner.succeed(`${filePath}: written successfully`);
+          spinner.succeed(`${filePath}: written successfully`);
+        } else {
+          spinner.warn(`${filePath}: would be written`);
+        }
       } catch (err) {
         logger.error((err as Error).stack);
         spinner.fail(`${filePath}: file write failure`);

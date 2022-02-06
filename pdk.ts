@@ -31,6 +31,7 @@ new NodeProject(workspace, "core", {
     mustache: "^4.2.0",
     "sync-request": "^6.1.0",
     winston: "^3.5.1",
+    "dependency-graph": "^0.11.0",
   },
   files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
 });

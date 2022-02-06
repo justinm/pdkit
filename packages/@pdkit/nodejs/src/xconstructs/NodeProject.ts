@@ -6,6 +6,7 @@ import { Author, AuthorProps } from "./Author";
 import { PackageDependency, PackageDependencyType } from "./PackageDependency";
 import { StandardValidator } from "../../../core/src/validation/StandardValidator";
 import { VirtualFS } from "../../../core/src/constructs/VirtualFS";
+import { TaskManager } from "../../../core/src/constructs/TaskManager";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
 
@@ -33,6 +34,7 @@ export class NodeProject extends Project {
 
     new VirtualFS(this, "VirtualFS");
     new StandardValidator(this, "StandardValidator");
+    new TaskManager(this, "TaskManager");
 
     if (props?.license) {
       new License(this, "License", props.license);
