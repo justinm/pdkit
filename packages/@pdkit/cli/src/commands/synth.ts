@@ -5,9 +5,11 @@ import { VirtualFS } from "../../../core/src/constructs/VirtualFS";
 import prompts from "prompts";
 import ora from "ora";
 import logger from "../../../core/src/util/logger";
-import { PostSynthTask } from "../../../core/src/constructs/PostSynthTask";
 import { Project, Workspace, XConstruct } from "../../../core/src";
 import { spawn } from "child_process";
+import { Script } from "../../../core/src/scripts/Script";
+import { InstallScript } from "../../../core/src/scripts/InstallScript";
+import { PostInstallScript } from "../../../core/src/scripts/PostInstallScript";
 
 export const command = "synth";
 export const desc = "Synthesizes the projects configuration";
@@ -145,31 +147,29 @@ export const handler = async function (argv: AppArguments) {
     }
   });
 
-  await withSpinner(spinner, verbose, "Running post-synth tasks", async () => {
-    if (workspace) {
-      const rootPath = workspace.rootPath;
-      const postSynthTasks = workspace.binds
-        .filter((b: unknown) => PostSynthTask.is(b))
-        .map((pst) => [path.join(rootPath, Project.of(pst).projectPath), (pst as PostSynthTask).commands]);
+  const runScripts = async (name: string, type: typeof Script) => {
+    return withSpinner(spinner, verbose, `Running ${name} scripts`, async () => {
+      if (workspace) {
+        const scripts = workspace.binds.filter((b) => b instanceof type) as Script[];
+        const rootPath = workspace.rootPath;
 
-      if (!postSynthTasks.length) {
-        throw "No tasks were found";
-      } else {
-        for (const taskTuple of postSynthTasks) {
-          for (const command of taskTuple[1]) {
+        if (!scripts.length) {
+          throw "No install scripts were found";
+        }
+
+        for (const script of scripts) {
+          for (const command of script.commands) {
             if (dryrun) {
-              if (verbose) {
-                spinner.info(`  Would execute: ${command}`);
-              }
+              spinner.info(`  Would run install script: ${command}`);
               continue;
             }
 
             if (verbose) {
-              spinner.start(`  Executing: ${command} in ${taskTuple[0]}`);
+              spinner.start(`  Running install script: ${command}`);
             }
 
             const proc = spawn(command, {
-              cwd: taskTuple[0] as string,
+              cwd: path.join(rootPath, Project.of(script).projectPath),
               env: process.env,
             });
 
@@ -193,14 +193,17 @@ export const handler = async function (argv: AppArguments) {
               });
             });
           }
+
+          if (dryrun && !verbose) {
+            throw "No tasks were executed";
+          }
         }
       }
+    });
+  };
 
-      if (dryrun && !verbose) {
-        throw "No tasks were executed";
-      }
-    }
-  });
+  await runScripts("install", InstallScript);
+  await runScripts("post-install", PostInstallScript);
 
   if (!verbose && dryrun) {
     spinner.info("For more information, try the --verbose flag and/or LOG_LEVEL=debug");
