@@ -4,18 +4,14 @@ import { Project } from "../Project";
 import { ManifestEntry } from "./ManifestEntry";
 
 export class Task extends ManifestEntry {
-  readonly commands: string[];
-
   constructor(scope: XConstruct, id: string, commands: string[]) {
-    super(scope, id);
-
     const tm = TaskManager.of(scope);
+    super(tm, id);
+
     const taskName = this.taskName;
 
     tm._bind(this);
     tm.graph.addNode(taskName, this);
-
-    this.commands = commands;
 
     this.addFields({
       scripts: {

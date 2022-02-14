@@ -1,5 +1,6 @@
-import { ValidLicense, Manifest, XConstruct, PostInstallScript } from "../../../core/src";
+import { ValidLicense, Manifest, XConstruct } from "../../../core/src";
 import { NpmProject } from "../npm/NpmProject";
+import { UpdatePackageVersionsPostInstallScript } from "../scripts/UpdatePackageVersionsPostInstallScript";
 
 export interface NodePackageJsonProps {
   readonly name?: string;
@@ -42,7 +43,8 @@ export class PackageJson extends Manifest {
         man: props.man,
       });
     }
-    new PostInstallScript(this, "RepairPackage");
+
+    new UpdatePackageVersionsPostInstallScript(this, "PatchPackageJson");
   }
 
   _synth() {

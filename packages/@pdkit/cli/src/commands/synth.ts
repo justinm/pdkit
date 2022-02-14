@@ -154,12 +154,12 @@ export const handler = async function (argv: AppArguments) {
     }
   });
 
-  const runScripts = async (name: string, _: typeof Script) => {
+  const runScripts = async (name: string, type: typeof Script) => {
     return withSpinner(spinner, verbose, `Running ${name} scripts`, async () => {
       if (workspace) {
         const scripts = workspace.binds
           .filter((b) => b instanceof Project)
-          .map((p) => p.binds.filter((b) => b instanceof Script))
+          .map((p) => p.binds.filter((b) => b instanceof type))
           .flat() as Script[];
         const rootPath = workspace.rootPath;
 

@@ -5,6 +5,7 @@ import { PackageDependency, PackageDependencyType } from "../constructs/PackageD
 import { StandardValidator } from "../../../core/src/validation/StandardValidator";
 import { VirtualFS } from "../../../core/src/constructs/VirtualFS";
 import { TaskManager } from "../../../core/src/constructs/TaskManager";
+import { UpdatePackageVersionsPostInstallScript } from "../scripts/UpdatePackageVersionsPostInstallScript";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
 
@@ -31,6 +32,7 @@ export class NpmProject extends Project {
     super(scope, id, props);
 
     new InstallScript(this, "InstallCommand", [props?.installCommand ?? "npm install"]);
+    new UpdatePackageVersionsPostInstallScript(this, "UpdatePackageVersions");
     new VirtualFS(this, "VirtualFS");
     new StandardValidator(this, "StandardValidator");
     new TaskManager(this, "TaskManager");

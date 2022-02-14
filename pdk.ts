@@ -1,4 +1,5 @@
 import { YarnProject, YarnWorkspace } from "./packages/@pdkit/nodejs/src";
+import { TypescriptSupport } from "./packages/@pdkit/typescript/src/TypescriptSupport";
 
 const workspace = new YarnWorkspace("pdkit", {
   author: {
@@ -10,6 +11,7 @@ const workspace = new YarnWorkspace("pdkit", {
   dependencies: ["mustache"],
   devDependencies: [
     { name: "@pdkit/nodejs", version: "^0.0.0" },
+    { name: "@pdkit/typescript", version: "^0.0.0" },
     "@types/mustache",
     "@types/node",
     "prettier",
@@ -74,5 +76,21 @@ new YarnProject(workspace, "nodejs", {
 
   files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
 });
+
+const tsp = new YarnProject(workspace, "typescript", {
+  packageName: "@pdkit/typescript",
+  projectPath: "packages/@pdkit/typescript",
+  dependencies: {
+    constructs: "^10.0.47",
+    deepmerge: "^4.2.2",
+    "dependency-graph": "^0.11.0",
+    "@pdkit/core": "^0.0.0",
+  },
+  devDependencies: ["prettier", "typescript"],
+
+  files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
+});
+
+new TypescriptSupport(tsp, {});
 
 export default workspace;

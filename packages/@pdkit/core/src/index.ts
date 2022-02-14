@@ -2,6 +2,8 @@ export * from "./base/XConstruct";
 export * from "./constructs/File";
 export * from "./constructs/Manifest";
 export * from "./constructs/License";
+export * from "./constructs/Task";
+export * from "./constructs/TaskManager";
 export * from "./constructs/Template";
 export * from "./git/GitIgnore";
 export * from "./git/GitRepository";
