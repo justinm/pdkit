@@ -13,7 +13,7 @@ export enum PackageDependencyType {
 
 export class PackageDependency extends ManifestEntry {
   constructor(scope: Project, id: string, props?: PackageDependencyProps) {
-    super(scope, id);
+    super(scope, `${id}Dependency`);
 
     let keyName: string;
     switch (props?.type) {

@@ -87,7 +87,7 @@ export class Manifest extends File implements IManifest {
     const manifest = project.binds.find((c) => c instanceof Manifest);
 
     if (!manifest) {
-      throw new ConstructError(construct, "No manifest was found");
+      throw new ConstructError(construct, `No manifest was found in project ${project.node.id}`);
     }
 
     return manifest as Manifest;

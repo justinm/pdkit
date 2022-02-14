@@ -7,7 +7,7 @@ export interface NodePackageManagerProps {
   readonly extraCommands?: string[];
 }
 
-export class NodePackageManager extends PackageManager {
+export class NpmPackageManager extends PackageManager {
   constructor(scope: XConstruct, id: string, props: NodePackageManagerProps) {
     super(scope, id);
 

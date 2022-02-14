@@ -1,7 +1,6 @@
-import { NodeProject } from "./packages/@pdkit/nodejs/src/constructs/NodeProject";
-import { YarnMonoRepo } from "./packages/@pdkit/nodejs/src/YarnMonoRepo";
+import { YarnProject, YarnWorkspace } from "./packages/@pdkit/nodejs/src";
 
-const workspace = new YarnMonoRepo("pdkit", {
+const workspace = new YarnWorkspace("pdkit", {
   author: {
     name: "Justin McCormick",
     email: "me@justinmccormick.com",
@@ -23,7 +22,7 @@ const workspace = new YarnMonoRepo("pdkit", {
   files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
 });
 
-new NodeProject(workspace, "core", {
+new YarnProject(workspace, "core", {
   packageName: "@pdkit/core",
   projectPath: "packages/@pdkit/core",
   dependencies: {
@@ -36,7 +35,7 @@ new NodeProject(workspace, "core", {
   files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
 });
 
-new NodeProject(workspace, "cli", {
+new YarnProject(workspace, "cli", {
   packageName: "@pdkit/cli",
   projectPath: "packages/@pdkit/cli",
   dependencies: {
@@ -60,16 +59,16 @@ new NodeProject(workspace, "cli", {
   },
 });
 
-new NodeProject(workspace, "nodejs", {
+new YarnProject(workspace, "nodejs", {
   packageName: "@pdkit/nodejs",
   projectPath: "packages/@pdkit/nodejs",
   dependencies: {
     constructs: "^10.0.47",
     deepmerge: "^4.2.2",
     "dependency-graph": "^0.11.0",
+    "@pdkit/core": "^0.0.0",
   },
   devDependencies: {
-    "@pdkit/core": "^0.0.0",
     prettier: "^2.5.1",
   },
 

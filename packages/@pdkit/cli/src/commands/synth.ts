@@ -5,7 +5,7 @@ import { VirtualFS } from "../../../core/src/constructs/VirtualFS";
 import prompts from "prompts";
 import ora from "ora";
 import logger from "../../../core/src/util/logger";
-import { Project, Workspace, XConstruct } from "../../../core/src";
+import { ConstructError, Project, Workspace, XConstruct } from "../../../core/src";
 import { spawn } from "child_process";
 import { Script } from "../../../core/src/scripts/Script";
 import { InstallScript } from "../../../core/src/scripts/InstallScript";
@@ -45,6 +45,12 @@ async function withSpinner<T>(spinner: ora.Ora, verbose: number, message: string
     return ret;
   } catch (err) {
     spinner.indent = indent;
+
+    if (err instanceof ConstructError) {
+      spinner.fail(`${message}: ${(err as Error).message}`);
+      logger.debug(err.stack);
+      process.exit(1);
+    }
 
     if (err instanceof Error) {
       spinner.fail(`${message}: ${(err as Error).message}`);
@@ -125,6 +131,7 @@ export const handler = async function (argv: AppArguments) {
           } catch (err) {
             logger.error((err as Error).stack);
             spinner.fail(`${filePath}: file write failure`);
+            process.exit(1);
           }
         } else {
           if (verbose) {
@@ -147,10 +154,13 @@ export const handler = async function (argv: AppArguments) {
     }
   });
 
-  const runScripts = async (name: string, type: typeof Script) => {
+  const runScripts = async (name: string, _: typeof Script) => {
     return withSpinner(spinner, verbose, `Running ${name} scripts`, async () => {
       if (workspace) {
-        const scripts = workspace.binds.filter((b) => b instanceof type) as Script[];
+        const scripts = workspace.binds
+          .filter((b) => b instanceof Project)
+          .map((p) => p.binds.filter((b) => b instanceof Script))
+          .flat() as Script[];
         const rootPath = workspace.rootPath;
 
         if (!scripts.length) {
@@ -158,40 +168,51 @@ export const handler = async function (argv: AppArguments) {
         }
 
         for (const script of scripts) {
-          for (const command of script.commands) {
-            if (dryrun) {
-              spinner.info(`  Would run install script: ${command}`);
-              continue;
-            }
+          if (!dryrun) {
+            script._beforeExecute();
+          }
 
-            if (verbose) {
-              spinner.start(`  Running install script: ${command}`);
-            }
+          if (script.commands) {
+            for (const command of script.commands) {
+              const pcwd = path.join(rootPath, Project.of(script).projectPath);
+              if (dryrun) {
+                spinner.info(`  Would run install script: ${command} in ${pcwd}`);
+                continue;
+              }
 
-            const proc = spawn(command, {
-              cwd: path.join(rootPath, Project.of(script).projectPath),
-              env: process.env,
-            });
+              if (verbose) {
+                spinner.start(`  Running install script: ${command}`);
+              }
 
-            await new Promise((resolve, reject) => {
-              const lines: Buffer[] = [];
-              proc.stdout.on("data", (data) => {
-                lines.push(data);
+              const proc = spawn(command, {
+                cwd: pcwd,
+                env: process.env,
               });
-              proc.on("close", (code) => {
-                if (!code) {
-                  if (verbose) {
-                    spinner.succeed();
+
+              await new Promise((resolve, reject) => {
+                const lines: Buffer[] = [];
+                proc.stdout.on("data", (data) => {
+                  lines.push(data);
+                });
+                proc.on("close", (code) => {
+                  if (!code) {
+                    if (verbose) {
+                      spinner.succeed();
+                    }
+                    resolve(true);
+                  } else {
+                    spinner.fail();
+                    lines.forEach((line) => console.log(line.toString().trim()));
+
+                    reject(`"${command}" returned exit code ${code}`);
                   }
-                  resolve(true);
-                } else {
-                  spinner.fail();
-                  lines.forEach((line) => console.log(line.toString().trim()));
-
-                  reject(`"${command}" returned exit code ${code}`);
-                }
+                });
               });
-            });
+            }
+          }
+
+          if (!dryrun) {
+            script._afterExecute();
           }
 
           if (dryrun && !verbose) {

@@ -1,5 +1,5 @@
 {
-  "name": "pdkit",
+  "name": "workspace",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -28,6 +28,7 @@
   "workspaces": [
     "packages/@pdkit/core",
     "packages/@pdkit/cli",
-    "packages/@pdkit/nodejs"
+    "packages/@pdkit/nodejs",
+    "packages/@pdkit/typescript"
   ]
 }

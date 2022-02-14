@@ -1,5 +1,5 @@
-import { ValidLicense, Manifest, XConstruct } from "../../../core/src";
-import { NodeProject } from "./NodeProject";
+import { ValidLicense, Manifest, XConstruct, PostInstallScript } from "../../../core/src";
+import { NpmProject } from "../npm/NpmProject";
 
 export interface NodePackageJsonProps {
   readonly name?: string;
@@ -21,7 +21,7 @@ export interface NodePackageJsonProps {
   readonly man?: string[];
 }
 
-export class NodePackageJson extends Manifest {
+export class PackageJson extends Manifest {
   constructor(scope: XConstruct, id: string, props?: NodePackageJsonProps) {
     super(scope, id, "package.json");
 
@@ -42,12 +42,13 @@ export class NodePackageJson extends Manifest {
         man: props.man,
       });
     }
+    new PostInstallScript(this, "RepairPackage");
   }
 
   _synth() {
     super._synth();
 
-    const existingPackageFile = NodeProject.of(this).tryReadFile("package.json");
+    const existingPackageFile = NpmProject.of(this).tryReadFile("package.json");
     let packageJson: { [key: string]: any } = {};
 
     if (existingPackageFile) {

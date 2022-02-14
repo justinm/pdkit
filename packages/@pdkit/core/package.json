@@ -13,10 +13,5 @@
     "mustache": "^4.2.0",
     "sync-request": "^6.1.0",
     "winston": "^3.5.1"
-  },
-  "author": {
-    "name": "Justin McCormick",
-    "email": "me@justinmccormick.com",
-    "organization": true
   }
 }

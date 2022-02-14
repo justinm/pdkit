@@ -42,7 +42,7 @@ export class VirtualFS extends XConstruct {
       throw new ConstructError(file, `${filePath} is already owned by ${creator?.node.path ?? "N/A"}`);
     }
 
-    this.ensureDirectory(filePath);
+    this.ensureDirectory(filePath, this.fs);
 
     this.fs.writeFileSync(filePath, file.content);
 
@@ -98,6 +98,8 @@ export class VirtualFS extends XConstruct {
     const rootPath = Workspace.of(this).rootPath;
     const realPath = path.join(rootPath, filePath);
 
+    this.ensureDirectory(realPath, fs);
+
     fs.writeFileSync(realPath, this.fs.readFileSync(path.join("/", filePath)), {
       mode: 0o600,
     });
@@ -105,10 +107,11 @@ export class VirtualFS extends XConstruct {
     fs.chmodSync(realPath, 0o600);
   }
 
-  protected ensureDirectory(filePath: string) {
+  protected ensureDirectory(filePath: string, fst: Volume | typeof fs) {
     const dirname = path.dirname(filePath);
-    if (!this.fs.existsSync(dirname)) {
-      this.fs.mkdirpSync(dirname);
+
+    if (!fst.existsSync(dirname)) {
+      fst.mkdirSync(dirname, { recursive: true });
     }
   }
 

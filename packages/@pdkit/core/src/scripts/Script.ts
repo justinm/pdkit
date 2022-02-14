@@ -1,15 +1,21 @@
 import { XConstruct } from "../base/XConstruct";
-import { Workspace } from "../Workspace";
+import { Project } from "../Project";
 
 export abstract class Script extends XConstruct {
-  readonly commands: string[];
+  readonly commands?: string[];
 
-  constructor(scope: XConstruct, id: string, commands: string[]) {
+  constructor(scope: XConstruct, id: string, commands?: string[]) {
     super(scope, id);
 
-    Workspace.of(scope)._bind(this);
     this.commands = commands;
   }
+
+  _onBeforeSynth() {
+    Project.of(this)._bind(this);
+  }
+
+  _beforeExecute(): void {}
+  _afterExecute(): void {}
 
   static is(construct: any) {
     return construct instanceof this;

@@ -1,8 +1,7 @@
-import { NodePackageJson, NodePackageJsonProps } from "./NodePackageJson";
-import { License, Project, ProjectProps, ValidLicense, XConstruct } from "../../../core/src";
-import { YarnSupport } from "./YarnSupport";
-import { Author, AuthorProps } from "./Author";
-import { PackageDependency, PackageDependencyType } from "./PackageDependency";
+import { PackageJson, NodePackageJsonProps } from "../constructs/PackageJson";
+import { InstallScript, License, Project, ProjectProps, ValidLicense, XConstruct } from "../../../core/src";
+import { Author, AuthorProps } from "../constructs/Author";
+import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
 import { StandardValidator } from "../../../core/src/validation/StandardValidator";
 import { VirtualFS } from "../../../core/src/constructs/VirtualFS";
 import { TaskManager } from "../../../core/src/constructs/TaskManager";
@@ -17,7 +16,7 @@ export enum PackageManagerType {
 
 export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly packageName?: string;
-  readonly packageManagerType?: PackageManagerType;
+  readonly installCommand?: string;
   readonly dependencies?: Dependencies;
   readonly devDependencies?: Dependencies;
   readonly peerDependencies?: Dependencies;
@@ -25,21 +24,16 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly license?: ValidLicense;
 }
 
-export class NodeProject extends Project {
-  readonly packageJson: NodePackageJson;
+export class NpmProject extends Project {
+  readonly packageJson: PackageJson;
 
   constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
 
+    new InstallScript(this, "InstallCommand", [props?.installCommand ?? "npm install"]);
     new VirtualFS(this, "VirtualFS");
     new StandardValidator(this, "StandardValidator");
     new TaskManager(this, "TaskManager");
-
-    switch (props?.packageManagerType) {
-      case PackageManagerType.YARN:
-        new YarnSupport(this, "Yarn");
-        break;
-    }
 
     if (props?.license) {
       new License(this, "License", props.license);
@@ -49,7 +43,7 @@ export class NodeProject extends Project {
       new Author(this, "Author", props.author);
     }
 
-    this.packageJson = new NodePackageJson(this, "PackageJson", {
+    this.packageJson = new PackageJson(this, "PackageJson", {
       name: props?.packageName ?? id,
       ...props,
     });

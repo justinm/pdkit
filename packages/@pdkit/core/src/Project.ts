@@ -3,6 +3,7 @@ import { ConstructError } from "./util/ConstructError";
 import { IXConstruct, XConstruct } from "./base/XConstruct";
 import { Workspace } from "./Workspace";
 import fs from "fs";
+import { Script } from "./scripts/Script";
 
 export interface IProject extends IXConstruct {
   readonly sourcePath: string;
@@ -14,7 +15,7 @@ export interface ProjectProps {
   readonly sourcePath?: string;
 }
 
-export abstract class Project extends XConstruct implements IProject {
+export abstract class Project extends Script implements IProject {
   private readonly _projectPath?: string;
   private readonly _sourcePath: string;
 
@@ -79,12 +80,16 @@ export abstract class Project extends XConstruct implements IProject {
       return construct;
     }
 
-    const project = (construct as XConstruct).node.scopes
+    let project = (construct as XConstruct).node.scopes
       .reverse()
-      .find((scope) => scope !== construct && (scope instanceof Project || scope instanceof Workspace));
+      .find((scope) => scope !== construct && scope instanceof Project);
 
     if (!project) {
-      throw new ConstructError(construct, `Construct must be a child of a project or workspace`);
+      project = Workspace.of(construct).node.defaultChild;
+
+      if (!project) {
+        throw new ConstructError(construct, `Construct must be a child of a project or workspace`);
+      }
     }
 
     return project as Project;

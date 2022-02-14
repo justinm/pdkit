@@ -76,6 +76,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@pdkit/typescript@workspace:packages/@pdkit/typescript":
+  version: 0.0.0-use.local
+  resolution: "@pdkit/typescript@workspace:packages/@pdkit/typescript"
+  dependencies:
+    "@pdkit/core": ^0.0.0
+    constructs: ^10.0.47
+    prettier: ^2.5.1
+  languageName: unknown
+  linkType: soft
+
 "@tsconfig/node10@npm:^1.0.7":
   version: 1.0.8
   resolution: "@tsconfig/node10@npm:1.0.8"
@@ -1057,20 +1067,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pdkit@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "pdkit@workspace:."
-  dependencies:
-    "@pdkit/nodejs": ^0.0.0
-    "@types/mustache": "*"
-    "@types/node": "*"
-    mustache: "*"
-    prettier: "*"
-    ts-node: "*"
-    typescript: "*"
-  languageName: unknown
-  linkType: soft
-
 "prettier@npm:*, prettier@npm:^2.5.1":
   version: 2.5.1
   resolution: "prettier@npm:2.5.1"
@@ -1496,6 +1492,20 @@ __metadata:
   checksum: 12253f1644c46f90b36b8e675f397b29f862778c6a76cce11ad901c35d7a9b556fe371bfd0c22e180f6aa2e23d7a726a6f4ec1eec637dac3fe76390a0cd5ed09
   languageName: node
   linkType: hard
+
+"workspace@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "workspace@workspace:."
+  dependencies:
+    "@pdkit/nodejs": ^0.0.0
+    "@types/mustache": "*"
+    "@types/node": "*"
+    mustache: "*"
+    prettier: "*"
+    ts-node: "*"
+    typescript: "*"
+  languageName: unknown
+  linkType: soft
 
 "wrap-ansi@npm:^7.0.0":
   version: 7.0.0

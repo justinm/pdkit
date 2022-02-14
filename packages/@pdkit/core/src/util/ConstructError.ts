@@ -4,7 +4,7 @@ export class ConstructError extends Error {
   readonly simpleMessage: string;
 
   constructor(construct: IConstruct, message: string) {
-    super(`${construct.constructor.name}(${construct.node.path}): ${message}`);
+    super(`${construct}: ${message}`);
 
     this.simpleMessage = message;
   }

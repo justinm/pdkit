@@ -41,7 +41,7 @@ export class Workspace extends XConstruct implements IWorkspace {
 
   public static of(construct: any) {
     if (!(construct instanceof Construct)) {
-      throw new Error(`${construct} is not a construct`);
+      throw new Error(`${construct.constructor.name} is not a construct`);
     }
 
     const workspace = (construct as Construct).node.scopes[0];

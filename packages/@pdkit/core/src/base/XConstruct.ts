@@ -34,21 +34,26 @@ export abstract class XConstruct extends Construct implements IXConstruct {
   }
 
   public _bind(construct: IXConstruct) {
-    logger.debug(`${construct.constructor.name}(${construct.node.path}) bound itself to ${this.node.path}`);
+    logger.debug(`${construct} bound itself to ${this}`);
     if (this._binds.indexOf(construct) !== -1) {
-      throw new ConstructError(construct, `Construct was already bound to ${this.node.path}`);
+      throw new ConstructError(construct, `Construct was already bound to ${this.toString()}`);
     }
 
     this._binds.push(construct);
   }
 
+  public _onBeforeSynth(): void {}
+
   public _beforeSynth(): void {
     const constructs = this.node.children.filter((c) => XConstruct.is(c)).map((c) => c as XConstruct);
 
     for (const construct of constructs) {
+      construct._onBeforeSynth();
       construct._beforeSynth();
     }
   }
+
+  public _onSynth(): void {}
 
   public _synth(): void {
     const constructs = this.node.children.filter((c) => XConstruct.is(c)).map((c) => c as XConstruct);
@@ -60,7 +65,12 @@ export abstract class XConstruct extends Construct implements IXConstruct {
         throw new ConstructError(construct, "Construct did not validate: " + errors[0]);
       }
 
+      construct._onSynth();
       construct._synth();
     }
+  }
+
+  toString(): string {
+    return `${this.constructor.name}(${this.node.path})`;
   }
 }
