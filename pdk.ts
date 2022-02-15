@@ -1,5 +1,5 @@
 import { YarnTypescriptProject } from "@pdkit/typescript/src";
-import { YarnTypescriptWorkspace } from "@pdkit/typescript/src/yarn/YarnTypescriptWorkspace";
+import { YarnTypescriptWorkspace } from "@pdkit/typescript/src";
 
 const workspace = new YarnTypescriptWorkspace("pdkit", {
   author: {
@@ -10,6 +10,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   // license: "Apache-2.0",
   dependencies: ["mustache"],
   devDependencies: [
+    { name: "@pdkit/core", version: "^0.0.0" },
     { name: "@pdkit/nodejs", version: "^0.0.0" },
     { name: "@pdkit/typescript", version: "^0.0.0" },
     "@types/mustache",
@@ -33,7 +34,7 @@ new YarnTypescriptProject(workspace, "core", {
     winston: "^3.5.1",
     "dependency-graph": "^0.11.0",
   },
-  devDependencies: ["@types/mustache"],
+  devDependencies: ["@types/mustache", "@types/winston"],
 });
 
 new YarnTypescriptProject(workspace, "cli", {

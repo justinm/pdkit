@@ -1,8 +1,8 @@
 import { XConstruct } from "../base/XConstruct";
 import { Project } from "../Project";
-import { Script } from "../scripts/Script";
+import { ShellScript } from "../scripts/ShellScript";
 
-export abstract class PackageManager extends Script {
+export abstract class PackageManager extends ShellScript {
   constructor(scope: XConstruct, id: string) {
     super(scope, id);
 

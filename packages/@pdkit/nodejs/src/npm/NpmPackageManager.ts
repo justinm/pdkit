@@ -1,6 +1,4 @@
-import { XConstruct } from "../../../core/src";
-import { PackageManager } from "../../../core/src/constructs/PackageManager";
-import { InstallScript } from "../../../core/src/scripts/InstallScript";
+import { InstallShellScript, PackageManager, XConstruct } from "@pdkit/core/src";
 
 export interface NodePackageManagerProps {
   readonly installCommand: string;
@@ -11,6 +9,6 @@ export class NpmPackageManager extends PackageManager {
   constructor(scope: XConstruct, id: string, props: NodePackageManagerProps) {
     super(scope, id);
 
-    new InstallScript(this, "InstallCommand", [props.installCommand]);
+    new InstallShellScript(this, "InstallCommand", [props.installCommand]);
   }
 }

@@ -3,7 +3,7 @@ import { ConstructError } from "./util/ConstructError";
 import { IXConstruct, XConstruct } from "./base/XConstruct";
 import { Workspace } from "./Workspace";
 import fs from "fs";
-import { Script } from "./scripts/Script";
+import { ShellScript } from "./scripts/ShellScript";
 
 export interface IProject extends IXConstruct {
   readonly projectRelativeSourcePath: string;
@@ -17,7 +17,7 @@ export interface ProjectProps {
   readonly distPath?: string;
 }
 
-export abstract class Project extends Script implements IProject {
+export abstract class Project extends ShellScript implements IProject {
   private readonly _projectPath?: string;
   private readonly _sourcePath: string;
   private readonly _distPath: string;

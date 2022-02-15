@@ -7,7 +7,9 @@ import ora from "ora";
 import logger from "../../../core/src/util/logger";
 import { ConstructError, Project, Workspace, XConstruct } from "@pdkit/core/src";
 import { spawn } from "child_process";
-import { InstallScript, PostInstallScript, Script } from "@pdkit/core/src";
+import { InstallShellScript, PostInstallShellScript, ShellScript } from "@pdkit/core/src";
+import { Script } from "@pdkit/core/src/scripts/Script";
+import { PostInstallScript } from "@pdkit/core/src/scripts/PostInstallScript";
 
 export const command = "synth";
 export const desc = "Synthesizes the projects configuration";
@@ -153,64 +155,62 @@ export const handler = async function (argv: AppArguments) {
     }
   });
 
-  const runScripts = async (name: string, type: typeof Script) => {
-    return withSpinner(spinner, verbose, `Running ${name} scripts`, async () => {
+  const runShellScripts = async (name: string, type: typeof ShellScript) => {
+    return withSpinner(spinner, verbose, `Running ${name} shell scripts`, async () => {
       if (workspace) {
         const scripts = workspace.binds
           .filter((b) => b instanceof Project)
           .map((p) => p.binds.filter((b) => b instanceof type))
-          .flat() as Script[];
+          .flat() as ShellScript[];
         const rootPath = workspace.rootPath;
 
         if (!scripts.length) {
-          throw "No install scripts were found";
+          throw `No ${name} scripts were found`;
         }
 
         for (const script of scripts) {
-          if (!dryrun) {
-            script._beforeExecute();
-          }
+          const command = script.command;
 
-          if (script.commands) {
-            for (const command of script.commands) {
-              const pcwd = path.join(rootPath, Project.of(script).projectPath);
-              if (dryrun) {
-                spinner.info(`  Would run install script: ${command} in ${pcwd}`);
-                continue;
-              }
-
-              if (verbose) {
-                spinner.start(`  Running install script: ${command}`);
-              }
-
-              const proc = spawn(command, {
-                cwd: pcwd,
-                env: process.env,
-              });
-
-              await new Promise((resolve, reject) => {
-                const lines: Buffer[] = [];
-                proc.stdout.on("data", (data) => {
-                  lines.push(data);
-                });
-                proc.on("close", (code) => {
-                  if (!code) {
-                    if (verbose) {
-                      spinner.succeed();
-                    }
-                    resolve(true);
-                  } else {
-                    spinner.fail();
-                    lines.forEach((line) => console.log(line.toString().trim()));
-
-                    reject(`"${command}" returned exit code ${code}`);
-                  }
-                });
-              });
+          if (command) {
+            const pcwd = path.join(rootPath, Project.of(script).projectPath);
+            if (dryrun) {
+              spinner.info(`  Would run ${name} script: ${command} in ${pcwd}`);
+              continue;
             }
-          }
 
-          if (!dryrun) {
+            if (verbose) {
+              spinner.start(`  Running ${name} script: ${command}`);
+            }
+
+            script._beforeExecute();
+
+            const proc = spawn(command[0], command.slice(1), {
+              cwd: pcwd,
+              env: process.env,
+            });
+
+            await new Promise((resolve, reject) => {
+              const lines: Buffer[] = [];
+              proc.stdout.on("data", (data) => {
+                lines.push(data);
+              });
+              proc.on("close", (code) => {
+                if (!code) {
+                  if (verbose) {
+                    spinner.succeed();
+                  }
+                  resolve(true);
+                } else {
+                  if (verbose) {
+                    spinner.fail();
+                  }
+                  lines.forEach((line) => console.log(line.toString().trim()));
+
+                  reject(`"${command}" returned exit code ${code}`);
+                }
+              });
+            });
+
             script._afterExecute();
           }
 
@@ -221,11 +221,49 @@ export const handler = async function (argv: AppArguments) {
       }
     });
   };
+  const runScripts = async (name: string, type: typeof Script) => {
+    return withSpinner(spinner, verbose, `Running ${name} scripts`, async () => {
+      if (workspace) {
+        const scripts = workspace.binds
+          .filter((b) => b instanceof Project)
+          .map((p) => p.binds.filter((b) => b instanceof type))
+          .flat() as Script[];
 
-  await runScripts("install", InstallScript);
+        if (!scripts.length) {
+          throw `No ${name} scripts were found`;
+        }
+
+        for (const script of scripts) {
+          if (dryrun) {
+            spinner.info(`  Would run ${name} script: ${script}`);
+            continue;
+          }
+
+          if (verbose) {
+            spinner.start(`  Running ${name} script: ${script}`);
+          }
+
+          script.runnable();
+
+          if (verbose) {
+            spinner.succeed();
+          }
+        }
+
+        if (dryrun && !verbose) {
+          throw "No tasks were executed";
+        }
+      }
+    });
+  };
+
+  await runShellScripts("install", InstallShellScript);
+  await runShellScripts("post-install", PostInstallShellScript);
   await runScripts("post-install", PostInstallScript);
 
   if (!verbose && dryrun) {
     spinner.info("For more information, try the --verbose flag and/or LOG_LEVEL=debug");
   }
+
+  spinner.succeed("Done");
 };

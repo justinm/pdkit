@@ -1,11 +1,10 @@
 import { PackageJson, NodePackageJsonProps } from "../constructs/PackageJson";
-import { InstallScript, License, Project, ProjectProps, ValidLicense, XConstruct } from "@pdkit/core/src";
+import { InstallShellScript, License, Project, ProjectProps, ValidLicense, XConstruct } from "@pdkit/core/src";
 import { Author, AuthorProps } from "../constructs/Author";
 import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
 import { StandardValidator } from "@pdkit/core/src/validation/StandardValidator";
 import { VirtualFS } from "@pdkit/core/src/constructs/VirtualFS";
 import { TaskManager } from "@pdkit/core/src";
-import { UpdatePackageVersionsPostInstallScript } from "../scripts/UpdatePackageVersionsPostInstallScript";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
 
@@ -31,8 +30,7 @@ export class NpmProject extends Project {
   constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
 
-    new InstallScript(this, "InstallCommand", [props?.installCommand ?? "npm install"]);
-    new UpdatePackageVersionsPostInstallScript(this, "UpdatePackageVersions");
+    new InstallShellScript(this, "InstallCommand", [props?.installCommand ?? "npm install"]);
     new VirtualFS(this, "VirtualFS");
     new StandardValidator(this, "StandardValidator");
     new TaskManager(this, "TaskManager");
