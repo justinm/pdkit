@@ -1,10 +1,9 @@
 import { Construct } from "constructs";
-import deepmerge from "deepmerge";
 import { ConstructError } from "../util/ConstructError";
 import { ManifestEntry } from "./ManifestEntry";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
-import { File } from "./File";
 import { Project } from "../Project";
+import { JsonFile } from "./JsonFile";
 
 export interface IManifest extends IXConstruct {
   /**
@@ -16,15 +15,9 @@ export interface IManifest extends IXConstruct {
 /**
  * Manifest represents a JSON manifest for a given project. Only one manifest may be present per project.
  */
-export class Manifest extends File implements IManifest {
-  protected fields: Record<string, unknown>;
-
+export class Manifest extends JsonFile implements IManifest {
   constructor(scope: XConstruct, id: string, path: string) {
     super(scope, id, path);
-
-    this.fields = {};
-
-    Project.of(this)._bind(this);
 
     this.node.addValidation({
       validate: (): string[] => {
@@ -35,22 +28,9 @@ export class Manifest extends File implements IManifest {
           errors.push("Only one manifest is allowed when using manifest entries");
         }
 
-        if (!this.fields) {
-          errors.push("The manifest does not contain any data to write");
-        }
-
         return errors;
       },
     });
-  }
-
-  /**
-   * Deep merge new fields into the constructing manifest. Existing fields may be overwritten by this call.
-   *
-   * @param fields
-   */
-  public addFields(fields: Record<string, unknown> | {}) {
-    this.fields = deepmerge(this.fields, fields);
   }
 
   /**

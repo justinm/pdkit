@@ -4,10 +4,13 @@
   "bin": {
     "pdkit": "dist/pdkit.js"
   },
+  "scripts": {
+    "compile": "tsc -p ./tsconfig.json"
+  },
   "files": [
     "dist/*.js",
-    "dist/*.d.ts",
     "dist/**/*.js",
+    "dist/*.d.ts",
     "dist/**/*.d.ts"
   ],
   "dependencies": {
@@ -23,6 +26,8 @@
     "@types/glob": "^7.2.0",
     "@types/ora": "^3.2.0",
     "@types/prompts": "^2.0.14",
-    "@types/yargs": "^17.0.8"
+    "@types/yargs": "^17.0.8",
+    "ts-node": "*",
+    "typescript": "*"
   }
 }

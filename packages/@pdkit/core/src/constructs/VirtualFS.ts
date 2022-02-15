@@ -45,8 +45,6 @@ export class VirtualFS extends XConstruct {
     this.ensureDirectory(filePath, this.fs);
 
     this.fs.writeFileSync(filePath, file.content);
-
-    logger.debug(file.content);
   }
 
   creatorOf(filePath: string): IFile | undefined {

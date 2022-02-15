@@ -1,4 +1,4 @@
-import { Manifest, PostInstallScript, Project, Workspace, XConstruct } from "../../../core/src";
+import { Manifest, PostInstallScript, Project, Workspace, XConstruct } from "@pdkit/core/src";
 import path from "path";
 import fs from "fs";
 import { spawnSync } from "child_process";
@@ -28,7 +28,12 @@ export class UpdatePackageVersionsPostInstallScript extends PostInstallScript {
     ["dependencies", "devDependencies", "peerDendencies", "bundledDependencies"].forEach((key) => {
       if (packageJson[key]) {
         for (const dep of Object.keys(packageJson[key])) {
-          if (packageJson[key][dep] === "*" && versionJson[key][dep]["version"]) {
+          if (
+            packageJson[key][dep] === "*" &&
+            versionJson[key] &&
+            versionJson[key][dep] &&
+            versionJson[key][dep]["version"]
+          ) {
             packageJson[key][dep] = `^${versionJson[key][dep]["version"]}`;
           }
         }

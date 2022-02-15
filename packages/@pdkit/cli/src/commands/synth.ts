@@ -1,15 +1,13 @@
 import yargs from "yargs";
 import { AppArguments } from "../pdkit";
 import path from "path";
-import { VirtualFS } from "../../../core/src/constructs/VirtualFS";
+import { VirtualFS } from "@pdkit/core/src/constructs/VirtualFS";
 import prompts from "prompts";
 import ora from "ora";
 import logger from "../../../core/src/util/logger";
-import { ConstructError, Project, Workspace, XConstruct } from "../../../core/src";
+import { ConstructError, Project, Workspace, XConstruct } from "@pdkit/core/src";
 import { spawn } from "child_process";
-import { Script } from "../../../core/src/scripts/Script";
-import { InstallScript } from "../../../core/src/scripts/InstallScript";
-import { PostInstallScript } from "../../../core/src/scripts/PostInstallScript";
+import { InstallScript, PostInstallScript, Script } from "@pdkit/core/src";
 
 export const command = "synth";
 export const desc = "Synthesizes the projects configuration";
@@ -54,6 +52,7 @@ async function withSpinner<T>(spinner: ora.Ora, verbose: number, message: string
 
     if (err instanceof Error) {
       spinner.fail(`${message}: ${(err as Error).message}`);
+      logger.debug(err.stack);
       process.exit(1);
     } else {
       spinner.warn(`${message}: ${err as string}`);

@@ -1,17 +1,25 @@
 {
   "name": "@pdkit/core",
   "version": "0.0.0",
+  "scripts": {
+    "compile": "tsc -p ./tsconfig.json"
+  },
   "files": [
     "dist/*.js",
-    "dist/*.d.ts",
     "dist/**/*.js",
+    "dist/*.d.ts",
     "dist/**/*.d.ts"
   ],
   "dependencies": {
+    "@types/mustache": "*",
     "dependency-graph": "^0.11.0",
     "memfs": "^3.4.1",
     "mustache": "^4.2.0",
     "sync-request": "^6.1.0",
     "winston": "^3.5.1"
+  },
+  "devDependencies": {
+    "ts-node": "*",
+    "typescript": "*"
   }
 }

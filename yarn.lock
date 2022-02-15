@@ -46,6 +46,8 @@ __metadata:
     ora: ^5.4.1
     prompt: ^1.2.1
     prompts: ^2.4.2
+    ts-node: "*"
+    typescript: "*"
     yargs: ^17.3.1
   bin:
     pdkit: dist/pdkit.js
@@ -56,15 +58,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
+    "@types/mustache": "*"
     dependency-graph: ^0.11.0
     memfs: ^3.4.1
     mustache: ^4.2.0
     sync-request: ^6.1.0
+    ts-node: "*"
+    typescript: "*"
     winston: ^3.5.1
   languageName: unknown
   linkType: soft
 
-"@pdkit/nodejs@^0.0.0, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
+"@pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
   resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
@@ -73,10 +78,12 @@ __metadata:
     deepmerge: ^4.2.2
     dependency-graph: ^0.11.0
     prettier: ^2.5.1
+    ts-node: "*"
+    typescript: "*"
   languageName: unknown
   linkType: soft
 
-"@pdkit/typescript@^0.0.0, @pdkit/typescript@workspace:packages/@pdkit/typescript":
+"@pdkit/typescript@workspace:packages/@pdkit/typescript":
   version: 0.0.0-use.local
   resolution: "@pdkit/typescript@workspace:packages/@pdkit/typescript"
   dependencies:
@@ -85,6 +92,7 @@ __metadata:
     deepmerge: ^4.2.2
     dependency-graph: ^0.11.0
     prettier: "*"
+    ts-node: "*"
     typescript: "*"
   languageName: unknown
   linkType: soft
@@ -972,7 +980,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mustache@npm:*, mustache@npm:^4.2.0":
+"mustache@npm:^4.2.0":
   version: 4.2.0
   resolution: "mustache@npm:4.2.0"
   bin:
@@ -1508,12 +1516,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "workspace@workspace:."
   dependencies:
-    "@pdkit/nodejs": ^0.0.0
-    "@pdkit/typescript": ^0.0.0
-    "@types/mustache": "*"
-    "@types/node": "*"
-    mustache: "*"
-    prettier: "*"
     ts-node: "*"
     typescript: "*"
   languageName: unknown

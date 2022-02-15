@@ -1,7 +1,7 @@
-import { YarnProject, YarnWorkspace } from "./packages/@pdkit/nodejs/src";
-import { TypescriptSupport } from "./packages/@pdkit/typescript/src/TypescriptSupport";
+import { YarnTypescriptProject } from "@pdkit/typescript/src";
+import { YarnTypescriptWorkspace } from "@pdkit/typescript/src/yarn/YarnTypescriptWorkspace";
 
-const workspace = new YarnWorkspace("pdkit", {
+const workspace = new YarnTypescriptWorkspace("pdkit", {
   author: {
     name: "Justin McCormick",
     email: "me@justinmccormick.com",
@@ -21,10 +21,9 @@ const workspace = new YarnWorkspace("pdkit", {
   scripts: {
     pdkit: "ts-node packages/@pdkit/cli/src/pdkit.ts",
   },
-  files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
 });
 
-new YarnProject(workspace, "core", {
+new YarnTypescriptProject(workspace, "core", {
   packageName: "@pdkit/core",
   projectPath: "packages/@pdkit/core",
   dependencies: {
@@ -34,10 +33,10 @@ new YarnProject(workspace, "core", {
     winston: "^3.5.1",
     "dependency-graph": "^0.11.0",
   },
-  files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
+  devDependencies: ["@types/mustache"],
 });
 
-new YarnProject(workspace, "cli", {
+new YarnTypescriptProject(workspace, "cli", {
   packageName: "@pdkit/cli",
   projectPath: "packages/@pdkit/cli",
   dependencies: {
@@ -55,13 +54,12 @@ new YarnProject(workspace, "cli", {
     "@types/prompts": "^2.0.14",
     "@types/yargs": "^17.0.8",
   },
-  files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
   bin: {
     pdkit: "dist/pdkit.js",
   },
 });
 
-new YarnProject(workspace, "nodejs", {
+new YarnTypescriptProject(workspace, "nodejs", {
   packageName: "@pdkit/nodejs",
   projectPath: "packages/@pdkit/nodejs",
   dependencies: {
@@ -73,11 +71,9 @@ new YarnProject(workspace, "nodejs", {
   devDependencies: {
     prettier: "^2.5.1",
   },
-
-  files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
 });
 
-const tsp = new YarnProject(workspace, "typescript", {
+new YarnTypescriptProject(workspace, "typescript", {
   packageName: "@pdkit/typescript",
   projectPath: "packages/@pdkit/typescript",
   dependencies: {
@@ -87,10 +83,6 @@ const tsp = new YarnProject(workspace, "typescript", {
     "@pdkit/core": "^0.0.0",
   },
   devDependencies: ["prettier", "typescript"],
-
-  files: ["dist/*.js", "dist/*.d.ts", "dist/**/*.js", "dist/**/*.d.ts"],
 });
-
-new TypescriptSupport(tsp, {});
 
 export default workspace;

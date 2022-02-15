@@ -1,5 +1,5 @@
-import { ManifestEntry } from "../../../core/src/constructs/ManifestEntry";
-import { Project } from "../../../core/src";
+import { ManifestEntry } from "@pdkit/core/src";
+import { XConstruct } from "@pdkit/core/src";
 
 export interface PackageDependencyProps {
   readonly type?: PackageDependencyType;
@@ -9,10 +9,11 @@ export interface PackageDependencyProps {
 export enum PackageDependencyType {
   DEV,
   PEER,
+  BUNDLED,
 }
 
 export class PackageDependency extends ManifestEntry {
-  constructor(scope: Project, id: string, props?: PackageDependencyProps) {
+  constructor(scope: XConstruct, id: string, props?: PackageDependencyProps) {
     super(scope, `${id}Dependency`);
 
     let keyName: string;
@@ -22,6 +23,9 @@ export class PackageDependency extends ManifestEntry {
         break;
       case PackageDependencyType.DEV:
         keyName = "devDependencies";
+        break;
+      case PackageDependencyType.BUNDLED:
+        keyName = "bundledDependencies";
         break;
       default:
         keyName = "dependencies";

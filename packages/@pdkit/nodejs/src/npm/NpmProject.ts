@@ -1,10 +1,10 @@
 import { PackageJson, NodePackageJsonProps } from "../constructs/PackageJson";
-import { InstallScript, License, Project, ProjectProps, ValidLicense, XConstruct } from "../../../core/src";
+import { InstallScript, License, Project, ProjectProps, ValidLicense, XConstruct } from "@pdkit/core/src";
 import { Author, AuthorProps } from "../constructs/Author";
 import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
-import { StandardValidator } from "../../../core/src/validation/StandardValidator";
-import { VirtualFS } from "../../../core/src/constructs/VirtualFS";
-import { TaskManager } from "../../../core/src/constructs/TaskManager";
+import { StandardValidator } from "@pdkit/core/src/validation/StandardValidator";
+import { VirtualFS } from "@pdkit/core/src/constructs/VirtualFS";
+import { TaskManager } from "@pdkit/core/src";
 import { UpdatePackageVersionsPostInstallScript } from "../scripts/UpdatePackageVersionsPostInstallScript";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
@@ -47,6 +47,7 @@ export class NpmProject extends Project {
 
     this.packageJson = new PackageJson(this, "PackageJson", {
       name: props?.packageName ?? id,
+      files: [`${this.distPath}/*.js`, `${this.distPath}/**/*.js`],
       ...props,
     });
 

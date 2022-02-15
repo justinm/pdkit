@@ -6,24 +6,28 @@ import fs from "fs";
 import { Script } from "./scripts/Script";
 
 export interface IProject extends IXConstruct {
-  readonly sourcePath: string;
+  readonly projectRelativeSourcePath: string;
   readonly projectPath: string;
+  readonly distPath: string;
 }
 
 export interface ProjectProps {
   readonly projectPath?: string;
   readonly sourcePath?: string;
+  readonly distPath?: string;
 }
 
 export abstract class Project extends Script implements IProject {
   private readonly _projectPath?: string;
   private readonly _sourcePath: string;
+  private readonly _distPath: string;
 
   protected constructor(scope: XConstruct, id: string, props?: ProjectProps) {
     super(scope, id);
 
     this._projectPath = props?.projectPath;
     this._sourcePath = props?.sourcePath ?? "src";
+    this._distPath = props?.distPath ?? "dist";
 
     Workspace.of(this)._bind(this);
 
@@ -59,8 +63,16 @@ export abstract class Project extends Script implements IProject {
     return path.join(parent ? parent.projectPath : "/", this._projectPath ?? "");
   }
 
+  get projectRelativeSourcePath(): string {
+    return path.join(this.projectPath, this._sourcePath).substring(1);
+  }
+
   get sourcePath(): string {
-    return path.join(this.projectPath, this._sourcePath);
+    return this._sourcePath;
+  }
+
+  get distPath(): string {
+    return this._distPath;
   }
 
   get subprojects(): Project[] {

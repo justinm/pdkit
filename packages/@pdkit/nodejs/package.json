@@ -1,10 +1,13 @@
 {
   "name": "@pdkit/nodejs",
   "version": "0.0.0",
+  "scripts": {
+    "compile": "tsc -p ./tsconfig.json"
+  },
   "files": [
     "dist/*.js",
-    "dist/*.d.ts",
     "dist/**/*.js",
+    "dist/*.d.ts",
     "dist/**/*.d.ts"
   ],
   "dependencies": {
@@ -14,6 +17,8 @@
     "dependency-graph": "^0.11.0"
   },
   "devDependencies": {
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "ts-node": "*",
+    "typescript": "*"
   }
 }
