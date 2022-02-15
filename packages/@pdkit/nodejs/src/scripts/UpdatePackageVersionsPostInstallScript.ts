@@ -26,13 +26,14 @@ export class UpdatePackageVersionsPostInstallScript extends PostInstallScript {
       ["dependencies", "devDependencies", "peerDendencies", "bundledDependencies"].forEach((key) => {
         if (packageJson[key]) {
           for (const dep of Object.keys(packageJson[key])) {
-            if (
-              packageJson[key][dep] === "*" &&
-              versionJson[key] &&
-              versionJson[key][dep] &&
-              versionJson[key][dep]["version"]
-            ) {
-              packageJson[key][dep] = `^${versionJson[key][dep]["version"]}`;
+            if (packageJson[key][dep] === "*" && versionJson["dependencies"] && versionJson["dependencies"][dep]) {
+              if (versionJson["dependencies"][dep]["version"]) {
+                packageJson[key][dep] = `^${versionJson["dependencies"][dep]["version"]}`;
+              } else {
+                if (versionJson["dependencies"][dep].missing) {
+                  packageJson[key][dep] = `^${versionJson["dependencies"][dep]["required"]}`;
+                }
+              }
             }
           }
         }

@@ -27,13 +27,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
 new YarnTypescriptProject(workspace, "core", {
   packageName: "@pdkit/core",
   projectPath: "packages/@pdkit/core",
-  dependencies: {
-    memfs: "^3.4.1",
-    mustache: "^4.2.0",
-    "sync-request": "^6.1.0",
-    winston: "^3.5.1",
-    "dependency-graph": "^0.11.0",
-  },
+  dependencies: ["memfs", "mustache", "sync-request", "winston", "dependency-graph"],
   devDependencies: ["@types/mustache", "@types/winston"],
 });
 

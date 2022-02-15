@@ -67,13 +67,13 @@ __metadata:
   dependencies:
     "@types/mustache": "*"
     "@types/winston": "*"
-    dependency-graph: ^0.11.0
-    memfs: ^3.4.1
-    mustache: ^4.2.0
-    sync-request: ^6.1.0
+    dependency-graph: "*"
+    memfs: "*"
+    mustache: "*"
+    sync-request: "*"
     ts-node: "*"
     typescript: "*"
-    winston: ^3.5.1
+    winston: "*"
   languageName: unknown
   linkType: soft
 
@@ -630,7 +630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dependency-graph@npm:^0.11.0":
+"dependency-graph@npm:*, dependency-graph@npm:^0.11.0":
   version: 0.11.0
   resolution: "dependency-graph@npm:0.11.0"
   checksum: 477204beaa9be69e642bc31ffe7a8c383d0cf48fa27acbc91c5df01431ab913e65c154213d2ef83d034c98d77280743ec85e5da018a97a18dd43d3c0b78b28cd
@@ -949,7 +949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"memfs@npm:^3.4.1":
+"memfs@npm:*":
   version: 3.4.1
   resolution: "memfs@npm:3.4.1"
   dependencies:
@@ -997,7 +997,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mustache@npm:^4.2.0":
+"mustache@npm:*":
   version: 4.2.0
   resolution: "mustache@npm:4.2.0"
   bin:
@@ -1339,7 +1339,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sync-request@npm:^6.1.0":
+"sync-request@npm:*":
   version: 6.1.0
   resolution: "sync-request@npm:6.1.0"
   dependencies:
@@ -1490,7 +1490,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"winston@npm:*, winston@npm:^3.5.1":
+"winston@npm:*":
   version: 3.6.0
   resolution: "winston@npm:3.6.0"
   dependencies:

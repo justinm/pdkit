@@ -15,11 +15,11 @@
     "constructs": "^10.0.47",
     "deepmerge": "^4.2.2",
     "dependency-graph": "^0.11.0",
-    "prettier": "*",
-    "typescript": "*"
+    "prettier": "^*",
+    "typescript": "^*"
   },
   "devDependencies": {
     "ts-node": "*",
-    "typescript": "*"
+    "typescript": "^*"
   }
 }
