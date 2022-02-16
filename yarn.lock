@@ -138,6 +138,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
+    "@types/js-yaml": "*"
     "@types/mustache": "*"
     "@types/winston": "*"
     "@typescript-eslint/eslint-plugin": ^5
@@ -152,6 +153,7 @@ __metadata:
     eslint-import-resolver-typescript: "*"
     eslint-plugin-import: "*"
     eslint-plugin-prettier: "*"
+    js-yaml: "*"
     json-schema: "*"
     memfs: "*"
     mustache: "*"
@@ -238,6 +240,13 @@ __metadata:
     "@types/minimatch": "*"
     "@types/node": "*"
   checksum: 6ae717fedfdfdad25f3d5a568323926c64f52ef35897bcac8aca8e19bc50c0bd84630bbd063e5d52078b2137d8e7d3c26eabebd1a2f03ff350fff8a91e79fc19
+  languageName: node
+  linkType: hard
+
+"@types/js-yaml@npm:*":
+  version: 4.0.5
+  resolution: "@types/js-yaml@npm:4.0.5"
+  checksum: 7dcac8c50fec31643cc9d6444b5503239a861414cdfaa7ae9a38bc22597c4d850c4b8cec3d82d73b3fbca408348ce223b0408d598b32e094470dfffc6d486b4d
   languageName: node
   linkType: hard
 
@@ -1780,7 +1789,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.1.0":
+"js-yaml@npm:*, js-yaml@npm:^4.1.0":
   version: 4.1.0
   resolution: "js-yaml@npm:4.1.0"
   dependencies:

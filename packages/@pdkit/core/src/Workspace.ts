@@ -1,6 +1,6 @@
 import { Construct, IConstruct } from "constructs";
-import { ConstructError } from "./util/ConstructError";
 import { XConstruct } from "./base/XConstruct";
+import { ConstructError } from "./util/ConstructError";
 
 export interface IWorkspace extends IConstruct {
   readonly rootPath: string;
@@ -12,6 +12,20 @@ export interface WorkspaceProps {
 }
 
 export class Workspace extends XConstruct implements IWorkspace {
+  public static of(construct: any) {
+    if (!(construct instanceof Construct)) {
+      throw new Error(`${construct.constructor.name} is not a construct`);
+    }
+
+    const workspace = (construct as Construct).node.scopes[0];
+
+    if (!workspace || !(workspace instanceof Workspace)) {
+      throw new ConstructError(construct, `Not a child of a workspace`);
+    }
+
+    return workspace as unknown as Workspace;
+  }
+
   public readonly rootPath: string;
 
   constructor(id: string, props?: WorkspaceProps) {
@@ -38,19 +52,5 @@ export class Workspace extends XConstruct implements IWorkspace {
     this._onBeforeSynth();
     this._beforeSynth();
     this._synth();
-  }
-
-  public static of(construct: any) {
-    if (!(construct instanceof Construct)) {
-      throw new Error(`${construct.constructor.name} is not a construct`);
-    }
-
-    const workspace = (construct as Construct).node.scopes[0];
-
-    if (!workspace || !(workspace instanceof Workspace)) {
-      throw new ConstructError(construct, `Not a child of a workspace`);
-    }
-
-    return workspace as unknown as Workspace;
   }
 }

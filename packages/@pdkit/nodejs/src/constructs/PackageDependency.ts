@@ -1,5 +1,4 @@
-import { ManifestEntry } from "@pdkit/core/src";
-import { XConstruct } from "@pdkit/core/src";
+import { ManifestEntry, XConstruct } from "@pdkit/core/src";
 
 export interface PackageDependencyProps {
   readonly type?: PackageDependencyType;
@@ -31,8 +30,6 @@ export class PackageDependency extends ManifestEntry {
         keyName = "dependencies";
         break;
     }
-
-    console.log(`Dependency: ${keyName}->${id}->${props?.version ?? "*"}`);
 
     this.addFields({
       [keyName]: {

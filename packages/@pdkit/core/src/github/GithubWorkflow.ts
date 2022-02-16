@@ -1,4 +1,5 @@
 import * as Case from "case";
+import { snake } from "case";
 import { XConstruct } from "../base/XConstruct";
 import { YamlFile } from "../constructs/YamlFile";
 
@@ -31,7 +32,7 @@ export interface Job {
   /**
    * The name of the job displayed on GitHub.
    */
-  readonly name?: string;
+  readonly name: string;
 
   /**
    * Identifies any jobs that must complete successfully before this job will
@@ -1108,15 +1109,17 @@ export interface GithubWorkflowProps {
    * @experimental
    */
   readonly concurrency?: string;
+  readonly events?: Triggers;
+  readonly jobs: { [key: string]: Job };
 }
 
 export class GithubWorkflow extends YamlFile {
-  constructor(scope: XConstruct, id: string, job: Job) {
+  constructor(scope: XConstruct, id: string, props: GithubWorkflowProps) {
     super(scope, id, `.github/workflows/${id}.yml`);
 
     function arrayOrScalar<T>(arr: T[] | undefined): T | T[] | undefined {
       if (arr == null || arr.length === 0) {
-        return arr;
+        return undefined;
       }
       if (arr.length === 1) {
         return arr[0];
@@ -1130,6 +1133,25 @@ export class GithubWorkflow extends YamlFile {
       } else {
         return s;
       }
+    }
+
+    function snakeCaseKeys<T = unknown>(obj: T): T {
+      if (typeof obj !== "object" || obj == null) {
+        return obj;
+      }
+
+      if (Array.isArray(obj)) {
+        return obj.map(snakeCaseKeys) as any;
+      }
+
+      const result: Record<string, unknown> = {};
+      for (let [k, v] of Object.entries(obj)) {
+        if (typeof v === "object" && v != null) {
+          v = snakeCaseKeys(v);
+        }
+        result[snake(k)] = v;
+      }
+      return result as any;
     }
 
     function kebabCaseKeys<T = unknown>(obj: T, recursive = true): T {
@@ -1235,29 +1257,44 @@ export class GithubWorkflow extends YamlFile {
       return steps;
     }
 
-    const steps = job.steps;
+    function renderJob(job: Job) {
+      const steps = job.steps;
 
-    if (job.tools) {
-      steps.unshift(...setupTools(job.tools));
+      if (job.tools) {
+        steps.unshift(...setupTools(job.tools));
+      }
+
+      return {
+        name: job.name,
+        needs: job.needs,
+        "runs-on": arrayOrScalar(job.runsOn),
+        permissions: kebabCaseKeys(job.permissions),
+        environment: job.environment,
+        concurrency: job.concurrency,
+        outputs: renderJobOutputs(job.outputs),
+        env: job.env,
+        defaults: kebabCaseKeys(job.defaults),
+        if: job.if,
+        steps,
+        "timeout-minutes": job.timeoutMinutes,
+        strategy: renderJobStrategy(job.strategy),
+        "continue-on-error": job.continueOnError,
+        container: job.container,
+        services: job.services,
+      };
     }
 
     this.addFields({
       name: id,
-      needs: arrayOrScalar(job.needs),
-      "runs-on": arrayOrScalar(job.runsOn),
-      permissions: kebabCaseKeys(job.permissions),
-      environment: job.environment,
-      concurrency: job.concurrency,
-      outputs: renderJobOutputs(job.outputs),
-      env: job.env,
-      defaults: kebabCaseKeys(job.defaults),
-      if: job.if,
-      steps,
-      "timeout-minutes": job.timeoutMinutes,
-      strategy: renderJobStrategy(job.strategy),
-      "continue-on-error": job.continueOnError,
-      container: job.container,
-      services: job.services,
+      on: snakeCaseKeys(props.events),
+      concurrency: props.concurrency ?? "1",
+      jobs: Object.keys(props.jobs).reduce((coll, key) => {
+        const job = props.jobs[key];
+
+        coll[job.name.split(" ")[0].toLowerCase()] = renderJob(job);
+
+        return coll;
+      }, {} as Record<string, unknown>),
     });
   }
 }

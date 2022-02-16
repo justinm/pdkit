@@ -1,5 +1,6 @@
 import { Construct } from "constructs";
 import deepmerge from "deepmerge";
+import yaml from "js-yaml";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
 import { File } from "./File";
 
@@ -56,6 +57,6 @@ export class YamlFile extends File implements IYamlFile {
    * Returns the calculated content for the YamlFile.
    */
   get content() {
-    return JSON.stringify(this.fields, null, 2);
+    return yaml.dump(this.fields, { lineWidth: 120 });
   }
 }

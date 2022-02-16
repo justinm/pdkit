@@ -1,10 +1,10 @@
 import { Construct } from "constructs";
-import { ConstructError } from "../util/ConstructError";
-import { ManifestEntry } from "./ManifestEntry";
+import deepmerge from "deepmerge";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
 import { Project } from "../Project";
+import { ConstructError } from "../util/ConstructError";
 import { JsonFile } from "./JsonFile";
-import deepmerge from "deepmerge";
+import { ManifestEntry } from "./ManifestEntry";
 
 export interface IManifest extends IXConstruct {
   /**
@@ -17,6 +17,26 @@ export interface IManifest extends IXConstruct {
  * Manifest represents a JSON manifest for a given project. Only one manifest may be present per project.
  */
 export class Manifest extends JsonFile implements IManifest {
+  /**
+   * Check if a given construct is a Manifest.
+   *
+   * @param construct
+   */
+  public static is(construct: Construct) {
+    return construct instanceof this;
+  }
+
+  public static of(construct: Construct): Manifest {
+    const project = Project.of(construct);
+    const manifest = project.node.findAll().find((c) => c instanceof Manifest);
+
+    if (!manifest) {
+      throw new ConstructError(construct, `No manifest was found in project ${project.node.id}`);
+    }
+
+    return manifest as Manifest;
+  }
+
   constructor(scope: XConstruct, id: string, path: string) {
     super(scope, id, path);
 
@@ -61,28 +81,6 @@ export class Manifest extends JsonFile implements IManifest {
       fields = deepmerge(fields, entry.fields);
     }
 
-    console.log(fields);
-
     return JSON.stringify(fields, null, 2);
-  }
-
-  /**
-   * Check if a given construct is a Manifest.
-   *
-   * @param construct
-   */
-  public static is(construct: Construct) {
-    return construct instanceof this;
-  }
-
-  public static of(construct: Construct): Manifest {
-    const project = Project.of(construct);
-    const manifest = project.node.findAll().find((c) => c instanceof Manifest);
-
-    if (!manifest) {
-      throw new ConstructError(construct, `No manifest was found in project ${project.node.id}`);
-    }
-
-    return manifest as Manifest;
   }
 }

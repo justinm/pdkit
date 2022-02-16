@@ -1,19 +1,17 @@
+import { ManifestEntry, Project } from "@pdkit/core/src";
 import { NodeProjectProps } from "../npm/NpmProject";
-import { ManifestEntry } from "@pdkit/core/src";
-import { Project, Workspace, WorkspaceProps } from "@pdkit/core/src";
+import { NpmWorkspace, NpmWorkspaceProps } from "../npm/NpmWorkspace";
 import { YarnProject } from "./YarnProject";
 
 export interface IYarnMonoRepo {
   synth(): void;
 }
 
-export interface YarnWorkspaceProps
-  extends Omit<NodeProjectProps, "packageManagerType" | "packageName" | "projectPath">,
-    WorkspaceProps {}
+export interface YarnWorkspaceProps extends Omit<NodeProjectProps, "packageName" | "projectPath">, NpmWorkspaceProps {}
 
-export class YarnWorkspace extends Workspace implements IYarnMonoRepo {
+export class YarnWorkspace extends NpmWorkspace implements IYarnMonoRepo {
   constructor(id: string, props?: YarnWorkspaceProps) {
-    super(id);
+    super(id, props);
 
     new YarnProject(this, "Default", { ...props, packageName: "workspace", projectPath: "./" });
   }
