@@ -18,7 +18,7 @@ export class YarnWorkspace extends Workspace implements IYarnMonoRepo {
     new YarnProject(this, "Default", { ...props, packageName: "workspace", projectPath: "./" });
   }
 
-  _beforeSynth() {
+  _onBeforeSynth() {
     const defaultProject = Project.of(this);
     const projects = this.binds.filter((b) => Project.is(b) && b !== defaultProject);
     const projectPaths = projects.map((p) => (p as Project).projectPath.substring(1));
@@ -30,7 +30,5 @@ export class YarnWorkspace extends Workspace implements IYarnMonoRepo {
       workspaces: projectPaths,
       private: true,
     });
-
-    super._beforeSynth();
   }
 }

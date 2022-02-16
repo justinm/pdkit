@@ -2,7 +2,6 @@ import { Construct } from "constructs";
 import deepmerge from "deepmerge";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
 import { File } from "./File";
-import { Project } from "../Project";
 
 export interface IJsonFile extends IXConstruct {
   /**
@@ -21,8 +20,6 @@ export class JsonFile extends File implements IJsonFile {
     super(scope, id, path);
 
     this.fields = {};
-
-    Project.of(this)._bind(this);
 
     this.node.addValidation({
       validate: (): string[] => {

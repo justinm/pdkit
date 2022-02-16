@@ -22,7 +22,7 @@ export class VirtualFS extends XConstruct {
   }
 
   readFile(file: IFile) {
-    const filePath = file.realPath;
+    const filePath = file.projectRelativePath;
 
     if (!this.fs.existsSync(filePath)) {
       return this.fs.readFileSync(filePath);
@@ -32,7 +32,7 @@ export class VirtualFS extends XConstruct {
   }
 
   writeFile(file: IFile) {
-    const filePath = file.realPath;
+    const filePath = file.projectRelativePath;
 
     logger.debug(`${file.node.path} is attempting write to ${filePath}`);
 
@@ -114,7 +114,9 @@ export class VirtualFS extends XConstruct {
   }
 
   static of(construct: any): VirtualFS {
-    const vfs = Workspace.of(construct).binds.find((b) => b instanceof VirtualFS);
+    const vfs = Workspace.of(construct)
+      .node.findAll()
+      .find((b) => b instanceof VirtualFS);
 
     if (!vfs) {
       throw new ConstructError(construct, "No VirtualFS was found");

@@ -2,9 +2,9 @@ import { Manifest, Project, Workspace, XConstruct } from "@pdkit/core/src";
 import path from "path";
 import fs from "fs";
 import { spawnSync } from "child_process";
-import { PostInstallScript } from "@pdkit/core/src/scripts/PostInstallScript";
+import { PatchScript } from "@pdkit/core/src";
 
-export class UpdatePackageVersionsPostInstallScript extends PostInstallScript {
+export class UpdatePackageVersionsPostInstallScript extends PatchScript {
   constructor(scope: XConstruct, id: string) {
     super(scope, id, () => {
       const { rootPath } = Workspace.of(this);
@@ -14,7 +14,7 @@ export class UpdatePackageVersionsPostInstallScript extends PostInstallScript {
       const realProjectPath = path.join(rootPath, projectPath);
       const manifestPath = path.join(rootPath, projectPath, manifest.path);
       const packageData = fs.readFileSync(manifestPath).toString("utf8");
-      const versionData = spawnSync("npm", ["list", "-json"], {
+      const versionData = spawnSync("npm", ["list", "--json"], {
         cwd: realProjectPath,
         env: process.env,
         stdio: "pipe",
@@ -30,7 +30,7 @@ export class UpdatePackageVersionsPostInstallScript extends PostInstallScript {
               if (versionJson["dependencies"][dep]["version"]) {
                 packageJson[key][dep] = `^${versionJson["dependencies"][dep]["version"]}`;
               } else {
-                if (versionJson["dependencies"][dep].missing) {
+                if (versionJson["dependencies"][dep].missing && versionJson["dependencies"][dep]["required"] !== "*") {
                   packageJson[key][dep] = `^${versionJson["dependencies"][dep]["required"]}`;
                 }
               }

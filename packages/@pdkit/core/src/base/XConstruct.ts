@@ -6,6 +6,7 @@ export interface IXConstruct extends IConstruct {
   readonly binds: IXConstruct[];
 
   _beforeSynth(): void;
+  _onSynth(): void;
   _synth(): void;
   _bind(construct: IXConstruct): void;
 }

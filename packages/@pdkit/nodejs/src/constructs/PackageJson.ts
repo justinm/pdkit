@@ -1,4 +1,4 @@
-import { ValidLicense, Manifest, XConstruct } from "../../../core/src";
+import { ValidLicense, Manifest, XConstruct } from "@pdkit/core/src";
 import { NpmProject } from "../npm/NpmProject";
 import { UpdatePackageVersionsPostInstallScript } from "../scripts/UpdatePackageVersionsPostInstallScript";
 
@@ -56,6 +56,8 @@ export class PackageJson extends Manifest {
     if (existingPackageFile) {
       packageJson = JSON.parse(existingPackageFile.toString("utf8"));
     }
+
+    this.addFields({ version: packageJson.version });
 
     ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
       if (this.fields[key]) {

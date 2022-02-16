@@ -2,6 +2,7 @@ import { IXConstruct, XConstruct } from "../base/XConstruct";
 import { Project } from "../Project";
 import path from "path";
 import { VirtualFS } from "./VirtualFS";
+import { Workspace } from "../Workspace";
 
 export interface IFile extends IXConstruct {
   /**
@@ -17,12 +18,13 @@ export interface IFile extends IXConstruct {
   /**
    * The calculated path for the file based on it's parent project
    */
-  readonly realPath: string;
+  readonly projectRelativePath: string;
 }
 
 /**
- * XFiles are simple constructs for writing files to disk. Only one File for a
- * given path may exist at any one time.
+ * The File is simple construct for writing files to disk. Only one File for a
+ * given path may exist at any one time and all files are staged in memory prior to
+ * being written to disk.
  */
 export class File extends XConstruct implements IFile {
   /**
@@ -70,15 +72,26 @@ export class File extends XConstruct implements IFile {
     return this._content;
   }
 
-  get realPath() {
+  /**
+   * Returns the path of the file relative to the workspace root.
+   */
+  get projectRelativePath() {
     const project = Project.of(this);
 
     return path.join(project.projectPath, this.path);
   }
 
-  _synth() {
-    super._synth();
+  /**
+   * Returns the path of the file absolute to the file system root
+   */
+  get absolutePath() {
+    const workspace = Workspace.of(this);
+    const project = Project.of(this);
 
+    return path.join(workspace.rootPath, project.projectPath, this.path);
+  }
+
+  _onSynth() {
     VirtualFS.of(this).writeFile(this);
   }
 

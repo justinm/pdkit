@@ -35,6 +35,12 @@ export class NpmProject extends Project {
     new StandardValidator(this, "StandardValidator");
     new TaskManager(this, "TaskManager");
 
+    this.packageJson = new PackageJson(this, "PackageJson", {
+      name: props?.packageName ?? id,
+      files: [`${this.distPath}/*.js`, `${this.distPath}/**/*.js`],
+      ...props,
+    });
+
     if (props?.license) {
       new License(this, "License", props.license);
     }
@@ -43,21 +49,15 @@ export class NpmProject extends Project {
       new Author(this, "Author", props.author);
     }
 
-    this.packageJson = new PackageJson(this, "PackageJson", {
-      name: props?.packageName ?? id,
-      files: [`${this.distPath}/*.js`, `${this.distPath}/**/*.js`],
-      ...props,
-    });
-
     const addDependencies = (deps: Dependencies, type?: PackageDependencyType) => {
       if (Array.isArray(deps)) {
         deps.forEach((dep) => {
           const d = dep as { name: string; version?: string };
 
           if (d.name) {
-            new PackageDependency(this, d.name, { version: d.version });
+            new PackageDependency(this, d.name, { version: d.version, type });
           } else {
-            new PackageDependency(this, dep as string);
+            new PackageDependency(this, dep as string, { type });
           }
         });
       } else {

@@ -32,6 +32,8 @@ export class PackageDependency extends ManifestEntry {
         break;
     }
 
+    console.log(`Dependency: ${keyName}->${id}->${props?.version ?? "*"}`);
+
     this.addFields({
       [keyName]: {
         [id]: props?.version ?? "*",

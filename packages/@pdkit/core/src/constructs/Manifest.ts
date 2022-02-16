@@ -4,6 +4,7 @@ import { ManifestEntry } from "./ManifestEntry";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
 import { Project } from "../Project";
 import { JsonFile } from "./JsonFile";
+import deepmerge from "deepmerge";
 
 export interface IManifest extends IXConstruct {
   /**
@@ -22,7 +23,9 @@ export class Manifest extends JsonFile implements IManifest {
     this.node.addValidation({
       validate: (): string[] => {
         const errors: string[] = [];
-        const siblings = Project.of(this).binds.filter((p) => p instanceof Manifest && p !== this);
+        const siblings = Project.of(this)
+          .node.findAll()
+          .filter((p) => p instanceof Manifest && p !== this);
 
         if (siblings.length > 1) {
           errors.push("Only one manifest is allowed when using manifest entries");
@@ -37,20 +40,30 @@ export class Manifest extends JsonFile implements IManifest {
    * Returns the calculated content for the manifest.
    */
   get content() {
+    const project = Project.of(this);
+    let fields = this.fields;
+
     const parentManifests = this.node.scopes
-      .filter((s) => Project.is(s))
-      .map((m) =>
-        (m as Project).binds.filter((e) => e instanceof ManifestEntry && e.propagate).map((e) => e as Manifest)
-      )
-      .flat();
+      .filter((s) => Project.is(s) && s !== project)
+      .map((p) => Manifest.of(p))
+      .map((m) => m.binds.filter((e) => e instanceof ManifestEntry && e.propagate))
+      .flat() as ManifestEntry[];
 
     for (const entry of parentManifests) {
       if (entry.fields) {
-        this.addFields(entry.fields);
+        fields = deepmerge(fields, entry.fields);
       }
     }
 
-    return JSON.stringify(this.fields, null, 2);
+    const entries = this.binds.filter((b) => b instanceof ManifestEntry) as ManifestEntry[];
+
+    for (const entry of entries) {
+      fields = deepmerge(fields, entry.fields);
+    }
+
+    console.log(fields);
+
+    return JSON.stringify(fields, null, 2);
   }
 
   /**
@@ -64,7 +77,7 @@ export class Manifest extends JsonFile implements IManifest {
 
   public static of(construct: Construct): Manifest {
     const project = Project.of(construct);
-    const manifest = project.binds.find((c) => c instanceof Manifest);
+    const manifest = project.node.findAll().find((c) => c instanceof Manifest);
 
     if (!manifest) {
       throw new ConstructError(construct, `No manifest was found in project ${project.node.id}`);

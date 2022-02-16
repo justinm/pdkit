@@ -1,7 +1,6 @@
 import deepmerge from "deepmerge";
 import { Manifest } from "./Manifest";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
-import { Project } from "../Project";
 
 export interface IManifestEntry extends IXConstruct {
   readonly fields?: Record<string, unknown>;
@@ -22,7 +21,7 @@ export class ManifestEntry extends XConstruct implements IManifestEntry {
     this.fields = fields ?? {};
     this.propagate = propagate ?? false;
 
-    Project.of(scope)._bind(this);
+    Manifest.of(this)._bind(this);
 
     this.node.addValidation({
       validate: (): string[] => {
@@ -43,10 +42,6 @@ export class ManifestEntry extends XConstruct implements IManifestEntry {
    */
   public addFields(fields: Record<string, unknown> | {}) {
     this.fields = deepmerge(this.fields, fields);
-  }
-
-  _beforeSynth() {
-    Manifest.of(this).addFields(this.fields);
   }
 
   public static is(construct: any) {

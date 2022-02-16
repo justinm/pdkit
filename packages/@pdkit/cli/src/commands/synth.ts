@@ -1,15 +1,22 @@
 import yargs from "yargs";
 import { AppArguments } from "../pdkit";
 import path from "path";
-import { VirtualFS } from "@pdkit/core/src/constructs/VirtualFS";
 import prompts from "prompts";
 import ora from "ora";
 import logger from "../../../core/src/util/logger";
-import { ConstructError, Project, Workspace, XConstruct } from "@pdkit/core/src";
+import {
+  ConstructError,
+  Project,
+  Workspace,
+  XConstruct,
+  VirtualFS,
+  InstallShellScript,
+  PatchScript,
+  PostInstallShellScript,
+  ShellScript,
+} from "@pdkit/core/src";
 import { spawn } from "child_process";
-import { InstallShellScript, PostInstallShellScript, ShellScript } from "@pdkit/core/src";
 import { Script } from "@pdkit/core/src/scripts/Script";
-import { PostInstallScript } from "@pdkit/core/src/scripts/PostInstallScript";
 
 export const command = "synth";
 export const desc = "Synthesizes the projects configuration";
@@ -63,6 +70,124 @@ async function withSpinner<T>(spinner: ora.Ora, verbose: number, message: string
 
   return null;
 }
+
+const runShellScripts = async (
+  spinner: ora.Ora,
+  workspace: Workspace | null,
+  name: string,
+  type: typeof ShellScript,
+  verbose: number,
+  dryrun: boolean
+) => {
+  return withSpinner(spinner, verbose, `Running ${name} shell scripts`, async () => {
+    if (workspace) {
+      const scripts = workspace.node
+        .findAll()
+        .filter((b) => b instanceof Project)
+        .map((p) => p.node.findAll().filter((b) => b instanceof type))
+        .flat() as ShellScript[];
+      const rootPath = workspace.rootPath;
+
+      if (!scripts.length) {
+        throw `No ${name} scripts were found`;
+      }
+
+      for (const script of scripts) {
+        const command = script.command;
+
+        if (command) {
+          const pcwd = path.join(rootPath, Project.of(script).projectPath);
+          if (dryrun) {
+            spinner.info(`  Would run ${name} script: ${command} in ${pcwd}`);
+            continue;
+          }
+
+          if (verbose) {
+            spinner.start(`  Running ${name} script: ${command}`);
+          }
+
+          script._beforeExecute();
+
+          const proc = spawn(command[0], command.slice(1), {
+            cwd: pcwd,
+            env: process.env,
+          });
+
+          await new Promise((resolve, reject) => {
+            const lines: Buffer[] = [];
+            proc.stdout.on("data", (data) => {
+              lines.push(data);
+            });
+            proc.on("close", (code) => {
+              if (!code) {
+                if (verbose) {
+                  spinner.succeed();
+                }
+                resolve(true);
+              } else {
+                if (verbose) {
+                  spinner.fail();
+                }
+                lines.forEach((line) => console.log(line.toString().trim()));
+
+                reject(`"${command}" returned exit code ${code}`);
+              }
+            });
+          });
+
+          script._afterExecute();
+        }
+
+        if (dryrun && !verbose) {
+          throw "No tasks were executed";
+        }
+      }
+    }
+  });
+};
+const runScripts = async (
+  spinner: ora.Ora,
+  workspace: Workspace | null,
+  name: string,
+  type: typeof Script,
+  verbose: number,
+  dryrun: boolean
+) => {
+  return withSpinner(spinner, verbose, `Running ${name} scripts`, async () => {
+    if (workspace) {
+      const scripts = workspace.node
+        .findAll()
+        .filter((b) => b instanceof Project)
+        .map((p) => p.node.findAll().filter((b) => b instanceof type))
+        .flat() as Script[];
+
+      if (!scripts.length) {
+        throw `No ${name} scripts were found`;
+      }
+
+      for (const script of scripts) {
+        if (dryrun) {
+          spinner.info(`  Would run ${name} script: ${script}`);
+          continue;
+        }
+
+        if (verbose) {
+          spinner.start(`  Running ${name} script: ${script}`);
+        }
+
+        script.runnable();
+
+        if (verbose) {
+          spinner.succeed();
+        }
+      }
+
+      if (dryrun && !verbose) {
+        throw "No tasks were executed";
+      }
+    }
+  });
+};
 
 export const handler = async function (argv: AppArguments) {
   const config = argv.config as string;
@@ -155,111 +280,9 @@ export const handler = async function (argv: AppArguments) {
     }
   });
 
-  const runShellScripts = async (name: string, type: typeof ShellScript) => {
-    return withSpinner(spinner, verbose, `Running ${name} shell scripts`, async () => {
-      if (workspace) {
-        const scripts = workspace.binds
-          .filter((b) => b instanceof Project)
-          .map((p) => p.binds.filter((b) => b instanceof type))
-          .flat() as ShellScript[];
-        const rootPath = workspace.rootPath;
-
-        if (!scripts.length) {
-          throw `No ${name} scripts were found`;
-        }
-
-        for (const script of scripts) {
-          const command = script.command;
-
-          if (command) {
-            const pcwd = path.join(rootPath, Project.of(script).projectPath);
-            if (dryrun) {
-              spinner.info(`  Would run ${name} script: ${command} in ${pcwd}`);
-              continue;
-            }
-
-            if (verbose) {
-              spinner.start(`  Running ${name} script: ${command}`);
-            }
-
-            script._beforeExecute();
-
-            const proc = spawn(command[0], command.slice(1), {
-              cwd: pcwd,
-              env: process.env,
-            });
-
-            await new Promise((resolve, reject) => {
-              const lines: Buffer[] = [];
-              proc.stdout.on("data", (data) => {
-                lines.push(data);
-              });
-              proc.on("close", (code) => {
-                if (!code) {
-                  if (verbose) {
-                    spinner.succeed();
-                  }
-                  resolve(true);
-                } else {
-                  if (verbose) {
-                    spinner.fail();
-                  }
-                  lines.forEach((line) => console.log(line.toString().trim()));
-
-                  reject(`"${command}" returned exit code ${code}`);
-                }
-              });
-            });
-
-            script._afterExecute();
-          }
-
-          if (dryrun && !verbose) {
-            throw "No tasks were executed";
-          }
-        }
-      }
-    });
-  };
-  const runScripts = async (name: string, type: typeof Script) => {
-    return withSpinner(spinner, verbose, `Running ${name} scripts`, async () => {
-      if (workspace) {
-        const scripts = workspace.binds
-          .filter((b) => b instanceof Project)
-          .map((p) => p.binds.filter((b) => b instanceof type))
-          .flat() as Script[];
-
-        if (!scripts.length) {
-          throw `No ${name} scripts were found`;
-        }
-
-        for (const script of scripts) {
-          if (dryrun) {
-            spinner.info(`  Would run ${name} script: ${script}`);
-            continue;
-          }
-
-          if (verbose) {
-            spinner.start(`  Running ${name} script: ${script}`);
-          }
-
-          script.runnable();
-
-          if (verbose) {
-            spinner.succeed();
-          }
-        }
-
-        if (dryrun && !verbose) {
-          throw "No tasks were executed";
-        }
-      }
-    });
-  };
-
-  await runShellScripts("install", InstallShellScript);
-  await runShellScripts("post-install", PostInstallShellScript);
-  await runScripts("post-install", PostInstallScript);
+  await runShellScripts(spinner, workspace, "install", InstallShellScript, verbose, dryrun);
+  await runScripts(spinner, workspace, "patch", PatchScript, verbose, dryrun);
+  await runShellScripts(spinner, workspace, "post-install", PostInstallShellScript, verbose, dryrun);
 
   if (!verbose && dryrun) {
     spinner.info("For more information, try the --verbose flag and/or LOG_LEVEL=debug");

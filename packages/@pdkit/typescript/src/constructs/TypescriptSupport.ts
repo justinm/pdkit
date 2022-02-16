@@ -362,7 +362,7 @@ export interface TypeScriptCompilerOptions {
 }
 
 /**
- * TypescriptSupport, when added as a child to a project, will enable several
+ * TypescriptSupport adds support for typescript for a given project.
  */
 export class TypescriptSupport extends XConstruct {
   constructor(scope: XConstruct, props?: TypescriptSupportProps) {

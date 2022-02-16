@@ -11,16 +11,18 @@
     "dist/**/*.d.ts"
   ],
   "dependencies": {
-    "@types/mustache": "^*",
-    "@types/winston": "^*",
-    "dependency-graph": "^*",
-    "memfs": "^*",
-    "mustache": "^*",
-    "sync-request": "^*",
-    "winston": "^*"
+    "constructs": "^10.0.63",
+    "deepmerge": "^4.2.2",
+    "dependency-graph": "^0.11.0",
+    "memfs": "^3.4.1",
+    "mustache": "^4.2.0",
+    "sync-request": "^6.1.0",
+    "winston": "^3.6.0"
   },
   "devDependencies": {
-    "ts-node": "*",
-    "typescript": "*"
+    "@types/mustache": "^4.1.2",
+    "@types/winston": "^2.4.4",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
   }
 }

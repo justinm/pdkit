@@ -35,6 +35,7 @@ export class Workspace extends XConstruct implements IWorkspace {
   synth() {
     this.node.validate();
 
+    this._onBeforeSynth();
     this._beforeSynth();
     this._synth();
   }
