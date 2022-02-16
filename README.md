@@ -156,6 +156,7 @@ Use this space to list resources you find helpful and would like to give credit 
 * [Choose an Open Source License](https://choosealicense.com)
 * [Img Shields](https://shields.io)
 * [GitHub Pages](https://pages.github.com)
+* [Projen](https://www.github.com/projen/projen)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

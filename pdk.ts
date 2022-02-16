@@ -21,7 +21,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
 new YarnTypescriptProject(workspace, "core", {
   packageName: "@pdkit/core",
   projectPath: "packages/@pdkit/core",
-  dependencies: ["constructs", "deepmerge", "memfs", "mustache", "sync-request", "winston", "dependency-graph"],
+  dependencies: ["case", "constructs", "deepmerge", "memfs", "mustache", "sync-request", "winston", "dependency-graph"],
   devDependencies: ["@types/mustache", "@types/winston"],
   eslint: {
     prettier: true,

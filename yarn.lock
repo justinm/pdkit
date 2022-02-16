@@ -105,82 +105,83 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
   dependencies:
-    "@pdkit/core": ^0.0.0
-    "@types/glob": ^7.2.0
-    "@types/ora": ^3.1.0
-    "@types/prompts": ^2.4.0
-    "@types/yargs": ^17.0.8
+    "@pdkit/core": "*"
+    "@types/glob": "*"
+    "@types/ora": "*"
+    "@types/prompts": "*"
+    "@types/yargs": "*"
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     chalk: ^4.1.2
-    constructs: ^10.0.63
-    eslint: ^8.9.0
-    eslint-config-prettier: ^8.3.0
-    eslint-import-resolver-node: ^0.3.6
-    eslint-import-resolver-typescript: ^2.5.0
-    eslint-plugin-import: ^2.25.4
-    eslint-plugin-prettier: ^4.0.0
-    glob: ^7.2.0
-    glob-regex: ^0.3.2
-    json-schema: ^0.4.0
+    constructs: "*"
+    eslint: "*"
+    eslint-config-prettier: "*"
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    eslint-plugin-prettier: "*"
+    glob: "*"
+    glob-regex: "*"
+    json-schema: "*"
     ora: ^5.4.1
-    prettier: ^2.5.1
-    prompts: ^2.4.2
-    ts-node: ^10.5.0
-    typescript: ^4.5.5
-    yargs: ^17.3.1
+    prettier: "*"
+    prompts: "*"
+    ts-node: "*"
+    typescript: "*"
+    yargs: "*"
   bin:
     pdkit: dist/pdkit.js
   languageName: unknown
   linkType: soft
 
-"@pdkit/core@^0.0.0, @pdkit/core@workspace:packages/@pdkit/core":
+"@pdkit/core@*, @pdkit/core@workspace:packages/@pdkit/core":
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
-    "@types/mustache": ^4.1.2
-    "@types/winston": ^2.4.4
+    "@types/mustache": "*"
+    "@types/winston": "*"
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
-    constructs: ^10.0.63
-    deepmerge: ^4.2.2
-    dependency-graph: ^0.11.0
-    eslint: ^8.9.0
-    eslint-config-prettier: ^8.3.0
-    eslint-import-resolver-node: ^0.3.6
-    eslint-import-resolver-typescript: ^2.5.0
-    eslint-plugin-import: ^2.25.4
-    eslint-plugin-prettier: ^4.0.0
-    json-schema: ^0.4.0
-    memfs: ^3.4.1
-    mustache: ^4.2.0
-    prettier: ^2.5.1
-    sync-request: ^6.1.0
-    ts-node: ^10.5.0
-    typescript: ^4.5.5
-    winston: ^3.6.0
+    case: "*"
+    constructs: "*"
+    deepmerge: "*"
+    dependency-graph: "*"
+    eslint: "*"
+    eslint-config-prettier: "*"
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    eslint-plugin-prettier: "*"
+    json-schema: "*"
+    memfs: "*"
+    mustache: "*"
+    prettier: "*"
+    sync-request: "*"
+    ts-node: "*"
+    typescript: "*"
+    winston: "*"
   languageName: unknown
   linkType: soft
 
-"@pdkit/nodejs@^0.0.0, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
+"@pdkit/nodejs@*, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
   resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
-    "@pdkit/core": ^0.0.0
+    "@pdkit/core": "*"
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
-    constructs: ^10.0.63
-    dependency-graph: ^0.11.0
-    eslint: ^8.9.0
-    eslint-config-prettier: ^8.3.0
-    eslint-import-resolver-node: ^0.3.6
-    eslint-import-resolver-typescript: ^2.5.0
-    eslint-plugin-import: ^2.25.4
-    eslint-plugin-prettier: ^4.0.0
-    json-schema: ^0.4.0
-    prettier: ^2.5.1
-    ts-node: ^10.5.0
-    typescript: ^4.5.5
+    constructs: "*"
+    dependency-graph: "*"
+    eslint: "*"
+    eslint-config-prettier: "*"
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    eslint-plugin-prettier: "*"
+    json-schema: "*"
+    prettier: "*"
+    ts-node: "*"
+    typescript: "*"
   languageName: unknown
   linkType: soft
 
@@ -230,7 +231,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/glob@npm:^7.2.0":
+"@types/glob@npm:*":
   version: 7.2.0
   resolution: "@types/glob@npm:7.2.0"
   dependencies:
@@ -261,14 +262,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mustache@npm:^4.1.2":
+"@types/mustache@npm:*":
   version: 4.1.2
   resolution: "@types/mustache@npm:4.1.2"
   checksum: 1f37849aae39b3188dbeac71734393586db80faa798795ea730db8e40d393c1d4d6a65ad8735a5ccf6dfc8b920d0792af1e6ef13e3ed2e02d204259678545240
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^17.0.18":
+"@types/node@npm:*":
   version: 17.0.18
   resolution: "@types/node@npm:17.0.18"
   checksum: 6c4edfc2b3ba2342a9c3d56e934c5245948ab752f4dc04bd6790b9603e6ebc53bc4f5befc3662e207f7dba2ddd17ccf657f915e319ea7cdd4f77b851079d1611
@@ -289,7 +290,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ora@npm:^3.1.0":
+"@types/ora@npm:*":
   version: 3.1.0
   resolution: "@types/ora@npm:3.1.0"
   dependencies:
@@ -298,7 +299,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prompts@npm:^2.4.0":
+"@types/prompts@npm:*":
   version: 2.4.0
   resolution: "@types/prompts@npm:2.4.0"
   checksum: ec75655f07fbc3cb2df60a3e3bdd13bfda0554a16f5541285c4b1cc0610756838a2863dccfc911cbb1385492054c07210512164e3dbef272ec638d631783b278
@@ -312,7 +313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/winston@npm:^2.4.4":
+"@types/winston@npm:*":
   version: 2.4.4
   resolution: "@types/winston@npm:2.4.4"
   dependencies:
@@ -328,7 +329,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yargs@npm:^17.0.8":
+"@types/yargs@npm:*":
   version: 17.0.8
   resolution: "@types/yargs@npm:17.0.8"
   dependencies:
@@ -651,6 +652,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"case@npm:*":
+  version: 1.6.3
+  resolution: "case@npm:1.6.3"
+  checksum: febe73278f910b0d28aab7efd6f51c235f9aa9e296148edb56dfb83fd58faa88308c30ce9a0122b6e53e0362c44f4407105bd5ef89c46860fc2b184e540fd68d
+  languageName: node
+  linkType: hard
+
 "caseless@npm:^0.12.0, caseless@npm:~0.12.0":
   version: 0.12.0
   resolution: "caseless@npm:0.12.0"
@@ -792,7 +800,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"constructs@npm:^10.0.63":
+"constructs@npm:*":
   version: 10.0.63
   resolution: "constructs@npm:10.0.63"
   checksum: c53bc729dd24a576fc219860e7db2917076d509bf503d4f1aaa8b90bb15c8b72c05025d70ad43ef3523ba80c317e8f9ecc9c2262cc4ceb5e46a3b4d0940c27a9
@@ -861,7 +869,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:^4.2.2":
+"deepmerge@npm:*":
   version: 4.2.2
   resolution: "deepmerge@npm:4.2.2"
   checksum: a8c43a1ed8d6d1ed2b5bf569fa4c8eb9f0924034baf75d5d406e47e157a451075c4db353efea7b6bcc56ec48116a8ce72fccf867b6e078e7c561904b5897530b
@@ -893,7 +901,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dependency-graph@npm:^0.11.0":
+"dependency-graph@npm:*":
   version: 0.11.0
   resolution: "dependency-graph@npm:0.11.0"
   checksum: 477204beaa9be69e642bc31ffe7a8c383d0cf48fa27acbc91c5df01431ab913e65c154213d2ef83d034c98d77280743ec85e5da018a97a18dd43d3c0b78b28cd
@@ -1001,7 +1009,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^8.3.0":
+"eslint-config-prettier@npm:*":
   version: 8.3.0
   resolution: "eslint-config-prettier@npm:8.3.0"
   peerDependencies:
@@ -1012,7 +1020,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-import-resolver-node@npm:^0.3.6":
+"eslint-import-resolver-node@npm:*, eslint-import-resolver-node@npm:^0.3.6":
   version: 0.3.6
   resolution: "eslint-import-resolver-node@npm:0.3.6"
   dependencies:
@@ -1022,7 +1030,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-import-resolver-typescript@npm:^2.5.0":
+"eslint-import-resolver-typescript@npm:*":
   version: 2.5.0
   resolution: "eslint-import-resolver-typescript@npm:2.5.0"
   dependencies:
@@ -1048,7 +1056,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:^2.25.4":
+"eslint-plugin-import@npm:*":
   version: 2.25.4
   resolution: "eslint-plugin-import@npm:2.25.4"
   dependencies:
@@ -1071,7 +1079,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^4.0.0":
+"eslint-plugin-prettier@npm:*":
   version: 4.0.0
   resolution: "eslint-plugin-prettier@npm:4.0.0"
   dependencies:
@@ -1131,7 +1139,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.9.0":
+"eslint@npm:*":
   version: 8.9.0
   resolution: "eslint@npm:8.9.0"
   dependencies:
@@ -1426,14 +1434,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-regex@npm:^0.3.2":
+"glob-regex@npm:*":
   version: 0.3.2
   resolution: "glob-regex@npm:0.3.2"
   checksum: 4f7adee18e750cbc3a328acb879631feca56dbfc03016cec53d5a54e50663ddc96e24e244ec8c1a5ee883515126754d89deb825eba529d32b869a0ae46f95e5c
   languageName: node
   linkType: hard
 
-"glob@npm:^7.1.3, glob@npm:^7.1.7, glob@npm:^7.2.0":
+"glob@npm:*, glob@npm:^7.1.3, glob@npm:^7.1.7":
   version: 7.2.0
   resolution: "glob@npm:7.2.0"
   dependencies:
@@ -1790,7 +1798,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema@npm:^0.4.0":
+"json-schema@npm:*":
   version: 0.4.0
   resolution: "json-schema@npm:0.4.0"
   checksum: 66389434c3469e698da0df2e7ac5a3281bcff75e797a5c127db7c5b56270e01ae13d9afa3c03344f76e32e81678337a8c912bdbb75101c62e487dc3778461d72
@@ -1895,7 +1903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"memfs@npm:^3.4.1":
+"memfs@npm:*":
   version: 3.4.1
   resolution: "memfs@npm:3.4.1"
   dependencies:
@@ -1981,7 +1989,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mustache@npm:^4.2.0":
+"mustache@npm:*":
   version: 4.2.0
   resolution: "mustache@npm:4.2.0"
   bin:
@@ -2191,7 +2199,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.5.1":
+"prettier@npm:*":
   version: 2.5.1
   resolution: "prettier@npm:2.5.1"
   bin:
@@ -2216,7 +2224,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prompts@npm:^2.4.2":
+"prompts@npm:*":
   version: 2.4.2
   resolution: "prompts@npm:2.4.2"
   dependencies:
@@ -2543,7 +2551,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sync-request@npm:^6.1.0":
+"sync-request@npm:*":
   version: 6.1.0
   resolution: "sync-request@npm:6.1.0"
   dependencies:
@@ -2612,7 +2620,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.5.0":
+"ts-node@npm:*":
   version: 10.5.0
   resolution: "ts-node@npm:10.5.0"
   dependencies:
@@ -2702,7 +2710,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.5.5":
+"typescript@npm:*":
   version: 4.5.5
   resolution: "typescript@npm:4.5.5"
   bin:
@@ -2712,7 +2720,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@*#~builtin<compat/typescript>":
   version: 4.5.5
   resolution: "typescript@patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=493e53"
   bin:
@@ -2808,7 +2816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"winston@npm:*, winston@npm:^3.6.0":
+"winston@npm:*":
   version: 3.6.0
   resolution: "winston@npm:3.6.0"
   dependencies:
@@ -2837,22 +2845,22 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "workspace@workspace:."
   dependencies:
-    "@pdkit/nodejs": ^0.0.0
-    "@types/mustache": ^4.1.2
-    "@types/node": ^17.0.18
+    "@pdkit/nodejs": "*"
+    "@types/mustache": "*"
+    "@types/node": "*"
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
-    eslint: ^8.9.0
-    eslint-config-prettier: ^8.3.0
-    eslint-import-resolver-node: ^0.3.6
-    eslint-import-resolver-typescript: ^2.5.0
-    eslint-plugin-import: ^2.25.4
-    eslint-plugin-prettier: ^4.0.0
-    json-schema: ^0.4.0
-    mustache: ^4.2.0
-    prettier: ^2.5.1
-    ts-node: ^10.5.0
-    typescript: ^4.5.5
+    eslint: "*"
+    eslint-config-prettier: "*"
+    eslint-import-resolver-node: "*"
+    eslint-import-resolver-typescript: "*"
+    eslint-plugin-import: "*"
+    eslint-plugin-prettier: "*"
+    json-schema: "*"
+    mustache: "*"
+    prettier: "*"
+    ts-node: "*"
+    typescript: "*"
   languageName: unknown
   linkType: soft
 
@@ -2895,7 +2903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs@npm:^17.3.1":
+"yargs@npm:*":
   version: 17.3.1
   resolution: "yargs@npm:17.3.1"
   dependencies:
