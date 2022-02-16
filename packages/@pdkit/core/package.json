@@ -2,6 +2,7 @@
   "name": "@pdkit/core",
   "version": "0.0.0",
   "scripts": {
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src pdk.ts",
     "compile": "tsc -p ./tsconfig.json"
   },
   "files": [
@@ -10,6 +11,22 @@
     "dist/*.d.ts",
     "dist/**/*.d.ts"
   ],
+  "devDependencies": {
+    "@types/mustache": "^4.1.2",
+    "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^5",
+    "@typescript-eslint/parser": "^5",
+    "eslint": "^8.9.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "json-schema": "^0.4.0",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
+  },
   "dependencies": {
     "constructs": "^10.0.63",
     "deepmerge": "^4.2.2",
@@ -19,10 +36,140 @@
     "sync-request": "^6.1.0",
     "winston": "^3.6.0"
   },
-  "devDependencies": {
-    "@types/mustache": "^4.1.2",
-    "@types/winston": "^2.4.4",
-    "ts-node": "^10.5.0",
-    "typescript": "^4.5.5"
+  "eslintConfig": {
+    "env": {
+      "jest": true,
+      "node": true
+    },
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "import",
+      "prettier"
+    ],
+    "extends": [
+      "plugin:import/typescript",
+      "prettier",
+      "plugin:prettier/recommended"
+    ],
+    "settings": {
+      "import/parsers": {
+        "@typescript-eslint/parser": [
+          ".ts",
+          ".tsx"
+        ]
+      },
+      "import/resolver": {
+        "node": {},
+        "typescript": {
+          "alwaysTryTypes": true
+        }
+      }
+    },
+    "ignorePatterns": [
+      "*.js",
+      "*.d.ts",
+      "node_modules/",
+      "*.generated.ts",
+      "coverage"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error"
+      ],
+      "@typescript-eslint/no-require-imports": [
+        "error"
+      ],
+      "@typescript-eslint/no-shadow": [
+        "error"
+      ],
+      "@typescript-eslint/no-floating-promises": [
+        "error"
+      ],
+      "@typescript-eslint/return-await": [
+        "error"
+      ],
+      "@typescript-eslint/member-ordering": [
+        "error",
+        {
+          "default": [
+            "public-static-field",
+            "public-static-method",
+            "protected-static-field",
+            "protected-static-method",
+            "private-static-field",
+            "private-static-method",
+            "field",
+            "constructor",
+            "method"
+          ]
+        }
+      ],
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": [],
+          "optionalDependencies": false,
+          "peerDependencies": true
+        }
+      ],
+      "import/no-unresolved": [
+        "error"
+      ],
+      "import/order": [
+        "warn",
+        {
+          "groups": [
+            "builtin",
+            "external"
+          ],
+          "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+          }
+        }
+      ],
+      "no-duplicate-imports": [
+        "error"
+      ],
+      "no-shadow": [
+        "off"
+      ],
+      "key-spacing": [
+        "error"
+      ],
+      "no-multiple-empty-lines": [
+        "error"
+      ],
+      "no-return-await": [
+        "off"
+      ],
+      "no-trailing-spaces": [
+        "error"
+      ],
+      "dot-notation": [
+        "error"
+      ],
+      "no-bitwise": [
+        "error"
+      ]
+    },
+    "overrides": [
+      {
+        "files": [
+          "pdk.ts"
+        ],
+        "rules": {
+          "@typescript-eslint/no-require-imports": "off",
+          "import/no-extraneous-dependencies": "off"
+        }
+      }
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "project": "tsconfig.json"
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { XConstruct } from "../base/XConstruct";
-import { TaskManager } from "./TaskManager";
 import { Project } from "../Project";
 import { ManifestEntry } from "./ManifestEntry";
+import { TaskManager } from "./TaskManager";
 
 export class Task extends ManifestEntry {
   constructor(scope: XConstruct, id: string, commands: string[]) {
@@ -20,8 +20,12 @@ export class Task extends ManifestEntry {
     });
   }
 
-  dependsOn(task: Task) {
-    TaskManager.of(this).graph.addDependency(this.taskName, task.taskName);
+  public dependsOn(task: Task | string) {
+    if (task instanceof Task) {
+      TaskManager.of(this).graph.addDependency(this.taskName, task.taskName);
+    } else {
+      TaskManager.of(this).graph.addDependency(this.taskName, task);
+    }
   }
 
   get taskName() {

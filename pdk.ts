@@ -1,5 +1,5 @@
-import { YarnTypescriptProject } from "@pdkit/typescript/src";
-import { YarnTypescriptWorkspace } from "@pdkit/typescript/src";
+import { YarnTypescriptProject } from "@pdkit/nodejs/src/yarn/YarnTypescriptProject";
+import { YarnTypescriptWorkspace } from "@pdkit/nodejs/src/yarn/YarnTypescriptWorkspace";
 
 const workspace = new YarnTypescriptWorkspace("pdkit", {
   author: {
@@ -8,10 +8,13 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
     organization: true,
   },
   license: "Apache-2.0",
-  dependencies: ["mustache", "@pdkit/nodejs", "@pdkit/typescript"],
+  dependencies: ["mustache", "@pdkit/nodejs"],
   devDependencies: ["@types/mustache", "@types/node", "prettier", "ts-node", "typescript"],
   scripts: {
     pdkit: "ts-node packages/@pdkit/cli/src/pdkit.ts",
+  },
+  eslint: {
+    prettier: true,
   },
 });
 
@@ -20,6 +23,9 @@ new YarnTypescriptProject(workspace, "core", {
   projectPath: "packages/@pdkit/core",
   dependencies: ["constructs", "deepmerge", "memfs", "mustache", "sync-request", "winston", "dependency-graph"],
   devDependencies: ["@types/mustache", "@types/winston"],
+  eslint: {
+    prettier: true,
+  },
 });
 
 new YarnTypescriptProject(workspace, "cli", {
@@ -39,20 +45,19 @@ new YarnTypescriptProject(workspace, "cli", {
   bin: {
     pdkit: "dist/pdkit.js",
   },
+  eslint: {
+    prettier: true,
+  },
 });
 
 new YarnTypescriptProject(workspace, "nodejs", {
   packageName: "@pdkit/nodejs",
   projectPath: "packages/@pdkit/nodejs",
   dependencies: ["constructs", "dependency-graph", "@pdkit/core"],
-  devDependencies: ["prettier"],
-});
-
-new YarnTypescriptProject(workspace, "typescript", {
-  packageName: "@pdkit/typescript",
-  projectPath: "packages/@pdkit/typescript",
-  dependencies: ["constructs", "dependency-graph", "@pdkit/core", "@pdkit/nodejs"],
   devDependencies: ["prettier", "typescript"],
+  eslint: {
+    prettier: true,
+  },
 });
 
 export default workspace;

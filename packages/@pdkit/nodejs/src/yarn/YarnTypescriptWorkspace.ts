@@ -1,6 +1,6 @@
+import { PDKIT_CONFIG_FILE, Project } from "@pdkit/core/src";
 import { TypescriptSupport, TypescriptSupportProps } from "../constructs/TypescriptSupport";
-import { YarnWorkspace, YarnWorkspaceProps } from "@pdkit/nodejs/src";
-import { Project } from "@pdkit/core/src";
+import { YarnWorkspace, YarnWorkspaceProps } from "./YarnWorkspace";
 
 export interface YarnTypescriptWorkspaceProps extends YarnWorkspaceProps {
   /**
@@ -16,6 +16,9 @@ export class YarnTypescriptWorkspace extends YarnWorkspace {
   constructor(id: string, props: YarnTypescriptWorkspaceProps) {
     super(id, props);
 
-    new TypescriptSupport(Project.of(this), props.tsconfig);
+    new TypescriptSupport(Project.of(this), {
+      ...props.tsconfig,
+      include: [...(props.tsconfig?.include ?? []), PDKIT_CONFIG_FILE],
+    });
   }
 }

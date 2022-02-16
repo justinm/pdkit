@@ -1,6 +1,6 @@
-import { NodeProjectProps, NpmProject } from "@pdkit/nodejs/src";
 import { XConstruct } from "@pdkit/core/src";
 import { TypescriptSupport, TypescriptSupportProps } from "../constructs/TypescriptSupport";
+import { NodeProjectProps, NpmProject } from "./NpmProject";
 
 export interface NpmTypescriptProjectProps extends NodeProjectProps {
   tsconfig?: TypescriptSupportProps;

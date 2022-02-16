@@ -1,5 +1,5 @@
 import { JsonFile, ManifestEntry, Project, TaskManager, XConstruct } from "@pdkit/core/src";
-import { PackageDependency, PackageDependencyType } from "@pdkit/nodejs/src";
+import { PackageDependency, PackageDependencyType } from "./PackageDependency";
 
 export interface TypescriptSupportProps {
   /**
@@ -365,11 +365,14 @@ export interface TypeScriptCompilerOptions {
  * TypescriptSupport adds support for typescript for a given project.
  */
 export class TypescriptSupport extends XConstruct {
+  readonly fileName: string;
+
   constructor(scope: XConstruct, props?: TypescriptSupportProps) {
     super(scope, "TypescriptSupport");
 
     const project = Project.of(scope);
     const tm = TaskManager.of(project);
+    this.fileName = props?.fileName ?? "tsconfig.json";
 
     tm.tryAddTask("compile", ["tsc", "-p", "./tsconfig.json"]);
 
@@ -380,7 +383,7 @@ export class TypescriptSupport extends XConstruct {
       files: [`${project.distPath}/*.d.ts`, `${project.distPath}/**/*.d.ts`],
     });
 
-    new JsonFile(this, "TsConfig", props?.fileName ?? "tsconfig.json").addFields({
+    new JsonFile(this, "TsConfig", this.fileName).addFields({
       exclude: [...(props?.exclude ?? []), "node_modules"],
       include: [...(props?.include ?? []), project.sourcePath],
       compilerOptions: {

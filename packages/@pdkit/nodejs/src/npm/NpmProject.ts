@@ -1,10 +1,18 @@
-import { PackageJson, NodePackageJsonProps } from "../constructs/PackageJson";
-import { InstallShellScript, License, Project, ProjectProps, ValidLicense, XConstruct } from "@pdkit/core/src";
+import {
+  InstallShellScript,
+  License,
+  Project,
+  ProjectProps,
+  TaskManager,
+  ValidLicense,
+  XConstruct,
+} from "@pdkit/core/src";
+import { VirtualFS } from "@pdkit/core/src/constructs/VirtualFS";
+import { StandardValidator } from "@pdkit/core/src/validation/StandardValidator";
 import { Author, AuthorProps } from "../constructs/Author";
 import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
-import { StandardValidator } from "@pdkit/core/src/validation/StandardValidator";
-import { VirtualFS } from "@pdkit/core/src/constructs/VirtualFS";
-import { TaskManager } from "@pdkit/core/src";
+import { PackageJson, NodePackageJsonProps } from "../constructs/PackageJson";
+import { EslintProps, EslintSupport } from "../eslint/EslintSupport";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
 
@@ -22,6 +30,8 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly peerDependencies?: Dependencies;
   readonly author?: AuthorProps;
   readonly license?: ValidLicense;
+  readonly eslint?: EslintProps;
+  readonly prettier?: boolean;
 }
 
 export class NpmProject extends Project {
@@ -47,6 +57,10 @@ export class NpmProject extends Project {
 
     if (props?.author) {
       new Author(this, "Author", props.author);
+    }
+
+    if (props?.eslint) {
+      new EslintSupport(this, "EslintSupport", props.eslint);
     }
 
     const addDependencies = (deps: Dependencies, type?: PackageDependencyType) => {
