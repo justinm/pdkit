@@ -5,6 +5,7 @@ import {
   ProjectProps,
   TaskManager,
   ValidLicense,
+  Workspace,
   XConstruct,
 } from "@pdkit/core/src";
 import { VirtualFS } from "@pdkit/core/src/constructs/VirtualFS";
@@ -35,7 +36,8 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
 }
 
 export class NpmProject extends Project {
-  readonly packageJson: PackageJson;
+  public readonly packageJson: PackageJson;
+  public readonly packageName: string;
 
   constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
@@ -45,8 +47,9 @@ export class NpmProject extends Project {
     new StandardValidator(this, "StandardValidator");
     new TaskManager(this, "TaskManager");
 
+    this.packageName = props?.packageName ?? id;
     this.packageJson = new PackageJson(this, "PackageJson", {
-      name: props?.packageName ?? id,
+      name: this.packageName,
       files: [`${this.distPath}/*.js`, `${this.distPath}/**/*.js`],
       ...props,
     });
@@ -90,5 +93,9 @@ export class NpmProject extends Project {
     if (props?.peerDependencies) {
       addDependencies(props?.peerDependencies, PackageDependencyType.PEER);
     }
+  }
+
+  tryFindProject(packageName: string) {
+    return Workspace.of(this).projects.find((p) => (p as NpmProject).packageName === packageName);
   }
 }

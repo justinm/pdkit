@@ -50,29 +50,26 @@ export class PackageJson extends Manifest {
   _synth() {
     super._synth();
 
-    const existingPackageFile = NpmProject.of(this).tryReadFile("package.json");
-    let packageJson: { [key: string]: any } = {};
+    const packageJson = NpmProject.of(this).tryReadJsonFile<{ [key: string]: any }>("package.json");
 
-    if (existingPackageFile) {
-      packageJson = JSON.parse(existingPackageFile.toString("utf8"));
+    if (packageJson) {
+      this.addFields({ version: packageJson.version });
+
+      ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
+        if (this.fields[key]) {
+          const deps = this.fields[key] as { [key: string]: string };
+
+          Object.keys(deps).forEach((d) => {
+            if (deps[d] === "*" && packageJson[key] && packageJson[key][d]) {
+              this.addFields({
+                [key]: {
+                  [d]: packageJson[key][d],
+                },
+              });
+            }
+          });
+        }
+      });
     }
-
-    this.addFields({ version: packageJson.version });
-
-    ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
-      if (this.fields[key]) {
-        const deps = this.fields[key] as { [key: string]: string };
-
-        Object.keys(deps).forEach((d) => {
-          if (deps[d] === "*" && packageJson[key] && packageJson[key][d]) {
-            this.addFields({
-              [key]: {
-                [d]: packageJson[key][d],
-              },
-            });
-          }
-        });
-      }
-    });
   }
 }

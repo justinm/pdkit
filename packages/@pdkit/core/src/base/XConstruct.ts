@@ -15,12 +15,6 @@ export interface IXConstruct extends IConstruct {
  * The XConstruct, the base of all constructs for pdkit.
  */
 export abstract class XConstruct extends Construct implements IXConstruct {
-  private readonly _binds: IXConstruct[] = [];
-
-  constructor(scope: XConstruct, id: string) {
-    super(scope, id.replace("/", "-"));
-  }
-
   /**
    * Determines if the given argument is an XConstruct.
    *
@@ -30,6 +24,12 @@ export abstract class XConstruct extends Construct implements IXConstruct {
     return construct instanceof this;
   }
 
+  private readonly _binds: IXConstruct[] = [];
+
+  constructor(scope: XConstruct, id: string) {
+    super(scope, id.replace("/", "-"));
+  }
+
   get binds() {
     return this._binds;
   }
@@ -37,7 +37,7 @@ export abstract class XConstruct extends Construct implements IXConstruct {
   public _bind(construct: IXConstruct) {
     logger.debug(`${construct} bound itself to ${this}`);
     if (this._binds.indexOf(construct) !== -1) {
-      throw new ConstructError(construct, `Construct was already bound to ${this.toString()}`);
+      throw new ConstructError(construct, `Construct was already bound to ${this}`);
     }
 
     this._binds.push(construct);

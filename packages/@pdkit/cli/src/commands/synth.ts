@@ -1,9 +1,5 @@
-import yargs from "yargs";
-import { AppArguments } from "../pdkit";
+import { spawn } from "child_process";
 import path from "path";
-import prompts from "prompts";
-import ora from "ora";
-import logger from "../../../core/src/util/logger";
 import {
   ConstructError,
   Project,
@@ -15,14 +11,18 @@ import {
   PostInstallShellScript,
   ShellScript,
 } from "@pdkit/core/src";
-import { spawn } from "child_process";
 import { Script } from "@pdkit/core/src/scripts/Script";
+import ora from "ora";
+import prompts from "prompts";
+import yargs from "yargs";
+import logger from "../../../core/src/util/logger";
+import { AppArguments } from "../pdkit";
 
 export const command = "synth";
 export const desc = "Synthesizes the projects configuration";
 
-export const builder: yargs.CommandBuilder<any, any> = function (yargs) {
-  return yargs
+export const builder: yargs.CommandBuilder<any, any> = function (y) {
+  return y
     .option("dryrun", {
       alias: "n",
       type: "boolean",
@@ -93,22 +93,22 @@ const runShellScripts = async (
       }
 
       for (const script of scripts) {
-        const command = script.command;
+        const cmd = script.command;
 
-        if (command) {
+        if (cmd) {
           const pcwd = path.join(rootPath, Project.of(script).projectPath);
           if (dryrun) {
-            spinner.info(`  Would run ${name} script: ${command} in ${pcwd}`);
+            spinner.info(`  Would run ${name} script: ${cmd} in ${pcwd}`);
             continue;
           }
 
           if (verbose) {
-            spinner.start(`  Running ${name} script: ${command}`);
+            spinner.start(`  Running ${name} script: ${cmd}`);
           }
 
           script._beforeExecute();
 
-          const proc = spawn(command[0], command.slice(1), {
+          const proc = spawn(cmd[0], cmd.slice(1), {
             cwd: pcwd,
             env: process.env,
           });
@@ -116,7 +116,9 @@ const runShellScripts = async (
           await new Promise((resolve, reject) => {
             const lines: Buffer[] = [];
             proc.stdout.on("data", (data) => {
-              lines.push(data);
+              if (data) {
+                lines.push(data);
+              }
             });
             proc.on("close", (code) => {
               if (!code) {
@@ -199,6 +201,7 @@ export const handler = async function (argv: AppArguments) {
   let workspace = await withSpinner<Workspace>(spinner, 0, "Loading project...", () => {
     process.chdir(path.dirname(config));
 
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const ws = Workspace.of(require(config).default as XConstruct);
 
     if (!ws) {

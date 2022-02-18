@@ -12,28 +12,36 @@ export enum PackageDependencyType {
 }
 
 export class PackageDependency extends ManifestEntry {
+  private readonly keyName: string;
   constructor(scope: XConstruct, id: string, props?: PackageDependencyProps) {
     super(scope, `${id}Dependency`);
 
-    let keyName: string;
     switch (props?.type) {
       case PackageDependencyType.PEER:
-        keyName = "peerDependencies";
+        this.keyName = "peerDependencies";
         break;
       case PackageDependencyType.DEV:
-        keyName = "devDependencies";
+        this.keyName = "devDependencies";
         break;
       case PackageDependencyType.BUNDLED:
-        keyName = "bundledDependencies";
+        this.keyName = "bundledDependencies";
         break;
       default:
-        keyName = "dependencies";
+        this.keyName = "dependencies";
         break;
     }
 
     this.addFields({
-      [keyName]: {
+      [this.keyName]: {
         [id]: props?.version ?? "*",
+      },
+    });
+  }
+
+  public setVersion(version: string) {
+    this.addFields({
+      [this.keyName]: {
+        [this.node.id]: version,
       },
     });
   }

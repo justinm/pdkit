@@ -1,6 +1,8 @@
 import { Construct, IConstruct } from "constructs";
 import { XConstruct } from "./base/XConstruct";
+import { Project } from "./Project";
 import { ConstructError } from "./util/ConstructError";
+import logger from "./util/logger";
 
 export interface IWorkspace extends IConstruct {
   readonly rootPath: string;
@@ -49,8 +51,15 @@ export class Workspace extends XConstruct implements IWorkspace {
   synth() {
     this.node.validate();
 
+    logger.debug("before _onBeforeSynth()");
     this._onBeforeSynth();
+    logger.debug("before _beforeSynth()");
     this._beforeSynth();
+    logger.debug("before _synth()");
     this._synth();
+  }
+
+  get projects() {
+    return this.node.findAll().filter((b) => Project.is(b)) as Project[];
   }
 }

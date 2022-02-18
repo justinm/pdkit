@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "case": "^1.6.3",
-    "constructs": "^10.0.63",
+    "constructs": "^10.0.65",
     "deepmerge": "^4.2.2",
     "dependency-graph": "^0.11.0",
     "js-yaml": "^4.1.0",

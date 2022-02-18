@@ -1,9 +1,9 @@
-import path from "path";
-import { ConstructError } from "./util/ConstructError";
-import { IXConstruct, XConstruct } from "./base/XConstruct";
-import { Workspace } from "./Workspace";
 import fs from "fs";
+import path from "path";
+import { IXConstruct, XConstruct } from "./base/XConstruct";
 import { ShellScript } from "./scripts/ShellScript";
+import { ConstructError } from "./util/ConstructError";
+import { Workspace } from "./Workspace";
 
 export interface IProject extends IXConstruct {
   readonly projectRelativeSourcePath: string;
@@ -18,6 +18,34 @@ export interface ProjectProps {
 }
 
 export abstract class Project extends ShellScript implements IProject {
+  public static is(construct: any) {
+    return construct instanceof this;
+  }
+
+  public static of(construct: any): Project {
+    if (!(construct instanceof XConstruct)) {
+      throw new Error(`${construct} is not a construct`);
+    }
+
+    if (construct instanceof Project) {
+      return construct;
+    }
+
+    let project = (construct as XConstruct).node.scopes
+      .reverse()
+      .find((scope) => scope !== construct && scope instanceof Project);
+
+    if (!project) {
+      project = Workspace.of(construct).node.defaultChild;
+
+      if (!project) {
+        throw new ConstructError(construct, `Construct must be a child of a project or workspace`);
+      }
+    }
+
+    return project as Project;
+  }
+
   private readonly _projectPath?: string;
   private readonly _sourcePath: string;
   private readonly _distPath: string;
@@ -55,6 +83,16 @@ export abstract class Project extends ShellScript implements IProject {
     return null;
   }
 
+  public tryReadJsonFile<T = Record<string, unknown>>(filePath: string): T | undefined {
+    const data = this.tryReadFile(filePath) as Buffer;
+
+    if (data) {
+      return JSON.parse(data.toString("utf8")) as T;
+    } else {
+      return undefined;
+    }
+  }
+
   get projectPath(): string {
     const parent = this.node.scopes.reverse().find((scope) => scope !== this && Project.is(scope)) as
       | Project
@@ -77,33 +115,5 @@ export abstract class Project extends ShellScript implements IProject {
 
   get subprojects(): Project[] {
     return this.node.children.filter((c) => Project.is(c)).map((c) => c as Project);
-  }
-
-  public static is(construct: any) {
-    return construct instanceof this;
-  }
-
-  public static of(construct: any): Project {
-    if (!(construct instanceof XConstruct)) {
-      throw new Error(`${construct} is not a construct`);
-    }
-
-    if (construct instanceof Project) {
-      return construct;
-    }
-
-    let project = (construct as XConstruct).node.scopes
-      .reverse()
-      .find((scope) => scope !== construct && scope instanceof Project);
-
-    if (!project) {
-      project = Workspace.of(construct).node.defaultChild;
-
-      if (!project) {
-        throw new ConstructError(construct, `Construct must be a child of a project or workspace`);
-      }
-    }
-
-    return project as Project;
   }
 }
