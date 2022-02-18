@@ -16,6 +16,7 @@ export class YarnProject extends NpmProject {
       "!.yarn/sdks",
       "!.yarn/versions",
       ".pnp.*",
+      ".yarn-integrity",
     ]);
   }
 }

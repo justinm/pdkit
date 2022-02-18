@@ -74,7 +74,22 @@ export class NpmProject extends Project {
       new JestSupport(this, "JestSupport", props.jest);
     }
 
-    new GitIgnore(this, "DefaultGitIgnore", ["node_modules"]);
+    // Courtesy of https://www.toptal.com/developers/gitignore/api/node
+    new GitIgnore(this, "DefaultGitIgnore", [
+      "node_modules",
+      "logs",
+      "*.log",
+      "npm-debug.log*",
+      "yarn-debug.log*",
+      "yarn-error.log*",
+      "report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json",
+      "pids",
+      "*.pid",
+      "*.seed",
+      "*.pid.lock",
+      ".npm",
+      "*.tgz",
+    ]);
 
     if (props?.gitignore) {
       new GitIgnore(this, "CustomGitIgnore", props.gitignore);
