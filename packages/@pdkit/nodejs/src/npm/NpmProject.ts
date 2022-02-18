@@ -14,6 +14,7 @@ import { Author, AuthorProps } from "../constructs/Author";
 import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
 import { PackageJson, NodePackageJsonProps } from "../constructs/PackageJson";
 import { EslintProps, EslintSupport } from "../eslint/EslintSupport";
+import { JestOptions, JestSupport } from "../jest/JestSupport";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
 
@@ -31,7 +32,8 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly peerDependencies?: Dependencies;
   readonly author?: AuthorProps;
   readonly license?: ValidLicense;
-  readonly eslint?: EslintProps;
+  readonly eslint?: EslintProps & { enabled: boolean };
+  readonly jest?: JestOptions & { enabled: boolean };
   readonly prettier?: boolean;
 }
 
@@ -62,8 +64,12 @@ export class NpmProject extends Project {
       new Author(this, "Author", props.author);
     }
 
-    if (props?.eslint) {
+    if (props?.eslint?.enabled) {
       new EslintSupport(this, "EslintSupport", props.eslint);
+    }
+
+    if (props?.jest?.enabled) {
+      new JestSupport(this, "JestSupport", props.jest);
     }
 
     const addDependencies = (deps: Dependencies, type?: PackageDependencyType) => {

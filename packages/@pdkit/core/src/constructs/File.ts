@@ -1,8 +1,8 @@
+import path from "path";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
 import { Project } from "../Project";
-import path from "path";
-import { VirtualFS } from "./VirtualFS";
 import { Workspace } from "../Workspace";
+import { VirtualFS } from "./VirtualFS";
 
 export interface IFile extends IXConstruct {
   /**
@@ -28,6 +28,15 @@ export interface IFile extends IXConstruct {
  */
 export class File extends XConstruct implements IFile {
   /**
+   * Determine if an object inherits this a File.
+   *
+   * @param construct
+   */
+  public static is(construct: any) {
+    return construct instanceof this;
+  }
+
+  /**
    * Specify the files path relative to the parent project's source root.
    */
   public readonly path: string;
@@ -38,10 +47,10 @@ export class File extends XConstruct implements IFile {
    */
   protected _content: string;
 
-  constructor(scope: XConstruct, id: string, path: string) {
+  constructor(scope: XConstruct, id: string, filePath: string) {
     super(scope, id);
 
-    this.path = path;
+    this.path = filePath;
     this._content = "";
   }
 
@@ -93,14 +102,5 @@ export class File extends XConstruct implements IFile {
 
   _onSynth() {
     VirtualFS.of(this).writeFile(this);
-  }
-
-  /**
-   * Determine if an object inherits this a File.
-   *
-   * @param construct
-   */
-  public static is(construct: any) {
-    return construct instanceof this;
   }
 }

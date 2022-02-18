@@ -1,5 +1,6 @@
 import { XConstruct } from "@pdkit/core/src";
 import { TypescriptSupport, TypescriptSupportProps } from "../constructs/TypescriptSupport";
+import { JestTypescriptSupport } from "../jest/JestTypescriptSupport";
 import { NodeProjectProps, NpmProject } from "./NpmProject";
 
 export interface NpmTypescriptProjectProps extends NodeProjectProps {
@@ -11,7 +12,11 @@ export interface NpmTypescriptProjectProps extends NodeProjectProps {
  */
 export class NpmTypescriptProject extends NpmProject {
   constructor(scope: XConstruct, id: string, props: NpmTypescriptProjectProps) {
-    super(scope, id, props);
+    super(scope, id, { ...props, jest: undefined });
+
+    if (props.jest?.enabled) {
+      new JestTypescriptSupport(this, "JestTypescriptSupport", props.jest);
+    }
 
     new TypescriptSupport(this, props.tsconfig);
   }

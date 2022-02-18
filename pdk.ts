@@ -15,7 +15,11 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   },
   github: true,
   eslint: {
+    enabled: true,
     prettier: true,
+  },
+  jest: {
+    enabled: true,
   },
 });
 
@@ -35,7 +39,11 @@ new YarnTypescriptProject(workspace, "core", {
   ],
   devDependencies: ["@types/mustache", "@types/js-yaml", "@types/winston"],
   eslint: {
+    enabled: true,
     prettier: true,
+  },
+  jest: {
+    enabled: true,
   },
 });
 
@@ -57,7 +65,11 @@ new YarnTypescriptProject(workspace, "cli", {
     pdkit: "dist/pdkit.js",
   },
   eslint: {
+    enabled: true,
     prettier: true,
+  },
+  jest: {
+    enabled: true,
   },
 });
 
@@ -67,7 +79,11 @@ new YarnTypescriptProject(workspace, "nodejs", {
   dependencies: ["constructs", "dependency-graph", "@pdkit/core"],
   devDependencies: ["prettier", "typescript"],
   eslint: {
+    enabled: true,
     prettier: true,
+  },
+  jest: {
+    enabled: true,
   },
 });
 

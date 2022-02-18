@@ -1,6 +1,6 @@
 import deepmerge from "deepmerge";
-import { Manifest } from "./Manifest";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
+import { Manifest } from "./Manifest";
 
 export interface IManifestEntry extends IXConstruct {
   readonly fields?: Record<string, unknown>;
@@ -12,6 +12,10 @@ export interface IManifestEntry extends IXConstruct {
  * main manifest.
  */
 export class ManifestEntry extends XConstruct implements IManifestEntry {
+  public static is(construct: any) {
+    return construct instanceof this;
+  }
+
   public fields: Record<string, unknown>;
   public propagate: boolean;
 
@@ -27,7 +31,7 @@ export class ManifestEntry extends XConstruct implements IManifestEntry {
       validate: (): string[] => {
         const errors: string[] = [];
 
-        if (!this.fields) {
+        if (!Object.keys(this.fields).length) {
           errors.push("The manifest entry contains no fields");
         }
 
@@ -41,10 +45,8 @@ export class ManifestEntry extends XConstruct implements IManifestEntry {
    * @param fields
    */
   public addFields(fields: Record<string, unknown> | {}) {
+    console.log("Before", this.fields);
     this.fields = deepmerge(this.fields, fields);
-  }
-
-  public static is(construct: any) {
-    return construct instanceof this;
+    console.log("After", this.fields);
   }
 }
