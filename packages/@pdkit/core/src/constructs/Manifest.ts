@@ -38,7 +38,7 @@ export class Manifest extends JsonFile implements IManifest {
   }
 
   constructor(scope: XConstruct, id: string, path: string) {
-    super(scope, id, path);
+    super(scope, id, { path });
 
     this.node.addValidation({
       validate: (): string[] => {

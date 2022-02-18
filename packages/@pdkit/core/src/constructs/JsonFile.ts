@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import deepmerge from "deepmerge";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
-import { File } from "./File";
+import { File, FileProps } from "./File";
 
 export interface IJsonFile extends IXConstruct {
   /**
@@ -14,10 +14,19 @@ export interface IJsonFile extends IXConstruct {
  * JsonFile represents a JSON JsonFile for a given project. Only one JsonFile may be present per project.
  */
 export class JsonFile extends File implements IJsonFile {
+  /**
+   * Check if a given construct is a JsonFile.
+   *
+   * @param construct
+   */
+  public static is(construct: Construct) {
+    return construct instanceof this;
+  }
+
   protected fields: Record<string, unknown>;
 
-  constructor(scope: XConstruct, id: string, path: string) {
-    super(scope, id, path);
+  constructor(scope: XConstruct, id: string, props: Omit<FileProps, "append">) {
+    super(scope, id, props);
 
     this.fields = {};
 
@@ -48,14 +57,5 @@ export class JsonFile extends File implements IJsonFile {
    */
   get content() {
     return JSON.stringify(this.fields, null, 2);
-  }
-
-  /**
-   * Check if a given construct is a JsonFile.
-   *
-   * @param construct
-   */
-  public static is(construct: Construct) {
-    return construct instanceof this;
   }
 }

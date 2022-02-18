@@ -3,7 +3,7 @@ import { File } from "../constructs/File";
 
 export class GitIgnore extends File {
   constructor(scope: XConstruct, id: string, paths: string[]) {
-    super(scope, id, ".gitignore");
+    super(scope, id, { path: ".gitignore", append: true });
 
     this.writeFile(paths.join("\n"));
   }

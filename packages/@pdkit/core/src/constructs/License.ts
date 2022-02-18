@@ -1,7 +1,7 @@
 import request from "sync-request";
-import { ManifestEntry } from "./ManifestEntry";
 import { XConstruct } from "../base/XConstruct";
 import { File } from "./File";
+import { ManifestEntry } from "./ManifestEntry";
 
 // TODO extend based on https://github.com/github/choosealicense.com/tree/gh-pages/_licenses
 export type ValidLicense =
@@ -27,7 +27,7 @@ export class License extends ManifestEntry {
 
     this.license = license;
 
-    new File(this, "License", "LICENSE").writeFile(this.content);
+    new File(this, "License", { path: "LICENSE" }).writeFile(this.content);
   }
 
   get content() {

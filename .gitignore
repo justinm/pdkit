@@ -2,3 +2,12 @@
 /test-reports/
 junit.xml
 /coverage/
+node_modules
+.idea
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*

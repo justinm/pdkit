@@ -19,6 +19,16 @@ export interface IFile extends IXConstruct {
    * The calculated path for the file based on it's parent project
    */
   readonly projectRelativePath: string;
+
+  /**
+   * If returns true, allow the file appended by multiple constructs
+   */
+  readonly appendMode: boolean;
+}
+
+export interface FileProps {
+  readonly path: string;
+  readonly append?: boolean;
 }
 
 /**
@@ -47,10 +57,13 @@ export class File extends XConstruct implements IFile {
    */
   protected _content: string;
 
-  constructor(scope: XConstruct, id: string, filePath: string) {
+  protected _append: boolean;
+
+  constructor(scope: XConstruct, id: string, props: FileProps) {
     super(scope, id);
 
-    this.path = filePath;
+    this.path = props.path;
+    this._append = props.append ?? false;
     this._content = "";
   }
 
@@ -79,6 +92,13 @@ export class File extends XConstruct implements IFile {
    */
   get content() {
     return this._content;
+  }
+
+  /**
+   * If returns true, allow the file appended by multiple constructs
+   */
+  get appendMode() {
+    return this._append;
   }
 
   /**

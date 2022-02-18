@@ -1,6 +1,6 @@
 import mustache from "mustache";
-import { IFile, File } from "./File";
 import { Project } from "../Project";
+import { IFile, File, FileProps } from "./File";
 
 export interface ITemplate extends IFile {
   readonly variables?: Record<string, any>;
@@ -9,9 +9,8 @@ export interface ITemplate extends IFile {
 /**
  * See mustache
  */
-export interface TemplateProps {
+export interface TemplateProps extends FileProps {
   readonly variables?: Record<string, any>;
-  readonly path: string;
 }
 
 /**
@@ -21,7 +20,7 @@ export class Template extends File {
   public readonly variables?: Record<string, any>;
 
   constructor(scope: Project, id: string, props: TemplateProps) {
-    super(scope, id, props.path);
+    super(scope, id, props);
   }
 
   /**

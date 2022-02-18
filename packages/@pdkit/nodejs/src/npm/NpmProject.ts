@@ -1,4 +1,5 @@
 import {
+  GitIgnore,
   InstallShellScript,
   License,
   Project,
@@ -35,6 +36,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly eslint?: EslintProps & { enabled: boolean };
   readonly jest?: JestOptions & { enabled: boolean };
   readonly prettier?: boolean;
+  readonly gitignore?: string[];
 }
 
 export class NpmProject extends Project {
@@ -70,6 +72,12 @@ export class NpmProject extends Project {
 
     if (props?.jest?.enabled) {
       new JestSupport(this, "JestSupport", props.jest);
+    }
+
+    new GitIgnore(this, "DefaultGitIgnore", ["node_modules"]);
+
+    if (props?.gitignore) {
+      new GitIgnore(this, "CustomGitIgnore", props.gitignore);
     }
 
     const addDependencies = (deps: Dependencies, type?: PackageDependencyType) => {

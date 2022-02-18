@@ -1,0 +1,5 @@
+node_modules
+# jest-junit artifacts
+/test-reports/
+junit.xml
+/coverage/

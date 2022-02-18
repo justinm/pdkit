@@ -1,16 +1,28 @@
-import path from "path";
 import fs from "fs";
+import path from "path";
 import { Volume } from "memfs/lib/volume";
+import { XConstruct } from "../base/XConstruct";
 import { ConstructError } from "../util/ConstructError";
 import logger from "../util/logger";
 import { Workspace } from "../Workspace";
-import { XConstruct } from "../base/XConstruct";
 import { File, IFile } from "./File";
 
 /**
  * The VirtualFS provides a staging area for writing files prior to persisting changes to disk.
  */
 export class VirtualFS extends XConstruct {
+  static of(construct: any): VirtualFS {
+    const vfs = Workspace.of(construct)
+      .node.findAll()
+      .find((b) => b instanceof VirtualFS);
+
+    if (!vfs) {
+      throw new ConstructError(construct, "No VirtualFS was found");
+    }
+
+    return vfs as VirtualFS;
+  }
+
   private readonly fs: Volume;
 
   constructor(scope: XConstruct, id: string) {
@@ -36,7 +48,7 @@ export class VirtualFS extends XConstruct {
 
     logger.debug(`${file.node.path} is attempting write to ${filePath}`);
 
-    if (this.fs.existsSync(filePath)) {
+    if (!file.appendMode && this.fs.existsSync(filePath)) {
       const creator = this.creatorOf(filePath);
 
       throw new ConstructError(file, `${filePath} is already owned by ${creator?.node.path ?? "N/A"}`);
@@ -44,7 +56,7 @@ export class VirtualFS extends XConstruct {
 
     this.ensureDirectory(filePath, this.fs);
 
-    this.fs.writeFileSync(filePath, file.content);
+    this.fs.appendFileSync(filePath, file.content);
   }
 
   creatorOf(filePath: string): IFile | undefined {
@@ -83,6 +95,8 @@ export class VirtualFS extends XConstruct {
       if (!stat.isFile()) {
         throw new Error(`${filePath}: is a directory`);
       } else {
+        // TODO fix this
+        // eslint-disable-next-line no-bitwise
         if (stat.mode & 600) {
           return "file may have external modifications " + stat.mode;
         }
@@ -111,17 +125,5 @@ export class VirtualFS extends XConstruct {
     if (!fst.existsSync(dirname)) {
       fst.mkdirSync(dirname, { recursive: true });
     }
-  }
-
-  static of(construct: any): VirtualFS {
-    const vfs = Workspace.of(construct)
-      .node.findAll()
-      .find((b) => b instanceof VirtualFS);
-
-    if (!vfs) {
-      throw new ConstructError(construct, "No VirtualFS was found");
-    }
-
-    return vfs as VirtualFS;
   }
 }

@@ -555,7 +555,7 @@ export class JestSupport extends XConstruct {
     let manifestEntry: ManifestEntry | JsonFile;
 
     if (props.configFilePath) {
-      manifestEntry = new JsonFile(this, "Jest", props.configFilePath);
+      manifestEntry = new JsonFile(this, "Jest", { path: props.configFilePath });
     } else {
       manifestEntry = new ManifestEntry(this, "Jest");
     }

@@ -21,6 +21,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   jest: {
     enabled: true,
   },
+  gitignore: [".idea"],
 });
 
 new YarnTypescriptProject(workspace, "core", {

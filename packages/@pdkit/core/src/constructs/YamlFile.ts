@@ -27,7 +27,7 @@ export class YamlFile extends File implements IYamlFile {
   protected fields: Record<string, unknown>;
 
   constructor(scope: XConstruct, id: string, path: string) {
-    super(scope, id, path);
+    super(scope, id, { path });
 
     this.fields = {};
 
