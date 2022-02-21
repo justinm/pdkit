@@ -153,10 +153,10 @@ Project Link: [https://github.com/justinm/pdkit](https://github.com/justinm/pdki
 
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
+* [Projen](https://www.github.com/projen/projen)
 * [Choose an Open Source License](https://choosealicense.com)
 * [Img Shields](https://shields.io)
 * [GitHub Pages](https://pages.github.com)
-* [Projen](https://www.github.com/projen/projen)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

@@ -18,6 +18,7 @@ export * from "./scripts/PatchScript";
 export * from "./scripts/PostInstallShellScript";
 export * from "./scripts/Script";
 export * from "./scripts/ShellScript";
+export * from "./util/Casing";
 export * from "./util/ConstructError";
 export * from "./validation/StandardValidator";
 export * from "./Project";

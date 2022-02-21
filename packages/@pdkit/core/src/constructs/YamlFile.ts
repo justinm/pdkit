@@ -57,6 +57,11 @@ export class YamlFile extends File implements IYamlFile {
    * Returns the calculated content for the YamlFile.
    */
   get content() {
-    return yaml.dump(this.fields, { lineWidth: 120 });
+    console.log("Yaml content was dumped", this.fields);
+    return this.transform(this.fields);
+  }
+
+  protected transform(fields: Record<string, unknown>) {
+    return yaml.dump(fields, { lineWidth: 120 });
   }
 }

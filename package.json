@@ -25,7 +25,7 @@
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8.9.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^8.4.0",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-import": "^2.25.4",
@@ -80,7 +80,8 @@
   "workspaces": [
     "packages/@pdkit/core",
     "packages/@pdkit/cli",
-    "packages/@pdkit/nodejs"
+    "packages/@pdkit/nodejs",
+    "packages/@pdkit/github"
   ],
   "eslintConfig": {
     "env": {

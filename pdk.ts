@@ -1,5 +1,6 @@
 import { YarnTypescriptProject } from "@pdkit/nodejs/src/yarn/YarnTypescriptProject";
 import { YarnTypescriptWorkspace } from "@pdkit/nodejs/src/yarn/YarnTypescriptWorkspace";
+import { GithubSupport } from "./packages/@pdkit/github/src/GithubSupport";
 
 const workspace = new YarnTypescriptWorkspace("pdkit", {
   author: {
@@ -13,7 +14,6 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   scripts: {
     pdkit: "ts-node packages/@pdkit/cli/src/pdkit.ts",
   },
-  github: true,
   eslint: {
     enabled: true,
     prettier: true,
@@ -22,6 +22,12 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
     enabled: true,
   },
   gitignore: [".idea"],
+});
+
+new GithubSupport(workspace, "GithubSupport", {
+  pullRequestLint: {
+    enabled: true,
+  },
 });
 
 new YarnTypescriptProject(workspace, "core", {
@@ -78,6 +84,20 @@ new YarnTypescriptProject(workspace, "nodejs", {
   packageName: "@pdkit/nodejs",
   projectPath: "packages/@pdkit/nodejs",
   dependencies: ["constructs", "dependency-graph", "@pdkit/core"],
+  devDependencies: ["prettier", "typescript"],
+  eslint: {
+    enabled: true,
+    prettier: true,
+  },
+  jest: {
+    enabled: true,
+  },
+});
+
+new YarnTypescriptProject(workspace, "github", {
+  packageName: "@pdkit/github",
+  projectPath: "packages/@pdkit/github",
+  dependencies: ["constructs", "@pdkit/core"],
   devDependencies: ["prettier", "typescript"],
   eslint: {
     enabled: true,

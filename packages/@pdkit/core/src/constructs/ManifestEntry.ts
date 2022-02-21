@@ -45,8 +45,8 @@ export class ManifestEntry extends XConstruct implements IManifestEntry {
    * @param fields
    */
   public addFields(fields: Record<string, unknown> | {}) {
-    console.log("Before", this.fields);
+    // console.log("Before", this.fields);
     this.fields = deepmerge(this.fields, fields);
-    console.log("After", this.fields);
+    // console.log("After", this.fields);
   }
 }
