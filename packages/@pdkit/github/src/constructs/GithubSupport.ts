@@ -8,10 +8,12 @@ import {
 } from "../github/workflows/PullRequestLintWorkflow";
 
 export interface GithubSupportProps {
-  pullRequestLint?: Omit<SemanticPullRequestLintWorkflowProps, "runsOn">;
-  pullRequestTemplate?: string;
-  buildWorkflow?: BuildWorkflowProps & {
-    enabled: boolean;
+  readonly pullRequestLint?: Omit<SemanticPullRequestLintWorkflowProps, "runsOn">;
+  readonly pullRequestTemplate?: string;
+  readonly workflows?: {
+    readonly build?: {
+      readonly enabled: boolean;
+    } & BuildWorkflowProps;
   };
 }
 
@@ -29,8 +31,8 @@ export class GithubSupport extends XConstruct {
       );
     }
 
-    if (props?.buildWorkflow?.enabled) {
-      new BuildWorkflow(this, "build-workflow", props.buildWorkflow);
+    if (props?.workflows?.build?.enabled) {
+      new BuildWorkflow(this, "build-workflow", props?.workflows?.build);
     }
   }
 }

@@ -4,13 +4,13 @@ import { GithubJobStep } from "../../constructs/GithubJobStep";
 import { GithubWorkflow, GithubWorkflowProps } from "../../constructs/GithubWorkflow";
 import { FailOnSelfMutationStep } from "../steps/FailOnSelfMutationStep";
 import { GithubCheckoutStep } from "../steps/GithubCheckoutStep";
-import { UploadArtifactStep, UploadArtifactStepProps } from "../steps/UploadArtifactStep";
 
-export interface BuildWorkflowProps extends GithubWorkflowProps, UploadArtifactStepProps {
-  setupStep: typeof GithubJobStep;
-  buildStep: typeof GithubJobStep;
-  codeCoverageStep?: typeof GithubJobStep;
-  uploadArtifactStep?: typeof GithubJobStep;
+export interface BuildWorkflowProps extends GithubWorkflowProps {
+  readonly installStep: typeof GithubJobStep;
+  readonly buildStep: typeof GithubJobStep;
+  readonly codeCoverageStep?: typeof GithubJobStep;
+  readonly uploadArtifactStep?: typeof GithubJobStep;
+  readonly failOnMutation?: boolean;
 }
 
 export class BuildWorkflow extends GithubWorkflow {
@@ -32,14 +32,15 @@ export class BuildWorkflow extends GithubWorkflow {
     });
 
     new GithubCheckoutStep(job, "Checkout");
-    new props.setupStep(job, "Setup");
+    new props.installStep(job, "Install");
     new props.buildStep(job, "Build");
 
     if (props.codeCoverageStep) {
       new props.codeCoverageStep(job, "Coverage");
     }
 
-    new FailOnSelfMutationStep(job, "SelfMutation");
-    new UploadArtifactStep(job, "UploadArtifact", props);
+    if (props.failOnMutation) {
+      new FailOnSelfMutationStep(job, "SelfMutation");
+    }
   }
 }

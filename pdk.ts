@@ -1,8 +1,6 @@
 import { YarnTypescriptProject } from "@pdkit/nodejs/src/yarn/YarnTypescriptProject";
 import { YarnTypescriptWorkspace } from "@pdkit/nodejs/src/yarn/YarnTypescriptWorkspace";
-import { GithubSupport } from "./packages/@pdkit/github/src/constructs/GithubSupport";
-import { YarnBuildStep } from "./packages/@pdkit/github/src/nodejs/yarn/steps/YarnBuildStep";
-import { YarnInstallStep } from "./packages/@pdkit/github/src/nodejs/yarn/steps/YarnInstallStep";
+import { YarnGithubSupport } from "./packages/@pdkit/github/src/nodejs/yarn/YarnGithubSupport";
 
 const workspace = new YarnTypescriptWorkspace("pdkit", {
   author: {
@@ -26,16 +24,14 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   gitignore: [".idea"],
 });
 
-new GithubSupport(workspace, "GithubSupport", {
+new YarnGithubSupport(workspace, "GithubSupport", {
   pullRequestLint: {
     enabled: true,
   },
-  buildWorkflow: {
-    enabled: true,
-    buildStep: YarnBuildStep,
-    setupStep: YarnInstallStep,
-    artifactName: "build-artifact",
-    artifactPath: "build",
+  workflows: {
+    build: {
+      enabled: true,
+    },
   },
 });
 
