@@ -64,6 +64,9 @@
 PDKit, or the Project Development Kit, is a new way of managing your projects using code. Based on the idea of constructs,
 PDKit allows you to manage single or monorepos through code.
 
+This project is still in early alpha and not yet available via typical distribution methods (ie. npm). My intention
+is to first fully support the needs of this project prior to general availability.
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -140,7 +143,7 @@ Distributed under the Apache 2.0 License. See [LICENSE](./LICENSE) for more info
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@justinm](https://twitter.com/justinm) - me@justinmccormick.com
+Justin McCormick - [@justinm](https://twitter.com/justinm) - me@justinmccormick.com
 
 Project Link: [https://github.com/justinm/pdkit](https://github.com/justinm/pdkit)
 
