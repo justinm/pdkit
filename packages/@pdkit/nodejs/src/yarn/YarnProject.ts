@@ -4,7 +4,7 @@ import { NodeProjectProps, NpmProject } from "../npm/NpmProject";
 export class YarnProject extends NpmProject {
   constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
     super(scope, id, {
-      installCommand: "yarn",
+      installCommands: ["yarn"],
       ...props,
     });
 

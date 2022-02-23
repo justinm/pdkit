@@ -93,6 +93,10 @@ export abstract class Project extends ShellScript implements IProject {
     }
   }
 
+  get parentProject() {
+    return Project.of(this);
+  }
+
   get projectPath(): string {
     const parent = this.node.scopes.reverse().find((scope) => scope !== this && Project.is(scope)) as
       | Project

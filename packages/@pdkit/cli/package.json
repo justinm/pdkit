@@ -6,6 +6,7 @@
   },
   "scripts": {
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src pdk.ts",
+    "build": "",
     "compile": "tsc -p ./tsconfig.json"
   },
   "files": [
@@ -38,7 +39,7 @@
   "dependencies": {
     "@pdkit/core": "^0.0.0",
     "chalk": "^4.1.2",
-    "constructs": "^10.0.68",
+    "constructs": "^10.0.70",
     "glob": "^7.2.0",
     "glob-regex": "^0.3.2",
     "ora": "^5.4.1",

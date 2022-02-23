@@ -27,7 +27,7 @@ export enum PackageManagerType {
 
 export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly packageName?: string;
-  readonly installCommand?: string;
+  readonly installCommands?: string[];
   readonly dependencies?: Dependencies;
   readonly devDependencies?: Dependencies;
   readonly peerDependencies?: Dependencies;
@@ -37,6 +37,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly jest?: JestOptions & { enabled: boolean };
   readonly prettier?: boolean;
   readonly gitignore?: string[];
+  readonly buildCommands?: string[];
 }
 
 export class NpmProject extends Project {
@@ -46,7 +47,7 @@ export class NpmProject extends Project {
   constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
 
-    new InstallShellScript(this, "InstallCommand", [props?.installCommand ?? "npm install"]);
+    new InstallShellScript(this, "InstallCommand", props?.installCommands ?? ["npm install"]);
     new VirtualFS(this, "VirtualFS");
     new StandardValidator(this, "StandardValidator");
     new TaskManager(this, "TaskManager");
@@ -122,9 +123,21 @@ export class NpmProject extends Project {
     if (props?.peerDependencies) {
       addDependencies(props?.peerDependencies, PackageDependencyType.PEER);
     }
+
+    this.addTask("build", props?.buildCommands ?? []);
   }
 
   tryFindProject(packageName: string) {
-    return Workspace.of(this).projects.find((p) => (p as NpmProject).packageName === packageName);
+    return Workspace.of(this).binds.find((p) => (p as NpmProject).packageName === packageName);
+  }
+
+  /**
+   * Quickly add new tasks to a project
+   *
+   * @param taskName
+   * @param commands
+   */
+  addTask(taskName: string, commands: string[]) {
+    TaskManager.of(this).tryAddTask(taskName, commands);
   }
 }

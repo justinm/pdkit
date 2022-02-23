@@ -13,7 +13,7 @@ export interface YarnTypescriptProjectProps extends NodeProjectProps {
 export class YarnTypescriptProject extends NpmTypescriptProject {
   constructor(scope: XConstruct, id: string, props: YarnTypescriptProjectProps) {
     super(scope, id, {
-      installCommand: "yarn",
+      installCommands: ["yarn"],
       ...props,
     });
   }

@@ -5,6 +5,7 @@
   "scripts": {
     "pdkit": "ts-node packages/@pdkit/cli/src/pdkit.ts",
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src pdk.ts",
+    "build": "",
     "compile": "tsc -p ./tsconfig.json"
   },
   "files": [

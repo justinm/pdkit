@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src pdk.ts",
+    "build": "",
     "compile": "tsc -p ./tsconfig.json"
   },
   "files": [
@@ -30,7 +31,7 @@
   },
   "dependencies": {
     "@pdkit/core": "^0.0.0",
-    "constructs": "^10.0.68"
+    "constructs": "^10.0.70"
   },
   "jest": {
     "clearMocks": true,

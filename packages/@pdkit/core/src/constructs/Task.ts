@@ -4,34 +4,53 @@ import { ManifestEntry } from "./ManifestEntry";
 import { TaskManager } from "./TaskManager";
 
 export class Task extends ManifestEntry {
+  protected _commands: string[];
+
   constructor(scope: XConstruct, id: string, commands: string[]) {
     const tm = TaskManager.of(scope);
+
     super(tm, id);
 
-    const taskName = this.taskName;
+    this._commands = [];
+    this.commands = commands;
 
-    tm._bind(this);
-    tm.graph.addNode(taskName, this);
+    tm.registerTask(this);
+  }
 
+  get commands() {
+    return this._commands;
+  }
+
+  set commands(commands: string[]) {
+    this._commands = commands;
     this.addFields({
       scripts: {
-        [id]: commands.join(" "),
+        [this.node.id]: commands.join(" "),
       },
     });
   }
 
   public dependsOn(task: Task | string) {
+    const tm = TaskManager.of(this);
+
     if (task instanceof Task) {
-      TaskManager.of(this).graph.addDependency(this.taskName, task.taskName);
+      tm.tryAddDependency(this, task);
     } else {
-      TaskManager.of(this).graph.addDependency(this.taskName, task);
+      const existingTask = tm.tryFindTask(task);
+
+      if (existingTask) {
+        tm.tryAddDependency(this, existingTask);
+      }
     }
   }
 
   get taskName() {
     const projects = this.node.scopes.filter((p) => Project.is(p)) as Project[];
-    const prefix = projects.map((p) => p.node.id).join(":");
 
-    return `${prefix}:${this.node.id}`;
+    return projects
+      .map((p) => p.node.id)
+      .concat(this.node.id)
+      .join(":")
+      .replace(/^Default:/, "");
   }
 }
