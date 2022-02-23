@@ -379,6 +379,8 @@ export interface GithubJobProps {
   readonly tools?: Tools;
 }
 
+export type GithubJobImplProps = Partial<Pick<GithubJobProps, "runsOn">>;
+
 export class GithubJob extends XConstruct {
   public static of(construct: XConstruct): GithubJob {
     const workflow = construct.node.scopes.find((s) => s instanceof this) as GithubJob;

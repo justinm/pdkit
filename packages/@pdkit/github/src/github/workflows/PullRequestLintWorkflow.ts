@@ -1,13 +1,11 @@
 import { XConstruct } from "@pdkit/core/src/base/XConstruct";
-import { GithubJob, GithubJobProps, JobPermission } from "../../constructs/GithubJob";
+import { GithubJob, GithubJobImplProps, JobPermission } from "../../constructs/GithubJob";
 import { GithubWorkflow, GithubWorkflowProps } from "../../constructs/GithubWorkflow";
 
 /**
  * Options for SemanticPullRequestLintWorkflow
  */
-export interface SemanticPullRequestLintWorkflowProps
-  extends GithubWorkflowProps,
-    Partial<Pick<GithubJobProps, "runsOn">> {
+export interface SemanticPullRequestLintWorkflowProps extends GithubWorkflowProps, GithubJobImplProps {
   /**
    * Enable pull request title validation workflow
    */

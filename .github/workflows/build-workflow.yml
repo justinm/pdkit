@@ -1,0 +1,46 @@
+name: build-workflow
+'on':
+  pull_request: {}
+  workflow_dispatch: {}
+concurrency: '1'
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+        id: Checkout
+      - name: Install Dependencies
+        run: yarn install --immutable
+        id: Setup
+      - name: Build
+        run: yarn build
+        id: Build
+      - name: Find mutations
+        run: |-
+          git add .
+          git diff --staged --patch --exit-code > .repo.patch || echo "::set-output name=self_mutation_happened::true"
+        id: FailOnSelfMutation
+      - name: Upload Patch
+        uses: actions/upload-artifact@v2
+        if: steps.self_mutation.outputs.self_mutation_happened
+        with:
+          name: .repo.patch
+          path: .repo.patch
+        id: UploadMutations
+      - name: Fail build on mutation
+        if: steps.self_mutation.outputs.self_mutation_happened
+        run: >-
+          echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will
+          need to update your branch."
+
+          cat .repo.patch
+
+          exit 1
+        id: FailOnMutation

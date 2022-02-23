@@ -5,12 +5,6 @@ import { XConstruct } from "@pdkit/core/src";
  */
 export interface GithubJobStepProps {
   /**
-   * A unique identifier for the step. You can use the id to reference the
-   * step in contexts.
-   */
-  readonly id?: string;
-
-  /**
    * You can use the if conditional to prevent a job from running unless a
    * condition is met. You can use any supported context and expression to
    * create a conditional.
@@ -71,7 +65,7 @@ export class GithubJobStep extends XConstruct {
     this.props = props ?? {};
   }
 
-  get content() {
-    return this.props;
+  get content(): GithubJobStepProps & { id?: string } {
+    return { ...this.props, id: this.node.id };
   }
 }

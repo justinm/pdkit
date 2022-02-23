@@ -1,6 +1,7 @@
 import { Workspace } from "@pdkit/core/src";
 import { XConstruct } from "@pdkit/core/src/base/XConstruct";
 import { File } from "@pdkit/core/src/constructs/File";
+import { BuildWorkflow, BuildWorkflowProps } from "./github/workflows/BuildWorkflow";
 import {
   SemanticPullRequestLintWorkflowProps,
   PullRequestLintWorkflow,
@@ -9,6 +10,9 @@ import {
 export interface GithubSupportProps {
   pullRequestLint?: Omit<SemanticPullRequestLintWorkflowProps, "runsOn">;
   pullRequestTemplate?: string;
+  buildWorkflow?: BuildWorkflowProps & {
+    enabled: boolean;
+  };
 }
 
 export class GithubSupport extends XConstruct {
@@ -23,6 +27,10 @@ export class GithubSupport extends XConstruct {
       new File(this, "PullRequestTemplate", { path: ".github/pull_request_template.md" }).writeFile(
         props.pullRequestTemplate
       );
+    }
+
+    if (props?.buildWorkflow?.enabled) {
+      new BuildWorkflow(this, "build-workflow", props.buildWorkflow);
     }
   }
 }
