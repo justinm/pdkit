@@ -1,11 +1,11 @@
 import { Workspace } from "@pdkit/core/src";
 import { XConstruct } from "@pdkit/core/src/base/XConstruct";
 import { File } from "@pdkit/core/src/constructs/File";
-import { BuildWorkflow, BuildWorkflowProps } from "./github/workflows/BuildWorkflow";
+import { BuildWorkflow, BuildWorkflowProps } from "../github/workflows/BuildWorkflow";
 import {
   SemanticPullRequestLintWorkflowProps,
   PullRequestLintWorkflow,
-} from "./github/workflows/PullRequestLintWorkflow";
+} from "../github/workflows/PullRequestLintWorkflow";
 
 export interface GithubSupportProps {
   pullRequestLint?: Omit<SemanticPullRequestLintWorkflowProps, "runsOn">;

@@ -1,6 +1,6 @@
 import { YarnTypescriptProject } from "@pdkit/nodejs/src/yarn/YarnTypescriptProject";
 import { YarnTypescriptWorkspace } from "@pdkit/nodejs/src/yarn/YarnTypescriptWorkspace";
-import { GithubSupport } from "./packages/@pdkit/github/src/GithubSupport";
+import { GithubSupport } from "./packages/@pdkit/github/src/constructs/GithubSupport";
 import { YarnBuildStep } from "./packages/@pdkit/github/src/nodejs/yarn/steps/YarnBuildStep";
 import { YarnInstallStep } from "./packages/@pdkit/github/src/nodejs/yarn/steps/YarnInstallStep";
 
