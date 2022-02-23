@@ -57,15 +57,28 @@ export interface GithubJobStepProps {
 }
 
 export class GithubJobStep extends XConstruct {
-  readonly props: GithubJobStepProps;
+  protected _fields: GithubJobStepProps;
 
   constructor(scope: XConstruct, id: string, props?: GithubJobStepProps) {
     super(scope, id);
 
-    this.props = props ?? {};
+    this._fields = props ?? {};
+  }
+
+  /**
+   * Deep merge new fields into the constructing JsonFile. Existing fields may be overwritten by this call.
+   *
+   * @param fields
+   */
+  public setFields(fields: GithubJobStepProps) {
+    this._fields = fields;
+  }
+
+  get fields() {
+    return this._fields;
   }
 
   get content(): GithubJobStepProps & { id?: string } {
-    return { ...this.props, id: this.node.id };
+    return { ...this._fields, id: this.node.id };
   }
 }
