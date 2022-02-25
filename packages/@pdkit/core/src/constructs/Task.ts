@@ -25,7 +25,7 @@ export class Task extends ManifestEntry {
     this._commands = commands;
     this.addFields({
       scripts: {
-        [this.node.id]: commands.join(" "),
+        [this.node.id]: `npx pdkit run ${this.taskName}`,
       },
     });
   }
@@ -42,6 +42,10 @@ export class Task extends ManifestEntry {
         tm.tryAddDependency(this, existingTask);
       }
     }
+  }
+
+  get cwd() {
+    return Project.of(this).projectPath;
   }
 
   get taskName() {

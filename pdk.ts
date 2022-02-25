@@ -67,6 +67,7 @@ new YarnTypescriptProject(workspace, "cli", {
     { name: "chalk", version: "^4.1.2" },
     { name: "ora", version: "^5.4.1" },
     "constructs",
+    "dependency-graph",
     "glob",
     "glob-regex",
     "prompts",

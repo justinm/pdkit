@@ -1,10 +1,10 @@
+import * as fs from "fs";
+import path from "path";
+import chalk from "chalk";
+import * as glob from "glob";
 import yargs, { CommandModule } from "yargs";
 import { hideBin } from "yargs/helpers";
-import path from "path";
-import * as glob from "glob";
-import { synth } from "./commands";
-import * as fs from "fs";
-import chalk from "chalk";
+import { run, synth } from "./commands";
 
 export interface AppArguments extends yargs.ArgumentsCamelCase<any> {
   config?: string;
@@ -27,13 +27,29 @@ const findPdk = () => {
   return undefined;
 };
 
-const parser = yargs(hideBin(process.argv)).option("config", {
-  alias: "c",
-  default: findPdk() ?? ".pdk.js",
-});
+const pdk = findPdk();
+
+const parser = yargs(hideBin(process.argv))
+  .parserConfiguration({
+    "unknown-options-as-args": true,
+  })
+  .completion()
+  .option("project-root", {
+    alias: "r",
+    default: pdk ? path.dirname(pdk) : undefined,
+  })
+  .option("config", {
+    alias: "c",
+    default: pdk ?? "pdk.js",
+  })
+  .option("task-config", {
+    alias: "t",
+    default: ".pdk/tasks.json",
+  });
 
 function wrapCommand<T extends CommandModule>(command: T): T {
   const handler = command.handler;
+
   command.handler = (args) => {
     try {
       return handler(args);
@@ -48,6 +64,7 @@ function wrapCommand<T extends CommandModule>(command: T): T {
 
 parser
   .command(wrapCommand(synth))
+  .command(wrapCommand(run))
   .demandCommand()
   .check((args) => {
     if (!fs.existsSync(args.config)) {
@@ -57,6 +74,8 @@ parser
     return true;
   })
   .help()
-  .strictCommands()
-  .strictOptions()
-  .parse();
+  .strictCommands(false)
+  .strictOptions(false)
+  .parse()
+  .then(() => {})
+  .catch(console.error);

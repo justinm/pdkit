@@ -2,9 +2,9 @@
   "name": "@pdkit/github",
   "version": "0.0.0",
   "scripts": {
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src pdk.ts",
-    "build": "",
-    "compile": "tsc -p ./tsconfig.json"
+    "lint": "npx pdkit run github:lint",
+    "build": "npx pdkit run github:build",
+    "compile": "npx pdkit run github:compile"
   },
   "files": [
     "dist/*.js",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@pdkit/core": "^0.0.0",
-    "constructs": "^10.0.70"
+    "constructs": "^10.0.72"
   },
   "jest": {
     "clearMocks": true,

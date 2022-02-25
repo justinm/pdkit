@@ -781,6 +781,7 @@ __metadata:
     "@typescript-eslint/parser": ^5
     chalk: ^4.1.2
     constructs: "*"
+    dependency-graph: "*"
     eslint: "*"
     eslint-config-prettier: "*"
     eslint-import-resolver-node: "*"
@@ -2004,9 +2005,9 @@ __metadata:
   linkType: hard
 
 "constructs@npm:*":
-  version: 10.0.70
-  resolution: "constructs@npm:10.0.70"
-  checksum: 03aad104125e4a6d5abc51e51cffdb6fd025a3daf638b87a0f47b0a9ae55d07dd5f4a576d478d38ce79a0a7f0bfaee96cde6e3f23a97ea69b8e959e6b381b6b4
+  version: 10.0.72
+  resolution: "constructs@npm:10.0.72"
+  checksum: ed2073e9e1514ad0c2b307db26d244902b21eb5ed69785cafdeb1bc02deab361b683f2dfe708bc8e073277f737eaf49e9422d07f39749d222c0aaf2eae776978
   languageName: node
   linkType: hard
 

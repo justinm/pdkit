@@ -23,18 +23,18 @@ export class JsonFile extends File implements IJsonFile {
     return construct instanceof this;
   }
 
-  protected fields: Record<string, unknown>;
+  protected _fields: Record<string, unknown>;
 
   constructor(scope: XConstruct, id: string, props: Omit<FileProps, "append">) {
     super(scope, id, props);
 
-    this.fields = {};
+    this._fields = {};
 
     this.node.addValidation({
       validate: (): string[] => {
         const errors: string[] = [];
 
-        if (!Object.keys(this.fields).length) {
+        if (!Object.keys(this._fields).length) {
           errors.push("The file does not contain any data to write");
         }
 
@@ -43,19 +43,23 @@ export class JsonFile extends File implements IJsonFile {
     });
   }
 
+  get fields() {
+    return this._fields;
+  }
+
   /**
    * Deep merge new fields into the constructing JsonFile. Existing fields may be overwritten by this call.
    *
    * @param fields
    */
   public addFields(fields: Record<string, unknown> | {}) {
-    this.fields = deepmerge(this.fields, fields);
+    this._fields = deepmerge(this._fields, fields);
   }
 
   /**
    * Returns the calculated content for the JsonFile.
    */
   get content() {
-    return JSON.stringify(this.fields, null, 2);
+    return JSON.stringify(this._fields, null, 2);
   }
 }

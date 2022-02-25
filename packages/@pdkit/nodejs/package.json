@@ -2,9 +2,9 @@
   "name": "@pdkit/nodejs",
   "version": "0.0.0",
   "scripts": {
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src pdk.ts",
-    "build": "",
-    "compile": "tsc -p ./tsconfig.json"
+    "lint": "npx pdkit run nodejs:lint",
+    "build": "npx pdkit run nodejs:build",
+    "compile": "npx pdkit run nodejs:compile"
   },
   "files": [
     "dist/*.js",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@pdkit/core": "^0.0.0",
-    "constructs": "^10.0.70",
+    "constructs": "^10.0.72",
     "dependency-graph": "^0.11.0"
   },
   "jest": {
