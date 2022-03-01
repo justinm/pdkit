@@ -39,6 +39,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#goals">Goals</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -69,6 +70,14 @@ is to first fully support the needs of this project prior to general availabilit
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+### Goals
+
+The PDKit project has several key goals it intends to keep:
+
+* Highly Configurable
+* Highly Extendable
+* Concentrate on the NodeJS ecosystem, but build with compatibility for more in mind
+* Community Driven
 
 ### Built With
 
