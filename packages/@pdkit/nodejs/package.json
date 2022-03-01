@@ -2,8 +2,8 @@
   "name": "@pdkit/nodejs",
   "version": "0.0.0",
   "scripts": {
-    "build": "npx pdkit run nodejs:build",
-    "lint": "npx pdkit run nodejs:lint"
+    "build": "tsc -p ./tsconfig.json",
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src pdk.ts"
   },
   "files": [
     "dist/*.js",

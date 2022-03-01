@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "pdkit": "ts-node packages/@pdkit/cli/src/pdkit.ts",
-    "build": "npx pdkit run build",
-    "lint": "npx pdkit run lint"
+    "build": "tsc -p ./tsconfig.json",
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src pdk.ts"
   },
   "files": [
     "dist/*.js",

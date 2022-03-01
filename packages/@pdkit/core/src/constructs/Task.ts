@@ -13,6 +13,10 @@ export class Task extends XConstruct {
     this._commands = commands;
   }
 
+  get command() {
+    return this._commands.join(" ");
+  }
+
   get commands() {
     return this._commands;
   }
