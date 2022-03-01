@@ -2,8 +2,6 @@ import { Construct, IConstruct } from "constructs";
 import { ConstructError } from "../util/ConstructError";
 
 export interface IXConstruct extends IConstruct {
-  readonly binds: IXConstruct[];
-
   _beforeSynth(): void;
   _onSynth(): void;
   _synth(): void;
@@ -22,14 +20,8 @@ export abstract class XConstruct extends Construct implements IXConstruct {
     return construct instanceof this;
   }
 
-  private readonly _binds: IXConstruct[] = [];
-
   constructor(scope: XConstruct, id: string) {
     super(scope, id.replace("/", "-"));
-  }
-
-  get binds() {
-    return this._binds;
   }
 
   public _onBeforeSynth(): void {}

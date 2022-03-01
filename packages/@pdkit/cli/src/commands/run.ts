@@ -1,24 +1,22 @@
-import assert from "assert";
 import { spawn } from "child_process";
-import * as fs from "fs";
-import path from "path";
+import { Project, Task, TaskManager } from "@pdkit/core/src";
 import chalk from "chalk";
 import { DepGraph } from "dependency-graph";
-import ora from "ora";
 import yargs from "yargs";
 import { AppArguments } from "../pdkit";
+import { loadWorkspace, spinner, synthWorkspace, writeWithSpinner } from "../utils";
 
 export const command = "run <task>";
 export const desc = "Runs a task for the given project";
 
-export interface ITaskConfig {
-  [key: string]: {
-    dependencies: string[];
-    commands: string[];
-    cwd: string;
-    projectName: string;
-  };
-}
+// export interface ITaskConfig {
+//   [key: string]: {
+//     dependencies: string[];
+//     commands: string[];
+//     cwd: string;
+//     projectName: string;
+//   };
+// }
 
 export const builder: yargs.CommandBuilder<any, any> = function (y) {
   return y
@@ -29,99 +27,58 @@ export const builder: yargs.CommandBuilder<any, any> = function (y) {
     .option("dryrun", {
       alias: "n",
       type: "boolean",
-    })
-    .check((argv) => {
-      argv.pathToTasks = path.join(argv.projectRoot, argv.taskConfig);
-
-      if (!fs.existsSync(argv.pathToTasks)) {
-        return `Could not load task configuration at ${argv.pathToTasks}`;
-      }
-
-      return true;
     });
 };
 
 export const handler = async function (argv: AppArguments) {
-  const configPath = argv.pathToTasks as string;
-  const task = argv.task as string;
-  const data = JSON.parse(fs.readFileSync(configPath).toString("utf8"));
+  const taskName = argv.task as string;
+  const config = argv.config as string;
+  const workspace = await loadWorkspace(config);
 
-  const graph = rebuildGraph(data.tasks, task);
+  synthWorkspace(workspace);
 
-  await runTasks(graph, graph.overallOrder(), (argv._ as string[]).slice(1), argv.dryrun, argv.projectRoot);
-};
+  const tasks = workspace.node.findAll().filter((n) => Task.is(n)) as Task[];
+  const task = tasks.find((t) => (t as Task).name === taskName);
 
-function rebuildGraph(tasks: ITaskConfig, selectedTask: string) {
-  const graph = new DepGraph<ITaskConfig[0]>();
-
-  for (const taskName of Object.keys(tasks)) {
-    graph.addNode(taskName, tasks[taskName]);
+  if (!task) {
+    throw new Error(`No such task: ${taskName}`);
   }
 
-  const scanTask = (taskName: string) => {
-    if (tasks[taskName]) {
-      for (const dep of tasks[taskName].dependencies) {
-        graph.addDependency(taskName, dep);
+  const graph = rebuildGraph(tasks, task);
+  await runTasks(graph, graph.overallOrder(), (argv._ as string[]).slice(1), argv.dryrun);
+};
 
-        scanTask(dep);
-      }
+function rebuildGraph(tasks: Task[], selectedTask: Task) {
+  const graph = new DepGraph<Task>();
+
+  const scanTask = (task: Task) => {
+    graph.addNode(task.fullyQualifiedName, task);
+
+    for (const dep of TaskManager.graph.dependenciesOf(task.fullyQualifiedName)) {
+      graph.addDependency(task.fullyQualifiedName, dep);
+
+      scanTask(TaskManager.graph.getNodeData(dep));
     }
   };
 
   scanTask(selectedTask);
 
-  for (const taskName of Object.keys(tasks)) {
-    const split = taskName.split(":");
-    const structureName = split.slice(0, split.length - 1).join(":");
-    const realTaskName = split[split.length - 1];
-
-    if (selectedTask !== taskName && taskName.endsWith(realTaskName) && taskName.startsWith(structureName)) {
-      graph.addDependency(selectedTask, taskName);
-    }
-
-    for (const dep of tasks[taskName].dependencies) {
-      graph.addDependency(taskName, dep);
-    }
-  }
-
   return graph;
 }
 
-function writeWithSpinner(spinner: ora.Ora, text: string, stderr?: Boolean) {
-  if (text && text !== "") {
-    spinner.stop();
-    process.stderr.write("\r");
-    (stderr ? process.stderr : process.stdout).write(text.trimEnd() + "\n");
-    spinner.start();
-  }
-}
-
-async function runTasks(
-  graph: DepGraph<ITaskConfig[0]>,
-  tasks: string[],
-  args: string[],
-  dryRun: boolean,
-  projectRoot: string
-) {
-  const spinner = ora();
-
-  for (let i = 0; i < tasks.length; i++) {
-    const taskName = tasks[i];
+async function runTasks(graph: DepGraph<Task>, taskOrder: string[], args: string[], dryRun: boolean) {
+  for (let i = 0; i < taskOrder.length; i++) {
+    const taskName = taskOrder[i];
     const task = graph.getNodeData(taskName);
-
-    assert(task.commands, "task entry missing commands");
-    assert(task.cwd, "task entry missing cwd");
-    assert(task.projectName, "task entry missing projectName");
-
-    const cwd = path.join(projectRoot, task.cwd);
+    const cwd = Project.of(task).absolutePath;
 
     let commandArgs = task.commands.slice(1);
 
-    if (i >= tasks.length - 1 && args.length) {
+    if (i >= taskOrder.length - 1 && args.length) {
       commandArgs.push(...args);
     }
 
-    spinner.start(`Running ${taskName}`);
+    spinner.start(`Running ${task.fullyQualifiedName}`);
 
     if (!task.commands.length) {
       if (dryRun) {
@@ -132,7 +89,7 @@ async function runTasks(
       continue;
     }
 
-    writeWithSpinner(spinner, chalk.gray(`Spawning: ${[task.commands[0]].concat(commandArgs).join(" ")} in ${cwd}`));
+    writeWithSpinner(chalk.gray(`Spawning: ${[task.commands[0]].concat(commandArgs).join(" ")} in ${cwd}`));
 
     if (!dryRun) {
       const cmd = spawn(task.commands[0], commandArgs, {
@@ -142,11 +99,11 @@ async function runTasks(
       });
 
       cmd.stdout?.on("data", (data) => {
-        writeWithSpinner(spinner, data.toString());
+        writeWithSpinner(data.toString());
       });
 
       cmd.stderr?.on("data", (data) => {
-        writeWithSpinner(spinner, data.toString(), true);
+        writeWithSpinner(data.toString(), true);
       });
 
       const exitCode = await new Promise<number>((resolve) => {

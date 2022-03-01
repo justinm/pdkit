@@ -7,9 +7,9 @@ export class NpmTaskManager extends TaskManager {
     const tm = TaskManager.of(this);
 
     tm.tasks.forEach((task) => {
-      new ManifestEntry(this, `Script-${task.taskName}`, {
+      new ManifestEntry(this, `Script-${task.fullyQualifiedName}`, {
         scripts: {
-          [task.node.id]: `npx pdkit run ${task.taskName}`,
+          [task.name]: `npx pdkit run ${task.fullyQualifiedName}`,
         },
       });
     });

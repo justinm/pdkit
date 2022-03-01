@@ -1,10 +1,8 @@
 import { spawn } from "child_process";
 import path from "path";
 import {
-  ConstructError,
   Project,
   Workspace,
-  XConstruct,
   VirtualFS,
   InstallShellScript,
   PatchScript,
@@ -12,11 +10,11 @@ import {
   ShellScript,
 } from "@pdkit/core/src";
 import { Script } from "@pdkit/core/src/scripts/Script";
-import ora from "ora";
 import prompts from "prompts";
 import yargs from "yargs";
 import logger from "../../../core/src/util/logger";
 import { AppArguments } from "../pdkit";
+import { loadWorkspace, spinner, synthWorkspace, withSpinner } from "../utils";
 
 export const command = "synth";
 export const desc = "Synthesizes the projects configuration";
@@ -34,52 +32,14 @@ export const builder: yargs.CommandBuilder<any, any> = function (y) {
     });
 };
 
-async function withSpinner<T>(spinner: ora.Ora, verbose: number, message: string, callback: () => T | null) {
-  const indent = spinner.indent;
-  try {
-    if (verbose) {
-      spinner.info(`${message}...`);
-    } else {
-      spinner.start(`${message}...`);
-    }
-    const ret = await callback();
-    spinner.indent = indent;
-
-    if (spinner.isSpinning) {
-      spinner.succeed(`${message}... complete`);
-    }
-
-    return ret;
-  } catch (err) {
-    spinner.indent = indent;
-
-    if (err instanceof ConstructError) {
-      spinner.fail(`${message}: ${(err as Error).message}`);
-      logger.debug(err.stack);
-      process.exit(1);
-    }
-
-    if (err instanceof Error) {
-      spinner.fail(`${message}: ${(err as Error).message}`);
-      logger.debug(err.stack);
-      process.exit(1);
-    } else {
-      spinner.warn(`${message}: ${err as string}`);
-    }
-  }
-
-  return null;
-}
-
 const runShellScripts = async (
-  spinner: ora.Ora,
   workspace: Workspace | null,
   name: string,
   type: typeof ShellScript,
   verbose: number,
   dryrun: boolean
 ) => {
-  return withSpinner(spinner, verbose, `Running ${name} shell scripts`, async () => {
+  return withSpinner(verbose, `Running ${name} shell scripts`, async () => {
     if (workspace) {
       const scripts = workspace.node
         .findAll()
@@ -148,14 +108,13 @@ const runShellScripts = async (
   });
 };
 const runScripts = async (
-  spinner: ora.Ora,
   workspace: Workspace | null,
   name: string,
   type: typeof Script,
   verbose: number,
   dryrun: boolean
 ) => {
-  return withSpinner(spinner, verbose, `Running ${name} scripts`, async () => {
+  return withSpinner(verbose, `Running ${name} scripts`, async () => {
     if (workspace) {
       const scripts = workspace.node
         .findAll()
@@ -191,33 +150,8 @@ const runScripts = async (
   });
 };
 
-export const handler = async function (argv: AppArguments) {
-  const config = argv.config as string;
-  const dryrun = (argv.dryrun as boolean) ?? false;
-  const verbose = (argv.verbose as number) ?? false;
-
-  const spinner = ora();
-
-  let workspace = await withSpinner<Workspace>(spinner, 0, "Loading project...", () => {
-    process.chdir(path.dirname(config));
-
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const ws = Workspace.of(require(config).default as XConstruct);
-
-    if (!ws) {
-      throw new Error("No workspace could be found for project.");
-    }
-
-    return ws;
-  });
-
-  await withSpinner(spinner, 0, "Synthesizing project...", () => {
-    if (workspace) {
-      workspace.synth();
-    }
-  });
-
-  await withSpinner(spinner, verbose, "Writing files to disk", async () => {
+const writeFilesToDisk = async (workspace: Workspace | null, verbose: number, dryrun: boolean) => {
+  await withSpinner(verbose, "Writing files to disk", async () => {
     const vfs = VirtualFS.of(workspace);
     const filesWritten: string[] = [];
 
@@ -282,10 +216,19 @@ export const handler = async function (argv: AppArguments) {
       throw "no files were written";
     }
   });
+};
+export const handler = async function (argv: AppArguments) {
+  const config = argv.config as string;
+  const dryrun = (argv.dryrun as boolean) ?? false;
+  const verbose = (argv.verbose as number) ?? false;
+  const workspace = await loadWorkspace(config);
 
-  await runShellScripts(spinner, workspace, "install", InstallShellScript, verbose, dryrun);
-  await runScripts(spinner, workspace, "patch", PatchScript, verbose, dryrun);
-  await runShellScripts(spinner, workspace, "post-install", PostInstallShellScript, verbose, dryrun);
+  synthWorkspace(workspace);
+
+  await writeFilesToDisk(workspace, verbose, dryrun);
+  await runShellScripts(workspace, "install", InstallShellScript, verbose, dryrun);
+  await runScripts(workspace, "patch", PatchScript, verbose, dryrun);
+  await runShellScripts(workspace, "post-install", PostInstallShellScript, verbose, dryrun);
 
   if (!verbose && dryrun) {
     spinner.info("For more information, try the --verbose flag and/or LOG_LEVEL=debug");

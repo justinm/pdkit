@@ -2,9 +2,8 @@
   "name": "@pdkit/core",
   "version": "0.0.0",
   "scripts": {
-    "lint": "npx pdkit run core:lint",
     "build": "npx pdkit run core:build",
-    "compile": "npx pdkit run core:compile"
+    "lint": "npx pdkit run core:lint"
   },
   "files": [
     "dist/*.js",
@@ -18,7 +17,7 @@
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
-    "eslint": "^8.9.0",
+    "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.4.0",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.5.0",
@@ -30,55 +29,7 @@
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.3",
     "ts-node": "^10.5.0",
-    "typescript": "^4.5.5"
-  },
-  "dependencies": {
-    "case": "^1.6.3",
-    "constructs": "^10.0.72",
-    "deepmerge": "^4.2.2",
-    "dependency-graph": "^0.11.0",
-    "js-yaml": "^4.1.0",
-    "memfs": "^3.4.1",
-    "mustache": "^4.2.0",
-    "sync-request": "^6.1.0",
-    "winston": "^3.6.0"
-  },
-  "jest": {
-    "clearMocks": true,
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "lcov",
-      "clover",
-      "cobertura",
-      "text"
-    ],
-    "coverageDirectory": "coverage",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "watchIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "watchPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testMatch": [
-      "**/__tests__/**/*.[jt]s?(x)",
-      "**/?(*.)+(spec|test).[tj]s?(x)"
-    ],
-    "reporters": [
-      [
-        "jest-junit",
-        {
-          "outputDirectory": "test-reports"
-        }
-      ]
-    ],
-    "preset": "ts-jest"
+    "typescript": "^4.6.2"
   },
   "eslintConfig": {
     "env": {
@@ -215,5 +166,53 @@
       "sourceType": "module",
       "project": "tsconfig.json"
     }
+  },
+  "dependencies": {
+    "case": "^1.6.3",
+    "constructs": "^10.0.75",
+    "deepmerge": "^4.2.2",
+    "dependency-graph": "^0.11.0",
+    "js-yaml": "^4.1.0",
+    "memfs": "^3.4.1",
+    "mustache": "^4.2.0",
+    "sync-request": "^6.1.0",
+    "winston": "^3.6.0"
+  },
+  "jest": {
+    "clearMocks": true,
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "clover",
+      "cobertura",
+      "text"
+    ],
+    "coverageDirectory": "coverage",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "watchIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "watchPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.[jt]s?(x)",
+      "**/?(*.)+(spec|test).[tj]s?(x)"
+    ],
+    "reporters": [
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "test-reports"
+        }
+      ]
+    ],
+    "preset": "ts-jest"
   }
 }

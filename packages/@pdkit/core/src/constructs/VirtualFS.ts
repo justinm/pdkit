@@ -5,7 +5,7 @@ import { XConstruct } from "../base/XConstruct";
 import { ConstructError } from "../util/ConstructError";
 import logger from "../util/logger";
 import { Workspace } from "../Workspace";
-import { File, IFile } from "./File";
+import { IFile } from "./File";
 
 /**
  * The VirtualFS provides a staging area for writing files prior to persisting changes to disk.
@@ -24,11 +24,13 @@ export class VirtualFS extends XConstruct {
   }
 
   private readonly fs: Volume;
+  private owners: Record<string, IFile>;
 
   constructor(scope: XConstruct, id: string) {
     super(scope, id);
 
     this.fs = new Volume();
+    this.owners = {};
   }
 
   readFile(file: IFile) {
@@ -52,13 +54,15 @@ export class VirtualFS extends XConstruct {
       throw new ConstructError(file, `${filePath} is already owned by ${creator?.node.path ?? "N/A"}`);
     }
 
+    this.owners[filePath] = file;
+
     this.ensureDirectory(filePath, this.fs);
 
     this.fs.appendFileSync(filePath, file.content);
   }
 
   creatorOf(filePath: string): IFile | undefined {
-    return this.binds.filter((b) => b instanceof File).find((f) => (f as File).path === filePath) as IFile | undefined;
+    return this.owners[filePath];
   }
 
   get files() {

@@ -120,6 +120,16 @@ export abstract class Project extends XConstruct implements IProject {
     return path.join(parent ? parent.projectPath : "/", this._projectPath ?? "");
   }
 
+  get absolutePath(): string {
+    const workspace = Workspace.of(this);
+
+    const parent = this.node.scopes.reverse().find((scope) => scope !== this && Project.is(scope)) as
+      | Project
+      | undefined;
+
+    return path.join(workspace.rootPath, parent ? parent.projectPath : "/", this._projectPath ?? "");
+  }
+
   get projectRelativeSourcePath(): string {
     return path.join(this.projectPath, this._sourcePath).substring(1);
   }

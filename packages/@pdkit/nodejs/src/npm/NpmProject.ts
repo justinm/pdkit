@@ -132,7 +132,9 @@ export class NpmProject extends Project {
   }
 
   tryFindProject(packageName: string) {
-    return Workspace.of(this).binds.find((p) => (p as NpmProject).packageName === packageName);
+    return Workspace.of(this)
+      .node.findAll()
+      .find((p) => (p as NpmProject).packageName === packageName) as NpmProject | undefined;
   }
 
   /**

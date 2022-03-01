@@ -1,3 +1,4 @@
+import assert from "assert";
 import { DepGraph } from "dependency-graph";
 import { XConstruct } from "../base/XConstruct";
 import { Project } from "../Project";
@@ -44,7 +45,7 @@ export abstract class TaskManager extends XConstruct {
   }
 
   tryFindTask(taskName: string) {
-    return this.tasks.find((t) => t.node.id === taskName) as Task | undefined;
+    return this.tasks.find((t) => t.name === taskName) as Task | undefined;
   }
 
   findTask(taskName: string) {
@@ -74,8 +75,16 @@ export abstract class TaskManager extends XConstruct {
   _onBeforeSynth() {
     const tasks = Project.of(this).tryFindDeepChildren(Task) as Task[];
 
-    tasks.forEach((task) => TaskManager.graph.addNode(task.taskName, task));
+    tasks.forEach((task) => TaskManager.graph.addNode(task.fullyQualifiedName, task));
 
-    this.dependencyCache.forEach((entry) => TaskManager.graph.addDependency(entry[1], entry[0]));
+    this.dependencyCache.forEach((entry) => {
+      const task = this.tryFindTask(entry[0]);
+      const dependsOn = this.tryFindTask(entry[1]);
+
+      assert(task);
+      assert(dependsOn);
+
+      TaskManager.graph.addDependency(task?.fullyQualifiedName, dependsOn?.fullyQualifiedName);
+    });
   }
 }

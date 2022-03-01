@@ -2,9 +2,8 @@
   "name": "@pdkit/nodejs",
   "version": "0.0.0",
   "scripts": {
-    "lint": "npx pdkit run nodejs:lint",
     "build": "npx pdkit run nodejs:build",
-    "compile": "npx pdkit run nodejs:compile"
+    "lint": "npx pdkit run nodejs:lint"
   },
   "files": [
     "dist/*.js",
@@ -15,7 +14,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
-    "eslint": "^8.9.0",
+    "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.4.0",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.5.0",
@@ -27,49 +26,7 @@
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.3",
     "ts-node": "^10.5.0",
-    "typescript": "^4.5.5"
-  },
-  "dependencies": {
-    "@pdkit/core": "^0.0.0",
-    "constructs": "^10.0.72",
-    "dependency-graph": "^0.11.0"
-  },
-  "jest": {
-    "clearMocks": true,
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "lcov",
-      "clover",
-      "cobertura",
-      "text"
-    ],
-    "coverageDirectory": "coverage",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "watchIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "watchPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testMatch": [
-      "**/__tests__/**/*.[jt]s?(x)",
-      "**/?(*.)+(spec|test).[tj]s?(x)"
-    ],
-    "reporters": [
-      [
-        "jest-junit",
-        {
-          "outputDirectory": "test-reports"
-        }
-      ]
-    ],
-    "preset": "ts-jest"
+    "typescript": "^4.6.2"
   },
   "eslintConfig": {
     "env": {
@@ -206,5 +163,47 @@
       "sourceType": "module",
       "project": "tsconfig.json"
     }
+  },
+  "dependencies": {
+    "@pdkit/core": "^0.0.0",
+    "constructs": "^10.0.75",
+    "dependency-graph": "^0.11.0"
+  },
+  "jest": {
+    "clearMocks": true,
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "clover",
+      "cobertura",
+      "text"
+    ],
+    "coverageDirectory": "coverage",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "watchIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "watchPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.[jt]s?(x)",
+      "**/?(*.)+(spec|test).[tj]s?(x)"
+    ],
+    "reporters": [
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "test-reports"
+        }
+      ]
+    ],
+    "preset": "ts-jest"
   }
 }
