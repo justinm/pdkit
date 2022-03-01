@@ -1,7 +1,8 @@
 import { Workspace } from "@pdkit/core/src";
 import { XConstruct } from "@pdkit/core/src/base/XConstruct";
 import { File } from "@pdkit/core/src/constructs/File";
-import { BuildWorkflow, BuildWorkflowProps } from "../github/workflows/BuildWorkflow";
+import { BuildJobProps } from "../github/jobs/BuildJob";
+import { BuildWorkflow } from "../github/workflows/BuildWorkflow";
 import {
   SemanticPullRequestLintWorkflowProps,
   PullRequestLintWorkflow,
@@ -13,7 +14,7 @@ export interface GithubSupportProps {
   readonly workflows?: {
     readonly build?: {
       readonly enabled: boolean;
-    } & BuildWorkflowProps;
+    } & BuildJobProps;
   };
 }
 
@@ -32,7 +33,7 @@ export class GithubSupport extends XConstruct {
     }
 
     if (props?.workflows?.build?.enabled) {
-      new BuildWorkflow(this, "build-workflow", props?.workflows?.build);
+      new BuildWorkflow(this, "build-workflow", { build: props.workflows.build });
     }
   }
 }

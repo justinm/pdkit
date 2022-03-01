@@ -31,7 +31,8 @@ new YarnGithubSupport(workspace, "GithubSupport", {
   workflows: {
     build: {
       enabled: true,
-      failOnMutation: true,
+      failOnMutation: false,
+      commitMutations: false,
     },
   },
 });

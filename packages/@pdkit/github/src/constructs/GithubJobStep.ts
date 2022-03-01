@@ -24,6 +24,8 @@ export interface GithubJobStepProps {
    */
   readonly uses?: string;
 
+  readonly needs?: string;
+
   /**
    * Runs command-line programs using the operating system's shell. If you do
    * not provide a name, the step name will default to the text specified in

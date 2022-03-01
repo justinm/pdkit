@@ -62,6 +62,6 @@ export class YamlFile extends File implements IYamlFile {
   }
 
   protected transform(fields: Record<string, unknown>) {
-    return yaml.dump(fields, { lineWidth: 120 });
+    return yaml.dump(fields, { lineWidth: 120, noRefs: true });
   }
 }

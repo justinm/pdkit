@@ -1,14 +1,14 @@
 import { Workspace } from "@pdkit/core/src";
 import { GithubSupport, GithubSupportProps } from "../../constructs/GithubSupport";
-import { BuildWorkflowProps } from "../../github/workflows/BuildWorkflow";
+import { BuildJobProps } from "../../github/jobs/BuildJob";
 import { YarnBuildStep } from "./steps/YarnBuildStep";
 import { YarnInstallStep } from "./steps/YarnInstallStep";
 
 export interface YarnGithubSupportProps extends Omit<GithubSupportProps, "workflows"> {
-  readonly workflows?: {
-    readonly build?: {
+  readonly workflows: {
+    readonly build: {
       readonly enabled: boolean;
-    } & Omit<BuildWorkflowProps, "installStep" | "buildStep">;
+    } & Omit<BuildJobProps, "installStep" | "buildStep" | "codeCoverageStep" | "uploadArtifactStep">;
   };
 }
 

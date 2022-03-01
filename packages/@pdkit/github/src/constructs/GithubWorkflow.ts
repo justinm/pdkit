@@ -13,7 +13,7 @@ export interface GithubWorkflowProps {
    * @default disabled
    * @experimental
    */
-  readonly concurrency?: string;
+  readonly concurrency?: unknown;
 
   /**
    * Sets environment variables for steps to use in the runner environment.
