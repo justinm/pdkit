@@ -59,10 +59,12 @@ function rebuildGraph(tasks: ITaskConfig, selectedTask: string) {
   }
 
   const scanTask = (taskName: string) => {
-    for (const dep of tasks[taskName].dependencies) {
-      graph.addDependency(taskName, dep);
+    if (tasks[taskName]) {
+      for (const dep of tasks[taskName].dependencies) {
+        graph.addDependency(taskName, dep);
 
-      scanTask(dep);
+        scanTask(dep);
+      }
     }
   };
 

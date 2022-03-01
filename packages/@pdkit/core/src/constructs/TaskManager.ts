@@ -4,7 +4,7 @@ import { Project } from "../Project";
 import { ConstructError } from "../util/ConstructError";
 import { Task } from "./Task";
 
-export class TaskManager extends XConstruct {
+export abstract class TaskManager extends XConstruct {
   public static readonly graph = new DepGraph<Task>();
 
   static of(construct: any): TaskManager {
@@ -19,24 +19,32 @@ export class TaskManager extends XConstruct {
     return taskManager;
   }
 
+  private dependencyCache: string[][] = [];
+
   constructor(scope: XConstruct, id: string) {
     super(scope, id);
-  }
 
-  registerTask(task: Task) {
-    TaskManager.graph.addNode(task.taskName, task);
+    this.node.addValidation({
+      validate: () => {
+        const errors: string[] = [];
+
+        const handlers = Project.of(this).tryFindDeepChildren(TaskManager);
+
+        if (handlers.length > 1) {
+          errors.push("Only one TaskManager may exist in a project at a time.");
+        }
+
+        return errors;
+      },
+    });
   }
 
   get tasks() {
-    const project = Project.of(this);
-
-    return project.node.findAll().filter((t) => Task.is(t)) as Task[];
+    return Project.of(this).tryFindDeepChildren(Task) as Task[];
   }
 
   tryFindTask(taskName: string) {
-    const project = Project.of(this);
-
-    return this.tasks.filter((t) => t.node.id === taskName).find((t) => Project.of(t) === project) as Task | undefined;
+    return this.tasks.find((t) => t.node.id === taskName) as Task | undefined;
   }
 
   findTask(taskName: string) {
@@ -47,8 +55,8 @@ export class TaskManager extends XConstruct {
     }
   }
 
-  tryAddDependency(task: Task, dependsOn: Task) {
-    TaskManager.graph.addDependency(dependsOn.taskName, task.taskName);
+  tryAddDependency(task: string, dependsOn: string) {
+    this.dependencyCache.push([task, dependsOn]);
   }
 
   tryAddTask(taskName: string, commands: string[]) {
@@ -61,5 +69,13 @@ export class TaskManager extends XConstruct {
     }
 
     return existingTask;
+  }
+
+  _onBeforeSynth() {
+    const tasks = Project.of(this).tryFindDeepChildren(Task) as Task[];
+
+    tasks.forEach((task) => TaskManager.graph.addNode(task.taskName, task));
+
+    this.dependencyCache.forEach((entry) => TaskManager.graph.addDependency(entry[1], entry[0]));
   }
 }

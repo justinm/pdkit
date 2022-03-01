@@ -1,6 +1,5 @@
 import { Construct, IConstruct } from "constructs";
 import { ConstructError } from "../util/ConstructError";
-import logger from "../util/logger";
 
 export interface IXConstruct extends IConstruct {
   readonly binds: IXConstruct[];
@@ -8,7 +7,6 @@ export interface IXConstruct extends IConstruct {
   _beforeSynth(): void;
   _onSynth(): void;
   _synth(): void;
-  _bind(construct: IXConstruct): void;
 }
 
 /**
@@ -32,15 +30,6 @@ export abstract class XConstruct extends Construct implements IXConstruct {
 
   get binds() {
     return this._binds;
-  }
-
-  public _bind(construct: IXConstruct) {
-    logger.debug(`${construct} bound itself to ${this}`);
-    if (this._binds.indexOf(construct) !== -1) {
-      throw new ConstructError(construct, `Construct was already bound to ${this}`);
-    }
-
-    this._binds.push(construct);
   }
 
   public _onBeforeSynth(): void {}

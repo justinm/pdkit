@@ -1,5 +1,5 @@
 import { Workspace, WorkspaceProps } from "@pdkit/core/src";
-import { NpmTaskHandler } from "./NpmTaskHandler";
+import { NpmTaskManager } from "./NpmTaskManager";
 
 export interface NpmWorkspaceProps extends WorkspaceProps {}
 
@@ -7,6 +7,6 @@ export class NpmWorkspace extends Workspace {
   constructor(id: string, props?: NpmWorkspaceProps) {
     super(id, props);
 
-    new NpmTaskHandler(this, "NpmTaskHandler");
+    new NpmTaskManager(this, "NpmTaskHandler");
   }
 }

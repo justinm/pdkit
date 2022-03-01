@@ -16,6 +16,7 @@ import { PackageDependency, PackageDependencyType } from "../constructs/PackageD
 import { PackageJson, NodePackageJsonProps } from "../constructs/PackageJson";
 import { EslintProps, EslintSupport } from "../eslint/EslintSupport";
 import { JestOptions, JestSupport } from "../jest/JestSupport";
+import { NpmTaskManager } from "./NpmTaskManager";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
 
@@ -41,6 +42,9 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
 }
 
 export class NpmProject extends Project {
+  public static of(construct: any): NpmProject {
+    return Project.of(construct) as NpmProject;
+  }
   public readonly packageJson: PackageJson;
   public readonly packageName: string;
 
@@ -50,7 +54,7 @@ export class NpmProject extends Project {
     new InstallShellScript(this, "InstallCommand", props?.installCommands ?? ["npm install"]);
     new VirtualFS(this, "VirtualFS");
     new StandardValidator(this, "StandardValidator");
-    new TaskManager(this, "TaskManager");
+    new NpmTaskManager(this, "TaskManager");
 
     this.packageName = props?.packageName ?? id;
     this.packageJson = new PackageJson(this, "PackageJson", {

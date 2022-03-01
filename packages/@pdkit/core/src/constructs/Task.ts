@@ -7,14 +7,10 @@ export class Task extends ManifestEntry {
   protected _commands: string[];
 
   constructor(scope: XConstruct, id: string, commands: string[]) {
-    const tm = TaskManager.of(scope);
-
-    super(tm, id);
+    super(scope, id);
 
     this._commands = [];
     this.commands = commands;
-
-    tm.registerTask(this);
   }
 
   get commands() {
@@ -34,13 +30,9 @@ export class Task extends ManifestEntry {
     const tm = TaskManager.of(this);
 
     if (task instanceof Task) {
-      tm.tryAddDependency(this, task);
+      tm.tryAddDependency(this.taskName, task.taskName);
     } else {
-      const existingTask = tm.tryFindTask(task);
-
-      if (existingTask) {
-        tm.tryAddDependency(this, existingTask);
-      }
+      tm.tryAddDependency(this.taskName, task);
     }
   }
 

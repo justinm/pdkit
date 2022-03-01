@@ -375,7 +375,7 @@ export class TypescriptSupport extends XConstruct {
 
     this.fileName = props?.fileName ?? "tsconfig.json";
 
-    tm.tryAddTask("compile", ["tsc", "-p", "./tsconfig.json"]).dependsOn("build");
+    tm.tryAddTask("build", ["tsc", "-p", "./tsconfig.json"]);
 
     new PackageDependency(this, "typescript", { type: PackageDependencyType.DEV });
     new PackageDependency(this, "ts-node", { type: PackageDependencyType.DEV });

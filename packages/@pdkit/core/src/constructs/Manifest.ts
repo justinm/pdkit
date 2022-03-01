@@ -28,7 +28,7 @@ export class Manifest extends JsonFile implements IManifest {
 
   public static of(construct: Construct): Manifest {
     const project = Project.of(construct);
-    const manifest = project.node.findAll().find((c) => c instanceof Manifest);
+    const manifest = project.tryFindDeepChildren(Manifest)[0];
 
     if (!manifest) {
       throw new ConstructError(construct, `No manifest was found in project ${project.node.id}`);
@@ -44,11 +44,11 @@ export class Manifest extends JsonFile implements IManifest {
       validate: (): string[] => {
         const errors: string[] = [];
         const siblings = Project.of(this)
-          .node.findAll()
-          .filter((p) => p instanceof Manifest && p !== this);
+          .tryFindDeepChildren(Manifest)
+          .filter((m) => m !== this);
 
-        if (siblings.length > 1) {
-          errors.push("Only one manifest is allowed when using manifest entries");
+        if (siblings.length) {
+          errors.push("Only one manifest is allowed per project");
         }
 
         return errors;
@@ -65,9 +65,8 @@ export class Manifest extends JsonFile implements IManifest {
 
     const parentManifests = this.node.scopes
       .filter((s) => Project.is(s) && s !== project)
-      .map((p) => Manifest.of(p))
-      .map((m) => m.binds.filter((e) => e instanceof ManifestEntry && e.propagate))
-      .flat() as ManifestEntry[];
+      .map((p) => (p as Project).tryFindDeepChildren(ManifestEntry).filter((entry) => entry.propagate))
+      .flat();
 
     for (const entry of parentManifests) {
       if (entry.fields) {
@@ -75,7 +74,7 @@ export class Manifest extends JsonFile implements IManifest {
       }
     }
 
-    const entries = this.binds.filter((b) => b instanceof ManifestEntry) as ManifestEntry[];
+    const entries = project.tryFindDeepChildren(ManifestEntry);
 
     for (const entry of entries) {
       fields = deepmerge(fields, entry.fields);

@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import { IXConstruct, XConstruct } from "./base/XConstruct";
-import { ShellScript } from "./scripts/ShellScript";
 import { ConstructError } from "./util/ConstructError";
 import { Workspace } from "./Workspace";
 
@@ -17,7 +16,9 @@ export interface ProjectProps {
   readonly distPath?: string;
 }
 
-export abstract class Project extends ShellScript implements IProject {
+type Constructor<T> = abstract new (...args: any[]) => any;
+
+export abstract class Project extends XConstruct implements IProject {
   public static is(construct: any) {
     return construct instanceof this;
   }
@@ -57,8 +58,6 @@ export abstract class Project extends ShellScript implements IProject {
     this._sourcePath = props?.sourcePath ?? "src";
     this._distPath = props?.distPath ?? "dist";
 
-    Workspace.of(this)._bind(this);
-
     this.node.addValidation({
       validate: () => {
         const errors: string[] = [];
@@ -93,7 +92,23 @@ export abstract class Project extends ShellScript implements IProject {
     }
   }
 
+  public tryFindDeepChildren<
+    T extends Constructor<any> = Constructor<any>,
+    TRet extends InstanceType<T> = InstanceType<T>
+  >(childType: T): TRet[] {
+    const parentProject = Project.of(this);
+
+    return this.node
+      .findAll()
+      .filter((c) => c instanceof childType)
+      .filter((c) => Project.of(c) === parentProject) as TRet[];
+  }
+
   get parentProject() {
+    return Project.of(this);
+  }
+
+  get siblings() {
     return Project.of(this);
   }
 

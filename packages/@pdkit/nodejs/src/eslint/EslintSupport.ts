@@ -281,9 +281,10 @@ export class EslintSupport extends XConstruct {
       ],
     } as Record<string, unknown>;
 
-    const tsSupport = Project.of(this)
-      .node.findAll()
-      .find((b) => b instanceof TypescriptSupport) as TypescriptSupport | undefined;
+    const project = Project.of(this);
+    const tsSupport = project.node.findAll().find((b) => b instanceof TypescriptSupport) as
+      | TypescriptSupport
+      | undefined;
 
     if (tsSupport) {
       config.parserOptions = {

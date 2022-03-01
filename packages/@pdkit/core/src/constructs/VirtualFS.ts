@@ -29,8 +29,6 @@ export class VirtualFS extends XConstruct {
     super(scope, id);
 
     this.fs = new Volume();
-
-    Workspace.of(this)._bind(this);
   }
 
   readFile(file: IFile) {
