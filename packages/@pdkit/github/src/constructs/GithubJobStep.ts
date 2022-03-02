@@ -5,6 +5,11 @@ import { XConstruct } from "@pdkit/core/src";
  */
 export interface GithubJobStepProps {
   /**
+   * A jobs priority dictates which order its run in
+   */
+  readonly priority?: number;
+
+  /**
    * You can use the if conditional to prevent a job from running unless a
    * condition is met. You can use any supported context and expression to
    * create a conditional.
@@ -60,11 +65,13 @@ export interface GithubJobStepProps {
 
 export class GithubJobStep extends XConstruct {
   protected _fields: GithubJobStepProps;
+  public readonly priority: number;
 
   constructor(scope: XConstruct, id: string, props?: GithubJobStepProps) {
     super(scope, id);
 
     this._fields = props ?? {};
+    this.priority = props?.priority ?? 10;
   }
 
   /**

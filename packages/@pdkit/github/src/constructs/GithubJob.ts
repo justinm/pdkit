@@ -245,6 +245,11 @@ export interface ContainerCredentials {
  */
 export interface GithubJobProps {
   /**
+   * A jobs priority dictates which order its run in
+   */
+  readonly priority?: number;
+
+  /**
    * The type of machine to run the job on. The machine can be either a
    * GitHub-hosted runner or a self-hosted runner.
    *
@@ -434,11 +439,13 @@ export class GithubJob extends XConstruct {
   }
 
   readonly props: GithubJobProps;
+  readonly priority: number;
 
   constructor(scope: XConstruct, id: string, props: GithubJobProps) {
     super(scope, id);
 
     this.props = props;
+    this.priority = props.priority ?? 10;
 
     props.steps?.forEach((step, i) => new GithubJobStep(this, `Step-${i}`, step));
   }
@@ -447,7 +454,7 @@ export class GithubJob extends XConstruct {
     GithubWorkflow.of(this).addFields(this.content);
   }
 
-  get content(): Omit<GithubJobProps, "outputs" | "runsOn"> & {
+  get content(): Omit<GithubJobProps, "outputs" | "runsOn" | "priority"> & {
     outputs: Record<string, string> | undefined;
     "runs-on": string | string[] | undefined;
     "timeout-minutes": number | undefined;

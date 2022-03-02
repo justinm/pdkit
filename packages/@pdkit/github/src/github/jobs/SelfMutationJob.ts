@@ -3,7 +3,7 @@ import { GithubJob, GithubJobProps, JobPermission } from "../../constructs/Githu
 import { GithubJobStep, GithubJobStepProps } from "../../constructs/GithubJobStep";
 import { GithubCheckoutStep } from "../steps/GithubCheckoutStep";
 
-export interface SelfMutationJobProps {
+export interface SelfMutationJobProps extends Partial<GithubJobProps> {
   buildJobName: string;
   job?: GithubJobProps;
   checkout?: GithubJobStepProps;
