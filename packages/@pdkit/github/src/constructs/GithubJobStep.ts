@@ -88,6 +88,6 @@ export class GithubJobStep extends XConstruct {
   }
 
   get content(): GithubJobStepProps & { id?: string } {
-    return { ...this._fields, id: this.node.id };
+    return { ...this._fields, id: this.node.id, priority: undefined };
   }
 }

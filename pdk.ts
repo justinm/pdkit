@@ -34,6 +34,10 @@ new YarnGithubSupport(workspace, "GithubSupport", {
       failOnMutation: false,
       commitMutations: false,
     },
+    release: {
+      branches: ["main"],
+      enabled: false,
+    },
   },
 });
 

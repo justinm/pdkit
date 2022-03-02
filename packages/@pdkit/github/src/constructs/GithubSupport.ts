@@ -2,11 +2,13 @@ import { Workspace } from "@pdkit/core/src";
 import { XConstruct } from "@pdkit/core/src/base/XConstruct";
 import { File } from "@pdkit/core/src/constructs/File";
 import { BuildJobProps } from "../github/jobs/BuildJob";
+import { ReleaseJobProps } from "../github/jobs/ReleaseJob";
 import { BuildWorkflow } from "../github/workflows/BuildWorkflow";
 import {
   SemanticPullRequestLintWorkflowProps,
   PullRequestLintWorkflow,
 } from "../github/workflows/PullRequestLintWorkflow";
+import { ReleaseWorkflow } from "../github/workflows/ReleaseWorkflow";
 
 export interface GithubSupportProps {
   readonly pullRequestLint?: Omit<SemanticPullRequestLintWorkflowProps, "runsOn">;
@@ -15,6 +17,10 @@ export interface GithubSupportProps {
     readonly build?: {
       readonly enabled: boolean;
     } & BuildJobProps;
+    readonly release?: {
+      readonly branches: string[];
+      readonly enabled: boolean;
+    } & ReleaseJobProps;
   };
 }
 
@@ -34,6 +40,13 @@ export class GithubSupport extends XConstruct {
 
     if (props?.workflows?.build?.enabled) {
       new BuildWorkflow(this, "build-workflow", { build: props.workflows.build });
+    }
+
+    if (props?.workflows?.release?.enabled) {
+      new ReleaseWorkflow(this, "release-workflow", {
+        branches: props?.workflows.release.branches,
+        release: props.workflows.release,
+      });
     }
   }
 }
