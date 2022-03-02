@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src pdk.ts"
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src"
   },
   "files": [
     "dist/*.js",
@@ -32,6 +32,11 @@
     "typescript": "^4.6.2"
   },
   "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "project": "tsconfig.json"
+    },
     "env": {
       "jest": true,
       "node": true
@@ -160,12 +165,7 @@
           "import/no-extraneous-dependencies": "off"
         }
       }
-    ],
-    "parserOptions": {
-      "ecmaVersion": 2018,
-      "sourceType": "module",
-      "project": "tsconfig.json"
-    }
+    ]
   },
   "dependencies": {
     "case": "^1.6.3",

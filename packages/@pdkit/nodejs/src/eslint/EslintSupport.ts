@@ -1,6 +1,7 @@
 import { ManifestEntry, PDKIT_CONFIG_FILE, Project, Task, XConstruct } from "@pdkit/core/src";
 import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
 import { TypescriptSupport } from "../constructs/TypescriptSupport";
+import { EslintExtension } from "./EslintExtension";
 
 export interface EslintProps {
   /**
@@ -22,8 +23,8 @@ export interface EslintProps {
   readonly devdirs?: string[];
 
   /**
-   * File types that should be linted (e.g. [ ".js", ".ts" ])
-   * @default [".ts"]
+   * File types that should be linted (e.g. [ "js", "ts" ])
+   * @default ["js"]
    */
   readonly fileExtensions?: string[];
 
@@ -90,21 +91,12 @@ export class EslintSupport extends XConstruct {
     new PackageDependency(this, "eslint-plugin-import", { type: PackageDependencyType.DEV });
     new PackageDependency(this, "json-schema", { type: PackageDependencyType.DEV });
 
-    const project = Project.of(this);
-    const fileExtensions = props?.fileExtensions ?? [".ts"];
-
-    new Task(this, "lint", [
-      "eslint",
-      `--ext ${fileExtensions.join(",")}`,
-      "--fix",
-      "--no-error-on-unmatched-pattern",
-      project.sourcePath,
-      PDKIT_CONFIG_FILE,
-      ...this.devdirs,
-    ]);
-
     if (props?.aliasMap) {
       new PackageDependency(this, "eslint-import-resolver-alias", { type: PackageDependencyType.DEV });
+    }
+
+    if (props.fileExtensions) {
+      props.fileExtensions.forEach((ext) => new EslintExtension(this, ext));
     }
 
     this.rules = {
@@ -282,17 +274,34 @@ export class EslintSupport extends XConstruct {
     } as Record<string, unknown>;
 
     const project = Project.of(this);
-    const tsSupport = project.node.findAll().find((b) => b instanceof TypescriptSupport) as
-      | TypescriptSupport
-      | undefined;
+    const tsSupport = project.tryFindDeepChildren(TypescriptSupport);
 
-    if (tsSupport) {
-      config.parserOptions = {
-        ecmaVersion: 2018,
-        sourceType: "module",
-        project: tsSupport.fileName,
-      };
+    if (tsSupport && tsSupport.length) {
+      new EslintExtension(this, "ts");
+
+      new ManifestEntry(this, "EslintTypescriptConfig", {
+        eslintConfig: {
+          parserOptions: {
+            ecmaVersion: 2018,
+            sourceType: "module",
+            project: tsSupport[0].fileName,
+          },
+        },
+      });
+    } else {
+      new EslintExtension(this, "js");
     }
+
+    const fileExtensions = project.tryFindDeepChildren(EslintExtension).map((e) => `.${e.extension}`);
+
+    new Task(this, "lint", [
+      "eslint",
+      `--ext ${fileExtensions.join(",")}`,
+      "--fix",
+      "--no-error-on-unmatched-pattern",
+      project.sourcePath,
+      ...this.devdirs,
+    ]);
 
     new ManifestEntry(this, "EslintConfig", { eslintConfig: config });
   }

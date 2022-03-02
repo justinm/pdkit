@@ -72,7 +72,8 @@ export abstract class TaskManager extends XConstruct {
     return existingTask;
   }
 
-  _onBeforeSynth() {
+  _onSynth() {
+    super._onSynth();
     const tasks = Project.of(this).tryFindDeepChildren(Task) as Task[];
 
     tasks.forEach((task) => TaskManager.graph.addNode(task.fullyQualifiedName, task));

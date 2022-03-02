@@ -2,6 +2,8 @@ import { ManifestEntry, TaskManager } from "@pdkit/core/src";
 
 export class NpmTaskManager extends TaskManager {
   _onSynth() {
+    super._onSynth();
+
     const tm = TaskManager.of(this);
 
     tm.tasks.forEach((task) => {
