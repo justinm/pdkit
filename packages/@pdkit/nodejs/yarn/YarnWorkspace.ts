@@ -13,7 +13,13 @@ export class YarnWorkspace extends NpmWorkspace implements IYarnMonoRepo {
   constructor(id: string, props?: YarnWorkspaceProps) {
     super(id, props);
 
-    new YarnProject(this, "Default", { ...props, packageName: "workspace", projectPath: "./" });
+    new YarnProject(this, "Default", {
+      ...props,
+      packageName: "workspace",
+      projectPath: "./",
+      sourcePath: props?.sourcePath ?? "src",
+      distPath: props?.distPath ?? "src",
+    });
   }
 
   _beforeSynth() {
