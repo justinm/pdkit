@@ -1,6 +1,5 @@
-import { YarnTypescriptProject } from "@pdkit/nodejs/src/yarn/YarnTypescriptProject";
-import { YarnTypescriptWorkspace } from "@pdkit/nodejs/src/yarn/YarnTypescriptWorkspace";
-import { YarnGithubSupport } from "./packages/@pdkit/github/src/nodejs/yarn/YarnGithubSupport";
+import { YarnTypescriptProject, YarnTypescriptWorkspace } from "@pdkit/nodejs";
+import { YarnGithubSupport } from "./packages/@pdkit/github";
 
 const workspace = new YarnTypescriptWorkspace("pdkit", {
   author: {

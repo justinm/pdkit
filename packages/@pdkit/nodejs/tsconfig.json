@@ -3,10 +3,10 @@
     "node_modules"
   ],
   "include": [
-    "src"
+    "."
   ],
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": ".",
     "alwaysStrict": true,
     "declaration": true,
     "esModuleInterop": true,
