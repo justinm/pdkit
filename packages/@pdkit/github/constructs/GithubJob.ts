@@ -450,7 +450,7 @@ export class GithubJob extends XConstruct {
     props.steps?.forEach((step, i) => new GithubJobStep(this, `Step-${i}`, step));
   }
 
-  _onBeforeSynth() {
+  _beforeSynth() {
     GithubWorkflow.of(this).addFields(this.content);
   }
 

@@ -552,24 +552,6 @@ export class JestSupport extends XConstruct {
       ignore.push(...["# jest-junit artifacts", `/${reportsDirectory}/`, "junit.xml"]);
     }
 
-    let manifestEntry: ManifestEntry | JsonFile;
-
-    if (props.configFilePath) {
-      manifestEntry = new JsonFile(this, "Jest", { path: props.configFilePath });
-    } else {
-      manifestEntry = new ManifestEntry(this, "Jest");
-    }
-
-    if (props.jestConfig?.coverageThreshold) {
-      manifestEntry.addFields({
-        jest: {
-          coverageThreshold: {
-            global: props.jestConfig.coverageThreshold,
-          },
-        },
-      });
-    }
-
     const coverageDirectoryPath = path.posix.join("/", coverageDirectory, "/");
     ignore.push(coverageDirectoryPath);
 
@@ -580,7 +562,7 @@ export class JestSupport extends XConstruct {
     new GitIgnore(this, "JestGitIgnore", ignore);
     new NpmIgnore(this, "JestNppmIgnore", ignore);
 
-    manifestEntry.addFields({
+    const fields = {
       jest: {
         ...props.jestConfig,
         clearMocks,
@@ -594,7 +576,19 @@ export class JestSupport extends XConstruct {
         testMatch,
         reporters,
         snapshotResolver,
-      },
-    });
+      } as Record<string, unknown>,
+    };
+
+    if (props.jestConfig?.coverageThreshold) {
+      fields.jest.coverageThreshold = {
+        global: props.jestConfig.coverageThreshold,
+      };
+    }
+
+    if (props.configFilePath) {
+      new JsonFile(this, "Jest", { path: props.configFilePath, fields });
+    } else {
+      new ManifestEntry(this, "Jest", fields, { shallow: true });
+    }
   }
 }

@@ -35,7 +35,7 @@ export class YamlFile extends File implements IYamlFile {
       validate: (): string[] => {
         const errors: string[] = [];
 
-        if (!Object.keys(this.fields).length) {
+        if (!this.content) {
           errors.push("The file does not contain any data to write");
         }
 

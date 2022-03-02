@@ -1,5 +1,4 @@
 import { Construct } from "constructs";
-import deepmerge from "deepmerge";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
 import { ConstructError } from "../util/ConstructError";
 import { JsonFile } from "./JsonFile";
@@ -59,27 +58,34 @@ export class Manifest extends JsonFile implements IManifest {
   /**
    * Returns the calculated content for the manifest.
    */
-  get content() {
+  _onSynth() {
     const project = Project.of(this);
-    let fields = this.fields;
 
-    const parentManifests = this.node.scopes
+    const parentManifestEntries = this.node.scopes
       .filter((s) => Project.is(s) && s !== project)
       .map((p) => (p as Project).tryFindDeepChildren(ManifestEntry).filter((entry) => entry.propagate))
       .flat();
 
-    for (const entry of parentManifests) {
+    for (const entry of parentManifestEntries) {
       if (entry.fields) {
-        fields = deepmerge(fields, entry.fields);
+        if (entry.shallow) {
+          this.addShallowFields(entry.fields);
+        } else {
+          this.addDeepFields(entry.fields);
+        }
       }
     }
 
     const entries = project.tryFindDeepChildren(ManifestEntry);
 
     for (const entry of entries) {
-      fields = deepmerge(fields, entry.fields);
+      if (entry.shallow) {
+        this.addShallowFields(entry.fields);
+      } else {
+        this.addDeepFields(entry.fields);
+      }
     }
 
-    return JSON.stringify(fields, null, 2);
+    super._onSynth();
   }
 }

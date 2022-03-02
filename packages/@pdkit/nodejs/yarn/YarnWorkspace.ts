@@ -16,7 +16,7 @@ export class YarnWorkspace extends NpmWorkspace implements IYarnMonoRepo {
     new YarnProject(this, "Default", { ...props, packageName: "workspace", projectPath: "./" });
   }
 
-  _onBeforeSynth() {
+  _beforeSynth() {
     const defaultProject = Project.of(this);
     const projects = this.node.findAll().filter((b) => Project.is(b) && b !== defaultProject);
     const projectPaths = projects.map((p) => (p as NpmProject).projectPath.substring(1));

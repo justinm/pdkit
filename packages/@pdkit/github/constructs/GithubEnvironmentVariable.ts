@@ -12,7 +12,7 @@ export class GithubEnvironmentVariable extends XConstruct {
     this.value = value;
   }
 
-  _onBeforeSynth() {
+  _onSynth() {
     GithubWorkflow.of(this)?.addFields({ env: this.content });
   }
 

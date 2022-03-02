@@ -1,6 +1,6 @@
 import { ValidLicense, Manifest, XConstruct } from "@pdkit/core";
 import { NpmProject } from "../npm/NpmProject";
-import { UpdatePackageVersionsPostInstallScript } from "../scripts/UpdatePackageVersionsPostInstallScript";
+// import { UpdatePackageVersionsPostInstallScript } from "../scripts/UpdatePackageVersionsPostInstallScript";
 
 export interface NodePackageJsonProps {
   readonly name?: string;
@@ -26,11 +26,13 @@ export class PackageJson extends Manifest {
   constructor(scope: XConstruct, id: string, props?: NodePackageJsonProps) {
     super(scope, id, "package.json");
 
+    const packageJson = NpmProject.of(this).tryReadJsonFile<{ [key: string]: any }>("package.json");
+
     if (props) {
-      this.addFields({
+      this.addShallowFields({
         name: props.name,
         description: props.description,
-        version: props.version ?? "0.0.0",
+        version: props.version ?? packageJson?.version ?? "0.0.0",
         private: props.private,
         homepath: props.homepath,
         repository: props.repository,
@@ -44,32 +46,40 @@ export class PackageJson extends Manifest {
       });
     }
 
-    new UpdatePackageVersionsPostInstallScript(this, "PatchPackageJson");
+    // new UpdatePackageVersionsPostInstallScript(this, "PatchPackageJson");
   }
 
-  _synth() {
-    super._synth();
+  get version() {
+    return this.fields.version as string;
+  }
 
-    const packageJson = NpmProject.of(this).tryReadJsonFile<{ [key: string]: any }>("package.json");
+  resolveDepVersion(dep: string) {
+    const packageJson = NpmProject.of(this).tryReadJsonFile<{ [key: string]: any }>(`node_modules/${dep}/package.json`);
 
-    if (packageJson) {
-      this.addFields({ version: packageJson.version });
+    return packageJson?.version ?? "*";
+  }
 
-      ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
-        if (this.fields[key]) {
-          const deps = this.fields[key] as { [key: string]: string };
+  _onSynth() {
+    super._onSynth();
 
-          Object.keys(deps).forEach((d) => {
-            if (deps[d] === "*" && packageJson[key] && packageJson[key][d]) {
-              this.addFields({
-                [key]: {
-                  [d]: packageJson[key][d],
-                },
-              });
-            }
-          });
-        }
+    const addPackageDependency = (key: string, packageName: string, version: string) => {
+      this.addDeepFields({
+        [key]: {
+          [packageName]: version,
+        },
       });
-    }
+    };
+
+    ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
+      if (this.fields[key]) {
+        for (const dep of Object.keys(this.fields[key] as Record<string, string>)) {
+          const version = this.resolveDepVersion(dep);
+
+          if (version) {
+            addPackageDependency(key, dep, `^${version}`);
+          }
+        }
+      }
+    });
   }
 }

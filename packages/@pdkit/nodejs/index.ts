@@ -12,7 +12,6 @@ export * from "./npm/NpmProject";
 export * from "./npm/NpmTaskManager";
 export * from "./npm/NpmTypescriptProject";
 export * from "./npm/NpmWorkspace";
-export * from "./scripts/UpdatePackageVersionsPostInstallScript";
 export * from "./yarn/YarnProject";
 export * from "./yarn/YarnTypescriptProject";
 export * from "./yarn/YarnTypescriptWorkspace";

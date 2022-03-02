@@ -38,7 +38,7 @@ export class Author extends ManifestEntry {
           organization: props.organization,
         },
       },
-      true
+      { propagate: true }
     );
   }
 }

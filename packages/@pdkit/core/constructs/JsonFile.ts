@@ -10,6 +10,10 @@ export interface IJsonFile extends IXConstruct {
   readonly path: string;
 }
 
+export interface JsonFileProps extends Omit<FileProps, "append"> {
+  readonly fields?: Record<string, unknown>;
+}
+
 /**
  * JsonFile represents a JSON JsonFile for a given project. Only one JsonFile may be present per project.
  */
@@ -25,7 +29,7 @@ export class JsonFile extends File implements IJsonFile {
 
   protected _fields: Record<string, unknown>;
 
-  constructor(scope: XConstruct, id: string, props: Omit<FileProps, "append">) {
+  constructor(scope: XConstruct, id: string, props: JsonFileProps) {
     super(scope, id, props);
 
     this._fields = {};
@@ -52,8 +56,29 @@ export class JsonFile extends File implements IJsonFile {
    *
    * @param fields
    */
-  public addFields(fields: Record<string, unknown> | {}) {
-    this._fields = deepmerge(this._fields, fields);
+  public addDeepFields(fields: Record<string, unknown> | {}) {
+    this._fields = deepmerge(this._fields, fields, {
+      arrayMerge: (target, source) => {
+        return target.concat(source).reduce((coll, el) => {
+          if (!coll.filter((s: unknown) => s === el).length) {
+            coll.push(el);
+          }
+
+          return coll;
+        }, []);
+      },
+    });
+  }
+
+  /**
+   * Shallow merge new fields into the constructing JsonFile. Existing fields may be overwritten by this call.
+   *
+   * @param fields
+   */
+  public addShallowFields(fields: Record<string, unknown> | {}) {
+    for (const key of Object.keys(fields)) {
+      this._fields[key] = fields[key as keyof typeof fields];
+    }
   }
 
   /**

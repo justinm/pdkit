@@ -1,8 +1,9 @@
 import { Construct, IConstruct } from "constructs";
-import { XConstruct } from "../base/XConstruct";
+import { IXConstruct, XConstruct } from "../base/XConstruct";
+import { Script } from "../scripts/Script";
 import { ConstructError } from "../util/ConstructError";
-import { logger } from "../util/logger";
 import { Project } from "./Project";
+import { VirtualFS } from "./VirtualFS";
 
 export interface IWorkspace extends IConstruct {
   readonly rootPath: string;
@@ -39,7 +40,7 @@ export class Workspace extends XConstruct implements IWorkspace {
       validate: () => {
         const errors: string[] = [];
 
-        if (this.node.scopes.length > 0) {
+        if (this.node.scopes[0] !== this) {
           errors.push("A workspace must be the top-most construct");
         }
 
@@ -51,12 +52,66 @@ export class Workspace extends XConstruct implements IWorkspace {
   synth() {
     this.node.validate();
 
-    logger.debug("before _onBeforeSynth()");
-    this._onBeforeSynth();
-    logger.debug("before _beforeSynth()");
-    this._beforeSynth();
-    logger.debug("before _synth()");
-    this._synth();
+    this.node
+      .findAll()
+      .filter((child) => (child as IXConstruct)._beforeSynth)
+      .forEach((child) => (child as IXConstruct)._beforeSynth());
+    this.node
+      .findAll()
+      .filter((child) => (child as IXConstruct)._onSynth)
+      .forEach((child) => (child as IXConstruct)._onSynth());
+    this.node
+      .findAll()
+      .filter((child) => (child as IXConstruct)._synth)
+      .forEach((child) => (child as IXConstruct)._synth());
+    this.node
+      .findAll()
+      .filter((child) => (child as IXConstruct)._validate)
+      .forEach((child) => (child as IXConstruct)._validate());
+    this.node
+      .findAll()
+      .filter((child) => (child as IXConstruct)._afterSynth)
+      .forEach((child) => (child as IXConstruct)._afterSynth());
+  }
+
+  syncFilesToDisk({
+    forcePath,
+    dryRun,
+  }: {
+    forcePath?: string;
+    dryRun?: boolean;
+  }): { path: string; reason?: string }[] {
+    const vfs = VirtualFS.of(this);
+    const results: { path: string; reason?: string }[] = [];
+
+    if (forcePath) {
+      if (!dryRun) {
+        vfs.syncPathToDisk(forcePath);
+      }
+
+      results.push({ path: forcePath });
+    } else {
+      for (const filePath of vfs.files) {
+        if (vfs.checkPathConflicts(filePath)) {
+          results.push({ path: filePath, reason: "conflict" });
+        } else {
+          if (!dryRun) {
+            vfs.syncPathToDisk(filePath);
+          }
+          results.push({ path: filePath });
+        }
+      }
+    }
+
+    return results;
+  }
+
+  async runScripts(type: typeof Script) {
+    const scripts = this.node.findAll().filter((n) => n instanceof type) as Script[];
+
+    for (const script of scripts) {
+      await script.runnable();
+    }
   }
 
   get projects() {

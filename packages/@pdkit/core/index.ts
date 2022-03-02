@@ -17,7 +17,6 @@ export * from "./constructs/YamlFile";
 export * from "./git/GitIgnore";
 export * from "./git/GitRepository";
 export * from "./scripts/InstallShellScript";
-export * from "./scripts/PatchScript";
 export * from "./scripts/PostInstallShellScript";
 export * from "./scripts/Script";
 export * from "./scripts/ShellScript";

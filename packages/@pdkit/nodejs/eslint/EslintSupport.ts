@@ -154,7 +154,7 @@ export class EslintSupport extends XConstruct {
     }
   }
 
-  _onBeforeSynth() {
+  _beforeSynth() {
     const standardRules = {
       // Require use of the `import { foo } from 'bar';` form instead of `import foo = require('bar');`
       "@typescript-eslint/no-require-imports": ["error"],
@@ -279,15 +279,11 @@ export class EslintSupport extends XConstruct {
     if (tsSupport && tsSupport.length) {
       new EslintExtension(this, "ts");
 
-      new ManifestEntry(this, "EslintTypescriptConfig", {
-        eslintConfig: {
-          parserOptions: {
-            ecmaVersion: 2018,
-            sourceType: "module",
-            project: tsSupport[0].fileName,
-          },
-        },
-      });
+      config.parserOptions = {
+        ecmaVersion: 2018,
+        sourceType: "module",
+        project: tsSupport[0].fileName,
+      };
     } else {
       new EslintExtension(this, "js");
     }
@@ -303,6 +299,6 @@ export class EslintSupport extends XConstruct {
       ...this.devdirs,
     ]);
 
-    new ManifestEntry(this, "EslintConfig", { eslintConfig: config });
+    new ManifestEntry(this, "EslintConfig", { eslintConfig: config }, { shallow: true });
   }
 }

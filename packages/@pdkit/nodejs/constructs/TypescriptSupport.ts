@@ -384,7 +384,7 @@ export class TypescriptSupport extends XConstruct {
       files: [`${project.distPath}/*.d.ts`, `${project.distPath}/**/*.d.ts`],
     });
 
-    new JsonFile(this, "TsConfig", { path: this.fileName }).addFields({
+    new JsonFile(this, "TsConfig", { path: this.fileName }).addDeepFields({
       exclude: [...(props?.exclude ?? []), "node_modules"],
       include: [...(props?.include ?? []), project.sourcePath],
       compilerOptions: {

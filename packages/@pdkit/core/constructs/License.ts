@@ -23,7 +23,7 @@ export class License extends ManifestEntry {
   readonly license: ValidLicense;
 
   constructor(scope: XConstruct, id: string, license: ValidLicense, propagate?: boolean) {
-    super(scope, id, { license: license }, propagate);
+    super(scope, id, { license: license }, { propagate });
 
     this.license = license;
 

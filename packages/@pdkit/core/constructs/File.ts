@@ -120,7 +120,7 @@ export class File extends XConstruct implements IFile {
     return path.join(workspace.rootPath, project.projectPath, this.path);
   }
 
-  _onSynth() {
+  _afterSynth() {
     VirtualFS.of(this).writeFile(this);
   }
 }

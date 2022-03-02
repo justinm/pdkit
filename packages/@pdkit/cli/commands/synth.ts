@@ -1,16 +1,6 @@
 import { spawn } from "child_process";
 import path from "path";
-import {
-  Project,
-  Workspace,
-  VirtualFS,
-  InstallShellScript,
-  PatchScript,
-  PostInstallShellScript,
-  Script,
-  ShellScript,
-  logger,
-} from "@pdkit/core";
+import { Project, Workspace, InstallShellScript, Script, ShellScript } from "@pdkit/core";
 import prompts from "prompts";
 import yargs from "yargs";
 import { AppArguments } from "../pdkit";
@@ -107,130 +97,67 @@ const runShellScripts = async (
     }
   });
 };
-const runScripts = async (
-  workspace: Workspace | null,
-  name: string,
-  type: typeof Script,
-  verbose: number,
-  dryrun: boolean
-) => {
-  return withSpinner(verbose, `Running ${name} scripts`, async () => {
-    if (workspace) {
-      const scripts = workspace.node
-        .findAll()
-        .filter((b) => b instanceof Project)
-        .map((p) => p.node.findAll().filter((b) => b instanceof type))
-        .flat() as Script[];
 
-      if (!scripts.length) {
-        throw `No ${name} scripts were found`;
-      }
-
-      for (const script of scripts) {
-        if (dryrun) {
-          spinner.info(`  Would run ${name} script: ${script}`);
-          continue;
-        }
-
-        if (verbose) {
-          spinner.start(`  Running ${name} script: ${script}`);
-        }
-
-        script.runnable();
-
-        if (verbose) {
-          spinner.succeed();
-        }
-      }
-
-      if (dryrun && !verbose) {
-        throw "No tasks were executed";
-      }
-    }
-  });
-};
-
-const writeFilesToDisk = async (workspace: Workspace | null, verbose: number, dryrun: boolean) => {
+const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: boolean) => {
   await withSpinner(verbose, "Writing files to disk", async () => {
-    const vfs = VirtualFS.of(workspace);
-    const filesWritten: string[] = [];
+    const results = workspace.syncFilesToDisk({ dryRun });
 
-    for (const filePath of vfs.files) {
-      const conflict = vfs.checkPathConflicts(filePath);
-      let skip = false;
+    for (const result of results) {
+      if (result.reason) {
+        spinner.warn(`  ${result}: ${result.reason}`);
 
-      if (conflict) {
-        spinner.warn(`${filePath}: ${conflict}`);
-        const answer = await prompts(
-          {
-            name: "confirm",
-            message: "Do you wish to overwrite this file?",
-            type: "confirm",
-          },
-          {
-            onCancel: () => {
-              process.exit(1);
+        if (!dryRun) {
+          const answer = await prompts(
+            {
+              name: "confirm",
+              message: "Do you wish to overwrite this file?",
+              type: "confirm",
             },
-          }
-        );
-
-        skip = answer.confirm;
-      }
-
-      if (!skip) {
-        filesWritten.push(filePath);
-
-        if (!dryrun) {
-          if (verbose) {
-            spinner.start(`  Writing file ${filePath}`);
-          }
-
-          try {
-            vfs.syncPathToDisk(filePath);
-
-            if (verbose) {
-              spinner.succeed();
+            {
+              onCancel: () => {
+                process.exit(1);
+              },
             }
-          } catch (err) {
-            logger.error((err as Error).stack);
-            spinner.fail(`${filePath}: file write failure`);
-            process.exit(1);
-          }
-        } else {
-          if (verbose) {
-            spinner.info(`  Would write file ${filePath}`);
+          );
+
+          if (answer.confirm) {
+            const again = workspace.syncFilesToDisk({ dryRun, forcePath: result.path });
+
+            if (again[0].reason) {
+              spinner.fail(`  ${result.path}: ${again[0].reason}`);
+            }
           }
         }
       } else {
         if (verbose) {
-          spinner.info(`${filePath}: file was skipped`);
+          if (!dryRun) {
+            spinner.succeed(`  ${result.path}: written successfully`);
+          } else {
+            spinner.info(`  ${result.path}: would write file`);
+          }
         }
       }
     }
 
-    if (!filesWritten.length) {
-      throw "Project synthesis failed: No files were written";
-    }
-
-    if (dryrun && !verbose) {
+    if (dryRun && !verbose) {
       throw "no files were written";
     }
   });
 };
+
 export const handler = async function (argv: AppArguments) {
   const config = argv.config as string;
-  const dryrun = (argv.dryrun as boolean) ?? false;
+  const dryRun = (argv.dryrun as boolean) ?? false;
   const verbose = (argv.verbose as number) ?? false;
   const workspace = await loadWorkspace(config);
 
   synthWorkspace(workspace);
 
-  await writeFilesToDisk(workspace, verbose, dryrun);
-  await runShellScripts(workspace, "install", InstallShellScript, verbose, dryrun);
-  await runScripts(workspace, "patch", PatchScript, verbose, dryrun);
-  await runShellScripts(workspace, "post-install", PostInstallShellScript, verbose, dryrun);
+  await writeFilesToDisk(workspace, verbose, dryRun);
+  await runShellScripts(workspace, "install", InstallShellScript, verbose, dryRun);
+  await workspace.runScripts(Script);
 
-  if (!verbose && dryrun) {
+  if (!verbose && dryRun) {
     spinner.info("For more information, try the --verbose flag and/or LOG_LEVEL=debug");
   }
 
