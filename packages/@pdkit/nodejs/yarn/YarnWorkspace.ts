@@ -18,7 +18,7 @@ export class YarnWorkspace extends NpmWorkspace implements IYarnMonoRepo {
       packageName: "workspace",
       projectPath: "./",
       sourcePath: props?.sourcePath ?? "src",
-      distPath: props?.distPath ?? "src",
+      distPath: props?.distPath ?? "dist",
     });
   }
 

@@ -4,12 +4,12 @@
   ],
   "include": [
     "pdk.ts",
-    "."
+    "src"
   ],
   "compilerOptions": {
-    "outDir": ".",
+    "outDir": "dist",
     "alwaysStrict": true,
-    "declaration": true,
+    "declaration": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "inlineSourceMap": true,
@@ -30,6 +30,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
-    "target": "ES2019"
+    "target": "ES2019",
+    "noEmit": true
   }
 }

@@ -19,6 +19,11 @@ export class YarnTypescriptWorkspace extends YarnWorkspace {
     new TypescriptSupport(Project.of(this), {
       ...props.tsconfig,
       include: [...(props.tsconfig?.include ?? []), PDKIT_CONFIG_FILE],
+      compilerOptions: {
+        ...props.tsconfig?.compilerOptions,
+        noEmit: props.tsconfig?.compilerOptions?.noEmit ?? true,
+        declaration: props.tsconfig?.compilerOptions?.declaration ?? false,
+      },
     });
   }
 }

@@ -5,13 +5,13 @@
   "scripts": {
     "pdkit": "ts-node packages/@pdkit/cli/src/pdkit.ts",
     "build": "tsc -p ./tsconfig.json",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src"
   },
   "files": [
-    "./*.js",
-    "./**/*.js",
-    "./*.d.ts",
-    "./**/*.d.ts"
+    "dist/*.js",
+    "dist/**/*.js",
+    "dist/*.d.ts",
+    "dist/**/*.d.ts"
   ],
   "license": "Apache-2.0",
   "author": {
