@@ -52,7 +52,7 @@ export abstract class Project extends XConstruct implements IProject {
   private readonly _sourcePath: string;
   private readonly _distPath: string;
 
-  protected constructor(scope: XConstruct, id: string, props?: ProjectProps) {
+  constructor(scope: XConstruct, id: string, props?: ProjectProps) {
     super(scope, id);
 
     this._projectPath = props?.projectPath;
@@ -82,7 +82,17 @@ export abstract class Project extends XConstruct implements IProject {
       return fs.readFileSync(realPath);
     }
 
-    return null;
+    return undefined;
+  }
+
+  public readFile(filePath: string) {
+    const data = this.tryReadFile(filePath);
+
+    if (!data) {
+      throw new ConstructError(this, `Cannot read file at: ${filePath}`);
+    }
+
+    return data;
   }
 
   public tryReadJsonFile<T = Record<string, unknown>>(filePath: string): T | undefined {
@@ -95,6 +105,20 @@ export abstract class Project extends XConstruct implements IProject {
     }
   }
 
+  public readJsonFile(filePath: string) {
+    const data = this.tryReadJsonFile(filePath);
+
+    if (!data) {
+      throw new ConstructError(this, `No JSON data found at: ${filePath}`);
+    }
+
+    return data;
+  }
+
+  /**
+   * Find all nodes by type that are owned by this project. Ownership is determined by the closest project scoped to a node.
+   * @param childType
+   */
   public tryFindDeepChildren<
     T extends Constructor<any> = Constructor<any>,
     TRet extends InstanceType<T> = InstanceType<T>
@@ -107,12 +131,43 @@ export abstract class Project extends XConstruct implements IProject {
       .filter((c) => Project.of(c) === parentProject) as TRet[];
   }
 
+  /**
+   * Find all nodes by type that are owned by this project. Ownership is determined by the closest project scoped to a node.
+   * Undefined is returned if the number of matching children is not exactly one.
+   * @param childType
+   */
+  public tryFindDeepChild<
+    T extends Constructor<any> = Constructor<any>,
+    TRet extends InstanceType<T> = InstanceType<T>
+  >(childType: T): TRet | undefined {
+    const children = this.tryFindDeepChildren(childType);
+
+    return (children.length === 1 && children[0]) || undefined;
+  }
+
+  /**
+   * Find all nodes by type that are owned by this project. Ownership is determined by the closest project scoped to a node.
+   * An error is thrown if the number of matching children is not exactly one.
+   * @param childType
+   */
+  public findDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
+    childType: T
+  ): TRet {
+    const child = this.tryFindDeepChild(childType);
+
+    if (!child) {
+      throw new ConstructError(this, `Project does not own a ${childType}`);
+    }
+
+    return child;
+  }
+
   get parentProject() {
     return Project.of(this);
   }
 
-  get siblings() {
-    return Project.of(this);
+  get projects(): Project[] {
+    return this.tryFindDeepChildren(Project);
   }
 
   get projectPath(): string {
@@ -143,9 +198,5 @@ export abstract class Project extends XConstruct implements IProject {
 
   get distPath(): string {
     return this._distPath;
-  }
-
-  get subprojects(): Project[] {
-    return this.node.children.filter((c) => Project.is(c)).map((c) => c as Project);
   }
 }
