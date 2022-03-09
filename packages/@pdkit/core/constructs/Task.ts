@@ -11,6 +11,25 @@ export class Task extends XConstruct {
 
     this.name = name;
     this._commands = commands;
+
+    this.node.addValidation({
+      validate: () => {
+        const errors: string[] = [];
+        const project = Project.of(this);
+
+        if (!project) {
+          errors.push("Construct is not a child of a project");
+        }
+
+        const files = project.tryFindDeepChildren(Task);
+
+        files
+          .filter((f) => this.name === f.name && this !== f)
+          .forEach((f) => errors.push(`Construct is in conflict with ${f}`));
+
+        return errors;
+      },
+    });
   }
 
   get command() {

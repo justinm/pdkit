@@ -1,3 +1,4 @@
+import * as crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { Volume } from "memfs/lib/volume";
@@ -6,6 +7,12 @@ import { ConstructError } from "../util/ConstructError";
 import { logger } from "../util/logger";
 import { IFile } from "./File";
 import { Workspace } from "./Workspace";
+
+export enum FileStatus {
+  OK,
+  CONFLICT,
+  NO_CHANGE,
+}
 
 /**
  * The VirtualFS provides a staging area for writing files prior to persisting changes to disk.
@@ -87,7 +94,7 @@ export class VirtualFS extends XConstruct {
     return ret;
   }
 
-  checkPathConflicts(filePath: string): string | null {
+  getFileStatus(filePath: string): FileStatus {
     const rootPath = Workspace.of(this).rootPath;
     const realPath = path.join(rootPath, filePath);
 
@@ -97,15 +104,31 @@ export class VirtualFS extends XConstruct {
       if (!stat.isFile()) {
         throw new Error(`${filePath}: is a directory`);
       } else {
-        // TODO fix this
         // eslint-disable-next-line no-bitwise
-        if (stat.mode & 600) {
-          return "file may have external modifications " + stat.mode;
+        if (!(stat.mode & 0o1000)) {
+          return FileStatus.CONFLICT;
+        }
+
+        try {
+          const onDiskChecksum = crypto.createHash("md5").update(fs.readFileSync(realPath)).digest("hex");
+          const memoryChecksum = crypto.createHash("md5").update(this.fs.readFileSync(filePath)).digest("hex");
+
+          if (onDiskChecksum === memoryChecksum) {
+            return FileStatus.NO_CHANGE;
+          }
+        } catch (err) {
+          logger.warn(`Failed to hash files: ${err}`);
         }
       }
     }
 
-    return null;
+    return FileStatus.OK;
+  }
+
+  checkPathConflicts(filePath: string): boolean {
+    const status = this.getFileStatus(filePath);
+
+    return status === FileStatus.CONFLICT;
   }
 
   syncPathToDisk(filePath: string) {
@@ -114,11 +137,11 @@ export class VirtualFS extends XConstruct {
 
     this.ensureDirectory(realPath, fs);
 
-    fs.writeFileSync(realPath, this.fs.readFileSync(path.join("/", filePath)), {
-      mode: 0o600,
-    });
+    // eslint-disable-next-line no-bitwise
+    fs.writeFileSync(realPath, this.fs.readFileSync(path.join("/", filePath)));
 
-    fs.chmodSync(realPath, 0o600);
+    // eslint-disable-next-line no-bitwise
+    fs.chmodSync(realPath, fs.statSync(realPath).mode | 0o1000);
   }
 
   protected ensureDirectory(filePath: string, fst: Volume | typeof fs) {

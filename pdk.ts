@@ -20,7 +20,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   jest: {
     enabled: true,
   },
-  gitignore: [".idea"],
+  gitignore: [".idea", ".js", ".d.ts"],
 });
 
 new YarnGithubSupport(workspace, "GithubSupport", {
@@ -53,6 +53,7 @@ new YarnTypescriptProject(workspace, "core", {
     "js-yaml",
     "winston",
     "dependency-graph",
+    "md5-file",
   ],
   devDependencies: ["@types/mustache", "@types/js-yaml", "@types/winston"],
   eslint: {

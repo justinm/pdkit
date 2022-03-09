@@ -16,6 +16,8 @@ pids
 .npm
 *.tgz
 .idea
+.js
+.d.ts
 .yarn/*
 !.yarn/releases
 !.yarn/patches

@@ -46,6 +46,7 @@ export class NpmProject extends Project {
     return Project.of(construct) as NpmProject;
   }
   public readonly packageJson: PackageJson;
+  public readonly taskManager: TaskManager;
   public readonly packageName: string;
 
   constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
@@ -54,7 +55,6 @@ export class NpmProject extends Project {
     new InstallShellScript(this, "InstallCommand", props?.installCommands ?? ["npm install"]);
     new VirtualFS(this, "VirtualFS");
     new StandardValidator(this, "StandardValidator");
-    new NpmTaskManager(this, "TaskManager");
 
     this.packageName = props?.packageName ?? id;
     this.packageJson = new PackageJson(this, "PackageJson", {
@@ -62,6 +62,7 @@ export class NpmProject extends Project {
       files: [`${this.distPath}/*.js`, `${this.distPath}/**/*.js`],
       ...props,
     });
+    this.taskManager = new NpmTaskManager(this, "TaskManager");
 
     if (props?.license) {
       new License(this, "License", props.license);

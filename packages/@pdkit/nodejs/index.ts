@@ -7,7 +7,6 @@ export * from "./eslint/EslintSupport";
 export * from "./jest/JestSupport";
 export * from "./jest/JestTypescriptSupport";
 export * from "./npm/NpmIgnore";
-export * from "./npm/NpmPackageManager";
 export * from "./npm/NpmProject";
 export * from "./npm/NpmTaskManager";
 export * from "./npm/NpmTypescriptProject";

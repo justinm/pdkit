@@ -1,10 +1,6 @@
 {
   "name": "@pdkit/core",
   "version": "0.0.0",
-  "scripts": {
-    "build": "tsc -p ./tsconfig.json",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
-  },
   "files": [
     "./*.js",
     "./**/*.js",
@@ -173,6 +169,7 @@
     "deepmerge": "^4.2.2",
     "dependency-graph": "^0.11.0",
     "js-yaml": "^4.1.0",
+    "md5-file": "^5.0.0",
     "memfs": "^3.4.1",
     "mustache": "^4.2.0",
     "sync-request": "^6.1.0",

@@ -1,10 +1,6 @@
 {
   "name": "@pdkit/nodejs",
   "version": "0.0.0",
-  "scripts": {
-    "build": "tsc -p ./tsconfig.json",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
-  },
   "files": [
     "./*.js",
     "./**/*.js",

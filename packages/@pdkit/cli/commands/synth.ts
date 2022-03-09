@@ -1,7 +1,6 @@
 import { spawn } from "child_process";
 import path from "path";
-import { Project, Workspace, InstallShellScript, Script, ShellScript } from "@pdkit/core";
-import prompts from "prompts";
+import { FileStatus, InstallShellScript, Project, Script, ShellScript, Workspace } from "@pdkit/core";
 import yargs from "yargs";
 import { AppArguments } from "../pdkit";
 import { loadWorkspace, spinner, synthWorkspace, withSpinner } from "../utils";
@@ -13,6 +12,10 @@ export const builder: yargs.CommandBuilder<any, any> = function (y) {
   return y
     .option("dryrun", {
       alias: "n",
+      type: "boolean",
+    })
+    .option("force", {
+      alias: "f",
       type: "boolean",
     })
     .option("verbose", {
@@ -98,44 +101,21 @@ const runShellScripts = async (
   });
 };
 
-const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: boolean) => {
+const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: boolean, force: boolean) => {
   await withSpinner(verbose, "Writing files to disk", async () => {
-    const results = workspace.syncFilesToDisk({ dryRun });
+    const results = workspace.syncFilesToDisk({ dryRun, force });
 
     for (const result of results) {
-      if (result.reason) {
-        spinner.warn(`  ${result}: ${result.reason}`);
-
-        if (!dryRun) {
-          const answer = await prompts(
-            {
-              name: "confirm",
-              message: "Do you wish to overwrite this file?",
-              type: "confirm",
-            },
-            {
-              onCancel: () => {
-                process.exit(1);
-              },
-            }
-          );
-
-          if (answer.confirm) {
-            const again = workspace.syncFilesToDisk({ dryRun, forcePath: result.path });
-
-            if (again[0].reason) {
-              spinner.fail(`  ${result.path}: ${again[0].reason}`);
-            }
-          }
-        }
-      } else {
-        if (verbose) {
-          if (!dryRun) {
-            spinner.succeed(`  ${result.path}: written successfully`);
-          } else {
-            spinner.info(`  ${result.path}: would write file`);
-          }
-        }
+      switch (result.reason) {
+        case FileStatus.OK:
+          spinner.succeed(`  ${result.path}: written successfully`);
+          break;
+        case FileStatus.NO_CHANGE:
+          spinner.info(`  ${result.path}: skipping file, no differences`);
+          break;
+        case FileStatus.CONFLICT:
+          spinner.warn(`  ${result.path}: ownership was incorrect`);
+          break;
       }
     }
 
@@ -148,12 +128,13 @@ const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: b
 export const handler = async function (argv: AppArguments) {
   const config = argv.config as string;
   const dryRun = (argv.dryrun as boolean) ?? false;
+  const force = (argv.force as boolean) ?? false;
   const verbose = (argv.verbose as number) ?? false;
   const workspace = await loadWorkspace(config);
 
   synthWorkspace(workspace);
 
-  await writeFilesToDisk(workspace, verbose, dryRun);
+  await writeFilesToDisk(workspace, verbose, dryRun, force);
   await runShellScripts(workspace, "install", InstallShellScript, verbose, dryRun);
   await workspace.runScripts(Script);
 

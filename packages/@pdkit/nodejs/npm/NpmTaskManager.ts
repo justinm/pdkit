@@ -1,6 +1,16 @@
-import { ManifestEntry, TaskManager } from "@pdkit/core";
+import { InstallShellScript, ManifestEntry, TaskManager, XConstruct } from "@pdkit/core";
+
+export interface NodePackageManagerProps {
+  readonly installCommand: string[];
+}
 
 export class NpmTaskManager extends TaskManager {
+  constructor(scope: XConstruct, id: string, props?: NodePackageManagerProps) {
+    super(scope, id);
+
+    new InstallShellScript(this, "InstallCommand", props?.installCommand);
+  }
+
   _onSynth() {
     super._onSynth();
 

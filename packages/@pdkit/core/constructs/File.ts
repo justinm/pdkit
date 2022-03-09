@@ -65,6 +65,26 @@ export class File extends XConstruct implements IFile {
     this.path = props.path;
     this._append = props.append ?? false;
     this._content = "";
+
+    this.node.addValidation({
+      validate: () => {
+        const errors: string[] = [];
+        const project = Project.of(this);
+
+        if (!project) {
+          errors.push("Construct is not a child of a project");
+        }
+
+        const files = project.tryFindDeepChildren(File);
+
+        files
+          .filter((f) => this.path === f.path && this !== f)
+          .filter((f) => !this._append && !f._append)
+          .forEach((f) => errors.push(`Construct is in conflict with ${f}`));
+
+        return errors;
+      },
+    });
   }
 
   /**

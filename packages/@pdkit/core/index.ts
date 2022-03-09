@@ -6,7 +6,6 @@ export * from "./constructs/JsonFile";
 export * from "./constructs/License";
 export * from "./constructs/Manifest";
 export * from "./constructs/ManifestEntry";
-export * from "./constructs/PackageManager";
 export * from "./constructs/Project";
 export * from "./constructs/Task";
 export * from "./constructs/TaskManager";

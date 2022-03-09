@@ -4,10 +4,6 @@
   "bin": {
     "pdkit": "dist/pdkit.js"
   },
-  "scripts": {
-    "build": "tsc -p ./tsconfig.json",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
-  },
   "files": [
     "./*.js",
     "./**/*.js",

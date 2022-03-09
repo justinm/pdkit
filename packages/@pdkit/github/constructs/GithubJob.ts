@@ -451,7 +451,7 @@ export class GithubJob extends XConstruct {
   }
 
   _beforeSynth() {
-    GithubWorkflow.of(this).addFields(this.content);
+    GithubWorkflow.of(this).addDeepFields(this.content);
   }
 
   get content(): Omit<GithubJobProps, "outputs" | "runsOn" | "priority"> & {

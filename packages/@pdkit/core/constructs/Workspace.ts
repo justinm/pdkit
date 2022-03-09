@@ -3,7 +3,7 @@ import { IXConstruct, XConstruct } from "../base/XConstruct";
 import { Script } from "../scripts/Script";
 import { ConstructError } from "../util/ConstructError";
 import { Project } from "./Project";
-import { VirtualFS } from "./VirtualFS";
+import { FileStatus, VirtualFS } from "./VirtualFS";
 
 export interface IWorkspace extends IConstruct {
   readonly rootPath: string;
@@ -74,33 +74,18 @@ export class Workspace extends XConstruct implements IWorkspace {
       .forEach((child) => (child as IXConstruct)._afterSynth());
   }
 
-  syncFilesToDisk({
-    forcePath,
-    dryRun,
-  }: {
-    forcePath?: string;
-    dryRun?: boolean;
-  }): { path: string; reason?: string }[] {
+  syncFilesToDisk({ force, dryRun }: { force?: boolean; dryRun?: boolean }): { path: string; reason: FileStatus }[] {
     const vfs = VirtualFS.of(this);
-    const results: { path: string; reason?: string }[] = [];
+    const results: { path: string; reason: FileStatus }[] = [];
 
-    if (forcePath) {
-      if (!dryRun) {
-        vfs.syncPathToDisk(forcePath);
+    for (const filePath of vfs.files) {
+      const reason = vfs.getFileStatus(filePath);
+
+      if (!dryRun && (force || reason !== FileStatus.CONFLICT)) {
+        vfs.syncPathToDisk(filePath);
       }
 
-      results.push({ path: forcePath });
-    } else {
-      for (const filePath of vfs.files) {
-        if (vfs.checkPathConflicts(filePath)) {
-          results.push({ path: filePath, reason: "conflict" });
-        } else {
-          if (!dryRun) {
-            vfs.syncPathToDisk(filePath);
-          }
-          results.push({ path: filePath });
-        }
-      }
+      results.push({ path: filePath, reason });
     }
 
     return results;
