@@ -2,7 +2,7 @@
   "name": "@pdkit/cli",
   "version": "0.0.0",
   "bin": {
-    "pdkit": "dist/pdkit.js"
+    "pdkit": "pdkit.js"
   },
   "files": [
     "./*.js",
@@ -153,7 +153,7 @@
     "overrides": [
       {
         "files": [
-          "pdk.ts"
+          ".pdkitrc.ts"
         ],
         "rules": {
           "@typescript-eslint/no-require-imports": "off",

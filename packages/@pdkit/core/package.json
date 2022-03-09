@@ -149,7 +149,7 @@
     "overrides": [
       {
         "files": [
-          "pdk.ts"
+          ".pdkitrc.ts"
         ],
         "rules": {
           "@typescript-eslint/no-require-imports": "off",

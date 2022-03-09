@@ -801,7 +801,7 @@ __metadata:
     typescript: ^4.6.2
     yargs: ^17.3.1
   bin:
-    pdkit: dist/pdkit.js
+    pdkit: pdkit.js
   languageName: unknown
   linkType: soft
 

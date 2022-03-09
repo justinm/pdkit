@@ -3,7 +3,7 @@
     "node_modules"
   ],
   "include": [
-    "pdk.ts",
+    ".pdkitrc.ts",
     "src"
   ],
   "compilerOptions": {

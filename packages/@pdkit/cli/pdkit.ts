@@ -16,7 +16,7 @@ const findPdk = () => {
 
   for (let x = parts.length; x >= 1; x--) {
     const rejoinedSegment = parts.slice(0, x).join("/");
-    const check = path.join(rejoinedSegment, "pdk.*");
+    const check = path.join(rejoinedSegment, ".pdkitrc.ts");
     const hits = glob.sync(check);
 
     if (hits.length) {

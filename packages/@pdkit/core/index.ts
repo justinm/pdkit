@@ -1,4 +1,4 @@
-export const PDKIT_CONFIG_FILE = "pdk.ts";
+export const PDKIT_CONFIG_FILE = ".pdkitrc.ts";
 
 export * from "./base/XConstruct";
 export * from "./constructs/File";
