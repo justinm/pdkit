@@ -1,5 +1,5 @@
 import { spawn } from "child_process";
-import { Project, Task, TaskManager } from "@pdkit/core";
+import { FileSystem, Task, TaskManager } from "@pdkit/core";
 import chalk from "chalk";
 import { DepGraph } from "dependency-graph";
 import yargs from "yargs";
@@ -61,7 +61,7 @@ async function runTasks(graph: DepGraph<Task>, taskOrder: string[], args: string
   for (let i = 0; i < taskOrder.length; i++) {
     const taskName = taskOrder[i];
     const task = graph.getNodeData(taskName);
-    const cwd = Project.of(task).absolutePath;
+    const cwd = FileSystem.of(task).absolutePath;
 
     let commandArgs = task.commands.slice(1);
 

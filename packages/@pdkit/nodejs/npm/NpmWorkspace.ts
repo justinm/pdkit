@@ -7,6 +7,6 @@ export class NpmWorkspace extends Workspace {
   constructor(id: string, props?: NpmWorkspaceProps) {
     super(id, props);
 
-    new NpmTaskManager(this, "NpmTaskHandler");
+    new NpmTaskManager(this);
   }
 }

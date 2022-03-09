@@ -5,13 +5,13 @@ export interface NodePackageManagerProps {
 }
 
 export class NpmTaskManager extends TaskManager {
-  constructor(scope: XConstruct, id: string, props?: NodePackageManagerProps) {
-    super(scope, id);
+  constructor(scope: XConstruct, props?: NodePackageManagerProps) {
+    super(scope);
 
     new InstallShellScript(this, "InstallCommand", props?.installCommand);
   }
 
-  _onSynth() {
+  _synth() {
     super._onSynth();
 
     const tm = TaskManager.of(this);

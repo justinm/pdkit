@@ -2,6 +2,7 @@ export const PDKIT_CONFIG_FILE = ".pdkitrc.ts";
 
 export * from "./base/XConstruct";
 export * from "./constructs/File";
+export * from "./constructs/FileSystem";
 export * from "./constructs/JsonFile";
 export * from "./constructs/License";
 export * from "./constructs/Manifest";

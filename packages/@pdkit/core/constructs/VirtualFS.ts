@@ -111,13 +111,16 @@ export class VirtualFS extends XConstruct {
 
         try {
           const onDiskChecksum = crypto.createHash("md5").update(fs.readFileSync(realPath)).digest("hex");
-          const memoryChecksum = crypto.createHash("md5").update(this.fs.readFileSync(filePath)).digest("hex");
+          const memoryChecksum = crypto
+            .createHash("md5")
+            .update(this.fs.readFileSync(path.join("/", filePath)))
+            .digest("hex");
 
           if (onDiskChecksum === memoryChecksum) {
             return FileStatus.NO_CHANGE;
           }
         } catch (err) {
-          logger.warn(`Failed to hash files: ${err}`);
+          logger.error(`Failed to hash files: ${err}`);
         }
       }
     }

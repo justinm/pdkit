@@ -22,8 +22,12 @@ export abstract class TaskManager extends XConstruct {
 
   private dependencyCache: string[][] = [];
 
-  constructor(scope: XConstruct, id: string) {
-    super(scope, id);
+  constructor(scope: XConstruct) {
+    super(scope, "TaskManager");
+
+    new Task(this, "build");
+    new Task(this, "lint");
+    new Task(this, "test");
 
     this.node.addValidation({
       validate: () => {
@@ -74,7 +78,8 @@ export abstract class TaskManager extends XConstruct {
 
   _onSynth() {
     super._onSynth();
-    const tasks = Project.of(this).tryFindDeepChildren(Task) as Task[];
+    const project = Project.of(this);
+    const tasks = project.tryFindDeepChildren(Task);
 
     tasks.forEach((task) => TaskManager.graph.addNode(task.fullyQualifiedName, task));
 
@@ -88,4 +93,37 @@ export abstract class TaskManager extends XConstruct {
       TaskManager.graph.addDependency(task?.fullyQualifiedName, dependsOn?.fullyQualifiedName);
     });
   }
+
+  // _synth() {
+  //   super._synth();
+  //
+  //   const project = Project.of(this);
+  //   const tasks = project.tryFindDeepChildren(Task);
+  //   const subprojects = project.tryFindDeepChildren(Project);
+  //
+  //   for (const subproject of subprojects) {
+  //     const subtasks = subproject.tryFindDeepChildren(Task);
+  //
+  //     const getParentTask = (subtask: Task) => {
+  //       const results = tasks.filter((t) => t.name === subtask.name);
+  //
+  //       if (results.length) {
+  //         return results[0];
+  //       }
+  //
+  //       return null;
+  //     };
+  //
+  //     for (const subtask of subtasks) {
+  //       const parentTask = getParentTask(subtask);
+  //
+  //       if (parentTask) {
+  //         const task = new Task(this, parentTask.name + ":all");
+  //
+  //         TaskManager.graph.addNode(task.fullyQualifiedName, task);
+  //         TaskManager.graph.addDependency(task?.fullyQualifiedName, subtask.fullyQualifiedName);
+  //       }
+  //     }
+  //   }
+  // }
 }

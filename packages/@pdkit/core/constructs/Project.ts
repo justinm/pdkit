@@ -1,9 +1,6 @@
-import fs from "fs";
 import path from "path";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
 import { ConstructError } from "../util/ConstructError";
-import { logger } from "../util/logger";
-import { Workspace } from "./Workspace";
 
 export interface IProject extends IXConstruct {
   readonly projectRelativeSourcePath: string;
@@ -38,11 +35,7 @@ export abstract class Project extends XConstruct implements IProject {
       .find((scope) => scope !== construct && scope instanceof Project);
 
     if (!project) {
-      project = Workspace.of(construct).node.defaultChild;
-
-      if (!project) {
-        throw new ConstructError(construct, `Construct must be a child of a project or workspace`);
-      }
+      throw new ConstructError(construct, `Construct must be a child of a project or workspace`);
     }
 
     return project as Project;
@@ -62,57 +55,15 @@ export abstract class Project extends XConstruct implements IProject {
     this.node.addValidation({
       validate: () => {
         const errors: string[] = [];
-        const hasParentProject = !!this.node.scopes.reverse().find((s) => s instanceof Project);
+        const parentProject = Project.of(this);
 
-        if (hasParentProject && !this._projectPath) {
+        if (!parentProject && !this._projectPath) {
           errors.push("Nested projects must explicitly define a projectPath");
         }
 
         return errors;
       },
     });
-  }
-
-  public tryReadFile(filePath: string) {
-    const workspace = Workspace.of(this);
-    const realPath = path.join(workspace.rootPath, this.projectPath, filePath);
-
-    logger.debug(`tryReadFile(${realPath})`);
-    if (fs.existsSync(realPath)) {
-      return fs.readFileSync(realPath);
-    }
-
-    return undefined;
-  }
-
-  public readFile(filePath: string) {
-    const data = this.tryReadFile(filePath);
-
-    if (!data) {
-      throw new ConstructError(this, `Cannot read file at: ${filePath}`);
-    }
-
-    return data;
-  }
-
-  public tryReadJsonFile<T = Record<string, unknown>>(filePath: string): T | undefined {
-    const data = this.tryReadFile(filePath) as Buffer;
-
-    if (data) {
-      return JSON.parse(data.toString("utf8")) as T;
-    } else {
-      return undefined;
-    }
-  }
-
-  public readJsonFile(filePath: string) {
-    const data = this.tryReadJsonFile(filePath);
-
-    if (!data) {
-      throw new ConstructError(this, `No JSON data found at: ${filePath}`);
-    }
-
-    return data;
   }
 
   /**
@@ -176,16 +127,6 @@ export abstract class Project extends XConstruct implements IProject {
       | undefined;
 
     return path.join(parent ? parent.projectPath : "/", this._projectPath ?? "");
-  }
-
-  get absolutePath(): string {
-    const workspace = Workspace.of(this);
-
-    const parent = this.node.scopes.reverse().find((scope) => scope !== this && Project.is(scope)) as
-      | Project
-      | undefined;
-
-    return path.join(workspace.rootPath, parent ? parent.projectPath : "/", this._projectPath ?? "");
   }
 
   get projectRelativeSourcePath(): string {

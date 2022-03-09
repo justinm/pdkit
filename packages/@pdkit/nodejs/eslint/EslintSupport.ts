@@ -1,4 +1,4 @@
-import { ManifestEntry, PDKIT_CONFIG_FILE, Project, Task, XConstruct } from "@pdkit/core";
+import { ManifestEntry, PDKIT_CONFIG_FILE, Project, TaskManager, XConstruct } from "@pdkit/core";
 import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
 import { TypescriptSupport } from "../constructs/TypescriptSupport";
 import { EslintExtension } from "./EslintExtension";
@@ -289,8 +289,9 @@ export class EslintSupport extends XConstruct {
     }
 
     const fileExtensions = project.tryFindDeepChildren(EslintExtension).map((e) => `.${e.extension}`);
+    const tm = TaskManager.of(project);
 
-    new Task(this, "lint", [
+    tm.tryAddTask("lint", [
       "eslint",
       `--ext ${fileExtensions.join(",")}`,
       "--fix",

@@ -4,10 +4,10 @@
   ],
   "include": [
     ".pdkitrc.ts",
-    "src"
+    "."
   ],
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": ".",
     "alwaysStrict": true,
     "declaration": false,
     "esModuleInterop": true,

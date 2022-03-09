@@ -10,6 +10,7 @@ import {
   VirtualFS,
   Workspace,
   XConstruct,
+  FileSystem,
 } from "@pdkit/core";
 import { Author, AuthorProps } from "../constructs/Author";
 import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
@@ -53,6 +54,7 @@ export class NpmProject extends Project {
     super(scope, id, props);
 
     new InstallShellScript(this, "InstallCommand", props?.installCommands ?? ["npm install"]);
+    new FileSystem(this);
     new VirtualFS(this, "VirtualFS");
     new StandardValidator(this, "StandardValidator");
 
@@ -62,7 +64,7 @@ export class NpmProject extends Project {
       files: [`${this.distPath}/*.js`, `${this.distPath}/**/*.js`],
       ...props,
     });
-    this.taskManager = new NpmTaskManager(this, "TaskManager");
+    this.taskManager = new NpmTaskManager(this);
 
     if (props?.license) {
       new License(this, "License", props.license);

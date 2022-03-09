@@ -6,11 +6,11 @@ export class Task extends XConstruct {
   readonly name: string;
   protected _commands: string[];
 
-  constructor(scope: XConstruct, name: string, commands: string[]) {
+  constructor(scope: XConstruct, name: string, commands?: string[]) {
     super(scope, `Task-${name}`);
 
     this.name = name;
-    this._commands = commands;
+    this._commands = commands ?? [];
 
     this.node.addValidation({
       validate: () => {
@@ -21,9 +21,9 @@ export class Task extends XConstruct {
           errors.push("Construct is not a child of a project");
         }
 
-        const files = project.tryFindDeepChildren(Task);
+        const tasks = project.tryFindDeepChildren(Task);
 
-        files
+        tasks
           .filter((f) => this.name === f.name && this !== f)
           .forEach((f) => errors.push(`Construct is in conflict with ${f}`));
 

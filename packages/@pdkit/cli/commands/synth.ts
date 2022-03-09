@@ -102,16 +102,22 @@ const runShellScripts = async (
 };
 
 const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: boolean, force: boolean) => {
-  await withSpinner(verbose, "Writing files to disk", async () => {
+  await withSpinner(dryRun ? 1 : verbose, "Writing files to disk", async () => {
     const results = workspace.syncFilesToDisk({ dryRun, force });
 
     for (const result of results) {
       switch (result.reason) {
         case FileStatus.OK:
-          spinner.succeed(`  ${result.path}: written successfully`);
+          if (dryRun) {
+            spinner.info(`  ${result.path}: would write`);
+          } else {
+            spinner.succeed(`  ${result.path}: written successfully`);
+          }
           break;
         case FileStatus.NO_CHANGE:
-          spinner.info(`  ${result.path}: skipping file, no differences`);
+          if (verbose > 1 || dryRun) {
+            spinner.info(`  ${result.path}: skipping file, no differences`);
+          }
           break;
         case FileStatus.CONFLICT:
           spinner.warn(`  ${result.path}: ownership was incorrect`);
@@ -119,7 +125,7 @@ const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: b
       }
     }
 
-    if (dryRun && !verbose) {
+    if (dryRun) {
       throw "no files were written";
     }
   });

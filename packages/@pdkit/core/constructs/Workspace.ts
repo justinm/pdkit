@@ -1,20 +1,20 @@
-import { Construct, IConstruct } from "constructs";
-import { IXConstruct, XConstruct } from "../base/XConstruct";
+import { Construct } from "constructs";
+import { IXConstruct } from "../base/XConstruct";
 import { Script } from "../scripts/Script";
 import { ConstructError } from "../util/ConstructError";
-import { Project } from "./Project";
+import { IProject, Project, ProjectProps } from "./Project";
 import { FileStatus, VirtualFS } from "./VirtualFS";
 
-export interface IWorkspace extends IConstruct {
+export interface IWorkspace extends IProject {
   readonly rootPath: string;
   synth(): void;
 }
 
-export interface WorkspaceProps {
+export interface WorkspaceProps extends Omit<ProjectProps, "projectPath"> {
   readonly rootPath?: string;
 }
 
-export class Workspace extends XConstruct implements IWorkspace {
+export class Workspace extends Project implements IWorkspace {
   public static of(construct: any) {
     if (!(construct instanceof Construct)) {
       throw new Error(`${construct.constructor.name} is not a construct`);
@@ -32,7 +32,7 @@ export class Workspace extends XConstruct implements IWorkspace {
   public readonly rootPath: string;
 
   constructor(id: string, props?: WorkspaceProps) {
-    super(undefined as any, id);
+    super(undefined as any, id, props);
 
     this.rootPath = props?.rootPath ?? process.cwd();
 

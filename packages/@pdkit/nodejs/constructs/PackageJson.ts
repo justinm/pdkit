@@ -1,6 +1,4 @@
-import { ValidLicense, Manifest, XConstruct } from "@pdkit/core";
-import { NpmProject } from "../npm/NpmProject";
-// import { UpdatePackageVersionsPostInstallScript } from "../scripts/UpdatePackageVersionsPostInstallScript";
+import { ValidLicense, Manifest, XConstruct, FileSystem } from "@pdkit/core";
 
 export interface NodePackageJsonProps {
   readonly name?: string;
@@ -26,7 +24,7 @@ export class PackageJson extends Manifest {
   constructor(scope: XConstruct, id: string, props?: NodePackageJsonProps) {
     super(scope, id, "package.json");
 
-    const packageJson = NpmProject.of(this).tryReadJsonFile<{ [key: string]: any }>("package.json");
+    const packageJson = FileSystem.of(this).tryReadJsonFile<{ [key: string]: any }>("package.json");
 
     if (props) {
       this.addShallowFields({
@@ -54,7 +52,7 @@ export class PackageJson extends Manifest {
   }
 
   resolveDepVersion(dep: string) {
-    const packageJson = NpmProject.of(this).tryReadJsonFile<{ [key: string]: any }>(`node_modules/${dep}/package.json`);
+    const packageJson = FileSystem.of(this).tryReadJsonFile<{ [key: string]: any }>(`node_modules/${dep}/package.json`);
 
     return packageJson?.version ?? "*";
   }
