@@ -34,6 +34,7 @@ new ManifestEntry(Project.of(workspace), "CustomResolutions", {
 });
 
 new YarnGithubSupport(workspace, {
+  registryUrl: "https://registry.npmjs.org/",
   pullRequestLint: {
     enabled: true,
   },

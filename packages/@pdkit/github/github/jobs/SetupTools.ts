@@ -22,9 +22,10 @@ export class SetupTools extends XConstruct {
     }
 
     if (tools.node) {
+      const { version, registryUrl, ...other } = tools.node;
       new GithubJobStep(this, "SetupNode", {
         uses: "actions/setup-node@v2",
-        with: { "node-version": tools.node.version, cache: tools.node.cache, token: tools.node.token },
+        with: { "node-version": version, "registry-url": registryUrl, ...other },
         priority: props.priority,
       });
     }

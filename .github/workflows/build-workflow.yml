@@ -22,7 +22,6 @@ jobs:
         with:
           node-version: 14.x
           cache: yarn
-          token: ${{ secrets.NPM_TOKEN }}
         id: SetupNode
       - name: Install Dependencies
         run: yarn install --immutable

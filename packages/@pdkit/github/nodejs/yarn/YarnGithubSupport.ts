@@ -7,6 +7,7 @@ import { YarnBuildStep } from "./steps/YarnBuildStep";
 import { YarnInstallStep } from "./steps/YarnInstallStep";
 
 export interface YarnGithubSupportProps extends Omit<GithubSupportProps, "workflows"> {
+  readonly registryUrl?: string;
   readonly workflows: {
     readonly build: {
       readonly enabled: boolean;
@@ -35,7 +36,6 @@ export class YarnGithubSupport extends GithubSupport {
               ...(props.workflows?.build.tools?.node ?? {
                 version: "14.x",
                 cache: "yarn",
-                token: "${{ secrets.NPM_TOKEN }}",
               }),
             },
           },
@@ -51,6 +51,7 @@ export class YarnGithubSupport extends GithubSupport {
                 version: "14.x",
                 cache: "yarn",
                 token: "${{ secrets.NPM_TOKEN }}",
+                registryUrl: props.registryUrl,
               }),
             },
           },
