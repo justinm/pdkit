@@ -1,11 +1,12 @@
 import { Construct } from "constructs";
 import { XConstruct } from "../base/XConstruct";
-import { FieldFile, FieldFileProps, IFieldFile } from "./FieldFile";
+import { FieldFile, FieldFileProps } from "./FieldFile";
+import { IFile } from "./File";
 
 /**
  * JsonFile represents a JSON JsonFile for a given project. Only one JsonFile may be present per project.
  */
-export class JsonFile extends FieldFile implements IFieldFile {
+export class JsonFile extends FieldFile implements IFile {
   /**
    * Check if a given construct is a JsonFile.
    *
@@ -15,7 +16,7 @@ export class JsonFile extends FieldFile implements IFieldFile {
     return construct instanceof this;
   }
 
-  constructor(scope: XConstruct, id: string, props: FieldFileProps) {
+  constructor(scope: XConstruct, id: string, props?: FieldFileProps) {
     super(scope, id, props);
   }
 

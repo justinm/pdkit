@@ -1,12 +1,13 @@
 import { Construct } from "constructs";
 import yaml from "js-yaml";
 import { XConstruct } from "../base/XConstruct";
-import { FieldFile, IFieldFile } from "./FieldFile";
+import { FieldFile, FieldFileProps } from "./FieldFile";
+import { IFile } from "./File";
 
 /**
  * A YamlFile represents a YAML file for a given project.
  */
-export class YamlFile extends FieldFile implements IFieldFile {
+export class YamlFile extends FieldFile implements IFile {
   /**
    * Check if a given construct is a YamlFile.
    *
@@ -16,8 +17,8 @@ export class YamlFile extends FieldFile implements IFieldFile {
     return construct instanceof this;
   }
 
-  constructor(scope: XConstruct, id: string, path: string) {
-    super(scope, id, { path });
+  constructor(scope: XConstruct, filePath: string, props?: FieldFileProps) {
+    super(scope, filePath, props);
   }
 
   protected transform(fields: Record<string, unknown>) {

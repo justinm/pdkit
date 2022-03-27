@@ -1,10 +1,10 @@
-import * as fs from "fs";
+import fs from "fs";
 import path from "path";
 import chalk from "chalk";
-import * as glob from "glob";
+import glob from "glob";
 import yargs, { CommandModule } from "yargs";
 import { hideBin } from "yargs/helpers";
-import { run, synth } from "./commands";
+import { synth } from "./commands";
 
 export interface AppArguments extends yargs.ArgumentsCamelCase<any> {
   config?: string;
@@ -64,7 +64,6 @@ function wrapCommand<T extends CommandModule>(command: T): T {
 
 parser
   .command(wrapCommand(synth))
-  .command(wrapCommand(run))
   .demandCommand()
   .check((args) => {
     if (!fs.existsSync(args.config)) {

@@ -1,21 +1,8 @@
 export const PDKIT_CONFIG_FILE = ".pdkitrc.ts";
 
 export * from "./base/XConstruct";
-export * from "./constructs/File";
-export * from "./constructs/FileSystem";
-export * from "./constructs/JsonFile";
-export * from "./constructs/License";
-export * from "./constructs/Manifest";
-export * from "./constructs/ManifestEntry";
-export * from "./constructs/Project";
-export * from "./constructs/Task";
-export * from "./constructs/TaskManager";
-export * from "./constructs/Template";
-export * from "./constructs/VirtualFS";
-export * from "./constructs/Workspace";
-export * from "./constructs/YamlFile";
-export * from "./git/GitIgnore";
-export * from "./git/GitRepository";
+export * from "./fs";
+export * from "./project";
 export * from "./scripts/InstallShellScript";
 export * from "./scripts/PostInstallShellScript";
 export * from "./scripts/Script";
@@ -24,3 +11,4 @@ export * from "./util/Casing";
 export * from "./util/ConstructError";
 export * from "./util/logger";
 export * from "./validation/StandardValidator";
+export * from "./synthesizers/FileSynthesizer";

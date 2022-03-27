@@ -1,11 +1,27 @@
 import path from "path";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
 import { ConstructError } from "../util/ConstructError";
+import { Workspace } from "./Workspace";
 
 export interface IProject extends IXConstruct {
   readonly projectRelativeSourcePath: string;
   readonly projectPath: string;
+  readonly sourcePath: string;
   readonly distPath: string;
+  readonly parentProject: IProject;
+  readonly projects: IProject[];
+
+  tryFindDeepChildren<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
+    childType: T
+  ): TRet[];
+
+  tryFindDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
+    childType: T
+  ): TRet | undefined;
+
+  findDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
+    childType: T
+  ): TRet;
 }
 
 export interface ProjectProps {
@@ -23,7 +39,7 @@ export abstract class Project extends XConstruct implements IProject {
 
   public static of(construct: any): Project {
     if (!(construct instanceof XConstruct)) {
-      throw new Error(`${construct} is not a construct`);
+      throw new Error(`${construct.constructor.name} is not a construct`);
     }
 
     if (construct instanceof Project) {
@@ -35,7 +51,16 @@ export abstract class Project extends XConstruct implements IProject {
       .find((scope) => scope !== construct && scope instanceof Project);
 
     if (!project) {
-      throw new ConstructError(construct, `Construct must be a child of a project or workspace`);
+      const workspace = Workspace.of(construct);
+
+      if (workspace) {
+        const defaultProject = workspace.node.defaultChild;
+
+        if (defaultProject) {
+          return defaultProject as Project;
+        }
+      }
+      throw new Error(`Construct ${construct} must be a child of a project or workspace`);
     }
 
     return project as Project;
@@ -64,6 +89,34 @@ export abstract class Project extends XConstruct implements IProject {
         return errors;
       },
     });
+  }
+
+  get parentProject() {
+    return Project.of(this);
+  }
+
+  get projects(): Project[] {
+    return this.tryFindDeepChildren(Project);
+  }
+
+  get projectPath(): string {
+    const parent = this.node.scopes.reverse().find((scope) => scope !== this && Project.is(scope)) as
+      | Project
+      | undefined;
+
+    return path.join(parent ? parent.projectPath : "/", this._projectPath ?? "");
+  }
+
+  get projectRelativeSourcePath(): string {
+    return path.join(this.projectPath, this._sourcePath).substring(1);
+  }
+
+  get sourcePath(): string {
+    return this._sourcePath;
+  }
+
+  get distPath(): string {
+    return this._distPath;
   }
 
   /**
@@ -111,33 +164,5 @@ export abstract class Project extends XConstruct implements IProject {
     }
 
     return child;
-  }
-
-  get parentProject() {
-    return Project.of(this);
-  }
-
-  get projects(): Project[] {
-    return this.tryFindDeepChildren(Project);
-  }
-
-  get projectPath(): string {
-    const parent = this.node.scopes.reverse().find((scope) => scope !== this && Project.is(scope)) as
-      | Project
-      | undefined;
-
-    return path.join(parent ? parent.projectPath : "/", this._projectPath ?? "");
-  }
-
-  get projectRelativeSourcePath(): string {
-    return path.join(this.projectPath, this._sourcePath).substring(1);
-  }
-
-  get sourcePath(): string {
-    return this._sourcePath;
-  }
-
-  get distPath(): string {
-    return this._distPath;
   }
 }

@@ -1,6 +1,9 @@
 {
   "name": "@pdkit/core",
   "version": "0.0.0",
+  "scripts": {
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
+  },
   "files": [
     "./*.js",
     "./**/*.js",
@@ -8,24 +11,25 @@
     "./**/*.d.ts"
   ],
   "devDependencies": {
-    "eslint": "^8.10.0",
-    "@typescript-eslint/eslint-plugin": "^5.13.0",
-    "@typescript-eslint/parser": "^5.13.0",
-    "eslint-import-resolver-node": "^0.3.6",
-    "eslint-import-resolver-typescript": "^2.5.0",
-    "eslint-plugin-import": "^2.25.4",
-    "json-schema": "^0.4.0",
-    "prettier": "^2.5.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-config-prettier": "^8.4.0",
-    "@types/mustache": "^4.1.2",
-    "@types/js-yaml": "^4.0.5",
-    "@types/winston": "^2.4.4",
-    "jest": "^27.5.1",
-    "jest-junit": "^13.0.0",
-    "ts-jest": "^27.1.3",
-    "typescript": "^4.6.2",
-    "ts-node": "^10.6.0"
+    "@types/js-yaml": "4.0.5",
+    "@types/mustache": "4.1.2",
+    "@types/object-hash": "2.2.1",
+    "@types/winston": "2.4.4",
+    "@typescript-eslint/eslint-plugin": "5.16.0",
+    "@typescript-eslint/parser": "5.16.0",
+    "eslint": "8.12.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-import-resolver-node": "0.3.6",
+    "eslint-import-resolver-typescript": "2.7.0",
+    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-prettier": "4.0.0",
+    "jest": "27.5.1",
+    "jest-junit": "13.0.0",
+    "json-schema": "0.4.0",
+    "prettier": "2.6.1",
+    "ts-jest": "27.1.4",
+    "ts-node": "10.7.0",
+    "typescript": "4.6.3"
   },
   "eslintConfig": {
     "env": {
@@ -164,16 +168,17 @@
     }
   },
   "dependencies": {
-    "case": "^1.6.3",
-    "constructs": "^10.0.76",
-    "deepmerge": "^4.2.2",
-    "memfs": "^3.4.1",
-    "mustache": "^4.2.0",
-    "sync-request": "^6.1.0",
-    "js-yaml": "^4.1.0",
-    "winston": "^3.6.0",
-    "dependency-graph": "^0.11.0",
-    "md5-file": "^5.0.0"
+    "case": "1.6.3",
+    "constructs": "10.0.97",
+    "deepmerge": "4.2.2",
+    "dependency-graph": "0.11.0",
+    "js-yaml": "4.1.0",
+    "md5-file": "5.0.0",
+    "memfs": "3.4.1",
+    "mustache": "4.2.0",
+    "object-hash": "3.0.0",
+    "sync-request": "6.1.0",
+    "winston": "3.6.0"
   },
   "jest": {
     "clearMocks": true,

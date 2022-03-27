@@ -1,5 +1,5 @@
 import { GitIgnore, XConstruct } from "@pdkit/core";
-import { NodeProjectProps, NpmProject } from "../npm/NpmProject";
+import { NodeProjectProps, NpmProject } from "../npm";
 
 export class YarnProject extends NpmProject {
   constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
@@ -8,7 +8,7 @@ export class YarnProject extends NpmProject {
       ...props,
     });
 
-    new GitIgnore(this, "YarnIgnore", [
+    new GitIgnore(this, [
       ".yarn/*",
       "!.yarn/releases",
       "!.yarn/patches",

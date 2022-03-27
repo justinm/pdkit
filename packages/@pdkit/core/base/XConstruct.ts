@@ -1,12 +1,17 @@
 import { Construct, IConstruct } from "constructs";
 import { ConstructError } from "../util/ConstructError";
 
+type Callback = () => void;
+
+export enum LifeCycle {
+  VALIDATE = "Validate",
+  BEFORE_SYNTH = "BeforeSynth",
+  SYNTH = "Synth",
+  AFTER_SYNTH = "AfterSynth",
+}
+
 export interface IXConstruct extends IConstruct {
-  _beforeSynth(): void;
-  _onSynth(): void;
-  _synth(): void;
-  _afterSynth(): void;
-  _validate(): void;
+  runLifeCycle(lifecycle: LifeCycle): void;
 }
 
 /**
@@ -22,8 +27,17 @@ export abstract class XConstruct extends Construct implements IXConstruct {
     return construct instanceof this;
   }
 
+  private lifecycle: Record<LifeCycle, Callback[]>;
+
   constructor(scope: XConstruct, id: string) {
     super(scope, id.replace("/", "-"));
+
+    this.lifecycle = {
+      Validate: [],
+      BeforeSynth: [],
+      Synth: [],
+      AfterSynth: [],
+    };
   }
 
   public _validate() {
@@ -33,12 +47,24 @@ export abstract class XConstruct extends Construct implements IXConstruct {
       throw new ConstructError(this, "Construct did not validate: " + errors.join("\n"));
     }
   }
-  public _beforeSynth() {}
-  public _onSynth() {}
-  public _synth(): void {}
-  public _afterSynth() {}
 
   toString(): string {
     return `${this.constructor.name}(${this.node.path})`;
+  }
+
+  public runLifeCycle(lifecycle: LifeCycle) {
+    if (this.lifecycle[lifecycle]) {
+      for (const script of this.lifecycle[lifecycle]) {
+        script();
+      }
+    }
+  }
+
+  protected addLifeCycleScript(lifecycle: LifeCycle, callback: Callback) {
+    if (!this.lifecycle[lifecycle]) {
+      this.lifecycle[lifecycle] = [];
+    }
+
+    this.lifecycle[lifecycle].push(callback);
   }
 }

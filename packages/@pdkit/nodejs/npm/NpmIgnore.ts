@@ -1,13 +1,11 @@
-import { File, XConstruct } from "@pdkit/core";
+import { AppendableFile, XConstruct } from "@pdkit/core";
 
-export class NpmIgnore extends File {
-  constructor(scope: XConstruct, id: string, paths: string[]) {
-    super(scope, id, { path: ".npmignore", append: true });
-
-    this.appendFile(paths.join("\n"));
+export class NpmIgnore extends AppendableFile {
+  constructor(scope: XConstruct, paths: string[]) {
+    super(scope, ".npmignore", { content: paths.join("\n") });
   }
 
   add(path: string) {
-    this.appendFile(path);
+    this.append(path);
   }
 }

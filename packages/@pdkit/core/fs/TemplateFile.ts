@@ -1,6 +1,6 @@
 import mustache from "mustache";
-import { IFile, File, FileProps } from "./File";
-import { Project } from "./Project";
+import { Project } from "../project";
+import { IFile, File } from "./File";
 
 export interface ITemplate extends IFile {
   readonly variables?: Record<string, any>;
@@ -9,18 +9,20 @@ export interface ITemplate extends IFile {
 /**
  * See mustache
  */
-export interface TemplateProps extends FileProps {
+export interface TemplateFileProps {
   readonly variables?: Record<string, any>;
 }
 
 /**
  * An XTemplate allows copying data to disk using the Mustache templating engine.
  */
-export class Template extends File {
+export class TemplateFile extends File {
   public readonly variables?: Record<string, any>;
 
-  constructor(scope: Project, id: string, props: TemplateProps) {
-    super(scope, id, props);
+  constructor(scope: Project, filePath: string, props: TemplateFileProps) {
+    super(scope, filePath);
+
+    this.variables = props.variables;
   }
 
   /**

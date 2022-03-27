@@ -1,5 +1,5 @@
 import { YarnTypescriptProject, YarnTypescriptWorkspace } from "@pdkit/nodejs";
-import { YarnGithubSupport } from "./packages/@pdkit/github";
+import { YarnGithubSupport } from "@pdkit/github";
 
 const workspace = new YarnTypescriptWorkspace("pdkit", {
   author: {
@@ -49,13 +49,14 @@ new YarnTypescriptProject(workspace, "core", {
     "deepmerge",
     "memfs",
     "mustache",
+    "object-hash",
     "sync-request",
     "js-yaml",
     "winston",
     "dependency-graph",
     "md5-file",
   ],
-  devDependencies: ["@types/mustache", "@types/js-yaml", "@types/winston"],
+  devDependencies: ["@types/mustache", "@types/js-yaml", "@types/object-hash", "@types/winston"],
   eslint: {
     enabled: true,
     prettier: true,
@@ -74,12 +75,13 @@ new YarnTypescriptProject(workspace, "cli", {
     { name: "ora", version: "^5.4.1" },
     "constructs",
     "dependency-graph",
+    "diff",
     "glob",
     "glob-regex",
     "prompts",
     "yargs",
   ],
-  devDependencies: ["@types/glob", "@types/ora", "@types/prompts", "@types/yargs"],
+  devDependencies: ["@types/diff", "@types/glob", "@types/ora", "@types/prompts", "@types/yargs"],
   bin: {
     pdkit: "pdkit.js",
   },

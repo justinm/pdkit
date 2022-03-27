@@ -26,10 +26,10 @@ export interface AuthorProps {
  * Defines an author for a given project tree. Only one Author may be present per project.
  */
 export class Author extends ManifestEntry {
-  constructor(scope: Project, id: string, props: AuthorProps) {
+  constructor(scope: Project, props: AuthorProps) {
     super(
       scope,
-      id,
+      "Author",
       {
         author: {
           name: props.name,

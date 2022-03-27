@@ -1,6 +1,5 @@
-import { ManifestEntry, PDKIT_CONFIG_FILE, Project, TaskManager, XConstruct } from "@pdkit/core";
-import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
-import { TypescriptSupport } from "../constructs/TypescriptSupport";
+import { LifeCycle, ManifestEntry, PDKIT_CONFIG_FILE, Project, XConstruct } from "@pdkit/core";
+import { PackageDependency, PackageDependencyType, TypescriptSupport } from "../constructs";
 import { EslintExtension } from "./EslintExtension";
 
 export interface EslintProps {
@@ -70,8 +69,8 @@ export class EslintSupport extends XConstruct {
   readonly aliasExtensions?: string[];
   readonly tsAlwaysTryTypes?: boolean;
 
-  constructor(scope: XConstruct, id: string, props: EslintProps) {
-    super(scope, id);
+  constructor(scope: XConstruct, props: EslintProps) {
+    super(scope, "EslintSupport");
 
     this.devdirs = props.devdirs ?? [];
     this.tsconfig = props.tsconfigPath ?? undefined;
@@ -152,154 +151,155 @@ export class EslintSupport extends XConstruct {
       this.plugins.push("prettier");
       this.extends.push("prettier", "plugin:prettier/recommended");
     }
-  }
 
-  _beforeSynth() {
-    const standardRules = {
-      // Require use of the `import { foo } from 'bar';` form instead of `import foo = require('bar');`
-      "@typescript-eslint/no-require-imports": ["error"],
-      "@typescript-eslint/no-shadow": ["error"],
-      // One of the easiest mistakes to make
-      "@typescript-eslint/no-floating-promises": ["error"],
-      "@typescript-eslint/return-await": ["error"],
-      // Member ordering
-      "@typescript-eslint/member-ordering": [
-        "error",
-        {
-          default: [
-            "public-static-field",
-            "public-static-method",
-            "protected-static-field",
-            "protected-static-method",
-            "private-static-field",
-            "private-static-method",
-            "field",
+    this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
+      const standardRules = {
+        // Require use of the `import { foo } from 'bar';` form instead of `import foo = require('bar');`
+        "@typescript-eslint/no-require-imports": ["error"],
+        "@typescript-eslint/no-shadow": ["error"],
+        // One of the easiest mistakes to make
+        "@typescript-eslint/no-floating-promises": ["error"],
+        "@typescript-eslint/return-await": ["error"],
+        // Member ordering
+        "@typescript-eslint/member-ordering": [
+          "error",
+          {
+            default: [
+              "public-static-field",
+              "public-static-method",
+              "protected-static-field",
+              "protected-static-method",
+              "private-static-field",
+              "private-static-method",
+              "field",
 
-            // Constructors
-            "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"]
+              // Constructors
+              "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"]
 
-            // Methods
-            "method",
-          ],
-        },
-      ],
-
-      // Require all imported dependencies are actually declared in package.json
-      "import/no-extraneous-dependencies": [
-        "error",
-        {
-          // Only allow importing devDependencies from "devdirs".
-          devDependencies: Array.from(new Set((this.devdirs ?? []).map((dir) => `**/${dir}/**`))),
-          optionalDependencies: false, // Disallow importing optional dependencies (those shouldn't be in use in the project)
-          peerDependencies: true, // Allow importing peer dependencies (that aren't also direct dependencies)
-        },
-      ],
-
-      // Require all imported libraries actually resolve (!!required for import/no-extraneous-dependencies to work!!)
-      "import/no-unresolved": ["error"],
-
-      // Require an ordering on all imports
-      "import/order": [
-        "warn",
-        {
-          groups: ["builtin", "external"],
-          alphabetize: { order: "asc", caseInsensitive: true },
-        },
-      ],
-
-      // Cannot import from the same module twice
-      "no-duplicate-imports": ["error"],
-
-      // Cannot shadow names
-      "no-shadow": ["off"],
-
-      // Required spacing in property declarations (copied from TSLint, defaults are good)
-      "key-spacing": ["error"],
-
-      // No multiple empty lines
-      "no-multiple-empty-lines": ["error"],
-
-      // Make sure that inside try/catch blocks, promises are 'return await'ed
-      // (must disable the base rule as it can report incorrect errors)
-      "no-return-await": ["off"],
-
-      // Useless diff results
-      "no-trailing-spaces": ["error"],
-
-      // Must use foo.bar instead of foo['bar'] if possible
-      "dot-notation": ["error"],
-
-      // Are you sure | is not a typo for || ?
-      "no-bitwise": ["error"],
-    };
-
-    const config = {
-      env: {
-        jest: true,
-        node: true,
-      },
-      root: true,
-      parser: "@typescript-eslint/parser",
-      plugins: this.plugins,
-      extends: this.extends,
-      settings: {
-        "import/parsers": {
-          "@typescript-eslint/parser": [".ts", ".tsx"],
-        },
-        "import/resolver": {
-          ...(this.aliasMap && {
-            alias: {
-              map: Object.entries(this.aliasMap).map(([k, v]) => [k, v]),
-              extensions: this.aliasExtensions,
-            },
-          }),
-          node: {},
-          typescript: {
-            project: this.tsconfig,
-            ...(this.tsAlwaysTryTypes !== false && { alwaysTryTypes: true }),
+              // Methods
+              "method",
+            ],
           },
-        },
-      },
-      ignorePatterns: this.ignorePatterns,
-      rules: { ...this.rules, ...standardRules },
-      overrides: [
-        {
-          files: [PDKIT_CONFIG_FILE],
-          rules: {
-            "@typescript-eslint/no-require-imports": "off",
-            "import/no-extraneous-dependencies": "off",
+        ],
+
+        // Require all imported dependencies are actually declared in package.json
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            // Only allow importing devDependencies from "devdirs".
+            devDependencies: Array.from(new Set((this.devdirs ?? []).map((dir) => `**/${dir}/**`))),
+            optionalDependencies: false, // Disallow importing optional dependencies (those shouldn't be in use in the project)
+            peerDependencies: true, // Allow importing peer dependencies (that aren't also direct dependencies)
           },
-        },
-      ],
-    } as Record<string, unknown>;
+        ],
 
-    const project = Project.of(this);
-    const tsSupport = project.tryFindDeepChildren(TypescriptSupport);
+        // Require all imported libraries actually resolve (!!required for import/no-extraneous-dependencies to work!!)
+        "import/no-unresolved": ["error"],
 
-    if (tsSupport && tsSupport.length) {
-      new EslintExtension(this, "ts");
+        // Require an ordering on all imports
+        "import/order": [
+          "warn",
+          {
+            groups: ["builtin", "external"],
+            alphabetize: { order: "asc", caseInsensitive: true },
+          },
+        ],
 
-      config.parserOptions = {
-        ecmaVersion: 2018,
-        sourceType: "module",
-        project: tsSupport[0].fileName,
+        // Cannot import from the same module twice
+        "no-duplicate-imports": ["error"],
+
+        // Cannot shadow names
+        "no-shadow": ["off"],
+
+        // Required spacing in property declarations (copied from TSLint, defaults are good)
+        "key-spacing": ["error"],
+
+        // No multiple empty lines
+        "no-multiple-empty-lines": ["error"],
+
+        // Make sure that inside try/catch blocks, promises are 'return await'ed
+        // (must disable the base rule as it can report incorrect errors)
+        "no-return-await": ["off"],
+
+        // Useless diff results
+        "no-trailing-spaces": ["error"],
+
+        // Must use foo.bar instead of foo['bar'] if possible
+        "dot-notation": ["error"],
+
+        // Are you sure | is not a typo for || ?
+        "no-bitwise": ["error"],
       };
-    } else {
-      new EslintExtension(this, "js");
-    }
 
-    const fileExtensions = project.tryFindDeepChildren(EslintExtension).map((e) => `.${e.extension}`);
-    const tm = TaskManager.of(project);
+      const config = {
+        env: {
+          jest: true,
+          node: true,
+        },
+        root: true,
+        parser: "@typescript-eslint/parser",
+        plugins: this.plugins,
+        extends: this.extends,
+        settings: {
+          "import/parsers": {
+            "@typescript-eslint/parser": [".ts", ".tsx"],
+          },
+          "import/resolver": {
+            ...(this.aliasMap && {
+              alias: {
+                map: Object.entries(this.aliasMap).map(([k, v]) => [k, v]),
+                extensions: this.aliasExtensions,
+              },
+            }),
+            node: {},
+            typescript: {
+              project: this.tsconfig,
+              ...(this.tsAlwaysTryTypes !== false && { alwaysTryTypes: true }),
+            },
+          },
+        },
+        ignorePatterns: this.ignorePatterns,
+        rules: { ...this.rules, ...standardRules },
+        overrides: [
+          {
+            files: [PDKIT_CONFIG_FILE],
+            rules: {
+              "@typescript-eslint/no-require-imports": "off",
+              "import/no-extraneous-dependencies": "off",
+            },
+          },
+        ],
+      } as Record<string, unknown>;
 
-    tm.tryAddTask("lint", [
-      "eslint",
-      `--ext ${fileExtensions.join(",")}`,
-      "--fix",
-      "--no-error-on-unmatched-pattern",
-      project.sourcePath,
-      ...this.devdirs,
-    ]);
+      const project = Project.of(this);
+      const tsSupport = project.tryFindDeepChildren(TypescriptSupport);
 
-    new ManifestEntry(this, "EslintConfig", { eslintConfig: config }, { shallow: true });
+      if (tsSupport && tsSupport.length) {
+        new EslintExtension(this, "ts");
+
+        config.parserOptions = {
+          ecmaVersion: 2018,
+          sourceType: "module",
+          project: tsSupport[0].fileName,
+        };
+      } else {
+        new EslintExtension(this, "js");
+      }
+
+      const fileExtensions = project.tryFindDeepChildren(EslintExtension).map((e) => `.${e.extension}`);
+      new ManifestEntry(this, "EslintManifestScriptEntry", {
+        scripts: {
+          lint: [
+            "eslint",
+            `--ext ${fileExtensions.join(",")}`,
+            "--fix",
+            "--no-error-on-unmatched-pattern",
+            project.sourcePath,
+            ...this.devdirs,
+          ].join(" "),
+        },
+      });
+      new ManifestEntry(this, "EslintConfig", { eslintConfig: config }, { shallow: true });
+    });
   }
 }

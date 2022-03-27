@@ -4,20 +4,21 @@ import {
   License,
   Project,
   ProjectProps,
-  TaskManager,
   ValidLicense,
   StandardValidator,
-  VirtualFS,
   Workspace,
   XConstruct,
-  FileSystem,
 } from "@pdkit/core";
-import { Author, AuthorProps } from "../constructs/Author";
-import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
-import { PackageJson, NodePackageJsonProps } from "../constructs/PackageJson";
-import { EslintProps, EslintSupport } from "../eslint/EslintSupport";
-import { JestOptions, JestSupport } from "../jest/JestSupport";
-import { NpmTaskManager } from "./NpmTaskManager";
+import {
+  Author,
+  AuthorProps,
+  PackageDependency,
+  PackageDependencyType,
+  PackageJson,
+  NodePackageJsonProps,
+} from "../constructs";
+import { EslintProps, EslintSupport } from "../eslint";
+import { JestProps, JestSupport } from "../jest";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
 
@@ -36,7 +37,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly author?: AuthorProps;
   readonly license?: ValidLicense;
   readonly eslint?: EslintProps & { enabled: boolean };
-  readonly jest?: JestOptions & { enabled: boolean };
+  readonly jest?: JestProps & { enabled: boolean };
   readonly prettier?: boolean;
   readonly gitignore?: string[];
   readonly buildCommands?: string[];
@@ -47,43 +48,39 @@ export class NpmProject extends Project {
     return Project.of(construct) as NpmProject;
   }
   public readonly packageJson: PackageJson;
-  public readonly taskManager: TaskManager;
   public readonly packageName: string;
 
   constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
 
     new InstallShellScript(this, "InstallCommand", props?.installCommands ?? ["npm install"]);
-    new FileSystem(this);
-    new VirtualFS(this, "VirtualFS");
     new StandardValidator(this, "StandardValidator");
 
     this.packageName = props?.packageName ?? id;
-    this.packageJson = new PackageJson(this, "PackageJson", {
+    this.packageJson = new PackageJson(this, {
       name: this.packageName,
       files: [`${this.distPath}/*.js`, `${this.distPath}/**/*.js`],
       ...props,
     });
-    this.taskManager = new NpmTaskManager(this);
 
     if (props?.license) {
-      new License(this, "License", props.license);
+      new License(this, props.license);
     }
 
     if (props?.author) {
-      new Author(this, "Author", props.author);
+      new Author(this, props.author);
     }
 
     if (props?.eslint?.enabled) {
-      new EslintSupport(this, "EslintSupport", props.eslint);
+      new EslintSupport(this, props.eslint);
     }
 
     if (props?.jest?.enabled) {
-      new JestSupport(this, "JestSupport", props.jest);
+      new JestSupport(this, props.jest);
     }
 
     // Courtesy of https://www.toptal.com/developers/gitignore/api/node
-    new GitIgnore(this, "DefaultGitIgnore", [
+    new GitIgnore(this, [
       "node_modules",
       "logs",
       "*.log",
@@ -100,7 +97,7 @@ export class NpmProject extends Project {
     ]);
 
     if (props?.gitignore) {
-      new GitIgnore(this, "CustomGitIgnore", props.gitignore);
+      new GitIgnore(this, props.gitignore);
     }
 
     const addDependencies = (deps: Dependencies, type?: PackageDependencyType) => {
@@ -130,23 +127,11 @@ export class NpmProject extends Project {
     if (props?.peerDependencies) {
       addDependencies(props?.peerDependencies, PackageDependencyType.PEER);
     }
-
-    this.addTask("build", props?.buildCommands ?? []);
   }
 
   tryFindProject(packageName: string) {
     return Workspace.of(this)
       .node.findAll()
       .find((p) => (p as NpmProject).packageName === packageName) as NpmProject | undefined;
-  }
-
-  /**
-   * Quickly add new tasks to a project
-   *
-   * @param taskName
-   * @param commands
-   */
-  addTask(taskName: string, commands: string[]) {
-    TaskManager.of(this).tryAddTask(taskName, commands);
   }
 }

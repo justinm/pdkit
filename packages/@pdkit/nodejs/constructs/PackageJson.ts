@@ -1,4 +1,4 @@
-import { ValidLicense, Manifest, XConstruct, FileSystem } from "@pdkit/core";
+import { LifeCycle, Manifest, Project, ValidLicense, Workspace, XConstruct } from "@pdkit/core";
 
 export interface NodePackageJsonProps {
   readonly name?: string;
@@ -21,10 +21,13 @@ export interface NodePackageJsonProps {
 }
 
 export class PackageJson extends Manifest {
-  constructor(scope: XConstruct, id: string, props?: NodePackageJsonProps) {
-    super(scope, id, "package.json");
+  constructor(scope: XConstruct, props?: NodePackageJsonProps) {
+    super(scope, "package.json");
 
-    const packageJson = FileSystem.of(this).tryReadJsonFile<{ [key: string]: any }>("package.json");
+    const packageJson = Workspace.of(this).fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(
+      this,
+      "package.json"
+    );
 
     if (props) {
       this.addShallowFields({
@@ -44,7 +47,27 @@ export class PackageJson extends Manifest {
       });
     }
 
-    // new UpdatePackageVersionsPostInstallScript(this, "PatchPackageJson");
+    this.addLifeCycleScript(LifeCycle.SYNTH, () => {
+      const addPackageDependency = (key: string, packageName: string, version: string) => {
+        this.addDeepFields({
+          [key]: {
+            [packageName]: version,
+          },
+        });
+      };
+
+      ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
+        if (this.fields[key]) {
+          const field = this.fields[key] as Record<string, string>;
+
+          for (const dep of Object.keys(field)) {
+            const version = `${this.resolveDepVersion(dep)}`;
+
+            addPackageDependency(key, dep, version);
+          }
+        }
+      });
+    });
   }
 
   get version() {
@@ -52,32 +75,16 @@ export class PackageJson extends Manifest {
   }
 
   resolveDepVersion(dep: string) {
-    const packageJson = FileSystem.of(this).tryReadJsonFile<{ [key: string]: any }>(`node_modules/${dep}/package.json`);
+    const project = Project.of(this);
+    const workspace = Workspace.of(this);
+
+    const packageJson =
+      workspace.fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(this, `node_modules/${dep}/package.json`) ||
+      workspace.fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(
+        this,
+        `${project.projectPath}/node_modules/${dep}/package.json`
+      );
 
     return packageJson?.version ?? "*";
-  }
-
-  _onSynth() {
-    super._onSynth();
-
-    const addPackageDependency = (key: string, packageName: string, version: string) => {
-      this.addDeepFields({
-        [key]: {
-          [packageName]: version,
-        },
-      });
-    };
-
-    ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
-      if (this.fields[key]) {
-        for (const dep of Object.keys(this.fields[key] as Record<string, string>)) {
-          const version = this.resolveDepVersion(dep);
-
-          if (version) {
-            addPackageDependency(key, dep, `^${version}`);
-          }
-        }
-      }
-    });
   }
 }

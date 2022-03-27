@@ -44,7 +44,7 @@ export class GithubWorkflow extends YamlFile {
   readonly props: GithubWorkflowProps;
 
   constructor(scope: XConstruct, id: string, props: GithubWorkflowProps) {
-    super(scope, id, `.github/workflows/${id}.yml`);
+    super(scope, `.github/workflows/${id}.yml`);
 
     this.props = props;
 

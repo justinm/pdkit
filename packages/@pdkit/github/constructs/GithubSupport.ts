@@ -31,9 +31,7 @@ export class GithubSupport extends XConstruct {
     }
 
     if (props?.pullRequestTemplate) {
-      new File(this, "PullRequestTemplate", { path: ".github/pull_request_template.md" }).writeFile(
-        props.pullRequestTemplate
-      );
+      new File(this, ".github/pull_request_template.md").write(props.pullRequestTemplate);
     }
 
     if (props?.workflows?.build?.enabled) {

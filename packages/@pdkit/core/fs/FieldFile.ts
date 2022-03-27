@@ -1,23 +1,16 @@
 import { Construct } from "constructs";
 import deepmerge from "deepmerge";
-import { IXConstruct, XConstruct } from "../base/XConstruct";
-import { File, FileProps } from "./File";
+import { XConstruct } from "../base/XConstruct";
+import { File, IFile } from "./File";
 
-export interface IFieldFile extends IXConstruct {
-  /**
-   * Specify the entries path relative to the project root
-   */
-  readonly path: string;
-}
-
-export interface FieldFileProps extends Omit<FileProps, "append"> {
+export interface FieldFileProps {
   readonly fields?: Record<string, unknown>;
 }
 
 /**
  * JsonFile represents a JSON JsonFile for a given project. Only one JsonFile may be present per project.
  */
-export abstract class FieldFile extends File implements IFieldFile {
+export abstract class FieldFile extends File implements IFile {
   /**
    * Check if a given construct is a JsonFile.
    *
@@ -29,10 +22,10 @@ export abstract class FieldFile extends File implements IFieldFile {
 
   protected _fields: Record<string, unknown>;
 
-  constructor(scope: XConstruct, id: string, props: FieldFileProps) {
-    super(scope, id, props);
+  constructor(scope: XConstruct, filePath: string, props?: FieldFileProps) {
+    super(scope, filePath);
 
-    this._fields = {};
+    this._fields = props?.fields ?? {};
 
     this.node.addValidation({
       validate: (): string[] => {

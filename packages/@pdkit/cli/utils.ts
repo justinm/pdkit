@@ -1,5 +1,5 @@
 import path from "path";
-import { ConstructError, logger, Workspace, XConstruct } from "@pdkit/core";
+import { ConstructError, IWorkspace, logger, Workspace, XConstruct } from "@pdkit/core";
 import ora from "ora";
 
 export const spinner = ora();
@@ -9,7 +9,7 @@ export function synthWorkspace(workspace: Workspace) {
 }
 
 export async function loadWorkspace(configPath: string) {
-  const workspace = await withSpinner<Workspace>(0, "Loading project...", () => {
+  const workspace = await withSpinner<IWorkspace>(0, "Loading project...", () => {
     process.chdir(path.dirname(configPath));
 
     // eslint-disable-next-line @typescript-eslint/no-require-imports

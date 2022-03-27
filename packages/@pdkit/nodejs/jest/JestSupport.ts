@@ -1,7 +1,7 @@
 import * as path from "path";
 import { GitIgnore, JsonFile, ManifestEntry, XConstruct } from "@pdkit/core";
-import { PackageDependency, PackageDependencyType } from "../constructs/PackageDependency";
-import { NpmIgnore } from "../npm/NpmIgnore";
+import { PackageDependency, PackageDependencyType } from "../constructs";
+import { NpmIgnore } from "../npm";
 
 // Pulled from https://jestjs.io/docs/en/configuration
 export interface JestConfigOptions {
@@ -460,7 +460,7 @@ export interface JestConfigOptions {
   readonly [name: string]: any;
 }
 
-export interface JestOptions {
+export interface JestProps {
   /**
    * Include the `text` coverage reporter, which means that coverage summary is printed
    * at the end of the jest execution.
@@ -520,10 +520,11 @@ export interface HasteConfig {
 type JestReporter = [string, { [key: string]: any }] | string;
 
 export class JestSupport extends XConstruct {
+  public static readonly ID = "JestSupport";
   public readonly config: any;
 
-  constructor(scope: XConstruct, id: string, props: JestOptions) {
-    super(scope, id);
+  constructor(scope: XConstruct, props: JestProps) {
+    super(scope, JestSupport.ID);
 
     // Jest defaults
     const ignorePatterns = props.jestConfig?.testPathIgnorePatterns ?? ["/node_modules/"];
@@ -559,8 +560,8 @@ export class JestSupport extends XConstruct {
       coverageReporters.push("text");
     }
 
-    new GitIgnore(this, "JestGitIgnore", ignore);
-    new NpmIgnore(this, "JestNppmIgnore", ignore);
+    new GitIgnore(this, ignore);
+    new NpmIgnore(this, ignore);
 
     const fields = {
       jest: {
@@ -586,7 +587,7 @@ export class JestSupport extends XConstruct {
     }
 
     if (props.configFilePath) {
-      new JsonFile(this, "Jest", { path: props.configFilePath, fields });
+      new JsonFile(this, props.configFilePath, { fields });
     } else {
       new ManifestEntry(this, "Jest", fields, { shallow: true });
     }

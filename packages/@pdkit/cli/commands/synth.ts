@@ -1,6 +1,8 @@
 import { spawn } from "child_process";
+import fs from "fs";
 import path from "path";
-import { FileStatus, InstallShellScript, Project, Script, ShellScript, Workspace } from "@pdkit/core";
+import { InstallShellScript, Project, Script, ShellScript, Workspace } from "@pdkit/core";
+import * as Diff from "diff";
 import yargs from "yargs";
 import { AppArguments } from "../pdkit";
 import { loadWorkspace, spinner, synthWorkspace, withSpinner } from "../utils";
@@ -39,7 +41,7 @@ const runShellScripts = async (
         .filter((b) => b instanceof Project)
         .map((p) => p.node.findAll().filter((b) => b instanceof type))
         .flat() as ShellScript[];
-      const rootPath = workspace.rootPath;
+      const rootPath = workspace.fileSynthesizer.rootPath;
 
       if (!scripts.length) {
         throw `No ${name} scripts were found`;
@@ -101,32 +103,38 @@ const runShellScripts = async (
   });
 };
 
-const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: boolean, force: boolean) => {
+const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: boolean, _: boolean) => {
   await withSpinner(dryRun ? 1 : verbose, "Writing files to disk", async () => {
-    const results = workspace.syncFilesToDisk({ dryRun, force });
+    const fileSynthesizer = workspace.fileSynthesizer;
+    for (const filePath of fileSynthesizer.virtualFiles) {
+      if (fileSynthesizer.realFileIsDifferent(filePath)) {
+        if (!dryRun) {
+          workspace.fileSynthesizer.syncVFileToDisk(filePath);
+          if (verbose) {
+            spinner.succeed(`  ${filePath}: written successfully`);
+          }
+        } else {
+          if (verbose || dryRun) {
+            spinner.info(`  ${filePath}: would write`);
+          }
 
-    for (const result of results) {
-      switch (result.reason) {
-        case FileStatus.OK:
-          if (dryRun) {
-            spinner.info(`  ${result.path}: would write`);
-          } else {
-            spinner.succeed(`  ${result.path}: written successfully`);
+          const realPath = path.join(fileSynthesizer.rootPath, filePath);
+
+          if (verbose > 1 && fs.existsSync(realPath)) {
+            console.log(
+              Diff.createPatch(
+                filePath,
+                fs.readFileSync(realPath).toString("utf8"),
+                fileSynthesizer.readVFile(filePath) as string
+              )
+            );
           }
-          break;
-        case FileStatus.NO_CHANGE:
-          if (verbose > 1 || dryRun) {
-            spinner.info(`  ${result.path}: skipping file, no differences`);
-          }
-          break;
-        case FileStatus.CONFLICT:
-          spinner.warn(`  ${result.path}: ownership was incorrect`);
-          break;
+        }
+      } else {
+        if (verbose || dryRun) {
+          spinner.info(`  ${filePath}: skipping file, no differences`);
+        }
       }
-    }
-
-    if (dryRun) {
-      throw "no files were written";
     }
   });
 };
