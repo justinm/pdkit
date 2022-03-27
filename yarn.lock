@@ -1125,7 +1125,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
   dependencies:
-    "@pdkit/core": 0.0.0
+    "@pdkit/core": 1.0.0
     "@types/diff": 5.0.2
     "@types/glob": 7.2.0
     "@types/ora": 3.1.0
@@ -1156,11 +1156,11 @@ __metadata:
     typescript: 4.6.3
     yargs: 16.2.0
   bin:
-    pdkit: pdkit.js
+    pdkit: ./pdkit.js
   languageName: unknown
   linkType: soft
 
-"@pdkit/core@0.0.0, @pdkit/core@workspace:packages/@pdkit/core":
+"@pdkit/core@1.0.0, @pdkit/core@workspace:packages/@pdkit/core":
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
@@ -1197,11 +1197,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/github@0.0.0, @pdkit/github@workspace:packages/@pdkit/github":
+"@pdkit/github@workspace:packages/@pdkit/github":
   version: 0.0.0-use.local
   resolution: "@pdkit/github@workspace:packages/@pdkit/github"
   dependencies:
-    "@pdkit/core": 0.0.0
+    "@pdkit/core": 1.0.0
     "@typescript-eslint/eslint-plugin": 5.16.0
     "@typescript-eslint/parser": 5.16.0
     constructs: 10.0.97
@@ -1221,11 +1221,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/nodejs@0.0.0, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
+"@pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
   resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
-    "@pdkit/core": 0.0.0
+    "@pdkit/core": 1.0.0
     "@typescript-eslint/eslint-plugin": 5.16.0
     "@typescript-eslint/parser": 5.16.0
     constructs: 10.0.97
@@ -9066,8 +9066,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "workspace@workspace:."
   dependencies:
-    "@pdkit/github": 0.0.0
-    "@pdkit/nodejs": 0.0.0
+    "@pdkit/github": "workspace:packages/@pdkit/github"
+    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs"
     "@qiwi/multi-semantic-release": 6.0.2
     "@semantic-release/changelog": 6.0.1
     "@semantic-release/commit-analyzer": 9.0.2

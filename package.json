@@ -222,8 +222,8 @@
     ]
   },
   "dependencies": {
-    "@pdkit/github": "0.0.0",
-    "@pdkit/nodejs": "0.0.0",
+    "@pdkit/github": "workspace:packages/@pdkit/github",
+    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs",
     "mustache": "4.2.0"
   },
   "release": {

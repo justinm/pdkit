@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "./index.js",
   "bin": {
-    "pdkit": "pdkit.js"
+    "pdkit": "./pdkit.js"
   },
   "scripts": {
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
