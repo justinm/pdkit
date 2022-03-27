@@ -1,3 +1,13 @@
+## @pdkit/nodejs [1.0.1](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.0.0...@pdkit/nodejs@1.0.1) (2022-03-27)
+
+
+### Bug Fixes
+
+* cli bin not creating in release and switch to using workspaces ([6cac682](https://github.com/justinm/pdkit/commit/6cac682160f2678ffff0f9b4c956a7d78cf3aade))
+* different release steps for npm vs yarn ([75d8b26](https://github.com/justinm/pdkit/commit/75d8b26cc5ab73de941a97220821de0a0f53a9e1))
+* do not autobump dependencies as we rely on workspace links ([cf1c782](https://github.com/justinm/pdkit/commit/cf1c782a465bfda11de85ec21a1d59861b7cc16b))
+* proper quotes for yarn auth ([57ff96c](https://github.com/justinm/pdkit/commit/57ff96cd89013bdeb89069394bf814a1cc446630))
+
 # @pdkit/nodejs 1.0.0 (2022-03-27)
 
 
