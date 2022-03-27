@@ -6,11 +6,6 @@ import yargs, { CommandModule } from "yargs";
 import { hideBin } from "yargs/helpers";
 import { synth } from "./commands";
 
-export interface AppArguments extends yargs.ArgumentsCamelCase<any> {
-  config?: string;
-  c?: string;
-}
-
 const findPdk = () => {
   const parts = process.cwd().split("/");
 
@@ -29,24 +24,6 @@ const findPdk = () => {
 
 const pdk = findPdk();
 
-const parser = yargs(hideBin(process.argv))
-  .parserConfiguration({
-    "unknown-options-as-args": true,
-  })
-  .completion()
-  .option("project-root", {
-    alias: "r",
-    default: pdk ? path.dirname(pdk) : undefined,
-  })
-  .option("config", {
-    alias: "c",
-    default: pdk ?? "pdk.js",
-  })
-  .option("task-config", {
-    alias: "t",
-    default: ".pdk/tasks.json",
-  });
-
 function wrapCommand<T extends CommandModule>(command: T): T {
   const handler = command.handler;
 
@@ -62,9 +39,26 @@ function wrapCommand<T extends CommandModule>(command: T): T {
   return command;
 }
 
-parser
-  .command(wrapCommand(synth))
-  .demandCommand()
+yargs(hideBin(process.argv))
+  .parserConfiguration({
+    "unknown-options-as-args": true,
+  })
+  .completion()
+  .option("project-root", {
+    alias: "r",
+    default: pdk ? path.dirname(pdk) : undefined,
+  })
+  .option("config", {
+    alias: "c",
+    default: pdk ?? "pdk.js",
+    requiresArg: true,
+    required: true,
+    require: true,
+  })
+  .option("task-config", {
+    alias: "t",
+    default: ".pdk/tasks.json",
+  })
   .check((args) => {
     if (!fs.existsSync(args.config)) {
       throw new Error("Unable to locate configuration at " + args.config);
@@ -72,9 +66,9 @@ parser
 
     return true;
   })
+  .command(wrapCommand(synth as any))
+  .strict()
   .help()
   .strictCommands(false)
   .strictOptions(false)
-  .parse()
-  .then(() => {})
-  .catch(console.error);
+  .parse();

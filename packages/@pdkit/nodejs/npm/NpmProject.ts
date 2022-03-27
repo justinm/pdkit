@@ -8,6 +8,7 @@ import {
   StandardValidator,
   Workspace,
   XConstruct,
+  ManifestEntry,
 } from "@pdkit/core";
 import {
   Author,
@@ -126,6 +127,10 @@ export class NpmProject extends Project {
 
     if (props?.peerDependencies) {
       addDependencies(props?.peerDependencies, PackageDependencyType.PEER);
+    }
+
+    if (props?.scripts) {
+      new ManifestEntry(this, "EnsureScripts", { scripts: props.scripts });
     }
   }
 

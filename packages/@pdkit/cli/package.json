@@ -5,7 +5,8 @@
     "pdkit": "pdkit.js"
   },
   "scripts": {
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
+    "compile": "tsc -p ./tsconfig.json"
   },
   "files": [
     "./*.js",
@@ -18,7 +19,7 @@
     "@types/glob": "7.2.0",
     "@types/ora": "3.1.0",
     "@types/prompts": "2.4.0",
-    "@types/yargs": "17.0.10",
+    "@types/yargs": "16.0.4",
     "@typescript-eslint/eslint-plugin": "5.16.0",
     "@typescript-eslint/parser": "5.16.0",
     "eslint": "8.12.0",
@@ -176,12 +177,12 @@
     "chalk": "4.1.2",
     "constructs": "10.0.97",
     "dependency-graph": "0.11.0",
-    "diff": "5.0.0",
+    "diff": "4.0.2",
     "glob": "7.2.0",
     "glob-regex": "0.3.2",
     "ora": "5.4.1",
     "prompts": "2.4.2",
-    "yargs": "17.4.0"
+    "yargs": "16.2.0"
   },
   "jest": {
     "clearMocks": true,

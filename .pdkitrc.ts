@@ -8,10 +8,12 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
     organization: true,
   },
   license: "Apache-2.0",
-  dependencies: ["mustache", "@pdkit/nodejs"],
+  dependencies: ["mustache", "@pdkit/nodejs", "@pdkit/github"],
   devDependencies: ["@types/mustache", "@types/node", "prettier", "ts-node", "typescript"],
   scripts: {
     pdkit: "ts-node packages/@pdkit/cli/src/pdkit.ts",
+    build: "yarn workspaces foreach --verbose -pt run build",
+    compile: "yarn workspaces foreach --verbose -pt run compile",
   },
   eslint: {
     enabled: true,

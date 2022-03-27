@@ -4,12 +4,13 @@
   ],
   "include": [
     ".pdkitrc.ts",
-    "."
+    "./*.ts",
+    "./**/*.ts"
   ],
   "compilerOptions": {
-    "outDir": ".",
     "alwaysStrict": true,
     "declaration": false,
+    "noEmit": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "inlineSourceMap": true,
@@ -30,7 +31,6 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
-    "target": "ES2019",
-    "noEmit": true
+    "target": "ES2019"
   }
 }

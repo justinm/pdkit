@@ -3,12 +3,13 @@
     "node_modules"
   ],
   "include": [
-    "."
+    "./*.ts",
+    "./**/*.ts"
   ],
   "compilerOptions": {
-    "outDir": ".",
     "alwaysStrict": true,
     "declaration": true,
+    "noEmit": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "inlineSourceMap": true,

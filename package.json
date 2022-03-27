@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "pdkit": "ts-node packages/@pdkit/cli/src/pdkit.ts",
+    "build": "yarn workspaces foreach --verbose -pt run build",
+    "compile": "yarn workspaces foreach --verbose -pt run compile",
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
   },
   "files": [
@@ -209,6 +211,7 @@
     ]
   },
   "dependencies": {
+    "@pdkit/github": "0.0.0",
     "@pdkit/nodejs": "0.0.0",
     "mustache": "4.2.0"
   },

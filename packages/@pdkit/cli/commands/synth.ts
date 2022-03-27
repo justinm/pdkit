@@ -4,7 +4,6 @@ import path from "path";
 import { InstallShellScript, Project, Script, ShellScript, Workspace } from "@pdkit/core";
 import * as Diff from "diff";
 import yargs from "yargs";
-import { AppArguments } from "../pdkit";
 import { loadWorkspace, spinner, synthWorkspace, withSpinner } from "../utils";
 
 export const command = "synth";
@@ -139,7 +138,7 @@ const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: b
   });
 };
 
-export const handler = async function (argv: AppArguments) {
+export const handler = async function (argv: { config: string; dryrun: boolean; force: boolean; verbose: number }) {
   const config = argv.config as string;
   const dryRun = (argv.dryrun as boolean) ?? false;
   const force = (argv.force as boolean) ?? false;

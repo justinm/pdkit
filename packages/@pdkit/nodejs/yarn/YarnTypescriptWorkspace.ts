@@ -1,5 +1,5 @@
-import { PDKIT_CONFIG_FILE, Project } from "@pdkit/core";
-import { TypescriptSupport, TypescriptSupportProps } from "../constructs/TypescriptSupport";
+import { ManifestEntry, PDKIT_CONFIG_FILE, Project } from "@pdkit/core";
+import { TypescriptSupport, TypescriptSupportProps } from "../constructs";
 import { YarnWorkspace, YarnWorkspaceProps } from "./YarnWorkspace";
 
 export interface YarnTypescriptWorkspaceProps extends YarnWorkspaceProps {
@@ -25,5 +25,9 @@ export class YarnTypescriptWorkspace extends YarnWorkspace {
         declaration: props.tsconfig?.compilerOptions?.declaration ?? false,
       },
     });
+
+    if (props.scripts) {
+      new ManifestEntry(Project.of(this), "EnsureScripts", { scripts: props.scripts });
+    }
   }
 }

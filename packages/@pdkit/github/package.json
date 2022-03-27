@@ -2,7 +2,8 @@
   "name": "@pdkit/github",
   "version": "0.0.0",
   "scripts": {
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
+    "compile": "tsc -p ./tsconfig.json"
   },
   "files": [
     "./*.js",

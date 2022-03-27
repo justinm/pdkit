@@ -15,3 +15,5 @@ pids
 /test-reports/
 junit.xml
 /coverage/
+*.js
+*.d.ts

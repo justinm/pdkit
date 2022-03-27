@@ -1,4 +1,4 @@
-import { XConstruct } from "@pdkit/core";
+import { ManifestEntry, Project, XConstruct } from "@pdkit/core";
 import { TypescriptSupport, TypescriptSupportProps } from "../constructs";
 import { JestTypescriptSupport } from "../jest";
 import { NodeProjectProps, NpmProject } from "./NpmProject";
@@ -19,5 +19,9 @@ export class NpmTypescriptProject extends NpmProject {
     }
 
     new TypescriptSupport(this, props.tsconfig);
+
+    if (props.scripts) {
+      new ManifestEntry(Project.of(this), "EnsureScripts", { scripts: props.scripts });
+    }
   }
 }

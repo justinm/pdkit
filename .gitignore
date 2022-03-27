@@ -26,3 +26,5 @@ pids
 !.yarn/versions
 .pnp.*
 .yarn-integrity
+*.js
+*.d.ts

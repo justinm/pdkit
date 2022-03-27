@@ -1,4 +1,4 @@
-import { JsonFile, ManifestEntry, Project, XConstruct } from "@pdkit/core";
+import { GitIgnore, JsonFile, ManifestEntry, Project, XConstruct } from "@pdkit/core";
 import { PackageDependency, PackageDependencyType } from "./PackageDependency";
 
 export interface TypescriptSupportProps {
@@ -379,20 +379,23 @@ export class TypescriptSupport extends XConstruct {
 
     new ManifestEntry(this, "Scripts", {
       scripts: {
-        compile: ["tsc", "-p", "./tsconfig.json"],
+        compile: "tsc -p ./tsconfig.json",
       },
     });
     new ManifestEntry(this, "Files", {
       files: [`${project.distPath}/*.d.ts`, `${project.distPath}/**/*.d.ts`],
     });
 
+    new GitIgnore(this, ["*.js", "*.d.ts"]);
+
     new JsonFile(this, this.fileName).addDeepFields({
       exclude: [...(props?.exclude ?? []), "node_modules"],
-      include: [...(props?.include ?? []), project.sourcePath],
+      include: [...(props?.include ?? []), `${project.sourcePath}/*.ts`, `${project.sourcePath}/**/*.ts`],
       compilerOptions: {
-        outDir: project.distPath,
+        outDir: project.distPath === "." ? undefined : project.distPath,
         alwaysStrict: true,
         declaration: true,
+        noEmit: false,
         esModuleInterop: true,
         experimentalDecorators: true,
         inlineSourceMap: true,
