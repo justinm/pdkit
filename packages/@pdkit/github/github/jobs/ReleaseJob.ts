@@ -53,7 +53,7 @@ export class ReleaseJob extends GithubJob {
     } else if (project instanceof YarnProject) {
       new GithubJobStep(this, "YarnAuth", {
         name: "Yarn Login",
-        run: `yarn config set --home npmRegistries["//registry.npmjs.org/"].npmAuthToken "$NPM_TOKEN"`,
+        run: `yarn config set --home npmRegistries[\\"//registry.npmjs.org/\\"].npmAuthToken "$NPM_TOKEN"`,
       });
     }
 

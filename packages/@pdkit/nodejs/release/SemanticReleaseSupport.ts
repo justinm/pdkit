@@ -7,6 +7,7 @@ export interface SemanticReleaseSupportProps {
   changelogs?: boolean;
   releaseNotes?: boolean;
   tool: "npm" | "yarn";
+  semanticReleaseArgs?: string;
 }
 
 export class SemanticReleaseSupport extends XConstruct {
@@ -76,7 +77,7 @@ export class SemanticReleaseSupport extends XConstruct {
         npm: "^6",
       },
       scripts: {
-        release: "npx multi-semantic-release",
+        release: `npx multi-semantic-release ${props.semanticReleaseArgs ?? ""}`.trim(),
       },
       release: {
         branches: props.branches,
