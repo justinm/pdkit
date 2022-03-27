@@ -54,7 +54,7 @@ new SemanticReleaseSupport(workspace, {
   tool: "yarn",
   branches: ["main"],
   changelogs: true,
-  releaseNotes: true
+  releaseNotes: true,
 });
 
 new YarnTypescriptProject(workspace, "core", {

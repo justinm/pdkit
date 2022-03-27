@@ -18,7 +18,6 @@ export class SemanticReleaseSupport extends XConstruct {
 
     new PackageDependency(this, "@qiwi/multi-semantic-release", {
       type: PackageDependencyType.DEV,
-      version: "^3.17.1",
     });
     new PackageDependency(this, "@semantic-release/commit-analyzer", {
       type: PackageDependencyType.DEV,
@@ -98,6 +97,8 @@ export class SemanticReleaseSupport extends XConstruct {
             },
           ],
           ...plugins,
+          // We resynth the project to ensure package.json updates correctly after release bump
+          ["@semantic-release/exec", { publishCmd: "npx pdkit synth" }],
           [
             "@semantic-release/git",
             {
