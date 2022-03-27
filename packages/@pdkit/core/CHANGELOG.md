@@ -1,3 +1,10 @@
+## @pdkit/core [1.0.7](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.6...@pdkit/core@1.0.7) (2022-03-27)
+
+
+### Bug Fixes
+
+* add registry to yarnrc ([671f167](https://github.com/justinm/pdkit/commit/671f167f634a117dfd04ccf9b14a4029e75e0ca1))
+
 ## @pdkit/core [1.0.6](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.5...@pdkit/core@1.0.6) (2022-03-27)
 
 
