@@ -1,5 +1,5 @@
 import { XConstruct } from "@pdkit/core";
-import { GithubJob, GithubJobProps, JobPermission, Tools } from "../../constructs/GithubJob";
+import { GithubJobProps, Tools } from "../../constructs/GithubJob";
 import { GithubJobStep } from "../../constructs/GithubJobStep";
 
 export interface SetupToolsProps extends Partial<GithubJobProps> {
@@ -7,16 +7,9 @@ export interface SetupToolsProps extends Partial<GithubJobProps> {
   readonly tools: Tools;
 }
 
-export class SetupTools extends GithubJob {
+export class SetupTools extends XConstruct {
   constructor(scope: XConstruct, id: string, props: SetupToolsProps) {
-    super(scope, id, {
-      name: "SetupNode",
-      permissions: {
-        contents: JobPermission.WRITE,
-      },
-      runsOn: ["ubuntu-latest"],
-      ...props?.job,
-    });
+    super(scope, id);
 
     const { tools } = props;
 
@@ -24,6 +17,7 @@ export class SetupTools extends GithubJob {
       new GithubJobStep(this, "SetupJava", {
         uses: "actions/setup-java@v2",
         with: { distribution: "temurin", "java-version": tools.java.version },
+        priority: props.priority,
       });
     }
 
@@ -31,6 +25,7 @@ export class SetupTools extends GithubJob {
       new GithubJobStep(this, "SetupNode", {
         uses: "actions/setup-node@v2",
         with: { "node-version": tools.node.version, cache: tools.node.cache, token: tools.node.token },
+        priority: props.priority,
       });
     }
 
@@ -38,6 +33,7 @@ export class SetupTools extends GithubJob {
       new GithubJobStep(this, "SetupPython", {
         uses: "actions/setup-python@v2",
         with: { "python-version": tools.python.version },
+        priority: props.priority,
       });
     }
 
@@ -45,6 +41,7 @@ export class SetupTools extends GithubJob {
       new GithubJobStep(this, "SetupGo", {
         uses: "actions/setup-go@v2",
         with: { "go-version": tools.go.version },
+        priority: props.priority,
       });
     }
 
@@ -52,6 +49,7 @@ export class SetupTools extends GithubJob {
       new GithubJobStep(this, "SetupDotNet", {
         uses: "actions/setup-dotnet@v1",
         with: { "dotnet-version": tools.dotnet.version },
+        priority: props.priority,
       });
     }
   }
