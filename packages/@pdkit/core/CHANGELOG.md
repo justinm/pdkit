@@ -1,3 +1,10 @@
+## @pdkit/core [1.0.2](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.1...@pdkit/core@1.0.2) (2022-03-27)
+
+
+### Bug Fixes
+
+* do not autobump dependencies as we rely on workspace links ([cf1c782](https://github.com/justinm/pdkit/commit/cf1c782a465bfda11de85ec21a1d59861b7cc16b))
+
 ## @pdkit/core [1.0.1](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.0...@pdkit/core@1.0.1) (2022-03-27)
 
 
