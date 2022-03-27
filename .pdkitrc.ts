@@ -39,17 +39,11 @@ new YarnGithubSupport(workspace, {
   },
   workflows: {
     build: {
-      tools: {
-        node: {version: "14.x"}
-      },
       enabled: true,
       failOnMutation: true,
       commitMutations: false,
     },
     release: {
-      tools: {
-        node: {version: "14.x"}
-      },
       branches: ["main"],
       enabled: true,
     },

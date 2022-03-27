@@ -30,6 +30,7 @@ export interface Tools {
    */
   readonly node?: ToolRequirement & {
     readonly cache?: string;
+    readonly token?: string;
   };
 
   /**

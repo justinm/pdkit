@@ -30,9 +30,10 @@ export class SetupTools extends GithubJob {
     if (tools.node) {
       new GithubJobStep(this, "SetupNode", {
         uses: "actions/setup-node@v2",
-        with: { "node-version": tools.node.version, cache: tools.node.cache },
+        with: { "node-version": tools.node.version, cache: tools.node.cache, token: tools.node.token },
       });
     }
+
     if (tools.python) {
       new GithubJobStep(this, "SetupPython", {
         uses: "actions/setup-python@v2",

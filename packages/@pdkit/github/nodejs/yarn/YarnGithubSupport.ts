@@ -10,11 +10,11 @@ export interface YarnGithubSupportProps extends Omit<GithubSupportProps, "workfl
   readonly workflows: {
     readonly build: {
       readonly enabled: boolean;
-    } & Omit<BuildJobProps, "installStep" | "buildStep" | "codeCoverageStep" | "uploadArtifactStep">;
+    } & Partial<Omit<BuildJobProps, "installStep" | "buildStep" | "codeCoverageStep" | "uploadArtifactStep">>;
     readonly release: {
       readonly enabled: boolean;
       readonly branches: string[];
-    } & Omit<ReleaseJobProps, "installStep" | "releaseStep">;
+    } & Partial<Omit<ReleaseJobProps, "installStep" | "releaseStep">>;
   };
 }
 
@@ -29,8 +29,11 @@ export class YarnGithubSupport extends GithubSupport {
           ...props.workflows?.build,
           tools: {
             node: {
-              ...(props.workflows?.build.tools.node ?? { version: "14.x" }),
-              cache: "yarn",
+              ...(props.workflows?.build.tools?.node ?? {
+                version: "14.x",
+                cache: "yarn",
+                token: "${{ secrets.NPM_TOKEN }}",
+              }),
             },
           },
           enabled: props.workflows?.build?.enabled ?? false,
@@ -41,8 +44,11 @@ export class YarnGithubSupport extends GithubSupport {
           ...props.workflows?.release,
           tools: {
             node: {
-              ...(props.workflows?.release.tools.node ?? { version: "14.x", cache: "yarn" }),
-              cache: "yarn",
+              ...(props.workflows?.release.tools?.node ?? {
+                version: "14.x",
+                cache: "yarn",
+                token: "${{ secrets.NPM_TOKEN }}",
+              }),
             },
           },
           enabled: props.workflows?.release?.enabled ?? false,
