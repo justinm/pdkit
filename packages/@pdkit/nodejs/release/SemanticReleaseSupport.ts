@@ -76,7 +76,7 @@ export class SemanticReleaseSupport extends XConstruct {
         npm: "^6",
       },
       scripts: {
-        release: "npx multi-semantic-release --deps.bump=override",
+        release: "npx multi-semantic-release",
       },
       release: {
         branches: props.branches,

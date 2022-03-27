@@ -9,7 +9,7 @@
     "compile": "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     "clean": "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
-    "release": "npx multi-semantic-release --deps.bump=override"
+    "release": "npx multi-semantic-release"
   },
   "files": [
     "./*.js",
