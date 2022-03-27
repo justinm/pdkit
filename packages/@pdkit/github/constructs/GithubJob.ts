@@ -397,47 +397,6 @@ export class GithubJob extends XConstruct {
     return workflow;
   }
 
-  public static setupTools(tools: Tools) {
-    const steps: GithubJobStepProps[] = [];
-
-    if (tools.java) {
-      steps.push({
-        uses: "actions/setup-java@v2",
-        with: { distribution: "temurin", "java-version": tools.java.version },
-      });
-    }
-
-    if (tools.node) {
-      steps.push({
-        uses: "actions/setup-node@v2",
-        with: { "node-version": tools.node.version },
-      });
-    }
-
-    if (tools.python) {
-      steps.push({
-        uses: "actions/setup-python@v2",
-        with: { "python-version": tools.python.version },
-      });
-    }
-
-    if (tools.go) {
-      steps.push({
-        uses: "actions/setup-go@v2",
-        with: { "go-version": tools.go.version },
-      });
-    }
-
-    if (tools.dotnet) {
-      steps.push({
-        uses: "actions/setup-dotnet@v1",
-        with: { "dotnet-version": tools.dotnet.version },
-      });
-    }
-
-    return steps;
-  }
-
   readonly props: GithubJobProps;
   readonly priority: number;
 
@@ -464,12 +423,6 @@ export class GithubJob extends XConstruct {
       .findAll()
       .filter((b) => b instanceof GithubJobStep)
       .map((b) => (b as GithubJobStep).content);
-
-    const { tools } = this.props;
-
-    if (tools) {
-      steps.unshift(...GithubJob.setupTools(tools));
-    }
 
     return {
       name: this.props.name,

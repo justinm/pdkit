@@ -4,9 +4,9 @@ import { GithubJobStep, GithubJobStepProps } from "../../constructs/GithubJobSte
 import { GithubCheckoutStep } from "../steps/GithubCheckoutStep";
 
 export interface SelfMutationJobProps extends Partial<GithubJobProps> {
-  buildJobName: string;
-  job?: GithubJobProps;
-  checkout?: GithubJobStepProps;
+  readonly buildJobName: string;
+  readonly job?: GithubJobProps;
+  readonly checkout?: GithubJobStepProps;
 }
 
 export class SelfMutationJob extends GithubJob {

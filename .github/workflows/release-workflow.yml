@@ -19,24 +19,28 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
         id: Checkout
-      - name: Cache
-        uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          key: ${{ runner.os }}-yarn-release-${{ hashFiles('**/yarn.lock') }}
-          path: .yarn/cache
-        id: Cache
+          node-version: 14.x
+        id: SetupNode
       - name: Install Dependencies
         run: yarn install --immutable
         id: Install
-      - name: Yarn Login
-        run: yarn config set --home npmRegistries[\"//registry.npmjs.org/\"].npmAuthToken "$NPM_TOKEN"
-        id: YarnAuth
       - name: Release
         run: npm run release
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          npm_config_access: public
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         id: Release
       - name: Check for new commits
         run: echo ::set-output name=latest_commit::"$(git ls-remote origin -h ${{ github.ref }} | cut -f1)"
         id: Check
+  SetupTools:
+    name: SetupNode
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+        id: SetupNode

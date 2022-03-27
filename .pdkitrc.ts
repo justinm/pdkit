@@ -39,16 +39,16 @@ new YarnGithubSupport(workspace, {
   },
   workflows: {
     build: {
-      cache: {
-        "${{ runner.os }}-yarn": ".yarn/cache",
+      tools: {
+        node: {version: "14.x"}
       },
       enabled: true,
       failOnMutation: true,
       commitMutations: false,
     },
     release: {
-      cache: {
-        "${{ runner.os }}-yarn-release": ".yarn/cache",
+      tools: {
+        node: {version: "14.x"}
       },
       branches: ["main"],
       enabled: true,

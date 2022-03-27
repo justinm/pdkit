@@ -20,7 +20,6 @@ export * from "./nodejs/npm/steps/NpmReleaseStep";
 export * from "./nodejs/npm/steps/SetupNodeJsStep";
 export * from "./nodejs/npm/workflows/NpmBuildWorkflow";
 export * from "./nodejs/npm/workflows/NpmReleaseWorkflow";
-export * from "./nodejs/npm/NpmGithubSupport";
 export * from "./nodejs/yarn/steps/YarnBuildStep";
 export * from "./nodejs/yarn/steps/YarnInstallStep";
 export * from "./nodejs/yarn/workflows/YarnBuildWorkflow";

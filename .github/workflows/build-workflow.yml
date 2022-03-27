@@ -15,12 +15,10 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
         id: Checkout
-      - name: Cache
-        uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          path: .yarn/cache
-        id: Cache
+          node-version: 14.x
+        id: SetupNode
       - name: Install Dependencies
         run: yarn install --immutable
         id: Install
@@ -49,3 +47,13 @@ jobs:
 
           exit 1
         id: FailOnMutation
+  SetupTools:
+    name: SetupNode
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+        id: SetupNode

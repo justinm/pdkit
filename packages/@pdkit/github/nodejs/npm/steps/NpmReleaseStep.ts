@@ -8,8 +8,7 @@ export class NpmReleaseStep extends GithubJobStep {
       run: "npm run release",
       ...props,
       env: {
-        NPM_TOKEN: "${{ secrets.NPM_TOKEN }}",
-        npm_config_access: "public",
+        NODE_AUTH_TOKEN: "${{ secrets.NPM_TOKEN }}",
         ...props.env,
       },
     });
