@@ -1,3 +1,31 @@
+## @pdkit/github [1.0.1](https://github.com/justinm/pdkit/compare/@pdkit/github@1.0.0...@pdkit/github@1.0.1) (2022-03-27)
+
+
+### Bug Fixes
+
+* add new step to authenticate yarn 2 ([b86f4d2](https://github.com/justinm/pdkit/commit/b86f4d222de23d97c93864c5bb7954133e8d52e1))
+* add registry to yarnrc ([671f167](https://github.com/justinm/pdkit/commit/671f167f634a117dfd04ccf9b14a4029e75e0ca1))
+* cli bin not creating in release and switch to using workspaces ([6cac682](https://github.com/justinm/pdkit/commit/6cac682160f2678ffff0f9b4c956a7d78cf3aade))
+* do not specify refs for checkout step ([3e916c5](https://github.com/justinm/pdkit/commit/3e916c5a92d722e67c299612a904a787f4a43c77))
+* duplicate setupnode job ([a71584c](https://github.com/justinm/pdkit/commit/a71584c3e14fc2b07f87833dc23d507a49508d13))
+* more release fixes ([82f64b0](https://github.com/justinm/pdkit/commit/82f64b03a6589193c343eca70b3363d9683c61c2))
+* package versions from bad release build ([819f31b](https://github.com/justinm/pdkit/commit/819f31b3a0c4816ba9ed4d9e4e450dae954d98f3))
+* proper quotes for yarn auth ([57ff96c](https://github.com/justinm/pdkit/commit/57ff96cd89013bdeb89069394bf814a1cc446630))
+* provide registryUrl for authenticating Yarn for publishing ([bcd1d8f](https://github.com/justinm/pdkit/commit/bcd1d8f5f7f3905e442c511e4a432735cea21a5b))
+* readding yarn cache and version issues ([f152e20](https://github.com/justinm/pdkit/commit/f152e2075ce7a145ec2c46f8d2a9edad13188186))
+* setup node with proper tool ([d132f17](https://github.com/justinm/pdkit/commit/d132f1733490b7d4d04d8c1f05aedb859379557e))
+* setup proper tools prior to install ([b0eb484](https://github.com/justinm/pdkit/commit/b0eb4840b8ad27f72d1dd50593951f360650fa60))
+* support yarn auth for releases ([2bea5fe](https://github.com/justinm/pdkit/commit/2bea5fe8089d0a8fc0095e3b1c0d52960e8e5fb0))
+* synth during yarn/npm release ([fa7201b](https://github.com/justinm/pdkit/commit/fa7201b4e075c283e2188a32678750914ebaac73))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/nodejs:** upgraded to 1.0.3
+
 # @pdkit/github 1.0.0 (2022-03-27)
 
 
