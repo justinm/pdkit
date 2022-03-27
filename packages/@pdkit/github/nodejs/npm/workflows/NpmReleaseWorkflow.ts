@@ -14,7 +14,7 @@ export class NpmReleaseWorkflow extends ReleaseWorkflow {
       release: {
         installStep: NpmInstallStep,
         releaseStep: NpmReleaseStep,
-        tools: { node: { version: props.nodeVersion ?? "14.x" } },
+        tools: { node: { version: props.nodeVersion ?? "14.x", cache: "npm" } },
       },
     });
   }

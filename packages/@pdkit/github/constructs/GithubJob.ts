@@ -28,7 +28,9 @@ export interface Tools {
    * Setup node.js
    * @default - not installed
    */
-  readonly node?: ToolRequirement;
+  readonly node?: ToolRequirement & {
+    readonly cache?: string;
+  };
 
   /**
    * Setup .NET Core

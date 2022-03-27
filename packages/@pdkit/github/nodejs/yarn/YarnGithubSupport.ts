@@ -27,12 +27,24 @@ export class YarnGithubSupport extends GithubSupport {
         ...props.workflows,
         build: {
           ...props.workflows?.build,
+          tools: {
+            node: {
+              ...(props.workflows?.build.tools.node ?? { version: "14.x" }),
+              cache: "yarn",
+            },
+          },
           enabled: props.workflows?.build?.enabled ?? false,
           installStep: YarnInstallStep,
           buildStep: YarnBuildStep,
         },
         release: {
           ...props.workflows?.release,
+          tools: {
+            node: {
+              ...(props.workflows?.release.tools.node ?? { version: "14.x", cache: "yarn" }),
+              cache: "yarn",
+            },
+          },
           enabled: props.workflows?.release?.enabled ?? false,
           installStep: YarnInstallStep,
           releaseStep: NpmReleaseStep,
