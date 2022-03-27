@@ -1,3 +1,10 @@
+## @pdkit/core [1.0.3](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.2...@pdkit/core@1.0.3) (2022-03-27)
+
+
+### Bug Fixes
+
+* setup node with proper tool ([d132f17](https://github.com/justinm/pdkit/commit/d132f1733490b7d4d04d8c1f05aedb859379557e))
+
 ## @pdkit/core [1.0.2](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.1...@pdkit/core@1.0.2) (2022-03-27)
 
 
