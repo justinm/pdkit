@@ -1,3 +1,15 @@
+## @pdkit/nodejs [1.0.3](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.0.2...@pdkit/nodejs@1.0.3) (2022-03-27)
+
+
+### Bug Fixes
+
+* add new step to authenticate yarn 2 ([b86f4d2](https://github.com/justinm/pdkit/commit/b86f4d222de23d97c93864c5bb7954133e8d52e1))
+* package versions from bad release build ([819f31b](https://github.com/justinm/pdkit/commit/819f31b3a0c4816ba9ed4d9e4e450dae954d98f3))
+* provide registryUrl for authenticating Yarn for publishing ([bcd1d8f](https://github.com/justinm/pdkit/commit/bcd1d8f5f7f3905e442c511e4a432735cea21a5b))
+* read path to project package.json file ([0ad8b5a](https://github.com/justinm/pdkit/commit/0ad8b5ad42accf0ecac6cd8e1e1bb4418e32e547))
+* resynth after version bump to ensure correct yarn.lock and package mods ([2c79117](https://github.com/justinm/pdkit/commit/2c791179ec89b4aabeb78f7680af68cecb8633fe))
+* synth during yarn/npm release ([fa7201b](https://github.com/justinm/pdkit/commit/fa7201b4e075c283e2188a32678750914ebaac73))
+
 ## @pdkit/nodejs [1.0.2](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.0.1...@pdkit/nodejs@1.0.2) (2022-03-27)
 
 

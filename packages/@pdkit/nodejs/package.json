@@ -1,6 +1,6 @@
 {
   "name": "@pdkit/nodejs",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "main": "./index.js",
   "scripts": {
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
