@@ -1,3 +1,10 @@
+## @pdkit/nodejs [1.0.4](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.0.3...@pdkit/nodejs@1.0.4) (2022-03-27)
+
+
+### Bug Fixes
+
+* run pdkit synth from top-level ([64e0dc3](https://github.com/justinm/pdkit/commit/64e0dc3b396a6a0eb86ae2613b2edfb7fbcd58b5))
+
 ## @pdkit/nodejs [1.0.3](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.0.2...@pdkit/nodejs@1.0.3) (2022-03-27)
 
 
