@@ -1,3 +1,10 @@
+## @pdkit/cli [1.0.1](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.0.0...@pdkit/cli@1.0.1) (2022-03-27)
+
+
+### Bug Fixes
+
+* cli bin not creating in release ([3f86a1d](https://github.com/justinm/pdkit/commit/3f86a1df070b03fb75bf84012b2b493f9a4d23a7))
+
 # @pdkit/cli 1.0.0 (2022-03-27)
 
 
