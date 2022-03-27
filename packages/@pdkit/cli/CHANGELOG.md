@@ -6,6 +6,14 @@
 * cli bin not creating in release and switch to using workspaces ([6cac682](https://github.com/justinm/pdkit/commit/6cac682160f2678ffff0f9b4c956a7d78cf3aade))
 * do not autobump dependencies as we rely on workspace links ([cf1c782](https://github.com/justinm/pdkit/commit/cf1c782a465bfda11de85ec21a1d59861b7cc16b))
 
+## @pdkit/cli [1.0.2](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.0.1...@pdkit/cli@1.0.2) (2022-03-27)
+
+
+### Bug Fixes
+
+* cli bin not creating in release and switch to using workspaces ([6cac682](https://github.com/justinm/pdkit/commit/6cac682160f2678ffff0f9b4c956a7d78cf3aade))
+* do not autobump dependencies as we rely on workspace links ([cf1c782](https://github.com/justinm/pdkit/commit/cf1c782a465bfda11de85ec21a1d59861b7cc16b))
+
 
 
 
