@@ -20,8 +20,7 @@
   "license": "Apache-2.0",
   "author": {
     "name": "Justin McCormick",
-    "email": "me@justinmccormick.com",
-    "organization": true
+    "email": "me@justinmccormick.com"
   },
   "devDependencies": {
     "@qiwi/multi-semantic-release": "^3.17.1",

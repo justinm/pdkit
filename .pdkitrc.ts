@@ -6,7 +6,6 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   author: {
     name: "Justin McCormick",
     email: "me@justinmccormick.com",
-    organization: true,
   },
   license: "Apache-2.0",
   dependencies: ["mustache", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }, { name: "@pdkit/nodejs", version: "workspace:packages/@pdkit/nodejs" }, { name: "@pdkit/github", version: "workspace:packages/@pdkit/github" }],
