@@ -110,6 +110,9 @@ This section should list any major frameworks/libraries used to bootstrap your p
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+We eat our own dogfood, check out our [.pdkitrc](./.pdkitrc) for an idea on how to get started. We use Typescript to
+help ensure optimum IDE support.
+
 ** This is ALPHA software, use at your own risk! **
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -136,6 +139,8 @@ Don't forget to give the project a star! Thanks again!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+See also: [Contributing Guidelines](./.github/CONTRIBUTING.md)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
