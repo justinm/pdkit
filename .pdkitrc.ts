@@ -1,4 +1,4 @@
-import { YarnTypescriptProject, YarnTypescriptWorkspace } from "@pdkit/nodejs";
+import { SemanticReleaseSupport, YarnTypescriptProject, YarnTypescriptWorkspace } from "@pdkit/nodejs";
 import { YarnGithubSupport } from "@pdkit/github";
 
 const workspace = new YarnTypescriptWorkspace("pdkit", {
@@ -26,7 +26,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   gitignore: [".idea", ".js", ".d.ts"],
 });
 
-new YarnGithubSupport(workspace, "GithubSupport", {
+new YarnGithubSupport(workspace, {
   pullRequestLint: {
     enabled: true,
   },
@@ -47,6 +47,12 @@ new YarnGithubSupport(workspace, "GithubSupport", {
       enabled: true,
     },
   },
+});
+
+new SemanticReleaseSupport(workspace, {
+  branches: ["main"],
+  changelogs: true,
+  releaseNotes: true
 });
 
 new YarnTypescriptProject(workspace, "core", {

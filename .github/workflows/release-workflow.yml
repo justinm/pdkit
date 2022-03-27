@@ -1,4 +1,3 @@
-name: File-.github-workflows--release-workflow.yml
 'on':
   push:
     branches:

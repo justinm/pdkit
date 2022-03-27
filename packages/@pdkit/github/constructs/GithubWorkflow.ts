@@ -68,7 +68,6 @@ export class GithubWorkflow extends YamlFile {
       }, {} as Record<string, unknown>);
 
     return this.transform({
-      name: this.node.id,
       env: this.props.env,
       on: snakeCaseKeys(this.props.events),
       concurrency: this.props.concurrency ?? "1",

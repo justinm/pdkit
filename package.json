@@ -2,12 +2,14 @@
   "name": "workspace",
   "version": "0.0.0",
   "private": true,
+  "main": "./index.js",
   "scripts": {
     "pdkit": "ts-node packages/@pdkit/cli/src/pdkit.ts",
     "build": "yarn workspaces foreach --verbose -pt run build",
     "compile": "yarn workspaces foreach --verbose -pt run compile",
     "clean": "yarn workspaces foreach --verbose -pt run clean",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
+    "release": "npx multi-semantic-release --deps.bump=override"
   },
   "files": [
     "./*.js",
@@ -22,6 +24,12 @@
     "organization": true
   },
   "devDependencies": {
+    "@qiwi/multi-semantic-release": "6.0.2",
+    "@semantic-release/changelog": "6.0.1",
+    "@semantic-release/commit-analyzer": "9.0.2",
+    "@semantic-release/git": "10.0.1",
+    "@semantic-release/github": "8.0.2",
+    "@semantic-release/release-notes-generator": "10.0.3",
     "@types/mustache": "4.1.2",
     "@types/node": "17.0.23",
     "@typescript-eslint/eslint-plugin": "5.16.0",
@@ -36,6 +44,7 @@
     "jest-junit": "13.0.0",
     "json-schema": "0.4.0",
     "prettier": "2.6.1",
+    "semantic-release": "19.0.2",
     "ts-node": "10.7.0",
     "typescript": "4.6.3"
   },
@@ -215,6 +224,42 @@
     "@pdkit/github": "0.0.0",
     "@pdkit/nodejs": "0.0.0",
     "mustache": "4.2.0"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKS",
+              "BREAKING CHANGE",
+              "BREAKING CHANGES",
+              "BACKWARDS COMPAT",
+              "BACKWARDS COMPATIBILITY"
+            ]
+          }
+        }
+      ],
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/changelog",
+        {
+          "changeLogFile": "CHANGELOG.md"
+        }
+      ],
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
+    ]
   },
   "workspaces": [
     "packages/@pdkit/core",

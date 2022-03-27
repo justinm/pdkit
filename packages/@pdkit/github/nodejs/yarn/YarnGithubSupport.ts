@@ -19,8 +19,9 @@ export interface YarnGithubSupportProps extends Omit<GithubSupportProps, "workfl
 }
 
 export class YarnGithubSupport extends GithubSupport {
-  constructor(scope: Workspace, id: string, props: YarnGithubSupportProps) {
-    super(scope, id, {
+  public static readonly ID = "GithubSupport";
+  constructor(scope: Workspace, props: YarnGithubSupportProps) {
+    super(scope, YarnGithubSupport.ID, {
       ...props,
       workflows: {
         ...props.workflows,

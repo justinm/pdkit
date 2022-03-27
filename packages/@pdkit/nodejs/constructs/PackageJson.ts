@@ -30,6 +30,8 @@ export class PackageJson extends Manifest {
     );
 
     if (props) {
+      const project = Project.of(this);
+
       this.addShallowFields({
         name: props.name,
         description: props.description,
@@ -38,7 +40,7 @@ export class PackageJson extends Manifest {
         homepath: props.homepath,
         repository: props.repository,
         keywords: props.keywords,
-        main: props.main,
+        main: props.main ?? `${project.distPath}/index.js`,
         bin: props.bin,
         scripts: props.scripts,
         bugs: props.bugs,
