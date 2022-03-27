@@ -18,6 +18,7 @@ export class SemanticReleaseSupport extends XConstruct {
 
     new PackageDependency(this, "@qiwi/multi-semantic-release", {
       type: PackageDependencyType.DEV,
+      version: "^3.17.1",
     });
     new PackageDependency(this, "@semantic-release/commit-analyzer", {
       type: PackageDependencyType.DEV,

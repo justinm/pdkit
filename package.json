@@ -24,7 +24,7 @@
     "organization": true
   },
   "devDependencies": {
-    "@qiwi/multi-semantic-release": "6.0.2",
+    "@qiwi/multi-semantic-release": "^3.17.1",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
     "@semantic-release/exec": "6.0.3",

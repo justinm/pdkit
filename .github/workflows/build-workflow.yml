@@ -21,8 +21,11 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.x
+          registry-url: https://registry.npmjs.org/
           cache: yarn
         id: SetupNode
+      - run: yarn config set --home npmAuthToken ${{ secrets.NPM_TOKEN }}
+        id: YarnAuth
       - name: Install Dependencies
         run: yarn install --immutable
         id: Install

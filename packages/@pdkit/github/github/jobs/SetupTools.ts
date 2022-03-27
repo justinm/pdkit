@@ -30,6 +30,21 @@ export class SetupTools extends XConstruct {
       });
     }
 
+    if (tools.yarn) {
+      const { version, registryUrl, ...other } = tools.yarn;
+
+      new GithubJobStep(this, "SetupNode", {
+        uses: "actions/setup-node@v2",
+        with: { "node-version": version, "registry-url": registryUrl, ...other },
+        priority: props.priority,
+      });
+
+      new GithubJobStep(this, "YarnAuth", {
+        run: "yarn config set --home npmAuthToken ${{ secrets.NPM_TOKEN }}",
+        priority: props.priority,
+      });
+    }
+
     if (tools.python) {
       new GithubJobStep(this, "SetupPython", {
         uses: "actions/setup-python@v2",

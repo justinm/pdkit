@@ -32,10 +32,11 @@ export class YarnGithubSupport extends GithubSupport {
           },
           ...props.workflows?.build,
           tools: {
-            node: {
-              ...(props.workflows?.build.tools?.node ?? {
+            yarn: {
+              ...(props.workflows?.build.tools?.yarn ?? {
                 version: "14.x",
                 cache: "yarn",
+                registryUrl: "https://registry.npmjs.org/",
               }),
             },
           },
@@ -45,9 +46,12 @@ export class YarnGithubSupport extends GithubSupport {
         },
         release: {
           ...props.workflows?.release,
+          cache: {
+            "${{ runner.os }}-yarn-release": ".yarn/cache",
+          },
           tools: {
-            node: {
-              ...(props.workflows?.release.tools?.node ?? {
+            yarn: {
+              ...(props.workflows?.release.tools?.yarn ?? {
                 version: "14.x",
                 cache: "yarn",
                 registryUrl: props.registryUrl,

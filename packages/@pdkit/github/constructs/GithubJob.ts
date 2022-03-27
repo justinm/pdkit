@@ -34,6 +34,15 @@ export interface Tools {
   };
 
   /**
+   * Setup node.js with Yarn 2
+   * @default - not installed
+   */
+  readonly yarn?: ToolRequirement & {
+    readonly cache?: string;
+    readonly registryUrl?: string;
+  };
+
+  /**
    * Setup .NET Core
    * @default - not installed
    */
