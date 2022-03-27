@@ -8,13 +8,13 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
     organization: true,
   },
   license: "Apache-2.0",
-  dependencies: ["mustache", "@pdkit/nodejs", "@pdkit/github"],
+  dependencies: ["mustache", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }, { name: "@pdkit/nodejs", version: "workspace:packages/@pdkit/nodejs" }, { name: "@pdkit/github", version: "workspace:packages/@pdkit/github" }],
   devDependencies: ["@types/mustache", "@types/node", "prettier", "ts-node", "typescript"],
   scripts: {
     pdkit: "ts-node packages/@pdkit/cli/pdkit.ts",
-    build: "yarn workspaces foreach --verbose -pt run build",
-    compile: "yarn workspaces foreach --verbose -pt run compile",
-    clean: "yarn workspaces foreach --verbose -pt run clean",
+    build: "yarn compile",
+    compile: "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
+    clean: "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
   },
   eslint: {
     enabled: true,
@@ -85,7 +85,7 @@ new YarnTypescriptProject(workspace, "cli", {
   packageName: "@pdkit/cli",
   projectPath: "packages/@pdkit/cli",
   dependencies: [
-    "@pdkit/core",
+    { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" },
     { name: "chalk", version: "^4.1.2" },
     { name: "ora", version: "^5.4.1" },
     "constructs",
@@ -112,7 +112,7 @@ new YarnTypescriptProject(workspace, "cli", {
 new YarnTypescriptProject(workspace, "nodejs", {
   packageName: "@pdkit/nodejs",
   projectPath: "packages/@pdkit/nodejs",
-  dependencies: ["constructs", "dependency-graph", "@pdkit/core"],
+  dependencies: ["constructs", "dependency-graph", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }],
   devDependencies: ["prettier", "typescript"],
   eslint: {
     enabled: true,
@@ -126,7 +126,7 @@ new YarnTypescriptProject(workspace, "nodejs", {
 new YarnTypescriptProject(workspace, "github", {
   packageName: "@pdkit/github",
   projectPath: "packages/@pdkit/github",
-  dependencies: ["constructs", "@pdkit/core"],
+  dependencies: ["constructs", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }],
   devDependencies: ["prettier", "typescript"],
   eslint: {
     enabled: true,

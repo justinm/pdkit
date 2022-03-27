@@ -35,7 +35,7 @@ export class PackageJson extends Manifest {
       this.addShallowFields({
         name: props.name,
         description: props.description,
-        version: props.version ?? packageJson?.version ?? "0.0.0",
+        version: packageJson?.version ?? props.version ?? "0.0.0",
         private: props.private,
         homepath: props.homepath,
         repository: props.repository,
@@ -63,9 +63,13 @@ export class PackageJson extends Manifest {
           const field = this.fields[key] as Record<string, string>;
 
           for (const dep of Object.keys(field)) {
-            const version = `${this.resolveDepVersion(dep)}`;
+            if (field[dep] && field[dep] !== "*") {
+              addPackageDependency(key, dep, field[dep]);
+            } else {
+              const version = `${this.resolveDepVersion(dep)}`;
 
-            addPackageDependency(key, dep, version);
+              addPackageDependency(key, dep, version);
+            }
           }
         }
       });
