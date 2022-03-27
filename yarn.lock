@@ -956,7 +956,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
   dependencies:
-    "@pdkit/core": "workspace:packages/@pdkit/core"
+    "@pdkit/core": 1.1.0
     "@types/diff": 5.0.2
     "@types/glob": 7.2.0
     "@types/ora": 3.1.0
@@ -991,7 +991,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/core@workspace:packages/@pdkit/core":
+"@pdkit/core@1.1.0, @pdkit/core@workspace:packages/@pdkit/core":
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
@@ -1028,12 +1028,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/github@workspace:packages/@pdkit/github":
+"@pdkit/github@1.0.0, @pdkit/github@workspace:packages/@pdkit/github":
   version: 0.0.0-use.local
   resolution: "@pdkit/github@workspace:packages/@pdkit/github"
   dependencies:
-    "@pdkit/core": "workspace:packages/@pdkit/core"
-    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs"
+    "@pdkit/core": 1.1.0
+    "@pdkit/nodejs": 1.0.1
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     constructs: 10.0.97
@@ -1053,11 +1053,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/nodejs@workspace:packages/@pdkit/nodejs":
+"@pdkit/nodejs@1.0.1, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
   resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
-    "@pdkit/core": "workspace:packages/@pdkit/core"
+    "@pdkit/core": 1.1.0
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     constructs: 10.0.97
@@ -10777,9 +10777,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "workspace@workspace:."
   dependencies:
-    "@pdkit/core": "workspace:packages/@pdkit/core"
-    "@pdkit/github": "workspace:packages/@pdkit/github"
-    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs"
+    "@pdkit/core": 1.1.0
+    "@pdkit/github": 1.0.0
+    "@pdkit/nodejs": 1.0.1
     "@qiwi/multi-semantic-release": ^3.17.1
     "@semantic-release/changelog": 6.0.1
     "@semantic-release/commit-analyzer": 9.0.2

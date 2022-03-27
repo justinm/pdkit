@@ -61,6 +61,7 @@ export class SemanticReleaseSupport extends XConstruct {
 
     if (props.tool === "npm") {
       plugins.push("@semantic-release/npm");
+      plugins.push(["@semantic-release/exec", { publishCmd: "npm run pdkit synth" }]);
     }
 
     if (props.tool === "yarn") {
@@ -70,6 +71,8 @@ export class SemanticReleaseSupport extends XConstruct {
 
       plugins.push(["@semantic-release/npm", { npmPublish: false }]);
       plugins.push(["@semantic-release/exec", { publishCmd: "yarn npm publish" }]);
+      // We resynth the project to ensure package.json updates correctly after release bump
+      plugins.push(["@semantic-release/exec", { publishCmd: "yarn pdkit synth" }]);
     }
 
     new ManifestEntry(this, "SemanticRelease", {
@@ -98,8 +101,6 @@ export class SemanticReleaseSupport extends XConstruct {
             },
           ],
           ...plugins,
-          // We resynth the project to ensure package.json updates correctly after release bump
-          ["@semantic-release/exec", { publishCmd: "npx pdkit synth" }],
           [
             "@semantic-release/git",
             {

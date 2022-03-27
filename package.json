@@ -222,9 +222,9 @@
     ]
   },
   "dependencies": {
-    "@pdkit/core": "workspace:packages/@pdkit/core",
-    "@pdkit/github": "workspace:packages/@pdkit/github",
-    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs",
+    "@pdkit/core": "1.1.0",
+    "@pdkit/github": "1.0.0",
+    "@pdkit/nodejs": "1.0.1",
     "mustache": "4.2.0"
   },
   "resolutions": {
@@ -273,7 +273,7 @@
       [
         "@semantic-release/exec",
         {
-          "publishCmd": "npx pdkit synth"
+          "publishCmd": "yarn pdkit synth"
         }
       ],
       [

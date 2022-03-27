@@ -8,7 +8,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
     email: "me@justinmccormick.com",
   },
   license: "Apache-2.0",
-  dependencies: ["mustache", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }, { name: "@pdkit/nodejs", version: "workspace:packages/@pdkit/nodejs" }, { name: "@pdkit/github", version: "workspace:packages/@pdkit/github" }],
+  dependencies: ["mustache", "@pdkit/core", "@pdkit/nodejs", "@pdkit/github"],
   devDependencies: ["@types/mustache", "@types/node", "prettier", "ts-node", "typescript"],
   scripts: {
     pdkit: "ts-node packages/@pdkit/cli/pdkit.ts",
@@ -87,7 +87,7 @@ new YarnTypescriptProject(workspace, "cli", {
   packageName: "@pdkit/cli",
   projectPath: "packages/@pdkit/cli",
   dependencies: [
-    { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" },
+    "@pdkit/core",
     { name: "chalk", version: "^4.1.2" },
     { name: "ora", version: "^5.4.1" },
     "constructs",
@@ -114,7 +114,7 @@ new YarnTypescriptProject(workspace, "cli", {
 new YarnTypescriptProject(workspace, "nodejs", {
   packageName: "@pdkit/nodejs",
   projectPath: "packages/@pdkit/nodejs",
-  dependencies: ["constructs", "dependency-graph", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }],
+  dependencies: ["constructs", "dependency-graph", "@pdkit/core"],
   devDependencies: ["prettier", "typescript"],
   eslint: {
     enabled: true,
@@ -128,7 +128,7 @@ new YarnTypescriptProject(workspace, "nodejs", {
 new YarnTypescriptProject(workspace, "github", {
   packageName: "@pdkit/github",
   projectPath: "packages/@pdkit/github",
-  dependencies: ["constructs", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }, { name: "@pdkit/nodejs", version: "workspace:packages/@pdkit/nodejs" }],
+  dependencies: ["constructs", "@pdkit/core", "@pdkit/nodejs"],
   devDependencies: ["prettier", "typescript"],
   eslint: {
     enabled: true,

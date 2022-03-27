@@ -1,4 +1,5 @@
 import { LifeCycle, Manifest, Project, ValidLicense, Workspace, XConstruct } from "@pdkit/core";
+import { NpmProject } from "../npm";
 
 export interface NodePackageJsonProps {
   readonly name?: string;
@@ -58,6 +59,10 @@ export class PackageJson extends Manifest {
         });
       };
 
+      const projects = Workspace.of(this)
+        .node.findAll()
+        .filter((p) => p instanceof NpmProject) as NpmProject[];
+
       ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
         if (this.fields[key]) {
           const field = this.fields[key] as Record<string, string>;
@@ -66,9 +71,15 @@ export class PackageJson extends Manifest {
             if (field[dep] && field[dep] !== "*") {
               addPackageDependency(key, dep, field[dep]);
             } else {
-              const version = `${this.resolveDepVersion(dep)}`;
+              const project = projects.find((p) => p.node.id === key);
 
-              addPackageDependency(key, dep, version);
+              if (project) {
+                addPackageDependency(key, dep, `^${project.packageJson.version}`);
+              } else {
+                const version = this.resolveDepVersion(dep);
+
+                addPackageDependency(key, dep, version);
+              }
             }
           }
         }

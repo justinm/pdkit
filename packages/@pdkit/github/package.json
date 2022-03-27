@@ -1,6 +1,6 @@
 {
   "name": "@pdkit/github",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "./index.js",
   "scripts": {
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
@@ -167,8 +167,8 @@
     }
   },
   "dependencies": {
-    "@pdkit/core": "workspace:packages/@pdkit/core",
-    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs",
+    "@pdkit/core": "1.1.0",
+    "@pdkit/nodejs": "1.0.1",
     "constructs": "10.0.97"
   },
   "jest": {
