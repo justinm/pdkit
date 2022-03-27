@@ -1,3 +1,13 @@
+## @pdkit/github [1.0.2](https://github.com/justinm/pdkit/compare/@pdkit/github@1.0.1...@pdkit/github@1.0.2) (2022-03-27)
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/nodejs:** upgraded to 1.0.4
+
 ## @pdkit/github [1.0.1](https://github.com/justinm/pdkit/compare/@pdkit/github@1.0.0...@pdkit/github@1.0.1) (2022-03-27)
 
 
