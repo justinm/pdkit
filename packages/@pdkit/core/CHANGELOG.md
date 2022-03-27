@@ -1,3 +1,10 @@
+## @pdkit/core [1.0.6](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.5...@pdkit/core@1.0.6) (2022-03-27)
+
+
+### Bug Fixes
+
+* provide registryUrl for authenticating Yarn for publishing ([bcd1d8f](https://github.com/justinm/pdkit/commit/bcd1d8f5f7f3905e442c511e4a432735cea21a5b))
+
 ## @pdkit/core [1.0.5](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.4...@pdkit/core@1.0.5) (2022-03-27)
 
 
