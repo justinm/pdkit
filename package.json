@@ -27,6 +27,7 @@
     "@qiwi/multi-semantic-release": "^3.17.1",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
+    "@semantic-release/exec": "*",
     "@semantic-release/git": "10.0.1",
     "@semantic-release/github": "8.0.2",
     "@semantic-release/release-notes-generator": "10.0.3",
@@ -227,6 +228,9 @@
     "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs",
     "mustache": "4.2.0"
   },
+  "resolutions": {
+    "npm": "^6"
+  },
   "release": {
     "branches": [
       "main"
@@ -254,7 +258,18 @@
           "changeLogFile": "CHANGELOG.md"
         }
       ],
-      "@semantic-release/npm",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      [
+        "@semantic-release/exec",
+        {
+          "publishCmd": "yarn npm publish"
+        }
+      ],
       [
         "@semantic-release/git",
         {

@@ -6,6 +6,7 @@ export interface SemanticReleaseSupportProps {
   plugins?: (string | any[])[];
   changelogs?: boolean;
   releaseNotes?: boolean;
+  tool: "npm" | "yarn";
 }
 
 export class SemanticReleaseSupport extends XConstruct {
@@ -30,7 +31,6 @@ export class SemanticReleaseSupport extends XConstruct {
     new PackageDependency(this, "@semantic-release/github", {
       type: PackageDependencyType.DEV,
     });
-
     new PackageDependency(this, "semantic-release", {
       type: PackageDependencyType.DEV,
       version: "^17.4.6",
@@ -50,7 +50,6 @@ export class SemanticReleaseSupport extends XConstruct {
       new PackageDependency(this, "@semantic-release/changelog", {
         type: PackageDependencyType.DEV,
       });
-
       plugins.push([
         "@semantic-release/changelog",
         {
@@ -59,7 +58,23 @@ export class SemanticReleaseSupport extends XConstruct {
       ]);
     }
 
+    if (props.tool === "npm") {
+      plugins.push("@semantic-release/npm");
+    }
+
+    if (props.tool === "yarn") {
+      new PackageDependency(this, "@semantic-release/exec", {
+        type: PackageDependencyType.DEV,
+      });
+
+      plugins.push(["@semantic-release/npm", { npmPublish: false }]);
+      plugins.push(["@semantic-release/exec", { publishCmd: "yarn npm publish" }]);
+    }
+
     new ManifestEntry(this, "SemanticRelease", {
+      resolutions: {
+        npm: "^6",
+      },
       scripts: {
         release: "npx multi-semantic-release --deps.bump=override",
       },
@@ -82,7 +97,6 @@ export class SemanticReleaseSupport extends XConstruct {
             },
           ],
           ...plugins,
-          "@semantic-release/npm",
           [
             "@semantic-release/git",
             {

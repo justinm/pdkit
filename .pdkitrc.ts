@@ -50,6 +50,7 @@ new YarnGithubSupport(workspace, {
 });
 
 new SemanticReleaseSupport(workspace, {
+  tool: "yarn",
   branches: ["main"],
   changelogs: true,
   releaseNotes: true
