@@ -27,7 +27,7 @@ export class YarnTypescriptWorkspace extends YarnWorkspace {
     });
 
     if (props.scripts) {
-      new ManifestEntry(Project.of(this), "EnsureScripts", { scripts: props.scripts });
+      new ManifestEntry(Project.of(this), "YarnEnsureScripts", { scripts: props.scripts });
     }
   }
 }

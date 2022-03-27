@@ -380,8 +380,11 @@ export class TypescriptSupport extends XConstruct {
     new ManifestEntry(this, "Scripts", {
       scripts: {
         compile: "tsc -p ./tsconfig.json",
+        clean:
+          'find . -name "*.js" -not -path "./node_modules/*" -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
       },
     });
+
     new ManifestEntry(this, "Files", {
       files: [`${project.distPath}/*.d.ts`, `${project.distPath}/**/*.d.ts`],
     });

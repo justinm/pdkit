@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
-    "compile": "tsc -p ./tsconfig.json"
+    "compile": "tsc -p ./tsconfig.json",
+    "clean": "find . -name \"*.js\" -not -path \"./node_modules/*\" -delete && find . -name \"*.d.ts\" -not -path \"./node_modules/*\" -delete"
   },
   "files": [
     "./*.js",

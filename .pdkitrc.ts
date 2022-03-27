@@ -14,6 +14,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
     pdkit: "ts-node packages/@pdkit/cli/src/pdkit.ts",
     build: "yarn workspaces foreach --verbose -pt run build",
     compile: "yarn workspaces foreach --verbose -pt run compile",
+    clean: "yarn workspaces foreach --verbose -pt run clean",
   },
   eslint: {
     enabled: true,
@@ -31,6 +32,9 @@ new YarnGithubSupport(workspace, "GithubSupport", {
   },
   workflows: {
     build: {
+      cache: {
+        "${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}": ".yarn/cache",
+      },
       enabled: true,
       failOnMutation: true,
       commitMutations: false,

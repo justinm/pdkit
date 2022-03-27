@@ -1,4 +1,4 @@
-name: build-workflow
+name: File-.github-workflows--build-workflow.yml
 'on':
   pull_request: {}
   workflow_dispatch: {}
@@ -16,6 +16,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
         id: Checkout
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: .yarn/cache
+        id: Cache
       - name: Install Dependencies
         run: yarn install --immutable
         id: Install

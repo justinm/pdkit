@@ -8,14 +8,15 @@ export interface CacheStepProps extends GithubJobStepProps {
 
 export class CacheStep extends GithubJobStep {
   constructor(scope: XConstruct, id: string, props: CacheStepProps) {
+    const { key, path, ...other } = props;
     super(scope, id, {
       name: "Cache",
       uses: "actions/cache@v2",
       with: {
-        key: props.key,
-        path: props.path,
+        key,
+        path,
       },
-      ...props,
+      ...other,
     });
   }
 }

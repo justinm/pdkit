@@ -1,4 +1,4 @@
-import { Workspace, File, XConstruct } from "@pdkit/core";
+import { Workspace, File, XConstruct, Project } from "@pdkit/core";
 import { BuildJobProps } from "../github/jobs/BuildJob";
 import { ReleaseJobProps } from "../github/jobs/ReleaseJob";
 import { BuildWorkflow } from "../github/workflows/BuildWorkflow";
@@ -24,7 +24,9 @@ export interface GithubSupportProps {
 
 export class GithubSupport extends XConstruct {
   constructor(scope: Workspace, id: string, props?: GithubSupportProps) {
-    super(scope, id);
+    const project = Project.of(scope);
+
+    super(project, id);
 
     if (props?.pullRequestLint) {
       new PullRequestLintWorkflow(this, "pull-request-lint", props?.pullRequestLint);
