@@ -40,7 +40,7 @@ new YarnGithubSupport(workspace, {
   workflows: {
     build: {
       cache: {
-        "${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}": ".yarn/cache",
+        "${{ runner.os }}-yarn": ".yarn/cache",
       },
       enabled: true,
       failOnMutation: true,
@@ -48,7 +48,7 @@ new YarnGithubSupport(workspace, {
     },
     release: {
       cache: {
-        "${{ runner.os }}-yarn-release-${{ hashFiles('**/yarn.lock') }}": ".yarn/cache",
+        "${{ runner.os }}-yarn-release": ".yarn/cache",
       },
       branches: ["main"],
       enabled: true,
