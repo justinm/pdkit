@@ -1,3 +1,4 @@
+import path from "path";
 import { LifeCycle, Manifest, Project, ValidLicense, Workspace, XConstruct } from "@pdkit/core";
 import { NpmProject } from "../npm";
 
@@ -25,14 +26,15 @@ export class PackageJson extends Manifest {
   constructor(scope: XConstruct, props?: NodePackageJsonProps) {
     super(scope, "package.json");
 
+    const project = Project.of(this);
+
     const packageJson = Workspace.of(this).fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(
       this,
-      "package.json"
+      path.join(project.projectPath, "package.json")
     );
 
+    console.log(packageJson);
     if (props) {
-      const project = Project.of(this);
-
       this.addShallowFields({
         name: props.name,
         description: props.description,
@@ -71,10 +73,10 @@ export class PackageJson extends Manifest {
             if (field[dep] && field[dep] !== "*") {
               addPackageDependency(key, dep, field[dep]);
             } else {
-              const project = projects.find((p) => p.node.id === key);
+              const pj = projects.find((p) => p.node.id === key);
 
-              if (project) {
-                addPackageDependency(key, dep, `^${project.packageJson.version}`);
+              if (pj) {
+                addPackageDependency(key, dep, `^${pj.packageJson.version}`);
               } else {
                 const version = this.resolveDepVersion(dep);
 
