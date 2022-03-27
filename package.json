@@ -223,8 +223,8 @@
   },
   "dependencies": {
     "@pdkit/core": "1.1.0",
-    "@pdkit/github": "1.0.0",
-    "@pdkit/nodejs": "1.0.1",
+    "@pdkit/github": "1.0.1",
+    "@pdkit/nodejs": "1.0.3",
     "mustache": "4.2.0"
   },
   "resolutions": {
@@ -273,7 +273,7 @@
       [
         "@semantic-release/exec",
         {
-          "publishCmd": "yarn pdkit synth"
+          "publishCmd": "yarn run -T pdkit synth"
         }
       ],
       [

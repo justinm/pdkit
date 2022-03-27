@@ -33,7 +33,6 @@ export class PackageJson extends Manifest {
       path.join(project.projectPath, "package.json")
     );
 
-    console.log(packageJson);
     if (props) {
       this.addShallowFields({
         name: props.name,

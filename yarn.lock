@@ -1028,12 +1028,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/github@1.0.0, @pdkit/github@workspace:packages/@pdkit/github":
+"@pdkit/github@1.0.1, @pdkit/github@workspace:packages/@pdkit/github":
   version: 0.0.0-use.local
   resolution: "@pdkit/github@workspace:packages/@pdkit/github"
   dependencies:
     "@pdkit/core": 1.1.0
-    "@pdkit/nodejs": 1.0.1
+    "@pdkit/nodejs": 1.0.3
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     constructs: 10.0.97
@@ -1053,7 +1053,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/nodejs@1.0.1, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
+"@pdkit/nodejs@1.0.3, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
   resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
@@ -10778,8 +10778,8 @@ __metadata:
   resolution: "workspace@workspace:."
   dependencies:
     "@pdkit/core": 1.1.0
-    "@pdkit/github": 1.0.0
-    "@pdkit/nodejs": 1.0.1
+    "@pdkit/github": 1.0.1
+    "@pdkit/nodejs": 1.0.3
     "@qiwi/multi-semantic-release": ^3.17.1
     "@semantic-release/changelog": 6.0.1
     "@semantic-release/commit-analyzer": 9.0.2
