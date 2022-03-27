@@ -1,3 +1,10 @@
+# @pdkit/core [1.1.0](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.8...@pdkit/core@1.1.0) (2022-03-27)
+
+
+### Features
+
+* release bump ([627e9fb](https://github.com/justinm/pdkit/commit/627e9fb26173229406de01f6344cef01d95cc674))
+
 ## @pdkit/core [1.0.8](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.7...@pdkit/core@1.0.8) (2022-03-27)
 
 
