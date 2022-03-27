@@ -26,6 +26,9 @@ export class YarnGithubSupport extends GithubSupport {
       workflows: {
         ...props.workflows,
         build: {
+          cache: {
+            "${{ runner.os }}-yarn": ".yarn/cache",
+          },
           ...props.workflows?.build,
           tools: {
             node: {
