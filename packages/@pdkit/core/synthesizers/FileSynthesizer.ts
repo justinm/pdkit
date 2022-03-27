@@ -106,7 +106,6 @@ export class FileSynthesizer extends XConstruct {
 
       return onDiskChecksum !== memoryChecksum;
     } catch (err) {
-      logger.error(`Failed to hash files: ${err}`);
       return true;
     }
   }

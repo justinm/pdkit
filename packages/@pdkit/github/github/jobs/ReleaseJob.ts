@@ -1,9 +1,11 @@
 import { XConstruct } from "@pdkit/core";
 import { GithubJob, GithubJobProps, JobPermission } from "../../constructs/GithubJob";
 import { GithubJobStep } from "../../constructs/GithubJobStep";
+import { CacheStep } from "../steps/CacheStep";
 import { GithubCheckoutStep } from "../steps/GithubCheckoutStep";
 
 export interface ReleaseJobProps extends Partial<GithubJobProps> {
+  readonly cache?: Record<string, string>;
   readonly installStep: typeof GithubJobStep;
   readonly releaseStep: typeof GithubJobStep;
   readonly codeCoverageStep?: typeof GithubJobStep;
@@ -30,6 +32,16 @@ export class ReleaseJob extends GithubJob {
     });
 
     new GithubCheckoutStep(this, "Checkout", { priority: 10 });
+
+    if (props.cache) {
+      Object.keys(props.cache).forEach((c) => {
+        new CacheStep(this, "Cache", {
+          path: (props.cache as any)[c],
+          key: c,
+        });
+      });
+    }
+
     new props.installStep(this, "Install", { priority: 20 });
     new props.releaseStep(this, "Release", { priority: 30 });
 

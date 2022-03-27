@@ -40,8 +40,11 @@ new YarnGithubSupport(workspace, "GithubSupport", {
       commitMutations: false,
     },
     release: {
+      cache: {
+        "${{ runner.os }}-yarn-release-${{ hashFiles('**/yarn.lock') }}": ".yarn/cache",
+      },
       branches: ["main"],
-      enabled: false,
+      enabled: true,
     },
   },
 });

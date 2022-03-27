@@ -1,0 +1,37 @@
+name: File-.github-workflows--release-workflow.yml
+'on':
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+concurrency: '1'
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      latest_commit: ${{ steps.Check.outputs.latest_commit }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+        id: Checkout
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-yarn-release-${{ hashFiles('**/yarn.lock') }}
+          path: .yarn/cache
+        id: Cache
+      - name: Install Dependencies
+        run: yarn install --immutable
+        id: Install
+      - name: Release
+        run: npm run release
+        id: Release
+      - name: Check for new commits
+        run: echo ::set-output name=latest_commit::"$(git ls-remote origin -h ${{ github.ref }} | cut -f1)"
+        id: Check

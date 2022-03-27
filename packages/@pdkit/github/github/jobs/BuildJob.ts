@@ -38,6 +38,7 @@ export class BuildJob extends GithubJob {
         });
       });
     }
+
     new props.installStep(this, "Install", { priority: 20 });
     new props.buildStep(this, "Build", { priority: 10 });
 
