@@ -134,7 +134,7 @@ new YarnTypescriptProject(workspace, "nodejs", {
 new YarnTypescriptProject(workspace, "github", {
   packageName: "@pdkit/github",
   projectPath: "packages/@pdkit/github",
-  dependencies: ["constructs", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }],
+  dependencies: ["constructs", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }, { name: "@pdkit/nodejs", version: "workspace:packages/@pdkit/nodejs" }],
   devDependencies: ["prettier", "typescript"],
   eslint: {
     enabled: true,

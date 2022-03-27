@@ -168,6 +168,7 @@
   },
   "dependencies": {
     "@pdkit/core": "workspace:packages/@pdkit/core",
+    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs",
     "constructs": "10.0.97"
   },
   "jest": {

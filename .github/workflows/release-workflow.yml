@@ -28,6 +28,9 @@ jobs:
       - name: Install Dependencies
         run: yarn install --immutable
         id: Install
+      - name: Yarn Login
+        run: yarn config set --home npmRegistries["//registry.npmjs.org/"].npmAuthToken "$NPM_TOKEN"
+        id: YarnAuth
       - name: Release
         run: npm run release
         env:

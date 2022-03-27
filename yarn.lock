@@ -1033,6 +1033,7 @@ __metadata:
   resolution: "@pdkit/github@workspace:packages/@pdkit/github"
   dependencies:
     "@pdkit/core": "workspace:packages/@pdkit/core"
+    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs"
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     constructs: 10.0.97
