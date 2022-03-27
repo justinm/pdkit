@@ -30,6 +30,9 @@ jobs:
         id: Install
       - name: Release
         run: npm run release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npm_config_access: public
         id: Release
       - name: Check for new commits
         run: echo ::set-output name=latest_commit::"$(git ls-remote origin -h ${{ github.ref }} | cut -f1)"

@@ -21,6 +21,9 @@ export class SemanticReleaseSupport extends XConstruct {
     new PackageDependency(this, "@semantic-release/commit-analyzer", {
       type: PackageDependencyType.DEV,
     });
+    new PackageDependency(this, "conventional-changelog-conventionalcommits", {
+      type: PackageDependencyType.DEV,
+    });
     new PackageDependency(this, "@semantic-release/git", {
       type: PackageDependencyType.DEV,
     });

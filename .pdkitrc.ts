@@ -11,7 +11,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   dependencies: ["mustache", "@pdkit/nodejs", "@pdkit/github"],
   devDependencies: ["@types/mustache", "@types/node", "prettier", "ts-node", "typescript"],
   scripts: {
-    pdkit: "ts-node packages/@pdkit/cli/src/pdkit.ts",
+    pdkit: "ts-node packages/@pdkit/cli/pdkit.ts",
     build: "yarn workspaces foreach --verbose -pt run build",
     compile: "yarn workspaces foreach --verbose -pt run compile",
     clean: "yarn workspaces foreach --verbose -pt run clean",

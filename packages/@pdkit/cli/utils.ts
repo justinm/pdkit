@@ -1,3 +1,4 @@
+import fs from "fs";
 import path from "path";
 import { ConstructError, IWorkspace, logger, Workspace, XConstruct } from "@pdkit/core";
 import ora from "ora";
@@ -12,6 +13,9 @@ export async function loadWorkspace(configPath: string) {
   const workspace = await withSpinner<IWorkspace>(0, "Loading project...", () => {
     process.chdir(path.dirname(configPath));
 
+    if (!fs.existsSync(configPath)) {
+      throw new Error("No .pdkitrc.ts could be found");
+    }
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const ws = Workspace.of(require(configPath).default as XConstruct);
 
