@@ -1,3 +1,10 @@
+## @pdkit/core [1.0.4](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.3...@pdkit/core@1.0.4) (2022-03-27)
+
+
+### Bug Fixes
+
+* do not specify refs for checkout step ([3e916c5](https://github.com/justinm/pdkit/commit/3e916c5a92d722e67c299612a904a787f4a43c77))
+
 ## @pdkit/core [1.0.3](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.2...@pdkit/core@1.0.3) (2022-03-27)
 
 
