@@ -50,7 +50,6 @@ export class YarnGithubSupport extends GithubSupport {
               ...(props.workflows?.release.tools?.node ?? {
                 version: "14.x",
                 cache: "yarn",
-                token: "${{ secrets.NPM_TOKEN }}",
                 registryUrl: props.registryUrl,
               }),
             },
