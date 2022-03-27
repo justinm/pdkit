@@ -1,3 +1,10 @@
+## @pdkit/core [1.0.8](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.7...@pdkit/core@1.0.8) (2022-03-27)
+
+
+### Bug Fixes
+
+* add new step to authenticate yarn 2 ([b86f4d2](https://github.com/justinm/pdkit/commit/b86f4d222de23d97c93864c5bb7954133e8d52e1))
+
 ## @pdkit/core [1.0.7](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.6...@pdkit/core@1.0.7) (2022-03-27)
 
 
