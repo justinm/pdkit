@@ -1,5 +1,6 @@
 import { SemanticReleaseSupport, YarnTypescriptProject, YarnTypescriptWorkspace } from "@pdkit/nodejs";
 import { YarnGithubSupport } from "@pdkit/github";
+import { ManifestEntry, Project } from "@pdkit/core";
 
 const workspace = new YarnTypescriptWorkspace("pdkit", {
   author: {
@@ -26,6 +27,12 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   gitignore: [".idea", ".js", ".d.ts"],
 });
 
+new ManifestEntry(Project.of(workspace), "CustomResolutions", {
+  resolutions: {
+    "chalk": "^4.1.2",
+  }
+});
+
 new YarnGithubSupport(workspace, {
   pullRequestLint: {
     enabled: true,
@@ -50,6 +57,7 @@ new YarnGithubSupport(workspace, {
 });
 
 new SemanticReleaseSupport(workspace, {
+  tool: "yarn",
   branches: ["main"],
   changelogs: true,
   releaseNotes: true
