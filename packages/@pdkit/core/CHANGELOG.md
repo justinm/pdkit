@@ -1,3 +1,10 @@
+## @pdkit/core [1.0.1](https://github.com/justinm/pdkit/compare/@pdkit/core@1.0.0...@pdkit/core@1.0.1) (2022-03-27)
+
+
+### Bug Fixes
+
+* cli bin not creating in release and switch to using workspaces ([6cac682](https://github.com/justinm/pdkit/commit/6cac682160f2678ffff0f9b4c956a7d78cf3aade))
+
 # @pdkit/core 1.0.0 (2022-03-27)
 
 
