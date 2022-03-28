@@ -113,7 +113,7 @@ new YarnTypescriptProject(workspace, "cli", {
   },
   devDependencies: ["@types/diff", "@types/glob", "@types/ora", "@types/prompts", "@types/shell-escape", "@types/yargs"],
   bin: {
-    pdkit: "pdkit.js",
+    pdkit: "pdkit.ts",
   },
   eslint: {
     enabled: true,
