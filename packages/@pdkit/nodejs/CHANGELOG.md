@@ -1,3 +1,10 @@
+## @pdkit/nodejs [1.1.5](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.1.4...@pdkit/nodejs@1.1.5) (2022-03-28)
+
+
+### Bug Fixes
+
+* run cli via ts-node ([f225d98](https://github.com/justinm/pdkit/commit/f225d9854f956c050c48e55d06418287ee0937a5))
+
 ## @pdkit/nodejs [1.1.4](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.1.3...@pdkit/nodejs@1.1.4) (2022-03-28)
 
 
