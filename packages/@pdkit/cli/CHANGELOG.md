@@ -1,3 +1,10 @@
+## @pdkit/cli [1.3.7](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.6...@pdkit/cli@1.3.7) (2022-03-28)
+
+
+### Bug Fixes
+
+* utilize typescript properly ([749253d](https://github.com/justinm/pdkit/commit/749253dfb77aaf0456e8705441131f6f11aec576))
+
 ## @pdkit/cli [1.3.6](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.5...@pdkit/cli@1.3.6) (2022-03-28)
 
 
