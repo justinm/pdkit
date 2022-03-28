@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
-import { ConstructError, IWorkspace, logger, Workspace, XConstruct } from "@pdkit/core";
+import { ConstructError, IWorkspace, logger, PDKIT_CONFIG_FILE, Workspace, XConstruct } from "@pdkit/core";
 import ora from "ora";
 import shellEscape from "shell-escape";
 
@@ -16,10 +16,11 @@ export async function loadWorkspace(configPath: string) {
     process.chdir(path.dirname(configPath));
 
     if (!fs.existsSync(configPath)) {
-      throw new Error("No .pdkitrc.ts could be found");
+      throw new Error(`No ${PDKIT_CONFIG_FILE} could be found`);
     }
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const ws = Workspace.of(require(configPath).default as XConstruct);
+    const kit = require(configPath).default;
+    const ws = Workspace.of(kit as XConstruct);
 
     if (!ws) {
       throw new Error("No workspace could be found for project.");

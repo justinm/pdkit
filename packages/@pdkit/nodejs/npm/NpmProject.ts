@@ -130,7 +130,7 @@ export class NpmProject extends Project {
     }
 
     if (props?.scripts) {
-      new ManifestEntry(this, "EnsureScripts", { scripts: props.scripts });
+      new ManifestEntry(this, "NpmEnsureScripts", { scripts: props.scripts });
     }
   }
 

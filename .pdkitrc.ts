@@ -15,6 +15,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
     build: "yarn compile",
     compile: "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     clean: "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
+    yalc: "yarn workspaces foreach --verbose -p --topological-dev --no-private run yalc",
   },
   eslint: {
     enabled: true,
@@ -73,6 +74,9 @@ new YarnTypescriptProject(workspace, "core", {
     "dependency-graph",
     "md5-file",
   ],
+  scripts: {
+    yalc: "yarn compile && npx yalc publish"
+  },
   devDependencies: ["@types/mustache", "@types/js-yaml", "@types/object-hash", "@types/winston"],
   eslint: {
     enabled: true,
@@ -99,6 +103,9 @@ new YarnTypescriptProject(workspace, "cli", {
     "prompts",
     "yargs",
   ],
+  scripts: {
+    yalc: "yarn compile && npx yalc publish"
+  },
   devDependencies: ["@types/diff", "@types/glob", "@types/ora", "@types/prompts", "@types/shell-escape", "@types/yargs"],
   bin: {
     pdkit: "pdkit.js",
@@ -117,6 +124,9 @@ new YarnTypescriptProject(workspace, "nodejs", {
   projectPath: "packages/@pdkit/nodejs",
   dependencies: ["constructs", "@pdkit/core"],
   devDependencies: ["prettier", "typescript"],
+  scripts: {
+    yalc: "yarn compile && npx yalc publish"
+  },
   eslint: {
     enabled: true,
     prettier: true,
@@ -131,6 +141,9 @@ new YarnTypescriptProject(workspace, "react", {
   projectPath: "packages/@pdkit/react",
   dependencies: ["constructs", "@pdkit/core", "@pdkit/nodejs"],
   devDependencies: ["prettier", "typescript"],
+  scripts: {
+    yalc: "yarn compile && npx yalc publish"
+  },
   eslint: {
     enabled: true,
     prettier: true,
@@ -145,6 +158,9 @@ new YarnTypescriptProject(workspace, "github", {
   projectPath: "packages/@pdkit/github",
   dependencies: ["constructs", "@pdkit/core", "@pdkit/nodejs"],
   devDependencies: ["prettier", "typescript"],
+  scripts: {
+    yalc: "yarn compile && npx yalc publish"
+  },
   eslint: {
     enabled: true,
     prettier: true,

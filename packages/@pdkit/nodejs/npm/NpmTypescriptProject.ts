@@ -21,7 +21,7 @@ export class NpmTypescriptProject extends NpmProject {
     new TypescriptSupport(this, props.tsconfig);
 
     if (props.scripts) {
-      new ManifestEntry(Project.of(this), "EnsureScripts", { scripts: props.scripts });
+      new ManifestEntry(Project.of(this), "NpmTypescriptEnsureScripts", { scripts: props.scripts });
     }
   }
 }
