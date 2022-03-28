@@ -1,3 +1,10 @@
+## @pdkit/react [1.0.6](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.5...@pdkit/react@1.0.6) (2022-03-28)
+
+
+### Bug Fixes
+
+* add easy typescript wrappers around react projects ([afc5064](https://github.com/justinm/pdkit/commit/afc5064809a807cbd6cd0d026d665ebbe97b4d03))
+
 ## @pdkit/react [1.0.5](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.4...@pdkit/react@1.0.5) (2022-03-28)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@pdkit/react",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "./index.js",
   "scripts": {
     "yalc": "yarn compile && npx yalc publish",
