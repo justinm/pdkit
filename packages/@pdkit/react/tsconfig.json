@@ -30,6 +30,6 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
-    "target": "esnext"
+    "target": "es5"
   }
 }

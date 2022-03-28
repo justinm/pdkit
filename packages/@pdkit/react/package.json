@@ -15,21 +15,21 @@
     "./**/*.d.ts"
   ],
   "devDependencies": {
-    "eslint": "8.12.0",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
+    "eslint": "8.12.0",
+    "eslint-config-prettier": "8.5.0",
     "eslint-import-resolver-node": "0.3.6",
     "eslint-import-resolver-typescript": "2.7.0",
     "eslint-plugin-import": "2.25.4",
-    "json-schema": "0.4.0",
-    "prettier": "2.6.1",
     "eslint-plugin-prettier": "4.0.0",
-    "eslint-config-prettier": "8.5.0",
-    "typescript": "4.6.3",
     "jest": "27.5.1",
     "jest-junit": "^13",
+    "json-schema": "0.4.0",
+    "prettier": "2.6.1",
     "ts-jest": "27.1.4",
-    "ts-node": "10.7.0"
+    "ts-node": "10.7.0",
+    "typescript": "4.6.3"
   },
   "eslintConfig": {
     "env": {
@@ -168,9 +168,9 @@
     }
   },
   "dependencies": {
-    "constructs": "10.0.97",
     "@pdkit/core": "1.2.2",
-    "@pdkit/nodejs": "1.1.3"
+    "@pdkit/nodejs": "1.1.3",
+    "constructs": "10.0.97"
   },
   "jest": {
     "clearMocks": true,
