@@ -168,7 +168,7 @@
     }
   },
   "dependencies": {
-    "@pdkit/core": "1.2.2",
+    "@pdkit/core": "1.2.3",
     "constructs": "10.0.97"
   },
   "jest": {
