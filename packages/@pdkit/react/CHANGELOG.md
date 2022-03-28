@@ -1,3 +1,19 @@
+## @pdkit/react [1.0.1](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.0...@pdkit/react@1.0.1) (2022-03-28)
+
+
+### Bug Fixes
+
+* export to commonjs ([16bc594](https://github.com/justinm/pdkit/commit/16bc59448a0d3653bebecf8a89a5c3e978c1e401))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 1.2.2
+* **@pdkit/nodejs:** upgraded to 1.1.3
+
 # @pdkit/react 1.0.0 (2022-03-28)
 
 
