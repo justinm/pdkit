@@ -1,3 +1,10 @@
+## @pdkit/nodejs [1.1.6](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.1.5...@pdkit/nodejs@1.1.6) (2022-03-28)
+
+
+### Bug Fixes
+
+* package dependency sorting and more ([421383c](https://github.com/justinm/pdkit/commit/421383c6b3167d7f0c962d3c35d9b2fa58a3cb29))
+
 ## @pdkit/nodejs [1.1.5](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.1.4...@pdkit/nodejs@1.1.5) (2022-03-28)
 
 
