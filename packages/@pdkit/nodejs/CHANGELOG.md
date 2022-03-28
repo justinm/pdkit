@@ -1,3 +1,18 @@
+# @pdkit/nodejs [1.1.0](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.0.4...@pdkit/nodejs@1.1.0) (2022-03-28)
+
+
+### Features
+
+* re-release due to autorelease issues ([bd35cea](https://github.com/justinm/pdkit/commit/bd35cea9e7b43efa0448933b7a6bf686acb911c2))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 1.2.0
+
 ## @pdkit/nodejs [1.0.4](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.0.3...@pdkit/nodejs@1.0.4) (2022-03-27)
 
 
