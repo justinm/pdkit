@@ -6,7 +6,7 @@ import chalk from "chalk";
 import glob from "glob";
 import yargs, { CommandModule } from "yargs";
 import { hideBin } from "yargs/helpers";
-import { synth } from "./commands";
+import { init, synth } from "./commands";
 
 const findPdk = () => {
   const parts = process.cwd().split("/");
@@ -41,7 +41,7 @@ function wrapCommand<T extends CommandModule>(command: T): T {
   return command;
 }
 
-yargs(hideBin(process.argv))
+void yargs(hideBin(process.argv))
   .parserConfiguration({
     "unknown-options-as-args": true,
   })
@@ -69,6 +69,7 @@ yargs(hideBin(process.argv))
     return true;
   })
   .command(wrapCommand(synth as any))
+  .command(wrapCommand(init as any))
   .strict()
   .help()
   .strictCommands(false)

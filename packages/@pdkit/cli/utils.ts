@@ -1,7 +1,9 @@
+import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
 import { ConstructError, IWorkspace, logger, Workspace, XConstruct } from "@pdkit/core";
 import ora from "ora";
+import shellEscape from "shell-escape";
 
 export const spinner = ora();
 
@@ -73,4 +75,41 @@ export async function withSpinner<T>(verbose: number, message: string, callback:
   }
 
   return null;
+}
+
+export async function spawnCommand(command: string[], props?: { env?: Record<string, string> }) {
+  const cmd = shellEscape(command);
+
+  const result = spawn(cmd, {
+    env: {
+      ...process.env,
+      ...props?.env,
+    },
+    shell: true,
+    stdio: [process.stdin, "pipe", "pipe"],
+  });
+
+  result.stdout.on("data", (data) => {
+    spinner.stop();
+    console.log(data.toString().trimEnd());
+    spinner.start();
+  });
+
+  result.stderr.on("data", (data) => {
+    spinner.stop();
+    console.error(data.toString().trimEnd());
+    spinner.start();
+  });
+
+  return new Promise<{ code: number }>((resolve) => {
+    result.on("exit", (code) => {
+      if (!code) {
+        spinner.succeed();
+      } else {
+        spinner.fail();
+      }
+
+      resolve({ code: code ?? 0 });
+    });
+  });
 }

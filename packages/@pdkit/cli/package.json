@@ -21,6 +21,7 @@
     "@types/glob": "7.2.0",
     "@types/ora": "3.1.0",
     "@types/prompts": "2.4.0",
+    "@types/shell-escape": "0.2.0",
     "@types/yargs": "17.0.10",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -184,6 +185,7 @@
     "glob-regex": "0.3.2",
     "ora": "^5.4.1",
     "prompts": "2.4.2",
+    "shell-escape": "0.2.0",
     "yargs": "17.4.0"
   },
   "jest": {
