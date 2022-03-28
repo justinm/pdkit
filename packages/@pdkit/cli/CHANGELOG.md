@@ -1,3 +1,10 @@
+## @pdkit/cli [1.3.5](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.4...@pdkit/cli@1.3.5) (2022-03-28)
+
+
+### Bug Fixes
+
+* package dependency sorting and more ([421383c](https://github.com/justinm/pdkit/commit/421383c6b3167d7f0c962d3c35d9b2fa58a3cb29))
+
 ## @pdkit/cli [1.3.4](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.3...@pdkit/cli@1.3.4) (2022-03-28)
 
 
