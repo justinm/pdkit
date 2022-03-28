@@ -1,3 +1,20 @@
+## @pdkit/react [1.0.2](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.1...@pdkit/react@1.0.2) (2022-03-28)
+
+
+### Bug Fixes
+
+* set standard typescript target to es5 for better interoperability ([4255462](https://github.com/justinm/pdkit/commit/42554627ef1c4c51ea3de487711d660a0891af00))
+* set standard typescript target to es6 for better interoperability ([3eb1d51](https://github.com/justinm/pdkit/commit/3eb1d51877fd008e544145d16040ae4e7bd82c07))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 1.2.4
+* **@pdkit/nodejs:** upgraded to 1.1.4
+
 ## @pdkit/react [1.0.1](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.0...@pdkit/react@1.0.1) (2022-03-28)
 
 
