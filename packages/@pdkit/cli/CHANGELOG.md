@@ -1,3 +1,18 @@
+## @pdkit/cli [1.3.1](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.0...@pdkit/cli@1.3.1) (2022-03-28)
+
+
+### Bug Fixes
+
+* export to commonjs ([16bc594](https://github.com/justinm/pdkit/commit/16bc59448a0d3653bebecf8a89a5c3e978c1e401))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 1.2.2
+
 # @pdkit/cli [1.3.0](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.2.1...@pdkit/cli@1.3.0) (2022-03-28)
 
 
