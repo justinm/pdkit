@@ -1,3 +1,18 @@
+## @pdkit/react [1.0.5](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.4...@pdkit/react@1.0.5) (2022-03-28)
+
+
+### Bug Fixes
+
+* auto-add supporting libraries ([7ed8ee2](https://github.com/justinm/pdkit/commit/7ed8ee2d44b9d9176c34f834496d813ec399797b))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/nodejs:** upgraded to 1.1.7
+
 ## @pdkit/react [1.0.4](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.3...@pdkit/react@1.0.4) (2022-03-28)
 
 
