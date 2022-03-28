@@ -1,3 +1,10 @@
+## @pdkit/cli [1.3.8](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.7...@pdkit/cli@1.3.8) (2022-03-28)
+
+
+### Bug Fixes
+
+* cli issues ([481d0ca](https://github.com/justinm/pdkit/commit/481d0ca71876b463eeec647bdd2cc36ee1c06ec4))
+
 ## @pdkit/cli [1.3.7](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.6...@pdkit/cli@1.3.7) (2022-03-28)
 
 
