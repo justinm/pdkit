@@ -60,6 +60,7 @@ export class YarnGithubSupport extends GithubSupport {
           },
           enabled: props.workflows?.release?.enabled ?? false,
           installStep: YarnInstallStep,
+          buildStep: YarnBuildStep,
           releaseStep: NpmReleaseStep,
         },
       },

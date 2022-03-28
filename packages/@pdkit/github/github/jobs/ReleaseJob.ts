@@ -9,6 +9,7 @@ export interface ReleaseJobProps extends Partial<GithubJobProps> {
   readonly cache?: Record<string, string>;
   readonly installStep: typeof GithubJobStep;
   readonly authStep?: typeof GithubJobStep;
+  readonly buildStep?: typeof GithubJobStep;
   readonly releaseStep: typeof GithubJobStep;
   readonly codeCoverageStep?: typeof GithubJobStep;
   readonly uploadArtifactStep?: typeof GithubJobStep;
@@ -46,11 +47,14 @@ export class ReleaseJob extends GithubJob {
     }
 
     new SetupTools(this, "SetupTools", { ...props, priority: 20 });
-    new props.installStep(this, "Install", { priority: 20 });
-    new props.releaseStep(this, "Release", { priority: 40 });
+    new props.installStep(this, "Install", { priority: 30 });
+    if (props.buildStep) {
+      new props.buildStep(this, "Build", { priority: 40 });
+    }
+    new props.releaseStep(this, "Release", { priority: 50 });
 
     new GithubJobStep(this, "Check", {
-      priority: 50,
+      priority: 60,
       name: "Check for new commits",
       run: 'echo ::set-output name=latest_commit::"$(git ls-remote origin -h ${{ github.ref }} | cut -f1)"',
     });
