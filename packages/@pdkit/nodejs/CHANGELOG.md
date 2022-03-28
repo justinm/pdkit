@@ -1,3 +1,10 @@
+## @pdkit/nodejs [1.1.2](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.1.1...@pdkit/nodejs@1.1.2) (2022-03-28)
+
+
+### Bug Fixes
+
+* Jest/Eslint/Typescript can now be checked to see if enabled on a project ([410de2b](https://github.com/justinm/pdkit/commit/410de2b35da07e76061622f0810b5a0defc109ec))
+
 ## @pdkit/nodejs [1.1.1](https://github.com/justinm/pdkit/compare/@pdkit/nodejs@1.1.0...@pdkit/nodejs@1.1.1) (2022-03-28)
 
 
