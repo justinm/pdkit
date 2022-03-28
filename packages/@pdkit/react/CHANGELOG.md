@@ -1,3 +1,10 @@
+## @pdkit/react [1.0.7](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.6...@pdkit/react@1.0.7) (2022-03-28)
+
+
+### Bug Fixes
+
+* adding saner defaults for react typescript projects ([67ece14](https://github.com/justinm/pdkit/commit/67ece1451f6bc28a44334706dc9c4b8f442515ee))
+
 ## @pdkit/react [1.0.6](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.5...@pdkit/react@1.0.6) (2022-03-28)
 
 
