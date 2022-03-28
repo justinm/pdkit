@@ -1,6 +1,6 @@
 {
   "name": "@pdkit/github",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "main": "./index.js",
   "scripts": {
     "yalc": "yarn compile && npx yalc publish",
@@ -169,7 +169,7 @@
   },
   "dependencies": {
     "@pdkit/core": "1.2.4",
-    "@pdkit/nodejs": "1.1.5",
+    "@pdkit/nodejs": "1.1.6",
     "constructs": "10.0.97"
   },
   "jest": {
