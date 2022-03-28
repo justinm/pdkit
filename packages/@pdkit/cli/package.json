@@ -1,6 +1,6 @@
 {
   "name": "@pdkit/cli",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "main": "./index.js",
   "bin": {
     "pdkit": "pdkit.js"

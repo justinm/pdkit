@@ -1,3 +1,10 @@
+## @pdkit/cli [1.3.4](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.3...@pdkit/cli@1.3.4) (2022-03-28)
+
+
+### Bug Fixes
+
+* run cli via ts-node ([f225d98](https://github.com/justinm/pdkit/commit/f225d9854f956c050c48e55d06418287ee0937a5))
+
 ## @pdkit/cli [1.3.3](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.2...@pdkit/cli@1.3.3) (2022-03-28)
 
 
