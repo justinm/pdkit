@@ -1035,7 +1035,7 @@ __metadata:
   resolution: "@pdkit/github@workspace:packages/@pdkit/github"
   dependencies:
     "@pdkit/core": 1.2.4
-    "@pdkit/nodejs": 1.1.4
+    "@pdkit/nodejs": 1.1.5
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     constructs: 10.0.97
@@ -1055,7 +1055,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/nodejs@1.1.4, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
+"@pdkit/nodejs@1.1.5, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
   resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
@@ -1084,7 +1084,7 @@ __metadata:
   resolution: "@pdkit/react@workspace:packages/@pdkit/react"
   dependencies:
     "@pdkit/core": 1.2.4
-    "@pdkit/nodejs": 1.1.4
+    "@pdkit/nodejs": 1.1.5
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     constructs: 10.0.97

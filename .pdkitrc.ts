@@ -103,7 +103,12 @@ new YarnTypescriptProject(workspace, "cli", {
     "prompts",
     "yargs",
   ],
+  files: [
+    "*.ts",
+    "**/*.ts",
+  ],
   scripts: {
+    compile: undefined as any,
     yalc: "yarn compile && npx yalc publish"
   },
   devDependencies: ["@types/diff", "@types/glob", "@types/ora", "@types/prompts", "@types/shell-escape", "@types/yargs"],

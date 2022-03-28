@@ -84,6 +84,17 @@ export class PackageJson extends Manifest {
             }
           }
         }
+
+        // We need to sort our keys
+        if (this.fields[key]) {
+          this.fields[key] = Object.keys(this.fields[key] as any)
+            .sort()
+            .reduce((c, k) => {
+              c[k] = (this.fields[key] as Record<string, string>)[k];
+
+              return c;
+            }, {} as Record<string, string>);
+        }
       });
     });
   }
@@ -104,5 +115,9 @@ export class PackageJson extends Manifest {
       );
 
     return packageJson?.version ?? "*";
+  }
+
+  protected transform(fields: Record<string, unknown>): string {
+    return super.transform(fields) + "\n";
   }
 }

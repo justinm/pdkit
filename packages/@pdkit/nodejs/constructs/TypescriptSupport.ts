@@ -424,7 +424,7 @@ export class TypescriptSupport extends XConstruct {
         strictNullChecks: true,
         strictPropertyInitialization: true,
         stripInternal: true,
-        target: "ES6",
+        target: "es6",
         ...props?.compilerOptions,
       },
     } as TypescriptSupportProps);

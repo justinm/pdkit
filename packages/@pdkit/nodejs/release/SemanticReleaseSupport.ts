@@ -72,7 +72,10 @@ export class SemanticReleaseSupport extends XConstruct {
       plugins.push(["@semantic-release/npm", { npmPublish: false }]);
       plugins.push(["@semantic-release/exec", { publishCmd: "yarn npm publish" }]);
       // We resynth the project to ensure package.json updates correctly after release bump
-      plugins.push(["@semantic-release/exec", { publishCmd: "yarn run -T pdkit synth" }]);
+      plugins.push([
+        "@semantic-release/exec",
+        { publishCmd: "YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn run -T pdkit synth" },
+      ]);
     }
 
     new ManifestEntry(this, "SemanticRelease", {

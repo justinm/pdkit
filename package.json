@@ -274,7 +274,7 @@
       [
         "@semantic-release/exec",
         {
-          "publishCmd": "yarn run -T pdkit synth"
+          "publishCmd": "YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn run -T pdkit synth"
         }
       ],
       [
