@@ -14,6 +14,9 @@ export class ReactSupport extends XConstruct {
 
     const hasTypescript = TypescriptSupport.hasSupport(this);
 
+    new PackageDependency(this, "@pdkit/react", {
+      type: PackageDependencyType.DEV,
+    });
     new PackageDependency(this, "react-dom");
     new PackageDependency(this, "react-scripts");
 

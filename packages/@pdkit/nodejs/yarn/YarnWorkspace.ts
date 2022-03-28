@@ -1,5 +1,5 @@
 import { LifeCycle, ManifestEntry, Project, XConstruct } from "@pdkit/core";
-import { NpmProjectProps, NpmProject, NpmWorkspace, NpmWorkspaceProps } from "../npm";
+import { NpmProject, NpmProjectProps, NpmWorkspace, NpmWorkspaceProps } from "../npm";
 import { YarnProject } from "./YarnProject";
 
 export interface IYarnMonoRepo {

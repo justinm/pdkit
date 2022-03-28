@@ -1,4 +1,5 @@
 import { Workspace, File, XConstruct, Project } from "@pdkit/core";
+import { PackageDependency, PackageDependencyType } from "@pdkit/nodejs";
 import { BuildJobProps } from "../github/jobs/BuildJob";
 import { ReleaseJobProps } from "../github/jobs/ReleaseJob";
 import { BuildWorkflow } from "../github/workflows/BuildWorkflow";
@@ -27,6 +28,10 @@ export class GithubSupport extends XConstruct {
     const project = Project.of(scope);
 
     super(project, id);
+
+    new PackageDependency(this, "@pdkit/github", {
+      type: PackageDependencyType.DEV,
+    });
 
     if (props?.pullRequestLint) {
       new PullRequestLintWorkflow(this, "pull-request-lint", props?.pullRequestLint);
