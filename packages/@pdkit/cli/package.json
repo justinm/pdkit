@@ -1,6 +1,6 @@
 {
   "name": "@pdkit/cli",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "./index.js",
   "bin": {
     "pdkit": "pdkit.js"
@@ -175,7 +175,7 @@
     }
   },
   "dependencies": {
-    "@pdkit/core": "1.1.0",
+    "@pdkit/core": "1.2.0",
     "chalk": "^4.1.2",
     "constructs": "10.0.97",
     "dependency-graph": "0.11.0",
