@@ -167,8 +167,8 @@
     }
   },
   "dependencies": {
-    "@pdkit/core": "1.2.0",
-    "@pdkit/nodejs": "1.1.0",
+    "@pdkit/core": "1.2.1",
+    "@pdkit/nodejs": "1.1.1",
     "constructs": "10.0.97"
   },
   "jest": {

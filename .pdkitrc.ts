@@ -8,7 +8,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
     email: "me@justinmccormick.com",
   },
   license: "Apache-2.0",
-  dependencies: ["mustache", "@pdkit/core", "@pdkit/nodejs", "@pdkit/github"],
+  dependencies: ["mustache", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }, { name: "@pdkit/github", version: "workspace:packages/@pdkit/github" }, { name: "@pdkit/nodejs", version: "workspace:packages/@pdkit/nodejs" }],
   devDependencies: ["@types/mustache", "@types/node", "prettier", "ts-node", "typescript"],
   scripts: {
     pdkit: "ts-node packages/@pdkit/cli/pdkit.ts",
