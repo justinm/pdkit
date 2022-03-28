@@ -1,3 +1,10 @@
+## @pdkit/cli [1.3.10](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.9...@pdkit/cli@1.3.10) (2022-03-28)
+
+
+### Bug Fixes
+
+* calling cli with real installed package ([e163484](https://github.com/justinm/pdkit/commit/e163484c9b262c821fc54a46d92dff1b6fb69bb8))
+
 ## @pdkit/cli [1.3.9](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.8...@pdkit/cli@1.3.9) (2022-03-28)
 
 
