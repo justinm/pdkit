@@ -1,3 +1,10 @@
+## @pdkit/core [1.2.4](https://github.com/justinm/pdkit/compare/@pdkit/core@1.2.3...@pdkit/core@1.2.4) (2022-03-28)
+
+
+### Bug Fixes
+
+* set standard typescript target to es6 for better interoperability ([3eb1d51](https://github.com/justinm/pdkit/commit/3eb1d51877fd008e544145d16040ae4e7bd82c07))
+
 ## @pdkit/core [1.2.3](https://github.com/justinm/pdkit/compare/@pdkit/core@1.2.2...@pdkit/core@1.2.3) (2022-03-28)
 
 
