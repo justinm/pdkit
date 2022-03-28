@@ -1,6 +1,6 @@
 {
   "name": "@pdkit/nodejs",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "./index.js",
   "scripts": {
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
@@ -167,7 +167,7 @@
     }
   },
   "dependencies": {
-    "@pdkit/core": "1.2.0",
+    "@pdkit/core": "1.2.1",
     "constructs": "10.0.97",
     "dependency-graph": "0.11.0"
   },
