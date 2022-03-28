@@ -1,3 +1,18 @@
+## @pdkit/cli [1.3.3](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.2...@pdkit/cli@1.3.3) (2022-03-28)
+
+
+### Bug Fixes
+
+* set standard typescript target to es6 for better interoperability ([3eb1d51](https://github.com/justinm/pdkit/commit/3eb1d51877fd008e544145d16040ae4e7bd82c07))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 1.2.4
+
 ## @pdkit/cli [1.3.2](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.1...@pdkit/cli@1.3.2) (2022-03-28)
 
 
