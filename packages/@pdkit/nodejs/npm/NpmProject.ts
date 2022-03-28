@@ -29,7 +29,7 @@ export enum PackageManagerType {
   NONE,
 }
 
-export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
+export interface NpmProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly packageName?: string;
   readonly installCommands?: string[];
   readonly dependencies?: Dependencies;
@@ -51,7 +51,7 @@ export class NpmProject extends Project {
   public readonly packageJson: PackageJson;
   public readonly packageName: string;
 
-  constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
+  constructor(scope: XConstruct, id: string, props?: NpmProjectProps) {
     super(scope, id, props);
 
     new InstallShellScript(this, "InstallCommand", props?.installCommands ?? ["npm install"]);

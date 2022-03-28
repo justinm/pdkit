@@ -1,8 +1,10 @@
 import { GitIgnore, XConstruct } from "@pdkit/core";
-import { NodeProjectProps, NpmProject } from "../npm";
+import { NpmProjectProps, NpmProject } from "../npm";
+
+export interface YarnProjectProps extends NpmProjectProps {}
 
 export class YarnProject extends NpmProject {
-  constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
+  constructor(scope: XConstruct, id: string, props?: YarnProjectProps) {
     super(scope, id, {
       installCommands: ["yarn"],
       ...props,

@@ -288,6 +288,7 @@
     "packages/@pdkit/core",
     "packages/@pdkit/cli",
     "packages/@pdkit/nodejs",
+    "packages/@pdkit/react",
     "packages/@pdkit/github"
   ]
 }

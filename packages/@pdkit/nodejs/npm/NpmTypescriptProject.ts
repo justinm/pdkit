@@ -1,9 +1,9 @@
 import { ManifestEntry, Project, XConstruct } from "@pdkit/core";
 import { TypescriptSupport, TypescriptSupportProps } from "../constructs";
 import { JestTypescriptSupport } from "../jest";
-import { NodeProjectProps, NpmProject } from "./NpmProject";
+import { NpmProjectProps, NpmProject } from "./NpmProject";
 
-export interface NpmTypescriptProjectProps extends NodeProjectProps {
+export interface NpmTypescriptProjectProps extends NpmProjectProps {
   tsconfig?: TypescriptSupportProps;
 }
 

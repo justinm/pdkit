@@ -1,8 +1,8 @@
 import { XConstruct } from "@pdkit/core";
 import { TypescriptSupportProps } from "../constructs";
-import { NpmTypescriptProject, NodeProjectProps } from "../npm";
+import { NpmTypescriptProject, NpmProjectProps } from "../npm";
 
-export interface YarnTypescriptProjectProps extends NodeProjectProps {
+export interface YarnTypescriptProjectProps extends NpmProjectProps {
   tsconfig?: TypescriptSupportProps;
 }
 

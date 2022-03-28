@@ -1,12 +1,12 @@
 import { LifeCycle, ManifestEntry, Project, XConstruct } from "@pdkit/core";
-import { NodeProjectProps, NpmProject, NpmWorkspace, NpmWorkspaceProps } from "../npm";
+import { NpmProjectProps, NpmProject, NpmWorkspace, NpmWorkspaceProps } from "../npm";
 import { YarnProject } from "./YarnProject";
 
 export interface IYarnMonoRepo {
   synth(): void;
 }
 
-export interface YarnWorkspaceProps extends Omit<NodeProjectProps, "packageName" | "projectPath">, NpmWorkspaceProps {}
+export interface YarnWorkspaceProps extends Omit<NpmProjectProps, "packageName" | "projectPath">, NpmWorkspaceProps {}
 
 export class YarnWorkspace extends NpmWorkspace implements IYarnMonoRepo {
   constructor(id: string, props: YarnWorkspaceProps) {

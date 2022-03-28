@@ -1,4 +1,5 @@
 import { GitIgnore, JsonFile, ManifestEntry, Project, XConstruct } from "@pdkit/core";
+import { Construct } from "constructs";
 import { PackageDependency, PackageDependencyType } from "./PackageDependency";
 
 export interface TypescriptSupportProps {
@@ -365,6 +366,12 @@ export interface TypeScriptCompilerOptions {
  * TypescriptSupport adds support for typescript for a given project.
  */
 export class TypescriptSupport extends XConstruct {
+  public static hasSupport(construct: Construct) {
+    const project = Project.of(construct);
+
+    return !!project.tryFindDeepChild(TypescriptSupport);
+  }
+
   readonly fileName: string;
 
   constructor(scope: XConstruct, props?: TypescriptSupportProps) {

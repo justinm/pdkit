@@ -1,5 +1,6 @@
 import * as path from "path";
-import { GitIgnore, JsonFile, ManifestEntry, XConstruct } from "@pdkit/core";
+import { GitIgnore, JsonFile, ManifestEntry, Project, XConstruct } from "@pdkit/core";
+import { Construct } from "constructs";
 import { PackageDependency, PackageDependencyType } from "../constructs";
 import { NpmIgnore } from "../npm";
 
@@ -521,6 +522,13 @@ type JestReporter = [string, { [key: string]: any }] | string;
 
 export class JestSupport extends XConstruct {
   public static readonly ID = "JestSupport";
+
+  public static hasSupport(construct: Construct) {
+    const project = Project.of(construct);
+
+    return !!project.tryFindDeepChild(JestSupport);
+  }
+
   public readonly config: any;
 
   constructor(scope: XConstruct, props: JestProps) {
