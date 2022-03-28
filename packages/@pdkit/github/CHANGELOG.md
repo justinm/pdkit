@@ -1,3 +1,18 @@
+## @pdkit/github [1.1.8](https://github.com/justinm/pdkit/compare/@pdkit/github@1.1.7...@pdkit/github@1.1.8) (2022-03-28)
+
+
+### Bug Fixes
+
+* auto-add supporting libraries ([7ed8ee2](https://github.com/justinm/pdkit/commit/7ed8ee2d44b9d9176c34f834496d813ec399797b))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/nodejs:** upgraded to 1.1.7
+
 ## @pdkit/github [1.1.7](https://github.com/justinm/pdkit/compare/@pdkit/github@1.1.6...@pdkit/github@1.1.7) (2022-03-28)
 
 
