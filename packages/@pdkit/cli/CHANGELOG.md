@@ -1,3 +1,10 @@
+# @pdkit/cli [1.3.0](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.2.1...@pdkit/cli@1.3.0) (2022-03-28)
+
+
+### Features
+
+* add init command ([aaba3f3](https://github.com/justinm/pdkit/commit/aaba3f3eb2c0c9937a4ba52d0272920c8ce021d1))
+
 ## @pdkit/cli [1.2.1](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.2.0...@pdkit/cli@1.2.1) (2022-03-28)
 
 
