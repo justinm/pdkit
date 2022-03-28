@@ -1,3 +1,10 @@
+## @pdkit/cli [1.3.6](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.5...@pdkit/cli@1.3.6) (2022-03-28)
+
+
+### Bug Fixes
+
+* point cli to correct main file for typescript ([ebbc421](https://github.com/justinm/pdkit/commit/ebbc421147ff88771a7c3b8ff8482a6f708f4b31))
+
 ## @pdkit/cli [1.3.5](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.3.4...@pdkit/cli@1.3.5) (2022-03-28)
 
 
