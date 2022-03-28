@@ -1,5 +1,3 @@
-#!/usr/bin/env ts-node
-
 import fs from "fs";
 import path from "path";
 import chalk from "chalk";
@@ -72,6 +70,7 @@ void yargs(hideBin(process.argv))
   .command(wrapCommand(init as any))
   .strict()
   .help()
+  .demandCommand()
   .strictCommands(false)
   .strictOptions(false)
   .parse();

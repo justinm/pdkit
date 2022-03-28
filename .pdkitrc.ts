@@ -11,7 +11,7 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
   dependencies: ["mustache", { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" }, { name: "@pdkit/github", version: "workspace:packages/@pdkit/github" }, { name: "@pdkit/nodejs", version: "workspace:packages/@pdkit/nodejs" }],
   devDependencies: ["@types/mustache", "@types/node", "prettier", "ts-node", "typescript"],
   scripts: {
-    pdkit: "ts-node packages/@pdkit/cli/pdkit.ts",
+    pdkit: "yarn workspace @pdkit/cli run pdkit",
     build: "yarn compile",
     compile: "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     clean: "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
@@ -92,6 +92,12 @@ new YarnTypescriptProject(workspace, "cli", {
   projectPath: "packages/@pdkit/cli",
   dependencies: [
     "@pdkit/core",
+    "@types/diff",
+    "@types/glob",
+    "@types/ora",
+    "@types/prompts",
+    "@types/shell-escape",
+    "@types/yargs",
     { name: "chalk", version: "^4.1.2" },
     { name: "ora", version: "^5.4.1" },
     "constructs",
@@ -101,19 +107,22 @@ new YarnTypescriptProject(workspace, "cli", {
     "glob",
     "glob-regex",
     "prompts",
+    "ts-node",
     "yargs",
   ],
   files: [
     "*.ts",
     "**/*.ts",
+    "tsconfig.json"
   ],
   scripts: {
     compile: undefined as any,
-    yalc: "yarn compile && npx yalc publish"
+    pdkit: "npx npx pdkit",
+    yalc: "npx yalc publish"
   },
-  devDependencies: ["@types/diff", "@types/glob", "@types/ora", "@types/prompts", "@types/shell-escape", "@types/yargs"],
+  devDependencies: [],
   bin: {
-    pdkit: "pdkit.ts",
+    pdkit: "index.ts",
   },
   eslint: {
     enabled: true,

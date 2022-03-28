@@ -4,7 +4,7 @@
   "private": true,
   "main": "./index.js",
   "scripts": {
-    "pdkit": "ts-node packages/@pdkit/cli/pdkit.ts",
+    "pdkit": "yarn workspace @pdkit/cli run pdkit",
     "build": "yarn compile",
     "compile": "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     "clean": "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",

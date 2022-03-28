@@ -989,7 +989,7 @@ __metadata:
     typescript: 4.6.3
     yargs: 17.4.0
   bin:
-    pdkit: pdkit.ts
+    pdkit: index.ts
   languageName: unknown
   linkType: soft
 
