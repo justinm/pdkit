@@ -222,9 +222,9 @@
     ]
   },
   "dependencies": {
-    "@pdkit/core": "1.1.0",
-    "@pdkit/github": "1.0.2",
-    "@pdkit/nodejs": "1.0.4",
+    "@pdkit/core": "1.2.0",
+    "@pdkit/github": "1.1.0",
+    "@pdkit/nodejs": "1.1.0",
     "mustache": "4.2.0"
   },
   "resolutions": {
