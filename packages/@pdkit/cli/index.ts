@@ -1,7 +1,10 @@
-#!/usr/bin/env -S ts-node -p ./tsconfig.json
+#!/usr/bin/env -S node
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require("path");
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-require(path.join(__dirname, "./pdkit"));
+require("ts-node").register({ project: path.join(__dirname, "tsconfig.json") });
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+require(path.join(__dirname, "./pdkit.ts"));
