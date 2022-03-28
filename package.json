@@ -223,8 +223,8 @@
   },
   "dependencies": {
     "@pdkit/core": "1.1.0",
-    "@pdkit/github": "1.0.1",
-    "@pdkit/nodejs": "1.0.3",
+    "@pdkit/github": "1.0.2",
+    "@pdkit/nodejs": "1.0.4",
     "mustache": "4.2.0"
   },
   "resolutions": {
