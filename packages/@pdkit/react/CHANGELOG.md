@@ -1,3 +1,18 @@
+## @pdkit/react [1.0.4](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.3...@pdkit/react@1.0.4) (2022-03-28)
+
+
+### Bug Fixes
+
+* package dependency sorting and more ([421383c](https://github.com/justinm/pdkit/commit/421383c6b3167d7f0c962d3c35d9b2fa58a3cb29))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/nodejs:** upgraded to 1.1.6
+
 ## @pdkit/react [1.0.3](https://github.com/justinm/pdkit/compare/@pdkit/react@1.0.2...@pdkit/react@1.0.3) (2022-03-28)
 
 
