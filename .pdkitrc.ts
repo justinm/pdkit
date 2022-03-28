@@ -114,7 +114,21 @@ new YarnTypescriptProject(workspace, "cli", {
 new YarnTypescriptProject(workspace, "nodejs", {
   packageName: "@pdkit/nodejs",
   projectPath: "packages/@pdkit/nodejs",
-  dependencies: ["constructs", "dependency-graph", "@pdkit/core"],
+  dependencies: ["constructs", "@pdkit/core"],
+  devDependencies: ["prettier", "typescript"],
+  eslint: {
+    enabled: true,
+    prettier: true,
+  },
+  jest: {
+    enabled: true,
+  },
+});
+
+new YarnTypescriptProject(workspace, "react", {
+  packageName: "@pdkit/react",
+  projectPath: "packages/@pdkit/react",
+  dependencies: ["constructs", "@pdkit/core", "@pdkit/nodejs"],
   devDependencies: ["prettier", "typescript"],
   eslint: {
     enabled: true,

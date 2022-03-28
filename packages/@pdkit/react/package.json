@@ -1,0 +1,211 @@
+{
+  "name": "@pdkit/react",
+  "version": "0.0.0",
+  "main": "./index.js",
+  "scripts": {
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
+    "compile": "tsc -p ./tsconfig.json",
+    "clean": "find . -name \"*.js\" -not -path \"./node_modules/*\" -delete && find . -name \"*.d.ts\" -not -path \"./node_modules/*\" -delete"
+  },
+  "files": [
+    "./*.js",
+    "./**/*.js",
+    "./*.d.ts",
+    "./**/*.d.ts"
+  ],
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5",
+    "@typescript-eslint/parser": "^5",
+    "eslint": "8.12.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-import-resolver-node": "0.3.6",
+    "eslint-import-resolver-typescript": "2.7.0",
+    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-prettier": "4.0.0",
+    "jest": "27.5.1",
+    "jest-junit": "^13",
+    "json-schema": "0.4.0",
+    "prettier": "2.6.1",
+    "ts-jest": "27.1.4",
+    "ts-node": "10.7.0",
+    "typescript": "4.6.3"
+  },
+  "eslintConfig": {
+    "env": {
+      "jest": true,
+      "node": true
+    },
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "import",
+      "prettier"
+    ],
+    "extends": [
+      "plugin:import/typescript",
+      "prettier",
+      "plugin:prettier/recommended"
+    ],
+    "settings": {
+      "import/parsers": {
+        "@typescript-eslint/parser": [
+          ".ts",
+          ".tsx"
+        ]
+      },
+      "import/resolver": {
+        "node": {},
+        "typescript": {
+          "alwaysTryTypes": true
+        }
+      }
+    },
+    "ignorePatterns": [
+      "*.js",
+      "*.d.ts",
+      "node_modules/",
+      "*.generated.ts",
+      "coverage"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error"
+      ],
+      "@typescript-eslint/no-require-imports": [
+        "error"
+      ],
+      "@typescript-eslint/no-shadow": [
+        "error"
+      ],
+      "@typescript-eslint/no-floating-promises": [
+        "error"
+      ],
+      "@typescript-eslint/return-await": [
+        "error"
+      ],
+      "@typescript-eslint/member-ordering": [
+        "error",
+        {
+          "default": [
+            "public-static-field",
+            "public-static-method",
+            "protected-static-field",
+            "protected-static-method",
+            "private-static-field",
+            "private-static-method",
+            "field",
+            "constructor",
+            "method"
+          ]
+        }
+      ],
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": [],
+          "optionalDependencies": false,
+          "peerDependencies": true
+        }
+      ],
+      "import/no-unresolved": [
+        "error"
+      ],
+      "import/order": [
+        "warn",
+        {
+          "groups": [
+            "builtin",
+            "external"
+          ],
+          "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+          }
+        }
+      ],
+      "no-duplicate-imports": [
+        "error"
+      ],
+      "no-shadow": [
+        "off"
+      ],
+      "key-spacing": [
+        "error"
+      ],
+      "no-multiple-empty-lines": [
+        "error"
+      ],
+      "no-return-await": [
+        "off"
+      ],
+      "no-trailing-spaces": [
+        "error"
+      ],
+      "dot-notation": [
+        "error"
+      ],
+      "no-bitwise": [
+        "error"
+      ]
+    },
+    "overrides": [
+      {
+        "files": [
+          ".pdkitrc.ts"
+        ],
+        "rules": {
+          "@typescript-eslint/no-require-imports": "off",
+          "import/no-extraneous-dependencies": "off"
+        }
+      }
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "project": "tsconfig.json"
+    }
+  },
+  "dependencies": {
+    "@pdkit/core": "1.2.0",
+    "@pdkit/nodejs": "1.1.0",
+    "constructs": "10.0.97"
+  },
+  "jest": {
+    "clearMocks": true,
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "clover",
+      "cobertura",
+      "text"
+    ],
+    "coverageDirectory": "coverage",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "watchIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "watchPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.[jt]s?(x)",
+      "**/?(*.)+(spec|test).[tj]s?(x)"
+    ],
+    "reporters": [
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "test-reports"
+        }
+      ]
+    ],
+    "preset": "ts-jest"
+  }
+}

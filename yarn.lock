@@ -956,7 +956,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
   dependencies:
-    "@pdkit/core": 1.2.0
+    "@pdkit/core": 1.2.1
     "@types/diff": 5.0.2
     "@types/glob": 7.2.0
     "@types/ora": 3.1.0
@@ -991,7 +991,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/core@1.2.0, @pdkit/core@workspace:packages/@pdkit/core":
+"@pdkit/core@1.2.1, @pdkit/core@workspace:packages/@pdkit/core":
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
@@ -1028,12 +1028,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/github@1.1.0, @pdkit/github@workspace:packages/@pdkit/github":
-  version: 0.0.0-use.local
-  resolution: "@pdkit/github@workspace:packages/@pdkit/github"
+"@pdkit/core@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@pdkit/core@npm:1.2.0"
+  dependencies:
+    case: 1.6.3
+    constructs: 10.0.97
+    deepmerge: 4.2.2
+    dependency-graph: 0.11.0
+    js-yaml: 4.1.0
+    md5-file: 5.0.0
+    memfs: 3.4.1
+    mustache: 4.2.0
+    object-hash: 3.0.0
+    sync-request: 6.1.0
+    winston: 3.6.0
+  checksum: c8f692b1cc6403fe1498854adc5daa702bedebb2f934b437949200cac01e856f1b58e11da27798c9f3c0035bebe99442c020f026b114221fc1c59978e75b29d6
+  languageName: node
+  linkType: hard
+
+"@pdkit/github@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@pdkit/github@npm:1.1.0"
   dependencies:
     "@pdkit/core": 1.2.0
     "@pdkit/nodejs": 1.1.0
+    constructs: 10.0.97
+  checksum: e9eacad590fcf5f1633d1f1b1f21d53659c1faf36216a5d3dd2155c908a31daf2001b7e360ac1f55ac740ad968f49f82ccf0183b9753c41ba13a6cab10f24304
+  languageName: node
+  linkType: hard
+
+"@pdkit/github@workspace:packages/@pdkit/github":
+  version: 0.0.0-use.local
+  resolution: "@pdkit/github@workspace:packages/@pdkit/github"
+  dependencies:
+    "@pdkit/core": 1.2.1
+    "@pdkit/nodejs": 1.1.1
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     constructs: 10.0.97
@@ -1053,15 +1083,50 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/nodejs@1.1.0, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
+"@pdkit/nodejs@1.1.1, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
   resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
-    "@pdkit/core": 1.2.0
+    "@pdkit/core": 1.2.1
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     constructs: 10.0.97
+    eslint: 8.12.0
+    eslint-config-prettier: 8.5.0
+    eslint-import-resolver-node: 0.3.6
+    eslint-import-resolver-typescript: 2.7.0
+    eslint-plugin-import: 2.25.4
+    eslint-plugin-prettier: 4.0.0
+    jest: 27.5.1
+    jest-junit: ^13
+    json-schema: 0.4.0
+    prettier: 2.6.1
+    ts-jest: 27.1.4
+    ts-node: 10.7.0
+    typescript: 4.6.3
+  languageName: unknown
+  linkType: soft
+
+"@pdkit/nodejs@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@pdkit/nodejs@npm:1.1.0"
+  dependencies:
+    "@pdkit/core": 1.2.0
+    constructs: 10.0.97
     dependency-graph: 0.11.0
+  checksum: 196a72e0e056d2585a421f3520068ef5e1ddd7e4b914940e017a6c9fc31ab7d999b3b580adb67e5cfe975cb79089a0202225d738c264f117658e123dd8b88789
+  languageName: node
+  linkType: hard
+
+"@pdkit/react@workspace:packages/@pdkit/react":
+  version: 0.0.0-use.local
+  resolution: "@pdkit/react@workspace:packages/@pdkit/react"
+  dependencies:
+    "@pdkit/core": 1.2.0
+    "@pdkit/nodejs": 1.1.0
+    "@typescript-eslint/eslint-plugin": ^5
+    "@typescript-eslint/parser": ^5
+    constructs: 10.0.97
     eslint: 8.12.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
