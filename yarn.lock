@@ -1030,12 +1030,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/github@1.1.7, @pdkit/github@workspace:packages/@pdkit/github":
+"@pdkit/github@1.1.8, @pdkit/github@workspace:packages/@pdkit/github":
   version: 0.0.0-use.local
   resolution: "@pdkit/github@workspace:packages/@pdkit/github"
   dependencies:
     "@pdkit/core": 1.2.4
-    "@pdkit/nodejs": 1.1.6
+    "@pdkit/nodejs": 1.1.7
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     constructs: 10.0.97
@@ -1055,7 +1055,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/nodejs@1.1.6, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
+"@pdkit/nodejs@1.1.7, @pdkit/nodejs@workspace:packages/@pdkit/nodejs":
   version: 0.0.0-use.local
   resolution: "@pdkit/nodejs@workspace:packages/@pdkit/nodejs"
   dependencies:
@@ -1084,7 +1084,7 @@ __metadata:
   resolution: "@pdkit/react@workspace:packages/@pdkit/react"
   dependencies:
     "@pdkit/core": 1.2.4
-    "@pdkit/nodejs": 1.1.6
+    "@pdkit/nodejs": 1.1.7
     "@typescript-eslint/eslint-plugin": ^5
     "@typescript-eslint/parser": ^5
     constructs: 10.0.97
@@ -10818,7 +10818,7 @@ __metadata:
   resolution: "workspace@workspace:."
   dependencies:
     "@pdkit/core": "workspace:packages/@pdkit/core"
-    "@pdkit/github": 1.1.7
+    "@pdkit/github": 1.1.8
     "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs"
     "@qiwi/multi-semantic-release": ^3.17.1
     "@semantic-release/changelog": 6.0.1
