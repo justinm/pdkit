@@ -9,7 +9,7 @@ export interface NodePackageJsonProps {
   readonly private?: boolean;
   readonly license?: ValidLicense;
   readonly homepath?: string;
-  readonly repository?: string;
+  readonly repository?: string | { readonly type: string; readonly url: string };
   readonly keywords?: string[];
   readonly main?: string;
   readonly bin?: Record<string, string>;
@@ -85,7 +85,7 @@ export class PackageJson extends Manifest {
           }
         }
 
-        // We need to sort our keys
+        // We need to sort our dependency keys to match npm/yarn
         if (this.fields[key]) {
           this.fields[key] = Object.keys(this.fields[key] as any)
             .sort()
@@ -96,6 +96,41 @@ export class PackageJson extends Manifest {
             }, {} as Record<string, string>);
         }
       });
+
+      // This determines the order at which package.json is written and is for visual purposes only
+      const packageOrdering = [
+        "name",
+        "description",
+        "license",
+        "repository",
+        "version",
+        "author",
+        "bugs",
+        "private",
+        "main",
+        "bin",
+        "man",
+        "scripts",
+        "files",
+        "workspaces",
+        "dependencies",
+        "devDependencies",
+        "peerDependencies",
+        "bundledDependencies",
+        "resolutions",
+      ];
+
+      this._fields = Object.keys(this._fields)
+        .sort((a, b) => {
+          if (packageOrdering.indexOf(a) !== -1 && packageOrdering.indexOf(b) === -1) return -1;
+          if (packageOrdering.indexOf(a) === -1 && packageOrdering.indexOf(b) !== -1) return 1;
+          return packageOrdering.indexOf(a) - packageOrdering.indexOf(b);
+        })
+        .reduce((c, k) => {
+          c[k] = this._fields[k];
+
+          return c;
+        }, {} as Record<string, unknown>);
     });
   }
 
