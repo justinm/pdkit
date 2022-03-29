@@ -606,6 +606,12 @@ export class JestSupport extends XConstruct {
       new ManifestEntry(this, "Jest", fields, { shallow: true });
     }
 
+    new ManifestEntry(this, "JestCommand", {
+      scripts: {
+        test: "jest --passWithNoTests --all",
+      },
+    });
+
     this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
       if (TypescriptSupport.hasSupport(this)) {
         new PackageDependency(this, "ts-jest", { type: PackageDependencyType.DEV });

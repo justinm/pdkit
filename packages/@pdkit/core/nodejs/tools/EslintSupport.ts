@@ -314,6 +314,11 @@ export class EslintSupport extends XConstruct {
         },
       });
       new ManifestEntry(this, "EslintConfig", { eslintConfig: config }, { shallow: true });
+      new ManifestEntry(this, "LintCommand", {
+        scripts: {
+          test: `eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern ${project.sourcePath}`,
+        },
+      });
     });
   }
 }
