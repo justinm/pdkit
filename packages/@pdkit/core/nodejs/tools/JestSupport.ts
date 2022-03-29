@@ -612,6 +612,10 @@ export class JestSupport extends XConstruct {
       },
     });
 
+    if (TypescriptSupport.hasSupport(this)) {
+      new PackageDependency(this, "@types/jest", { type: PackageDependencyType.DEV });
+    }
+
     this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
       if (TypescriptSupport.hasSupport(this)) {
         new PackageDependency(this, "ts-jest", { type: PackageDependencyType.DEV });

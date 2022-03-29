@@ -1,4 +1,4 @@
-import { Workspace, File, XConstruct, Project } from "../../core";
+import { Workspace, File, XConstruct } from "../../core";
 import { PackageDependency, PackageDependencyType } from "../../nodejs";
 import { BuildJobProps } from "../github/jobs/BuildJob";
 import { ReleaseJobProps } from "../github/jobs/ReleaseJob";
@@ -25,9 +25,7 @@ export interface GithubSupportProps {
 
 export class GithubSupport extends XConstruct {
   constructor(scope: Workspace, id: string, props?: GithubSupportProps) {
-    const project = Project.of(scope);
-
-    super(project, id);
+    super(scope, id);
 
     new PackageDependency(this, "@pdkit/github", {
       type: PackageDependencyType.DEV,

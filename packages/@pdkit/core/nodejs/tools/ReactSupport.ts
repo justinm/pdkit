@@ -1,4 +1,5 @@
-import { GitIgnore, ManifestEntry, XConstruct } from "../../core";
+import { Construct } from "constructs";
+import { GitIgnore, ManifestEntry, Project, XConstruct } from "../../core";
 import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
 import { EslintSupport } from "./EslintSupport";
 import { JestSupport } from "./JestSupport";
@@ -12,6 +13,18 @@ export interface ReactSupportProps {
 export class ReactSupport extends XConstruct {
   public static readonly ID = "ReactSupport";
 
+  public static hasSupport(construct: Construct) {
+    return !!this.tryOf(construct);
+  }
+
+  public static of(construct: Construct) {
+    return Project.of(construct).findDeepChild(ReactSupport);
+  }
+
+  public static tryOf(construct: Construct) {
+    return Project.of(construct).tryFindDeepChild(ReactSupport);
+  }
+
   constructor(scope: XConstruct, props?: ReactSupportProps) {
     super(scope, ReactSupport.ID);
 
@@ -20,10 +33,14 @@ export class ReactSupport extends XConstruct {
     new PackageDependency(this, "@pdkit/react", {
       type: PackageDependencyType.DEV,
     });
+    new PackageDependency(this, "react");
     new PackageDependency(this, "react-dom");
     new PackageDependency(this, "react-scripts");
 
     if (typescriptSupport) {
+      new PackageDependency(this, "@types/react", {
+        type: PackageDependencyType.DEV,
+      });
       new PackageDependency(this, "@types/react-dom", {
         type: PackageDependencyType.DEV,
       });

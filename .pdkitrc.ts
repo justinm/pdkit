@@ -109,7 +109,6 @@ new YarnProject(workspace, "cli", {
   sourcePath: ".",
   distPath: ".",
   dependencies: [
-    "@pdkit/core",
     "@types/diff",
     "@types/glob",
     "@types/ora",
@@ -128,6 +127,8 @@ new YarnProject(workspace, "cli", {
     "ts-node",
     "yargs",
   ],
+  devDependencies: ["@pdkit/core"],
+  peerDependencies: ["@pdkit/core"],
   files: [
     "*.ts",
     "**/*.ts",
@@ -138,7 +139,6 @@ new YarnProject(workspace, "cli", {
     pdkit: "npx npx pdkit",
     yalc: "npx yalc publish"
   },
-  devDependencies: [],
   bin: {
     pdkit: "index.ts",
   },

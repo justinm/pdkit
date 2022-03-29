@@ -153,7 +153,7 @@ export class NodeProject extends Project {
       addDependencies(props?.peerDependencies, PackageDependencyType.PEER);
     }
 
-    if (Project.of(scope) === this && !props?.disableAutoLib) {
+    if (Project.tryOf(scope) === this && !props?.disableAutoLib) {
       new PackageDependency(this, "@pdkit/core", { type: PackageDependencyType.DEV });
       new PackageDependency(this, "@pdkit/cli", { type: PackageDependencyType.DEV });
       new PackageDependency(this, "@pdkit/nodejs", { type: PackageDependencyType.DEV });

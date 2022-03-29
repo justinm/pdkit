@@ -385,12 +385,13 @@ export class TypescriptSupport extends XConstruct {
   constructor(scope: XConstruct, props?: TypescriptSupportProps) {
     super(scope, "TypescriptSupport");
 
-    const project = Project.of(scope);
+    const project = Project.of(this);
 
     this.fileName = props?.fileName ?? "tsconfig.json";
 
     new PackageDependency(this, "typescript", { type: PackageDependencyType.DEV });
     new PackageDependency(this, "ts-node", { type: PackageDependencyType.DEV });
+    new PackageDependency(this, "@types/node", { type: PackageDependencyType.DEV });
 
     new ManifestEntry(this, "Scripts", {
       scripts: {
