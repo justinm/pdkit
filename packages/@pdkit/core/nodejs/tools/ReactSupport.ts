@@ -1,6 +1,7 @@
 import { GitIgnore, ManifestEntry, XConstruct } from "../../core";
 import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
 import { EslintSupport } from "./EslintSupport";
+import { JestSupport } from "./JestSupport";
 import { TypeScriptJsxMode, TypescriptSupport } from "./TypescriptSupport";
 
 export interface ReactSupportProps {
@@ -64,6 +65,7 @@ export class ReactSupport extends XConstruct {
     }
 
     typescriptSupport?.file.addDeepFields({
+      include: ["src/*.ts", "src/**/*.ts", "src/*.tsx", "src/**/*.tsx"],
       compilerOptions: {
         lib: ["dom", "dom.iterable", "esnext"],
         module: "commonjs",
@@ -88,5 +90,18 @@ export class ReactSupport extends XConstruct {
         development: ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"],
       },
     });
+
+    if (JestSupport.hasSupport(this)) {
+      new ManifestEntry(this, "JestFix", {
+        jest: {
+          collectCoverage: undefined as any,
+          coverageDirectory: undefined as any,
+          testPathIgnorePatterns: undefined as any,
+          watchIgnorePatterns: undefined as any,
+          reporters: undefined as any,
+          preset: undefined as any,
+        },
+      });
+    }
   }
 }

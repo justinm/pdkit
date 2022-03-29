@@ -542,7 +542,7 @@ export class JestSupport extends XConstruct {
 
     // Jest defaults
     const ignorePatterns = props.jestConfig?.testPathIgnorePatterns ?? ["/node_modules/"];
-    const watchIgnorePatterns = props.jestConfig?.watchIgnorePatterns ?? ignorePatterns;
+    const modulePathIgnorePatterns = props.jestConfig?.modulePathIgnorePatterns ?? ignorePatterns;
     const collectCoverage = props.jestConfig?.collectCoverage ?? true;
     const watchPathIgnorePatterns = props.jestConfig?.watchPathIgnorePatterns ?? ignorePatterns;
     const coverageReporters = props.jestConfig?.coverageReporters ?? ["json", "lcov", "clover", "cobertura"];
@@ -586,7 +586,7 @@ export class JestSupport extends XConstruct {
         coverageDirectory,
         coveragePathIgnorePatterns,
         testPathIgnorePatterns,
-        watchIgnorePatterns,
+        modulePathIgnorePatterns,
         watchPathIgnorePatterns,
         testMatch,
         reporters,

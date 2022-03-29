@@ -218,7 +218,7 @@
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],
-    "watchIgnorePatterns": [
+    "modulePathIgnorePatterns": [
       "/node_modules/"
     ],
     "watchPathIgnorePatterns": [
