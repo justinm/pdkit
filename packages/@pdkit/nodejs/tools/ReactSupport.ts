@@ -26,9 +26,6 @@ export class ReactSupport extends XConstruct {
       new PackageDependency(this, "@types/react-dom", {
         type: PackageDependencyType.DEV,
       });
-      new PackageDependency(this, "@types/react-scripts", {
-        type: PackageDependencyType.DEV,
-      });
     }
 
     if (props?.enzyme) {

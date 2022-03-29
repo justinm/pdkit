@@ -1,7 +1,7 @@
 {
   "name": "@pdkit/cli",
   "version": "1.4.0",
-  "main": "./index.js",
+  "main": "dist/index.js",
   "bin": {
     "pdkit": "index.ts"
   },
@@ -15,8 +15,8 @@
     "*.ts",
     "**/*.ts",
     "tsconfig.json",
-    "./*.d.ts",
-    "./**/*.d.ts"
+    "dist/*.d.ts",
+    "dist/**/*.d.ts"
   ],
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5",
@@ -168,7 +168,7 @@
     "parserOptions": {
       "ecmaVersion": 2018,
       "sourceType": "module",
-      "project": "tsconfig.json"
+      "project": "./tsconfig.json"
     }
   },
   "jest": {

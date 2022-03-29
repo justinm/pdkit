@@ -1,3 +1,4 @@
+import path from "path";
 import { FieldFile, GitIgnore, JsonFile, ManifestEntry, Project, XConstruct } from "@pdkit/core";
 import { Construct } from "constructs";
 import { PackageDependency, PackageDependencyType } from "../constructs";
@@ -400,7 +401,7 @@ export class TypescriptSupport extends XConstruct {
     });
 
     new ManifestEntry(this, "Files", {
-      files: [`${project.distPath}/*.d.ts`, `${project.distPath}/**/*.d.ts`],
+      files: [path.join(project.distPath, "*.d.ts"), path.join(project.distPath, "**/*.d.ts")],
     });
 
     new GitIgnore(this, ["*.js", "*.d.ts"]);
@@ -408,7 +409,11 @@ export class TypescriptSupport extends XConstruct {
     this.file = new JsonFile(this, this.fileName);
     this.file.addDeepFields({
       exclude: [...(props?.exclude ?? []), "node_modules"],
-      include: [...(props?.include ?? []), `${project.sourcePath}/*.ts`, `${project.sourcePath}/**/*.ts`],
+      include: [
+        ...(props?.include ?? []),
+        path.join(project.sourcePath, "*.ts"),
+        path.join(project.sourcePath, "**/*.ts"),
+      ],
       compilerOptions: {
         outDir: project.distPath === "." ? undefined : project.distPath,
         alwaysStrict: true,

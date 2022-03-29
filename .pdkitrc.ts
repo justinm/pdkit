@@ -64,6 +64,7 @@ new SemanticReleaseSupport(workspace, {
 new YarnProject(workspace, "core", {
   packageName: "@pdkit/core",
   projectPath: "packages/@pdkit/core",
+  sourcePath: ".",
   dependencies: [
     "case",
     "constructs",
@@ -78,7 +79,7 @@ new YarnProject(workspace, "core", {
     "md5-file",
   ],
   scripts: {
-    yalc: "yarn compile && npx yalc publish"
+    yalc: "npx yalc publish"
   },
   devDependencies: ["@types/mustache", "@types/js-yaml", "@types/object-hash", "@types/winston"],
   tsconfig: {
@@ -96,6 +97,7 @@ new YarnProject(workspace, "core", {
 new YarnProject(workspace, "cli", {
   packageName: "@pdkit/cli",
   projectPath: "packages/@pdkit/cli",
+  sourcePath: ".",
   dependencies: [
     "@pdkit/core",
     "@types/diff",
@@ -145,10 +147,11 @@ new YarnProject(workspace, "cli", {
 new YarnProject(workspace, "nodejs", {
   packageName: "@pdkit/nodejs",
   projectPath: "packages/@pdkit/nodejs",
+  sourcePath: ".",
   dependencies: ["constructs", "@pdkit/core"],
   devDependencies: ["prettier", "typescript"],
   scripts: {
-    yalc: "yarn compile && npx yalc publish"
+    yalc: "npx yalc publish"
   },
   tsconfig: {
     enabled: true,
@@ -165,10 +168,11 @@ new YarnProject(workspace, "nodejs", {
 new YarnProject(workspace, "github", {
   packageName: "@pdkit/github",
   projectPath: "packages/@pdkit/github",
+  sourcePath: ".",
   dependencies: ["constructs", "@pdkit/core", "@pdkit/nodejs"],
   devDependencies: ["prettier", "typescript"],
   scripts: {
-    yalc: "yarn compile && npx yalc publish"
+    yalc: "npx yalc publish"
   },
   tsconfig: {
     enabled: true,

@@ -1,3 +1,4 @@
+import path from "path";
 import {
   GitIgnore,
   InstallShellScript,
@@ -49,6 +50,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly gitignore?: string[];
   readonly buildCommands?: string[];
   readonly packageManagerType?: PackageManagerType;
+  readonly packageJsonProps?: Partial<NodePackageJsonProps> & Record<string, unknown>;
 }
 
 export class NodeProject extends Project {
@@ -66,7 +68,7 @@ export class NodeProject extends Project {
     this.packageName = props?.packageName ?? id;
     this.packageJson = new PackageJson(this, {
       name: this.packageName,
-      files: [`${this.distPath}/*.js`, `${this.distPath}/**/*.js`],
+      files: [path.join(this.distPath, "*.js"), path.join(this.distPath, "**/*.js")],
       ...props,
     });
 
@@ -166,6 +168,10 @@ export class NodeProject extends Project {
 
     new InstallShellScript(this, "InstallCommand", props?.installCommands ?? defaultInstallCommand);
     new StandardValidator(this, "StandardValidator");
+
+    if (props?.packageJsonProps) {
+      new ManifestEntry(this, "ProvidedManifest", props.packageJsonProps);
+    }
   }
 
   tryFindProject(packageName: string) {

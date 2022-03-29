@@ -2,24 +2,24 @@
   "name": "workspace",
   "version": "0.0.0",
   "private": true,
-  "main": "./index.js",
+  "main": "dist/index.js",
   "scripts": {
     "pdkit": "yarn workspace @pdkit/cli run pdkit",
     "build": "yarn compile",
     "compile": "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     "clean": "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
     "yalc": "yarn workspaces foreach --verbose -p --topological-dev --no-private run yalc",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src",
     "release": "npx multi-semantic-release"
   },
   "files": [
-    "./*.js",
-    "./**/*.js",
-    "./*.d.ts",
-    "./**/*.d.ts"
+    "dist/*.js",
+    "dist/**/*.js",
+    "dist/*.d.ts",
+    "dist/**/*.d.ts"
   ],
   "devDependencies": {
-    "@pdkit/github": "1.1.8",
+    "@pdkit/github": "1.2.0",
     "@qiwi/multi-semantic-release": "^3.17.1",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
@@ -185,7 +185,7 @@
     "parserOptions": {
       "ecmaVersion": 2018,
       "sourceType": "module",
-      "project": "tsconfig.json"
+      "project": "./tsconfig.json"
     }
   },
   "jest": {

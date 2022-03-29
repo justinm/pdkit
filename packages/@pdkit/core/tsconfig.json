@@ -3,10 +3,11 @@
     "node_modules"
   ],
   "include": [
-    "./*.ts",
-    "./**/*.ts"
+    "*.ts",
+    "**/*.ts"
   ],
   "compilerOptions": {
+    "outDir": "dist",
     "alwaysStrict": true,
     "declaration": true,
     "noEmit": false,

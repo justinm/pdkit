@@ -294,7 +294,7 @@ export class EslintSupport extends XConstruct {
         config.parserOptions = {
           ecmaVersion: 2018,
           sourceType: "module",
-          project: tsSupport[0].fileName,
+          project: `./${tsSupport[0].fileName}`,
         };
       } else {
         new EslintExtension(this, "js");

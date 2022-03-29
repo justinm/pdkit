@@ -73,8 +73,8 @@ export abstract class Project extends XConstruct implements IProject {
     super(scope, id);
 
     this._projectPath = props?.projectPath;
-    this._sourcePath = props?.sourcePath ?? ".";
-    this._distPath = props?.distPath ?? ".";
+    this._sourcePath = props?.sourcePath ?? "src";
+    this._distPath = props?.distPath ?? "dist";
 
     this.node.addValidation({
       validate: () => {

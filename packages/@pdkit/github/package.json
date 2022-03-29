@@ -1,18 +1,18 @@
 {
   "name": "@pdkit/github",
   "version": "1.2.0",
-  "main": "./index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "yalc": "yarn compile && npx yalc publish",
+    "yalc": "npx yalc publish",
     "compile": "tsc -p ./tsconfig.json",
     "clean": "find . -name \"*.js\" -not -path \"./node_modules/*\" -delete && find . -name \"*.d.ts\" -not -path \"./node_modules/*\" -delete",
     "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
   },
   "files": [
-    "./*.js",
-    "./**/*.js",
-    "./*.d.ts",
-    "./**/*.d.ts"
+    "dist/*.js",
+    "dist/**/*.js",
+    "dist/*.d.ts",
+    "dist/**/*.d.ts"
   ],
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5",
@@ -164,7 +164,7 @@
     "parserOptions": {
       "ecmaVersion": 2018,
       "sourceType": "module",
-      "project": "tsconfig.json"
+      "project": "./tsconfig.json"
     }
   },
   "jest": {
