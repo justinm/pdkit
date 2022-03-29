@@ -1,3 +1,10 @@
+# @pdkit/core [1.3.0](https://github.com/justinm/pdkit/compare/@pdkit/core@1.2.4...@pdkit/core@1.3.0) (2022-03-29)
+
+
+### Features
+
+* reworking API for better simplicity due to typescript complications, merged react into nodejs ([62d0c44](https://github.com/justinm/pdkit/commit/62d0c44a399d13192bdee56e13012e3a78197280))
+
 ## @pdkit/core [1.2.4](https://github.com/justinm/pdkit/compare/@pdkit/core@1.2.3...@pdkit/core@1.2.4) (2022-03-28)
 
 
