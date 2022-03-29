@@ -1,7 +1,8 @@
 import { LifeCycle, ManifestEntry, PDKIT_CONFIG_FILE, Project, XConstruct } from "@pdkit/core";
 import { Construct } from "constructs";
-import { PackageDependency, PackageDependencyType, TypescriptSupport } from "../constructs";
+import { PackageDependency, PackageDependencyType } from "../constructs";
 import { EslintExtension } from "./EslintExtension";
+import { TypescriptSupport } from "./TypescriptSupport";
 
 export interface EslintProps {
   /**
@@ -61,9 +62,15 @@ export interface EslintProps {
 
 export class EslintSupport extends XConstruct {
   public static hasSupport(construct: Construct) {
-    const project = Project.of(construct);
+    return !!this.tryOf(construct);
+  }
 
-    return !!project.tryFindDeepChild(EslintSupport);
+  public static of(construct: Construct) {
+    return Project.of(construct).findDeepChild(EslintSupport);
+  }
+
+  public static tryOf(construct: Construct) {
+    return Project.of(construct).tryFindDeepChild(EslintSupport);
   }
 
   public rules: Record<string, unknown> = {};

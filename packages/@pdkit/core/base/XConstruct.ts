@@ -1,5 +1,4 @@
 import { Construct, IConstruct } from "constructs";
-import { ConstructError } from "../util/ConstructError";
 
 type Callback = () => void;
 
@@ -44,7 +43,7 @@ export abstract class XConstruct extends Construct implements IXConstruct {
     const errors = this.node.validate();
 
     if (errors.length) {
-      throw new ConstructError(this, "Construct did not validate: " + errors.join("\n"));
+      throw new Error(`Construct ${this} did not validate: ${errors.join("\n")}`);
     }
   }
 

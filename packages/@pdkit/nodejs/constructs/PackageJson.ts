@@ -1,6 +1,6 @@
 import path from "path";
 import { LifeCycle, Manifest, Project, ValidLicense, Workspace, XConstruct } from "@pdkit/core";
-import { NpmProject } from "../npm";
+import { NodeProject } from "../project";
 
 export interface NodePackageJsonProps {
   readonly name?: string;
@@ -62,7 +62,7 @@ export class PackageJson extends Manifest {
 
       const projects = Workspace.of(this)
         .node.findAll()
-        .filter((p) => p instanceof NpmProject) as NpmProject[];
+        .filter((p) => p instanceof NodeProject) as NodeProject[];
 
       ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
         if (this.fields[key]) {

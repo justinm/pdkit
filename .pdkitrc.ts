@@ -1,8 +1,8 @@
-import { SemanticReleaseSupport, YarnTypescriptProject, YarnTypescriptWorkspace } from "@pdkit/nodejs";
+import { SemanticReleaseSupport, YarnMonoWorkspace, YarnProject } from "@pdkit/nodejs";
 import { YarnGithubSupport } from "@pdkit/github";
 import { ManifestEntry, Project } from "@pdkit/core";
 
-const workspace = new YarnTypescriptWorkspace("pdkit", {
+const workspace = new YarnMonoWorkspace("pdkit", {
   author: {
     name: "Justin McCormick",
     email: "me@justinmccormick.com",
@@ -16,6 +16,9 @@ const workspace = new YarnTypescriptWorkspace("pdkit", {
     compile: "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     clean: "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
     yalc: "yarn workspaces foreach --verbose -p --topological-dev --no-private run yalc",
+  },
+  tsconfig: {
+    enabled: true,
   },
   eslint: {
     enabled: true,
@@ -58,7 +61,7 @@ new SemanticReleaseSupport(workspace, {
   releaseNotes: true,
 });
 
-new YarnTypescriptProject(workspace, "core", {
+new YarnProject(workspace, "core", {
   packageName: "@pdkit/core",
   projectPath: "packages/@pdkit/core",
   dependencies: [
@@ -78,6 +81,9 @@ new YarnTypescriptProject(workspace, "core", {
     yalc: "yarn compile && npx yalc publish"
   },
   devDependencies: ["@types/mustache", "@types/js-yaml", "@types/object-hash", "@types/winston"],
+  tsconfig: {
+    enabled: true,
+  },
   eslint: {
     enabled: true,
     prettier: true,
@@ -87,7 +93,7 @@ new YarnTypescriptProject(workspace, "core", {
   },
 });
 
-new YarnTypescriptProject(workspace, "cli", {
+new YarnProject(workspace, "cli", {
   packageName: "@pdkit/cli",
   projectPath: "packages/@pdkit/cli",
   dependencies: [
@@ -124,6 +130,9 @@ new YarnTypescriptProject(workspace, "cli", {
   bin: {
     pdkit: "index.ts",
   },
+  tsconfig: {
+    enabled: true,
+  },
   eslint: {
     enabled: true,
     prettier: true,
@@ -133,7 +142,7 @@ new YarnTypescriptProject(workspace, "cli", {
   },
 });
 
-new YarnTypescriptProject(workspace, "nodejs", {
+new YarnProject(workspace, "nodejs", {
   packageName: "@pdkit/nodejs",
   projectPath: "packages/@pdkit/nodejs",
   dependencies: ["constructs", "@pdkit/core"],
@@ -141,22 +150,8 @@ new YarnTypescriptProject(workspace, "nodejs", {
   scripts: {
     yalc: "yarn compile && npx yalc publish"
   },
-  eslint: {
+  tsconfig: {
     enabled: true,
-    prettier: true,
-  },
-  jest: {
-    enabled: true,
-  },
-});
-
-new YarnTypescriptProject(workspace, "react", {
-  packageName: "@pdkit/react",
-  projectPath: "packages/@pdkit/react",
-  dependencies: ["constructs", "@pdkit/core", "@pdkit/nodejs"],
-  devDependencies: ["prettier", "typescript"],
-  scripts: {
-    yalc: "yarn compile && npx yalc publish"
   },
   eslint: {
     enabled: true,
@@ -167,13 +162,16 @@ new YarnTypescriptProject(workspace, "react", {
   },
 });
 
-new YarnTypescriptProject(workspace, "github", {
+new YarnProject(workspace, "github", {
   packageName: "@pdkit/github",
   projectPath: "packages/@pdkit/github",
   dependencies: ["constructs", "@pdkit/core", "@pdkit/nodejs"],
   devDependencies: ["prettier", "typescript"],
   scripts: {
     yalc: "yarn compile && npx yalc publish"
+  },
+  tsconfig: {
+    enabled: true,
   },
   eslint: {
     enabled: true,

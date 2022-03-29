@@ -6,7 +6,6 @@ import { Volume } from "memfs/lib/volume";
 import { XConstruct } from "../base/XConstruct";
 import { AppendableFile, IFile } from "../fs";
 import { IProject } from "../project";
-import { ConstructError } from "../util/ConstructError";
 import { logger } from "../util/logger";
 
 /**
@@ -43,7 +42,7 @@ export class FileSynthesizer extends XConstruct {
     if (!(file instanceof AppendableFile) && this.fs.existsSync(filePath)) {
       const creator = this.creatorOf(filePath);
 
-      throw new ConstructError(file, `${filePath} is already owned by ${creator?.node.path ?? "N/A"}`);
+      throw new Error(`${file}: ${filePath} is already owned by ${creator?.node.path ?? "N/A"}`);
     }
 
     this.owners[filePath] = file;
@@ -160,7 +159,7 @@ export class FileSynthesizer extends XConstruct {
     const data = this.tryReadRealJsonFile(who, filePath);
 
     if (!data) {
-      throw new ConstructError(who, `No JSON data found at: ${filePath}`);
+      throw new Error(`${who}: No JSON data found at: ${filePath}`);
     }
 
     return data;

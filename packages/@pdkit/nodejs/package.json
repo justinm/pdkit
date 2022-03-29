@@ -4,9 +4,9 @@
   "main": "./index.js",
   "scripts": {
     "yalc": "yarn compile && npx yalc publish",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
     "compile": "tsc -p ./tsconfig.json",
-    "clean": "find . -name \"*.js\" -not -path \"./node_modules/*\" -delete && find . -name \"*.d.ts\" -not -path \"./node_modules/*\" -delete"
+    "clean": "find . -name \"*.js\" -not -path \"./node_modules/*\" -delete && find . -name \"*.d.ts\" -not -path \"./node_modules/*\" -delete",
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
   },
   "files": [
     "./*.js",
@@ -167,10 +167,6 @@
       "project": "tsconfig.json"
     }
   },
-  "dependencies": {
-    "@pdkit/core": "1.2.4",
-    "constructs": "10.0.97"
-  },
   "jest": {
     "clearMocks": true,
     "collectCoverage": true,
@@ -207,5 +203,9 @@
       ]
     ],
     "preset": "ts-jest"
+  },
+  "dependencies": {
+    "@pdkit/core": "1.2.4",
+    "constructs": "10.0.97"
   }
 }

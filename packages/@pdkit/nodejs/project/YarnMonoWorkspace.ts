@@ -1,0 +1,34 @@
+import { LifeCycle, ManifestEntry, Project, XConstruct } from "@pdkit/core";
+import { NodeProject, NodeProjectProps } from "./NodeProject";
+import { NodeWorkspaceProps } from "./NodeWorkspace";
+import { YarnProject } from "./YarnProject";
+import { YarnWorkspace } from "./YarnWorkspace";
+
+export interface YarnMonoWorkspaceProps
+  extends Omit<NodeProjectProps, "packageName" | "projectPath">,
+    NodeWorkspaceProps {}
+
+/**
+ * A YarnMonoWorkspace creates a single YarnProject at the root of repository. All projects added after are considered
+ * children of this project.
+ */
+export class YarnMonoWorkspace extends YarnWorkspace {
+  constructor(id: string, props: YarnMonoWorkspaceProps) {
+    super(id, props);
+
+    new YarnProject(this, "Default", { ...props, name: props.name ?? "workspace" });
+
+    this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
+      const projects = this.node.findAll().filter((b) => Project.is(b) && b !== this.node.defaultChild);
+      const projectPaths = projects.map((p) => (p as NodeProject).projectPath.substring(1));
+
+      // Collapse all install commands into the parent
+      projects.forEach((p) => p.node.tryRemoveChild("InstallCommand"));
+
+      new ManifestEntry(this.node.defaultChild as XConstruct, "WorkspaceFields", {
+        workspaces: projectPaths,
+        private: true,
+      });
+    });
+  }
+}

@@ -18,18 +18,23 @@ import {
   PackageJson,
   NodePackageJsonProps,
 } from "../constructs";
-import { EslintProps, EslintSupport } from "../eslint";
-import { JestProps, JestSupport } from "../jest";
+import {
+  EslintProps,
+  EslintSupport,
+  JestProps,
+  JestSupport,
+  TypescriptSupport,
+  TypescriptSupportProps,
+} from "../tools";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
 
 export enum PackageManagerType {
-  YARN,
   NPM,
-  NONE,
+  YARN,
 }
 
-export interface NpmProjectProps extends ProjectProps, NodePackageJsonProps {
+export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly packageName?: string;
   readonly installCommands?: string[];
   readonly dependencies?: Dependencies;
@@ -39,23 +44,24 @@ export interface NpmProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly license?: ValidLicense;
   readonly eslint?: EslintProps & { enabled: boolean };
   readonly jest?: JestProps & { enabled: boolean };
+  readonly tsconfig?: TypescriptSupportProps & { enabled: boolean };
   readonly prettier?: boolean;
   readonly gitignore?: string[];
   readonly buildCommands?: string[];
+  readonly packageManagerType?: PackageManagerType;
 }
 
-export class NpmProject extends Project {
-  public static of(construct: any): NpmProject {
-    return Project.of(construct) as NpmProject;
+export class NodeProject extends Project {
+  public static of(construct: any): NodeProject {
+    return Project.of(construct) as NodeProject;
   }
   public readonly packageJson: PackageJson;
   public readonly packageName: string;
 
-  constructor(scope: XConstruct, id: string, props?: NpmProjectProps) {
+  constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
 
-    new InstallShellScript(this, "InstallCommand", props?.installCommands ?? ["npm install"]);
-    new StandardValidator(this, "StandardValidator");
+    const tool = props?.packageManagerType ?? PackageManagerType.YARN;
 
     this.packageName = props?.packageName ?? id;
     this.packageJson = new PackageJson(this, {
@@ -64,12 +70,16 @@ export class NpmProject extends Project {
       ...props,
     });
 
-    if (props?.license) {
-      new License(this, props.license);
+    if (props?.tsconfig?.enabled) {
+      new TypescriptSupport(this, props.tsconfig);
     }
 
     if (props?.author) {
       new Author(this, props.author);
+    }
+
+    if (props?.license) {
+      new License(this, props.license);
     }
 
     if (props?.eslint?.enabled) {
@@ -132,11 +142,35 @@ export class NpmProject extends Project {
     if (props?.scripts) {
       new ManifestEntry(this, "NpmEnsureScripts", { scripts: props.scripts });
     }
+
+    let defaultInstallCommand: string[] | undefined;
+
+    switch (tool) {
+      case PackageManagerType.NPM:
+        defaultInstallCommand = ["npm", "install"];
+        break;
+      case PackageManagerType.YARN:
+        defaultInstallCommand = ["yarn"];
+        new GitIgnore(this, [
+          ".yarn/*",
+          "!.yarn/releases",
+          "!.yarn/patches",
+          "!.yarn/plugins",
+          "!.yarn/sdks",
+          "!.yarn/versions",
+          ".pnp.*",
+          ".yarn-integrity",
+        ]);
+        break;
+    }
+
+    new InstallShellScript(this, "InstallCommand", props?.installCommands ?? defaultInstallCommand);
+    new StandardValidator(this, "StandardValidator");
   }
 
   tryFindProject(packageName: string) {
     return Workspace.of(this)
       .node.findAll()
-      .find((p) => (p as NpmProject).packageName === packageName) as NpmProject | undefined;
+      .find((p) => (p as NodeProject).packageName === packageName) as NodeProject | undefined;
   }
 }

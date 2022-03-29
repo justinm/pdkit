@@ -1,6 +1,5 @@
 import path from "path";
 import { IXConstruct, XConstruct } from "../base/XConstruct";
-import { ConstructError } from "../util/ConstructError";
 import { Workspace } from "./Workspace";
 
 export interface IProject extends IXConstruct {
@@ -160,7 +159,7 @@ export abstract class Project extends XConstruct implements IProject {
     const child = this.tryFindDeepChild(childType);
 
     if (!child) {
-      throw new ConstructError(this, `Project does not own a ${childType}`);
+      throw new Error(`${this}: Project does not own a ${childType}`);
     }
 
     return child;

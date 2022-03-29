@@ -1,6 +1,6 @@
-import { GitIgnore, JsonFile, ManifestEntry, Project, XConstruct } from "@pdkit/core";
+import { FieldFile, GitIgnore, JsonFile, ManifestEntry, Project, XConstruct } from "@pdkit/core";
 import { Construct } from "constructs";
-import { PackageDependency, PackageDependencyType } from "./PackageDependency";
+import { PackageDependency, PackageDependencyType } from "../constructs";
 
 export interface TypescriptSupportProps {
   /**
@@ -367,12 +367,19 @@ export interface TypeScriptCompilerOptions {
  */
 export class TypescriptSupport extends XConstruct {
   public static hasSupport(construct: Construct) {
-    const project = Project.of(construct);
-
-    return !!project.tryFindDeepChild(TypescriptSupport);
+    return !!this.tryOf(construct);
   }
 
-  readonly fileName: string;
+  public static of(construct: Construct) {
+    return Project.of(construct).findDeepChild(TypescriptSupport);
+  }
+
+  public static tryOf(construct: Construct) {
+    return Project.of(construct).tryFindDeepChild(TypescriptSupport);
+  }
+
+  public readonly file: FieldFile;
+  public readonly fileName: string;
 
   constructor(scope: XConstruct, props?: TypescriptSupportProps) {
     super(scope, "TypescriptSupport");
@@ -398,7 +405,8 @@ export class TypescriptSupport extends XConstruct {
 
     new GitIgnore(this, ["*.js", "*.d.ts"]);
 
-    new JsonFile(this, this.fileName).addDeepFields({
+    this.file = new JsonFile(this, this.fileName);
+    this.file.addDeepFields({
       exclude: [...(props?.exclude ?? []), "node_modules"],
       include: [...(props?.include ?? []), `${project.sourcePath}/*.ts`, `${project.sourcePath}/**/*.ts`],
       compilerOptions: {

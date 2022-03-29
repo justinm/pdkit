@@ -3,14 +3,13 @@
     "node_modules"
   ],
   "include": [
-    ".pdkitrc.ts",
     "./*.ts",
     "./**/*.ts"
   ],
   "compilerOptions": {
     "alwaysStrict": true,
-    "declaration": false,
-    "noEmit": true,
+    "declaration": true,
+    "noEmit": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "inlineSourceMap": true,

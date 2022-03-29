@@ -1,4 +1,4 @@
-import { arrayOrScalar, ConstructError, kebabCaseKeys, XConstruct } from "@pdkit/core";
+import { arrayOrScalar, kebabCaseKeys, XConstruct } from "@pdkit/core";
 import { GithubJobStep, GithubJobStepProps } from "./GithubJobStep";
 import { GithubWorkflow } from "./GithubWorkflow";
 
@@ -403,7 +403,7 @@ export class GithubJob extends XConstruct {
     const workflow = construct.node.scopes.find((s) => s instanceof this) as GithubJob;
 
     if (!workflow) {
-      throw new ConstructError(construct, "Not a child of a GithubJob");
+      throw new Error(`${construct}: Not a child of a GithubJob`);
     }
 
     return workflow;

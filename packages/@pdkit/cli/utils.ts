@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
-import { ConstructError, IWorkspace, logger, PDKIT_CONFIG_FILE, Workspace, XConstruct } from "@pdkit/core";
+import { IWorkspace, logger, PDKIT_CONFIG_FILE, Workspace, XConstruct } from "@pdkit/core";
 import ora from "ora";
 import shellEscape from "shell-escape";
 
@@ -59,12 +59,6 @@ export async function withSpinner<T>(verbose: number, message: string, callback:
     return ret;
   } catch (err) {
     spinner.indent = indent;
-
-    if (err instanceof ConstructError) {
-      spinner.fail(`${message}: ${(err as Error).message}`);
-      logger.debug(err.stack);
-      process.exit(1);
-    }
 
     if (err instanceof Error) {
       spinner.fail(`${message}: ${(err as Error).message}`);

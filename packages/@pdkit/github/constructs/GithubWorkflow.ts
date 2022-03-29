@@ -1,4 +1,4 @@
-import { ConstructError, snakeCaseKeys, YamlFile, XConstruct } from "@pdkit/core";
+import { snakeCaseKeys, YamlFile, XConstruct } from "@pdkit/core";
 import { GithubEventProps } from "./GithubEvent";
 import { GithubJob, GithubJobProps } from "./GithubJob";
 
@@ -35,7 +35,7 @@ export class GithubWorkflow extends YamlFile {
     const workflow = construct.node.scopes.find((s) => s instanceof this) as GithubWorkflow;
 
     if (!workflow) {
-      throw new ConstructError(construct, "Not a child of a GithubWorkflow");
+      throw new Error(`${construct}: Not a child of a GithubWorkflow`);
     }
 
     return workflow;

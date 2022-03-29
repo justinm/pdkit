@@ -4,9 +4,9 @@
   "main": "./index.js",
   "scripts": {
     "yalc": "yarn compile && npx yalc publish",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
     "compile": "tsc -p ./tsconfig.json",
-    "clean": "find . -name \"*.js\" -not -path \"./node_modules/*\" -delete && find . -name \"*.d.ts\" -not -path \"./node_modules/*\" -delete"
+    "clean": "find . -name \"*.js\" -not -path \"./node_modules/*\" -delete && find . -name \"*.d.ts\" -not -path \"./node_modules/*\" -delete",
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
   },
   "files": [
     "./*.js",
@@ -171,19 +171,6 @@
       "project": "tsconfig.json"
     }
   },
-  "dependencies": {
-    "case": "1.6.3",
-    "constructs": "10.0.97",
-    "deepmerge": "4.2.2",
-    "dependency-graph": "0.11.0",
-    "js-yaml": "4.1.0",
-    "md5-file": "5.0.0",
-    "memfs": "3.4.1",
-    "mustache": "4.2.0",
-    "object-hash": "3.0.0",
-    "sync-request": "6.1.0",
-    "winston": "3.6.0"
-  },
   "jest": {
     "clearMocks": true,
     "collectCoverage": true,
@@ -220,5 +207,18 @@
       ]
     ],
     "preset": "ts-jest"
+  },
+  "dependencies": {
+    "case": "1.6.3",
+    "constructs": "10.0.97",
+    "deepmerge": "4.2.2",
+    "dependency-graph": "0.11.0",
+    "js-yaml": "4.1.0",
+    "md5-file": "5.0.0",
+    "memfs": "3.4.1",
+    "mustache": "4.2.0",
+    "object-hash": "3.0.0",
+    "sync-request": "6.1.0",
+    "winston": "3.6.0"
   }
 }

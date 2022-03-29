@@ -1,3 +1,5 @@
+*.js
+*.d.ts
 # jest-junit artifacts
 /test-reports/
 junit.xml
@@ -26,5 +28,3 @@ pids
 !.yarn/versions
 .pnp.*
 .yarn-integrity
-*.js
-*.d.ts

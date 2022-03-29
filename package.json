@@ -18,11 +18,6 @@
     "./*.d.ts",
     "./**/*.d.ts"
   ],
-  "license": "Apache-2.0",
-  "author": {
-    "name": "Justin McCormick",
-    "email": "me@justinmccormick.com"
-  },
   "devDependencies": {
     "@pdkit/github": "1.1.8",
     "@qiwi/multi-semantic-release": "^3.17.1",
@@ -48,9 +43,15 @@
     "json-schema": "0.4.0",
     "prettier": "2.6.1",
     "semantic-release": "^17.4.6",
+    "ts-jest": "27.1.4",
     "ts-node": "10.7.0",
     "typescript": "4.6.3"
   },
+  "author": {
+    "name": "Justin McCormick",
+    "email": "me@justinmccormick.com"
+  },
+  "license": "Apache-2.0",
   "eslintConfig": {
     "env": {
       "jest": true,
@@ -221,7 +222,8 @@
           "outputDirectory": "test-reports"
         }
       ]
-    ]
+    ],
+    "preset": "ts-jest"
   },
   "dependencies": {
     "@pdkit/core": "workspace:packages/@pdkit/core",
@@ -290,7 +292,6 @@
     "packages/@pdkit/core",
     "packages/@pdkit/cli",
     "packages/@pdkit/nodejs",
-    "packages/@pdkit/react",
     "packages/@pdkit/github"
   ]
 }

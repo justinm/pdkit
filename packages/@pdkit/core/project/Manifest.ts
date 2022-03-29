@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import { LifeCycle, XConstruct } from "../base/XConstruct";
 import { IFile, JsonFile } from "../fs";
-import { ConstructError } from "../util/ConstructError";
 import { ManifestEntry } from "./ManifestEntry";
 import { Project } from "./Project";
 
@@ -23,7 +22,7 @@ export class Manifest extends JsonFile implements IFile {
     const manifest = project.tryFindDeepChildren(Manifest)[0];
 
     if (!manifest) {
-      throw new ConstructError(construct, `No manifest was found in project ${project.node.id}`);
+      throw new Error(`${construct}: No manifest was found in project ${project.node.id}`);
     }
 
     return manifest as Manifest;

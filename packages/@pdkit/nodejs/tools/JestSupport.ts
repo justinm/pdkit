@@ -1,8 +1,8 @@
 import * as path from "path";
-import { GitIgnore, JsonFile, ManifestEntry, Project, XConstruct } from "@pdkit/core";
+import { GitIgnore, JsonFile, LifeCycle, ManifestEntry, Project, XConstruct } from "@pdkit/core";
 import { Construct } from "constructs";
-import { PackageDependency, PackageDependencyType } from "../constructs";
-import { NpmIgnore } from "../npm";
+import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
+import { TypescriptSupport } from "./TypescriptSupport";
 
 // Pulled from https://jestjs.io/docs/en/configuration
 export interface JestConfigOptions {
@@ -524,9 +524,15 @@ export class JestSupport extends XConstruct {
   public static readonly ID = "JestSupport";
 
   public static hasSupport(construct: Construct) {
-    const project = Project.of(construct);
+    return !!this.tryOf(construct);
+  }
 
-    return !!project.tryFindDeepChild(JestSupport);
+  public static of(construct: Construct) {
+    return Project.of(construct).findDeepChild(JestSupport);
+  }
+
+  public static tryOf(construct: Construct) {
+    return Project.of(construct).tryFindDeepChild(JestSupport);
   }
 
   public readonly config: any;
@@ -599,5 +605,12 @@ export class JestSupport extends XConstruct {
     } else {
       new ManifestEntry(this, "Jest", fields, { shallow: true });
     }
+
+    this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
+      if (TypescriptSupport.hasSupport(this)) {
+        new PackageDependency(this, "ts-jest", { type: PackageDependencyType.DEV });
+        new ManifestEntry(this, "TsJest", { jest: { preset: "ts-jest" } });
+      }
+    });
   }
 }

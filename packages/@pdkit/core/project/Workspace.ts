@@ -3,7 +3,6 @@ import { IXConstruct, LifeCycle, XConstruct } from "../base/XConstruct";
 import { File } from "../fs";
 import { Script } from "../scripts/Script";
 import { FileSynthesizer } from "../synthesizers/FileSynthesizer";
-import { ConstructError } from "../util/ConstructError";
 import { Project, ProjectProps } from "./Project";
 
 export interface IWorkspace extends IXConstruct {
@@ -26,7 +25,7 @@ export class Workspace extends XConstruct implements IWorkspace {
     const workspace = (construct as Construct).node.scopes[0];
 
     if (!workspace || !(workspace instanceof Workspace)) {
-      throw new ConstructError(construct, `Not a child of a workspace`);
+      throw new Error(`${construct}: Not a child of a workspace`);
     }
 
     return workspace as unknown as IWorkspace;

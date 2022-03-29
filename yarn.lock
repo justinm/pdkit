@@ -1079,31 +1079,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/react@workspace:packages/@pdkit/react":
-  version: 0.0.0-use.local
-  resolution: "@pdkit/react@workspace:packages/@pdkit/react"
-  dependencies:
-    "@pdkit/core": 1.2.4
-    "@pdkit/nodejs": 1.1.7
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
-    constructs: 10.0.97
-    eslint: 8.12.0
-    eslint-config-prettier: 8.5.0
-    eslint-import-resolver-node: 0.3.6
-    eslint-import-resolver-typescript: 2.7.0
-    eslint-plugin-import: 2.25.4
-    eslint-plugin-prettier: 4.0.0
-    jest: 27.5.1
-    jest-junit: ^13
-    json-schema: 0.4.0
-    prettier: 2.6.1
-    ts-jest: 27.1.4
-    ts-node: 10.7.0
-    typescript: 4.6.3
-  languageName: unknown
-  linkType: soft
-
 "@qiwi/multi-semantic-release@npm:^3.17.1":
   version: 3.17.1
   resolution: "@qiwi/multi-semantic-release@npm:3.17.1"
@@ -10844,6 +10819,7 @@ __metadata:
     mustache: 4.2.0
     prettier: 2.6.1
     semantic-release: ^17.4.6
+    ts-jest: 27.1.4
     ts-node: 10.7.0
     typescript: 4.6.3
   languageName: unknown

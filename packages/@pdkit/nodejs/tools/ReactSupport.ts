@@ -1,5 +1,7 @@
 import { GitIgnore, ManifestEntry, XConstruct } from "@pdkit/core";
-import { EslintSupport, NpmIgnore, PackageDependency, PackageDependencyType, TypescriptSupport } from "@pdkit/nodejs";
+import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
+import { EslintSupport } from "./EslintSupport";
+import { TypeScriptJsxMode, TypescriptSupport } from "./TypescriptSupport";
 
 export interface ReactSupportProps {
   readonly enzyme?: boolean;
@@ -12,7 +14,7 @@ export class ReactSupport extends XConstruct {
   constructor(scope: XConstruct, props?: ReactSupportProps) {
     super(scope, ReactSupport.ID);
 
-    const hasTypescript = TypescriptSupport.hasSupport(this);
+    const typescriptSupport = TypescriptSupport.tryOf(this);
 
     new PackageDependency(this, "@pdkit/react", {
       type: PackageDependencyType.DEV,
@@ -20,7 +22,7 @@ export class ReactSupport extends XConstruct {
     new PackageDependency(this, "react-dom");
     new PackageDependency(this, "react-scripts");
 
-    if (hasTypescript) {
+    if (typescriptSupport) {
       new PackageDependency(this, "@types/react-dom", {
         type: PackageDependencyType.DEV,
       });
@@ -37,7 +39,7 @@ export class ReactSupport extends XConstruct {
         type: PackageDependencyType.DEV,
       });
 
-      if (hasTypescript) {
+      if (typescriptSupport) {
         new PackageDependency(this, "@types/enzyme", {
           type: PackageDependencyType.DEV,
         });
@@ -64,6 +66,11 @@ export class ReactSupport extends XConstruct {
       });
     }
 
+    typescriptSupport?.file.addDeepFields({
+      compilerOptions: {
+        jsx: TypeScriptJsxMode.REACT_JSX,
+      },
+    });
     new GitIgnore(this, ["build/*"]);
     new NpmIgnore(this, ["build/*"]);
 

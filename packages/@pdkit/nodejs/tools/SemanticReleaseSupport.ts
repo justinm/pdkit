@@ -1,4 +1,5 @@
 import { ManifestEntry, Project, XConstruct } from "@pdkit/core";
+import { Construct } from "constructs";
 import { PackageDependency, PackageDependencyType } from "../constructs";
 
 export interface SemanticReleaseSupportProps {
@@ -11,6 +12,18 @@ export interface SemanticReleaseSupportProps {
 }
 
 export class SemanticReleaseSupport extends XConstruct {
+  public static hasSupport(construct: Construct) {
+    return !!this.tryOf(construct);
+  }
+
+  public static of(construct: Construct) {
+    return Project.of(construct).findDeepChild(SemanticReleaseSupport);
+  }
+
+  public static tryOf(construct: Construct) {
+    return Project.of(construct).tryFindDeepChild(SemanticReleaseSupport);
+  }
+
   constructor(scope: XConstruct, props: SemanticReleaseSupportProps) {
     const project = Project.of(scope);
 

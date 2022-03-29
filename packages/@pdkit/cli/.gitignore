@@ -1,3 +1,9 @@
+*.js
+*.d.ts
+# jest-junit artifacts
+/test-reports/
+junit.xml
+/coverage/
 node_modules
 logs
 *.log
@@ -11,9 +17,11 @@ pids
 *.pid.lock
 .npm
 *.tgz
-# jest-junit artifacts
-/test-reports/
-junit.xml
-/coverage/
-*.js
-*.d.ts
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+.yarn-integrity
