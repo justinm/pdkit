@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.3](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.2...@pdkit/core@2.0.3) (2022-03-29)
+
+
+### Bug Fixes
+
+* do not ignore react-app-env.d.ts ([566d905](https://github.com/justinm/pdkit/commit/566d905755bfb3f1d6a98c17ea483d771d63f148))
+
 ## @pdkit/core [2.0.2](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.1...@pdkit/core@2.0.2) (2022-03-29)
 
 
