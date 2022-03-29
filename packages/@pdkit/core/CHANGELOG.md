@@ -1,3 +1,10 @@
+# @pdkit/core [2.0.0](https://github.com/justinm/pdkit/compare/@pdkit/core@1.4.1...@pdkit/core@2.0.0) (2022-03-29)
+
+
+### Bug Fixes
+
+* issues with failed release ([87cd7e5](https://github.com/justinm/pdkit/commit/87cd7e59afa1d32936a5906a41ae68798ed28fe7))
+
 ## @pdkit/core [1.4.1](https://github.com/justinm/pdkit/compare/@pdkit/core@1.4.0...@pdkit/core@1.4.1) (2022-03-29)
 
 
