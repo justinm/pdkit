@@ -51,6 +51,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#documentation">Documentation</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -116,6 +117,11 @@ help ensure optimum IDE support.
 ** This is ALPHA software, use at your own risk! **
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+
+## Documentation
+
+Additional documentation is available at [./docs](./docs).
 
 
 <!-- ROADMAP -->
