@@ -75,8 +75,8 @@ export class ReactSupport extends XConstruct {
         jsx: TypeScriptJsxMode.REACT_JSX,
       },
     });
-    new GitIgnore(this, ["build/*"]);
-    new NpmIgnore(this, ["build/*"]);
+    new GitIgnore(this, ["build/*", "!react-app-env.d.ts"]);
+    new NpmIgnore(this, ["build/*", "!react-app-env.d.ts"]);
 
     new ManifestEntry(this, "ReactScripts", {
       scripts: {
