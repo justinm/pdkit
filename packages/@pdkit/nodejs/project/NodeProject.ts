@@ -74,6 +74,10 @@ export class NodeProject extends Project {
       ...props,
     });
 
+    if (this.distPath !== this.sourcePath) {
+      new GitIgnore(this, [this.distPath]);
+    }
+
     if (props?.tsconfig?.enabled) {
       new TypescriptSupport(this, props.tsconfig);
     }

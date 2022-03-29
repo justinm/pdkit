@@ -40,6 +40,7 @@ export interface Tools {
   readonly yarn?: ToolRequirement & {
     readonly cache?: string;
     readonly registryUrl?: string;
+    readonly npmAuthToken?: string;
   };
 
   /**

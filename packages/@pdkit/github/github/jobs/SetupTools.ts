@@ -22,7 +22,7 @@ export class SetupTools extends XConstruct {
     }
 
     if (tools.node) {
-      const { version, registryUrl, ...other } = tools.node;
+      const { registryUrl, version, ...other } = tools.node;
       new GithubJobStep(this, "SetupNode", {
         uses: "actions/setup-node@v2",
         with: { "node-version": version, "registry-url": registryUrl, ...other },
@@ -31,7 +31,7 @@ export class SetupTools extends XConstruct {
     }
 
     if (tools.yarn) {
-      const { version, registryUrl, ...other } = tools.yarn;
+      const { npmAuthToken, registryUrl, version, ...other } = tools.yarn;
 
       new GithubJobStep(this, "SetupNode", {
         uses: "actions/setup-node@v2",
@@ -40,7 +40,7 @@ export class SetupTools extends XConstruct {
       });
 
       new GithubJobStep(this, "YarnAuth", {
-        run: "yarn config set --home npmAuthToken ${{ secrets.NPM_TOKEN }}",
+        run: `yarn config set --home npmAuthToken ${npmAuthToken ?? "${{ secrets.NPM_TOKEN }}"}`,
         priority: props.priority,
       });
     }

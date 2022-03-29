@@ -14,19 +14,6 @@
     "*.d.ts",
     "**/*.d.ts"
   ],
-  "dependencies": {
-    "case": "1.6.3",
-    "constructs": "10.0.97",
-    "deepmerge": "4.2.2",
-    "dependency-graph": "0.11.0",
-    "js-yaml": "4.1.0",
-    "md5-file": "5.0.0",
-    "memfs": "3.4.1",
-    "mustache": "4.2.0",
-    "object-hash": "3.0.0",
-    "sync-request": "6.1.0",
-    "winston": "3.6.0"
-  },
   "devDependencies": {
     "@types/js-yaml": "4.0.5",
     "@types/mustache": "4.1.2",
@@ -220,5 +207,18 @@
       ]
     ],
     "preset": "ts-jest"
+  },
+  "dependencies": {
+    "case": "1.6.3",
+    "constructs": "10.0.97",
+    "deepmerge": "4.2.2",
+    "dependency-graph": "0.11.0",
+    "js-yaml": "4.1.0",
+    "md5-file": "5.0.0",
+    "memfs": "3.4.1",
+    "mustache": "4.2.0",
+    "object-hash": "3.0.0",
+    "sync-request": "6.1.0",
+    "winston": "3.6.0"
   }
 }

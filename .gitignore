@@ -17,7 +17,6 @@ pids
 *.pid.lock
 .npm
 *.tgz
-.yalc
 .idea
 .js
 .d.ts
