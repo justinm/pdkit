@@ -1,3 +1,19 @@
+## @pdkit/cli [1.5.4](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.3...@pdkit/cli@1.5.4) (2022-03-29)
+
+
+### Bug Fixes
+
+* eslint assigning wrong script name ([6d50a21](https://github.com/justinm/pdkit/commit/6d50a21ffe1354d0fb5f7260f7d19a6f777b364f))
+* jest compat issues with React ([487567e](https://github.com/justinm/pdkit/commit/487567e6b3d446c4e570ee7e4f0ccd53fddf6d13))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.0.2
+
 ## @pdkit/cli [1.5.3](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.2...@pdkit/cli@1.5.3) (2022-03-29)
 
 
