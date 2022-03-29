@@ -1,3 +1,11 @@
+## @pdkit/core [2.0.5](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.4...@pdkit/core@2.0.5) (2022-03-29)
+
+
+### Bug Fixes
+
+* add missing YarnReactProject construct ([120aca1](https://github.com/justinm/pdkit/commit/120aca1f586a98accf7e1fa2a28b9d864a49e0b0))
+* single project node repos ([3dba64a](https://github.com/justinm/pdkit/commit/3dba64af432e46c99700cd9b55e2827b34d206c8))
+
 ## @pdkit/core [2.0.4](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.3...@pdkit/core@2.0.4) (2022-03-29)
 
 
