@@ -65,6 +65,11 @@ export class ReactSupport extends XConstruct {
 
     typescriptSupport?.file.addDeepFields({
       compilerOptions: {
+        lib: ["dom", "dom.iterable", "esnext"],
+        module: "commonjs",
+        noEmit: true,
+        declaration: false,
+        target: "es5",
         jsx: TypeScriptJsxMode.REACT_JSX,
       },
     });
@@ -76,6 +81,7 @@ export class ReactSupport extends XConstruct {
         start: "npx react-scripts start",
         build: "npx react-scripts build",
         test: "npx react-scripts test",
+        compile: undefined as any,
       },
       browserslist: {
         production: [">0.2%", "not dead", "not op_mini all"],
