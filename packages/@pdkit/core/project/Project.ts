@@ -37,6 +37,15 @@ export abstract class Project extends XConstruct implements IProject {
   }
 
   public static of(construct: any): Project {
+    const project = this.tryOf(construct);
+
+    if (!project) {
+      throw new Error(`Construct ${construct} must be a child of a project or workspace`);
+    }
+
+    return project;
+  }
+  public static tryOf(construct: any): Project | undefined {
     if (!(construct instanceof XConstruct)) {
       throw new Error(`${construct.constructor.name} is not a construct`);
     }
@@ -59,7 +68,8 @@ export abstract class Project extends XConstruct implements IProject {
           return defaultProject as Project;
         }
       }
-      throw new Error(`Construct ${construct} must be a child of a project or workspace`);
+
+      return undefined;
     }
 
     return project as Project;

@@ -7,7 +7,6 @@
     "**/*.ts"
   ],
   "compilerOptions": {
-    "outDir": "dist",
     "alwaysStrict": true,
     "declaration": true,
     "noEmit": false,

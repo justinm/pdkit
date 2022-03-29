@@ -14,7 +14,7 @@ export enum PackageDependencyType {
 export class PackageDependency extends ManifestEntry {
   private readonly keyName: string;
   constructor(scope: XConstruct, id: string, props?: PackageDependencyProps) {
-    super(scope, `Dependency-${id}`);
+    super(scope, `Dependency${props?.type}-${id}`);
 
     switch (props?.type) {
       case PackageDependencyType.PEER:

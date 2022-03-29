@@ -16,7 +16,15 @@ export class YarnMonoWorkspace extends YarnWorkspace {
   constructor(id: string, props: YarnMonoWorkspaceProps) {
     super(id, props);
 
-    new YarnProject(this, "Default", { ...props, name: props.name ?? "workspace" });
+    const defaultProject = new YarnProject(this, "Default", { ...props, name: props.name ?? "workspace" });
+
+    if (props.yalc) {
+      new ManifestEntry(defaultProject, "RootYalcOverride", {
+        scripts: {
+          yalc: "yarn workspaces foreach --verbose -p --topological-dev --no-private run yalc",
+        },
+      });
+    }
 
     this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
       const projects = this.node.findAll().filter((b) => Project.is(b) && b !== this.node.defaultChild);

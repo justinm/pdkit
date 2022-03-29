@@ -65,6 +65,7 @@ new YarnProject(workspace, "core", {
   packageName: "@pdkit/core",
   projectPath: "packages/@pdkit/core",
   sourcePath: ".",
+  distPath: ".",
   dependencies: [
     "case",
     "constructs",
@@ -98,6 +99,7 @@ new YarnProject(workspace, "cli", {
   packageName: "@pdkit/cli",
   projectPath: "packages/@pdkit/cli",
   sourcePath: ".",
+  distPath: ".",
   dependencies: [
     "@pdkit/core",
     "@types/diff",
@@ -148,6 +150,7 @@ new YarnProject(workspace, "nodejs", {
   packageName: "@pdkit/nodejs",
   projectPath: "packages/@pdkit/nodejs",
   sourcePath: ".",
+  distPath: ".",
   dependencies: ["constructs", "@pdkit/core"],
   devDependencies: ["prettier", "typescript"],
   scripts: {
@@ -169,6 +172,7 @@ new YarnProject(workspace, "github", {
   packageName: "@pdkit/github",
   projectPath: "packages/@pdkit/github",
   sourcePath: ".",
+  distPath: ".",
   dependencies: ["constructs", "@pdkit/core", "@pdkit/nodejs"],
   devDependencies: ["prettier", "typescript"],
   scripts: {

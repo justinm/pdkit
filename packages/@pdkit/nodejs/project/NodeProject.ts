@@ -3,21 +3,21 @@ import {
   GitIgnore,
   InstallShellScript,
   License,
+  ManifestEntry,
   Project,
   ProjectProps,
-  ValidLicense,
   StandardValidator,
+  ValidLicense,
   Workspace,
   XConstruct,
-  ManifestEntry,
 } from "@pdkit/core";
 import {
   Author,
   AuthorProps,
+  NodePackageJsonProps,
   PackageDependency,
   PackageDependencyType,
   PackageJson,
-  NodePackageJsonProps,
 } from "../constructs";
 import {
   EslintProps,
@@ -27,6 +27,7 @@ import {
   TypescriptSupport,
   TypescriptSupportProps,
 } from "../tools";
+import { YalcSupport } from "../tools/YalcSupport";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
 
@@ -45,6 +46,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly license?: ValidLicense;
   readonly eslint?: EslintProps & { enabled: boolean };
   readonly jest?: JestProps & { enabled: boolean };
+  readonly yalc?: boolean;
   readonly tsconfig?: TypescriptSupportProps & { enabled: boolean };
   readonly prettier?: boolean;
   readonly gitignore?: string[];
@@ -92,6 +94,10 @@ export class NodeProject extends Project {
       new JestSupport(this, props.jest);
     }
 
+    if (props?.yalc) {
+      new YalcSupport(this);
+    }
+
     // Courtesy of https://www.toptal.com/developers/gitignore/api/node
     new GitIgnore(this, [
       "node_modules",
@@ -107,6 +113,7 @@ export class NodeProject extends Project {
       "*.pid.lock",
       ".npm",
       "*.tgz",
+      ".yalc",
     ]);
 
     if (props?.gitignore) {
@@ -139,6 +146,12 @@ export class NodeProject extends Project {
 
     if (props?.peerDependencies) {
       addDependencies(props?.peerDependencies, PackageDependencyType.PEER);
+    }
+
+    if (Project.of(scope) === this) {
+      new PackageDependency(this, "@pdkit/core", { type: PackageDependencyType.DEV });
+      new PackageDependency(this, "@pdkit/cli", { type: PackageDependencyType.DEV });
+      new PackageDependency(this, "@pdkit/nodejs", { type: PackageDependencyType.DEV });
     }
 
     if (props?.scripts) {
