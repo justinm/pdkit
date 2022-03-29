@@ -1,3 +1,15 @@
+# @pdkit/core [1.4.0](https://github.com/justinm/pdkit/compare/@pdkit/core@1.3.1...@pdkit/core@1.4.0) (2022-03-29)
+
+
+### Bug Fixes
+
+* auto-depend on pdkit deps ([ec97cf7](https://github.com/justinm/pdkit/commit/ec97cf7b9a81a6a6ca82943dba3340427a626bc7))
+
+
+### Features
+
+* sort package.json according to a predetermined order ([bf6ddde](https://github.com/justinm/pdkit/commit/bf6ddde0e3eb6f1f21a82ee70b51932ab2e8a1ca))
+
 ## @pdkit/core [1.3.1](https://github.com/justinm/pdkit/compare/@pdkit/core@1.3.0...@pdkit/core@1.3.1) (2022-03-29)
 
 
