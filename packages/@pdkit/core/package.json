@@ -6,7 +6,8 @@
     "yalc": "npx yalc publish",
     "compile": "tsc -p ./tsconfig.json",
     "clean": "find . -name \"*.js\" -not -path \"./node_modules/*\" -delete && find . -name \"*.d.ts\" -not -path \"./node_modules/*\" -delete",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern ."
+    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern .",
+    "test": "jest --passWithNoTests --all"
   },
   "files": [
     "*.js",

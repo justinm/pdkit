@@ -956,7 +956,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
   dependencies:
-    "@pdkit/core": 1.4.1
+    "@pdkit/core": 2.0.0
     "@types/diff": 5.0.2
     "@types/glob": 7.2.0
     "@types/ora": 3.1.0
@@ -993,7 +993,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pdkit/core@1.4.1, @pdkit/core@workspace:packages/@pdkit/core":
+"@pdkit/core@2.0.0, @pdkit/core@workspace:packages/@pdkit/core":
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
@@ -1029,6 +1029,46 @@ __metadata:
     winston: 3.6.0
   languageName: unknown
   linkType: soft
+
+"@pdkit/core@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@pdkit/core@npm:1.4.0"
+  dependencies:
+    case: 1.6.3
+    constructs: 10.0.97
+    deepmerge: 4.2.2
+    dependency-graph: 0.11.0
+    js-yaml: 4.1.0
+    md5-file: 5.0.0
+    memfs: 3.4.1
+    mustache: 4.2.0
+    object-hash: 3.0.0
+    sync-request: 6.1.0
+    winston: 3.6.0
+  checksum: d9bb7fccca19ad662ac86323ce79e814215a5ec5f6ee7662e8f5692e2bcf258e4b0c0d925f65170a69fa85699e42df1ac1a62ba3a340833bdf07acfd485ab8e3
+  languageName: node
+  linkType: hard
+
+"@pdkit/github@npm:1.3.0":
+  version: 1.3.0
+  resolution: "@pdkit/github@npm:1.3.0"
+  dependencies:
+    "@pdkit/core": 1.4.0
+    "@pdkit/nodejs": 1.3.0
+    constructs: 10.0.97
+  checksum: 43c2391d8b64d46a957ee79b00bf00a1743655e50924ffcfce8701a86e298b0345357228cf6f1374e5da35aa01b058459eb3f502b070f347a601330cad93658b
+  languageName: node
+  linkType: hard
+
+"@pdkit/nodejs@npm:1.3.0":
+  version: 1.3.0
+  resolution: "@pdkit/nodejs@npm:1.3.0"
+  dependencies:
+    "@pdkit/core": 1.4.0
+    constructs: 10.0.97
+  checksum: e438b4db2c611d1b9b614d78248f6eadb8cda090494408d7884a1ce49071895751ca039868efa53c5782fb64bd2361afaf1b232865a2bf51a234252e78df4bf5
+  languageName: node
+  linkType: hard
 
 "@qiwi/multi-semantic-release@npm:^3.17.1":
   version: 3.17.1
@@ -10744,6 +10784,7 @@ __metadata:
   resolution: "workspace@workspace:."
   dependencies:
     "@pdkit/core": "workspace:packages/@pdkit/core"
+    "@pdkit/github": 1.3.0
     "@qiwi/multi-semantic-release": ^3.17.1
     "@semantic-release/changelog": 6.0.1
     "@semantic-release/commit-analyzer": 9.0.2

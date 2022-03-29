@@ -12,8 +12,6 @@ const workspace = new YarnMonoWorkspace("pdkit", {
   disableAutoLib: true,
   devDependencies: [
     { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" },
-    { name: "@pdkit/github", version: "workspace:packages/@pdkit/github" },
-    { name: "@pdkit/nodejs", version: "workspace:packages/@pdkit/nodejs" },
     "@types/mustache",
     "@types/node",
     "prettier",
