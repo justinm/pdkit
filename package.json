@@ -14,7 +14,7 @@
     "compile": "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     "clean": "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
     "yalc": "yarn workspaces foreach --verbose -p --topological-dev --no-private run yalc",
-    "lint": "eslint --ext .ts --fix --no-error-on-unmatched-pattern src",
+    "lint": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src",
     "test": "jest --passWithNoTests --all",
     "release": "npx multi-semantic-release"
   },
