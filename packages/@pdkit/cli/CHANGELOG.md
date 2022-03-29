@@ -1,3 +1,18 @@
+## @pdkit/cli [1.5.1](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.0...@pdkit/cli@1.5.1) (2022-03-29)
+
+
+### Bug Fixes
+
+* auto-ignore project distPath and allow npmAuthToken override during auth ([e943dc6](https://github.com/justinm/pdkit/commit/e943dc693db6a9064679b1c2512cdf7386e22b25))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 1.4.1
+
 # @pdkit/cli [1.5.0](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.4.1...@pdkit/cli@1.5.0) (2022-03-29)
 
 
