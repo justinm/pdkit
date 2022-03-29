@@ -1,3 +1,18 @@
+## @pdkit/cli [1.5.2](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.1...@pdkit/cli@1.5.2) (2022-03-29)
+
+
+### Bug Fixes
+
+* issues with failed release ([87cd7e5](https://github.com/justinm/pdkit/commit/87cd7e59afa1d32936a5906a41ae68798ed28fe7))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.0.0
+
 ## @pdkit/cli [1.5.1](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.0...@pdkit/cli@1.5.1) (2022-03-29)
 
 
