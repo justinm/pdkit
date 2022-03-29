@@ -1,6 +1,11 @@
 {
   "name": "workspace",
+  "license": "Apache-2.0",
   "version": "0.0.0",
+  "author": {
+    "name": "Justin McCormick",
+    "email": "me@justinmccormick.com"
+  },
   "private": true,
   "main": "dist/index.js",
   "scripts": {
@@ -18,8 +23,23 @@
     "dist/*.d.ts",
     "dist/**/*.d.ts"
   ],
+  "workspaces": [
+    "packages/@pdkit/core",
+    "packages/@pdkit/cli",
+    "packages/@pdkit/nodejs",
+    "packages/@pdkit/github"
+  ],
+  "dependencies": {
+    "@pdkit/core": "workspace:packages/@pdkit/core",
+    "@pdkit/github": "workspace:packages/@pdkit/github",
+    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs",
+    "mustache": "4.2.0"
+  },
   "devDependencies": {
-    "@pdkit/github": "1.2.1",
+    "@pdkit/cli": "1.5.1",
+    "@pdkit/core": "1.4.1",
+    "@pdkit/github": "1.3.1",
+    "@pdkit/nodejs": "1.3.1",
     "@qiwi/multi-semantic-release": "^3.17.1",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
@@ -47,11 +67,10 @@
     "ts-node": "10.7.0",
     "typescript": "4.6.3"
   },
-  "author": {
-    "name": "Justin McCormick",
-    "email": "me@justinmccormick.com"
+  "resolutions": {
+    "chalk": "^4.1.2",
+    "npm": "^6"
   },
-  "license": "Apache-2.0",
   "eslintConfig": {
     "env": {
       "jest": true,
@@ -225,16 +244,6 @@
     ],
     "preset": "ts-jest"
   },
-  "dependencies": {
-    "@pdkit/core": "workspace:packages/@pdkit/core",
-    "@pdkit/github": "workspace:packages/@pdkit/github",
-    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs",
-    "mustache": "4.2.0"
-  },
-  "resolutions": {
-    "chalk": "^4.1.2",
-    "npm": "^6"
-  },
   "release": {
     "branches": [
       "main"
@@ -287,11 +296,5 @@
         }
       ]
     ]
-  },
-  "workspaces": [
-    "packages/@pdkit/core",
-    "packages/@pdkit/cli",
-    "packages/@pdkit/nodejs",
-    "packages/@pdkit/github"
-  ]
+  }
 }

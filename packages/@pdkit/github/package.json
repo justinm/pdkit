@@ -14,6 +14,11 @@
     "*.d.ts",
     "**/*.d.ts"
   ],
+  "dependencies": {
+    "@pdkit/core": "1.4.1",
+    "@pdkit/nodejs": "1.3.1",
+    "constructs": "10.0.97"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
@@ -203,10 +208,5 @@
       ]
     ],
     "preset": "ts-jest"
-  },
-  "dependencies": {
-    "@pdkit/core": "1.4.1",
-    "@pdkit/nodejs": "1.3.1",
-    "constructs": "10.0.97"
   }
 }

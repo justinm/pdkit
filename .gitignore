@@ -1,3 +1,4 @@
+dist
 *.js
 *.d.ts
 # jest-junit artifacts
@@ -17,6 +18,7 @@ pids
 *.pid.lock
 .npm
 *.tgz
+.yalc
 .idea
 .js
 .d.ts

@@ -17,6 +17,7 @@ pids
 *.pid.lock
 .npm
 *.tgz
+.yalc
 .yarn/*
 !.yarn/releases
 !.yarn/patches
