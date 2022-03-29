@@ -1,3 +1,12 @@
+## @pdkit/core [2.0.1](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.0...@pdkit/core@2.0.1) (2022-03-29)
+
+
+### Bug Fixes
+
+* add lint/test scripts ([b7b6493](https://github.com/justinm/pdkit/commit/b7b649322d579c5d275ee0e374d57de9e3440bb7))
+* issues from 2 release ([540a8e1](https://github.com/justinm/pdkit/commit/540a8e1cfd51d2a8ecfe1704f496856d50bd2dfe))
+* minor bug fixes ([f5935ba](https://github.com/justinm/pdkit/commit/f5935ba0e495a258b6458e0da7df9559d90aacd8))
+
 # @pdkit/core [2.0.0](https://github.com/justinm/pdkit/compare/@pdkit/core@1.4.1...@pdkit/core@2.0.0) (2022-03-29)
 
 
