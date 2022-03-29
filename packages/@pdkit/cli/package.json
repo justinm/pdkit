@@ -1,6 +1,6 @@
 {
   "name": "@pdkit/cli",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "main": "./index.js",
   "bin": {
     "pdkit": "index.ts"
@@ -19,7 +19,7 @@
     "**/*.d.ts"
   ],
   "dependencies": {
-    "@pdkit/core": "1.3.1",
+    "@pdkit/core": "1.4.0",
     "@types/diff": "5.0.2",
     "@types/glob": "7.2.0",
     "@types/ora": "3.1.0",
