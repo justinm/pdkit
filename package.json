@@ -25,21 +25,13 @@
   ],
   "workspaces": [
     "packages/@pdkit/core",
-    "packages/@pdkit/cli",
-    "packages/@pdkit/nodejs",
-    "packages/@pdkit/github"
+    "packages/@pdkit/cli"
   ],
   "dependencies": {
-    "@pdkit/core": "workspace:packages/@pdkit/core",
-    "@pdkit/github": "workspace:packages/@pdkit/github",
-    "@pdkit/nodejs": "workspace:packages/@pdkit/nodejs",
     "mustache": "4.2.0"
   },
   "devDependencies": {
-    "@pdkit/cli": "1.5.1",
-    "@pdkit/core": "1.4.1",
-    "@pdkit/github": "1.3.1",
-    "@pdkit/nodejs": "1.3.1",
+    "@pdkit/core": "workspace:packages/@pdkit/core",
     "@qiwi/multi-semantic-release": "^3.17.1",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
