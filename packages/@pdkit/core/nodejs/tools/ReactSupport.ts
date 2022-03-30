@@ -9,6 +9,7 @@ import { TypeScriptJsxMode, TypescriptSupport } from "./TypescriptSupport";
 export interface ReactSupportProps {
   readonly enzyme?: boolean;
   readonly testingLibrary?: boolean;
+  readonly rewire?: boolean;
 }
 
 export class ReactSupport extends XConstruct {
@@ -90,14 +91,22 @@ export class ReactSupport extends XConstruct {
         jsx: TypeScriptJsxMode.REACT_JSX,
       },
     });
-    new GitIgnore(this, ["build/*", "!react-app-env.d.ts"]);
-    new NpmIgnore(this, ["build/*", "!react-app-env.d.ts"]);
+    new GitIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
+    new NpmIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
+
+    let reactScriptsCommand = "react-scripts";
+
+    if (props?.rewire) {
+      new PackageDependency(this, "react-app-rewired", { type: PackageDependencyType.DEV });
+      new PackageDependency(this, "customize-cra", { type: PackageDependencyType.DEV });
+      new GitIgnore(this, ["config-overrides.js"]);
+    }
 
     new ManifestEntry(this, "ReactScripts", {
       scripts: {
-        start: "npx react-scripts start",
-        build: "npx react-scripts build",
-        test: "npx react-scripts test",
+        start: `npx ${reactScriptsCommand} start`,
+        build: `npx ${reactScriptsCommand} build`,
+        test: `npx ${reactScriptsCommand} test`,
         compile: undefined as any,
       },
       browserslist: {
