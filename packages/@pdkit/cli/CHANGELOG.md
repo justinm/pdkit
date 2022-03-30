@@ -1,3 +1,13 @@
+## @pdkit/cli [1.5.8](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.7...@pdkit/cli@1.5.8) (2022-03-30)
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.0.6
+
 ## @pdkit/cli [1.5.7](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.6...@pdkit/cli@1.5.7) (2022-03-29)
 
 
