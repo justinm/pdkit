@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.12](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.11...@pdkit/core@2.0.12) (2022-03-30)
+
+
+### Bug Fixes
+
+* call craco via yarn vs npx ([3c5711c](https://github.com/justinm/pdkit/commit/3c5711c68ef65ba76762040ea6fd58a5ba6a58dc))
+
 ## @pdkit/core [2.0.11](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.10...@pdkit/core@2.0.11) (2022-03-30)
 
 
