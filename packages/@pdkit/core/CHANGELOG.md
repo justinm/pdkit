@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.7](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.6...@pdkit/core@2.0.7) (2022-03-30)
+
+
+### Bug Fixes
+
+* parentProject not returning the actual parent and only autoLib on the root project ([d49a19c](https://github.com/justinm/pdkit/commit/d49a19c679952f73d1def4b832f5637d2d873094))
+
 ## @pdkit/core [2.0.6](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.5...@pdkit/core@2.0.6) (2022-03-30)
 
 
