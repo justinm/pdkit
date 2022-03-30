@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.11](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.10...@pdkit/core@2.0.11) (2022-03-30)
+
+
+### Bug Fixes
+
+* support craco ([bc104d8](https://github.com/justinm/pdkit/commit/bc104d8c585f1b885428a26983316ea889e95b59))
+
 ## @pdkit/core [2.0.10](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.9...@pdkit/core@2.0.10) (2022-03-30)
 
 
