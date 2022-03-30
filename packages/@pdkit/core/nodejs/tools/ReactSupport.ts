@@ -104,7 +104,7 @@ export class ReactSupport extends XConstruct {
       reactScriptsCommand = "react-app-rewired";
     }
 
-    if (props?.rewire) {
+    if (props?.craco) {
       new PackageDependency(this, "@craco/craco", { type: PackageDependencyType.DEV });
       new GitIgnore(this, ["!craco.config.ts", "!craco.config.js", "!.cracorc.ts", "!.cracorc.js", "!.cracorc"]);
       reactScriptsCommand = "craco";
