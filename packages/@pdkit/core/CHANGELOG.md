@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.6](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.5...@pdkit/core@2.0.6) (2022-03-30)
+
+
+### Bug Fixes
+
+* react not honoring project source path ([be78634](https://github.com/justinm/pdkit/commit/be78634e80b990541db8838c3999de11fe1e09d3))
+
 ## @pdkit/core [2.0.5](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.4...@pdkit/core@2.0.5) (2022-03-29)
 
 
