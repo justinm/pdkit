@@ -10,6 +10,7 @@ export interface ReactSupportProps {
   readonly enzyme?: boolean;
   readonly testingLibrary?: boolean;
   readonly rewire?: boolean;
+  readonly craco?: boolean;
 }
 
 export class ReactSupport extends XConstruct {
@@ -101,6 +102,12 @@ export class ReactSupport extends XConstruct {
       new PackageDependency(this, "customize-cra", { type: PackageDependencyType.DEV });
       new GitIgnore(this, ["!config-overrides.js"]);
       reactScriptsCommand = "react-app-rewired";
+    }
+
+    if (props?.rewire) {
+      new PackageDependency(this, "@craco/craco", { type: PackageDependencyType.DEV });
+      new GitIgnore(this, ["!craco.config.ts", "!craco.config.js", "!.cracorc.ts", "!.cracorc.js", "!.cracorc"]);
+      reactScriptsCommand = "craco";
     }
 
     new ManifestEntry(this, "ReactScripts", {
