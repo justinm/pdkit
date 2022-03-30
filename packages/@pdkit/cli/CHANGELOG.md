@@ -1,3 +1,18 @@
+## @pdkit/cli [1.5.12](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.11...@pdkit/cli@1.5.12) (2022-03-30)
+
+
+### Bug Fixes
+
+* add typescript dependency for cli ([79b188a](https://github.com/justinm/pdkit/commit/79b188af0675beb4a3de0d0503ca9cde6984696f))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.0.10
+
 ## @pdkit/cli [1.5.11](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.10...@pdkit/cli@1.5.11) (2022-03-30)
 
 
