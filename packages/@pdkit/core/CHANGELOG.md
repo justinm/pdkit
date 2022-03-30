@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.13](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.12...@pdkit/core@2.0.13) (2022-03-30)
+
+
+### Bug Fixes
+
+* browserslist format and ensure scripts are maintained via ReactProject wrappers ([e16fd2f](https://github.com/justinm/pdkit/commit/e16fd2f5d8bf3bd8f43d8f93d5f598e5f3da584f))
+
 ## @pdkit/core [2.0.12](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.11...@pdkit/core@2.0.12) (2022-03-30)
 
 
