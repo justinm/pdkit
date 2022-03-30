@@ -1,3 +1,4 @@
+import path from "path";
 import { Construct } from "constructs";
 import { GitIgnore, ManifestEntry, Project, XConstruct } from "../../core";
 import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
@@ -29,10 +30,11 @@ export class ReactSupport extends XConstruct {
     super(scope, ReactSupport.ID);
 
     const typescriptSupport = TypescriptSupport.tryOf(this);
+    const project = Project.of(this);
 
     new PackageDependency(this, "react");
     new PackageDependency(this, "react-dom");
-    new PackageDependency(this, "react-scripts");
+    new PackageDependency(this, "react-scripts", { type: PackageDependencyType.DEV });
 
     if (typescriptSupport) {
       new PackageDependency(this, "@types/react", {
@@ -77,9 +79,8 @@ export class ReactSupport extends XConstruct {
         },
       });
     }
-
     typescriptSupport?.file.addDeepFields({
-      include: ["src/*.ts", "src/**/*.ts", "src/*.tsx", "src/**/*.tsx"],
+      include: [path.join(project.sourcePath, "*.tsx"), path.join(project.sourcePath, "**/*.tsx")],
       compilerOptions: {
         lib: ["dom", "dom.iterable", "esnext"],
         module: "commonjs",

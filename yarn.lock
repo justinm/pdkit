@@ -956,7 +956,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
   dependencies:
-    "@pdkit/core": 2.0.4
+    "@pdkit/core": 2.0.5
     "@types/diff": 5.0.2
     "@types/glob": 7.2.0
     "@types/jest": 27.4.1
@@ -991,13 +991,13 @@ __metadata:
     typescript: 4.6.3
     yargs: 17.4.0
   peerDependencies:
-    "@pdkit/core": 2.0.4
+    "@pdkit/core": 2.0.5
   bin:
     pdkit: index.ts
   languageName: unknown
   linkType: soft
 
-"@pdkit/core@2.0.4, @pdkit/core@workspace:packages/@pdkit/core":
+"@pdkit/core@2.0.5, @pdkit/core@workspace:packages/@pdkit/core":
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
@@ -3546,9 +3546,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.84":
-  version: 1.4.99
-  resolution: "electron-to-chromium@npm:1.4.99"
-  checksum: 7efb73368db78b55bc1c9563364f69f2715f085ac2a0e9b8dab0f319025fbd6464e0eaf47eb5e447f1d4e76f9de919bec5e338bf87443ad8dcb34b2829fc82b7
+  version: 1.4.100
+  resolution: "electron-to-chromium@npm:1.4.100"
+  checksum: d1a7e993421f3f693d0dce29f3f758cec293723e035fcdb2899b7ec0a6897292003232f0dc934324f2349d1e63d5c711d8137c20c7ff0b541fc8b9bac209380d
   languageName: node
   linkType: hard
 
@@ -6815,9 +6815,9 @@ __metadata:
   linkType: hard
 
 "lru-cache@npm:^7.7.1":
-  version: 7.7.1
-  resolution: "lru-cache@npm:7.7.1"
-  checksum: f362c5a2cfa8ad6fe557ec43dc1b7a9695cce84a5652a43ff813609f782f5da576631e7dfad41878bf19a7a69438f38375178635ee80de269aa314280ca2f59e
+  version: 7.7.2
+  resolution: "lru-cache@npm:7.7.2"
+  checksum: 1aaad83fcffeeed2e08d5b47862e22abe9a2aa065d4e333a0e1944f4125f11acc7a950374ab53a68e61c6188b300f8b4bc59a5f4798d0ca3c9a67b33ea185433
   languageName: node
   linkType: hard
 
