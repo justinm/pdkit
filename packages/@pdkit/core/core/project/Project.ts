@@ -100,8 +100,12 @@ export abstract class Project extends XConstruct implements IProject {
     });
   }
 
+  get isDefaultProject() {
+    return !Project.tryOf(this.node.scope) || Project.tryOf(this.node.scope) === this;
+  }
+
   get parentProject() {
-    return Project.of(this);
+    return Project.of(this.node.scope);
   }
 
   get projects(): Project[] {
