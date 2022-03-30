@@ -100,6 +100,7 @@ export class ReactSupport extends XConstruct {
       new PackageDependency(this, "react-app-rewired", { type: PackageDependencyType.DEV });
       new PackageDependency(this, "customize-cra", { type: PackageDependencyType.DEV });
       new GitIgnore(this, ["config-overrides.js"]);
+      reactScriptsCommand = "react-app-rewired";
     }
 
     new ManifestEntry(this, "ReactScripts", {
