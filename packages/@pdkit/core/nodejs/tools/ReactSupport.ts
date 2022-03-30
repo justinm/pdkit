@@ -95,26 +95,26 @@ export class ReactSupport extends XConstruct {
     new GitIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
     new NpmIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
 
-    let reactScriptsCommand = "react-scripts";
+    let reactScriptsCommand = "npx react-scripts";
 
     if (props?.rewire) {
       new PackageDependency(this, "react-app-rewired", { type: PackageDependencyType.DEV });
       new PackageDependency(this, "customize-cra", { type: PackageDependencyType.DEV });
       new GitIgnore(this, ["!config-overrides.js"]);
-      reactScriptsCommand = "react-app-rewired";
+      reactScriptsCommand = "npx react-app-rewired";
     }
 
     if (props?.craco) {
       new PackageDependency(this, "@craco/craco", { type: PackageDependencyType.DEV });
       new GitIgnore(this, ["!craco.config.ts", "!craco.config.js", "!.cracorc.ts", "!.cracorc.js", "!.cracorc"]);
-      reactScriptsCommand = "craco";
+      reactScriptsCommand = "yarn craco";
     }
 
     new ManifestEntry(this, "ReactScripts", {
       scripts: {
-        start: `npx ${reactScriptsCommand} start`,
-        build: `npx ${reactScriptsCommand} build`,
-        test: `npx ${reactScriptsCommand} test`,
+        start: `${reactScriptsCommand} start`,
+        build: `${reactScriptsCommand} build`,
+        test: `${reactScriptsCommand} test`,
         compile: undefined as any,
       },
       browserslist: {
