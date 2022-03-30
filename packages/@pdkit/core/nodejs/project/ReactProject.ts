@@ -1,4 +1,4 @@
-import { XConstruct } from "../../core";
+import { ManifestEntry, XConstruct } from "../../core";
 import { ReactSupport, ReactSupportProps } from "../tools/ReactSupport";
 import { NodeProject, NodeProjectProps } from "./NodeProject";
 
@@ -9,5 +9,9 @@ export class ReactProject extends NodeProject {
     super(scope, id, props);
 
     new ReactSupport(this, props);
+
+    if (props?.scripts) {
+      new ManifestEntry(this, "ReactEnsureScripts", { scripts: props.scripts });
+    }
   }
 }

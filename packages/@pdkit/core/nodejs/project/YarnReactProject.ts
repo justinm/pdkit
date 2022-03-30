@@ -1,4 +1,4 @@
-import { XConstruct } from "../../core";
+import { ManifestEntry, XConstruct } from "../../core";
 import { ReactSupport, ReactSupportProps } from "../tools/ReactSupport";
 import { YarnProject, YarnProjectProps } from "./YarnProject";
 
@@ -9,5 +9,9 @@ export class YarnReactProject extends YarnProject {
     super(scope, id, props);
 
     new ReactSupport(this, props);
+
+    if (props?.scripts) {
+      new ManifestEntry(this, "YarnReactEnsureScripts", { scripts: props.scripts });
+    }
   }
 }
