@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.8](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.7...@pdkit/core@2.0.8) (2022-03-30)
+
+
+### Bug Fixes
+
+* add support for react-app-rewired and customize-cra ([2de9898](https://github.com/justinm/pdkit/commit/2de9898c7e5043f0d7fdb2e04271c3e06df3ff87))
+
 ## @pdkit/core [2.0.7](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.6...@pdkit/core@2.0.7) (2022-03-30)
 
 
