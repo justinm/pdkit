@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.9](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.8...@pdkit/core@2.0.9) (2022-03-30)
+
+
+### Bug Fixes
+
+* override cra when rewiring ([4779cca](https://github.com/justinm/pdkit/commit/4779cca490ec876211ef9dae384b4cba8bf89f3c))
+
 ## @pdkit/core [2.0.8](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.7...@pdkit/core@2.0.8) (2022-03-30)
 
 
