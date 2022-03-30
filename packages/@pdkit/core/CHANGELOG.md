@@ -1,3 +1,11 @@
+## @pdkit/core [2.0.10](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.9...@pdkit/core@2.0.10) (2022-03-30)
+
+
+### Bug Fixes
+
+* gitignore for config-overrides.js ([980b5be](https://github.com/justinm/pdkit/commit/980b5be326dea7df5dbeb219f78e5131e343632a))
+* support craco ([e79975d](https://github.com/justinm/pdkit/commit/e79975d8ce6c42ef7698f11ab343497a4e0e9691))
+
 ## @pdkit/core [2.0.9](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.8...@pdkit/core@2.0.9) (2022-03-30)
 
 
