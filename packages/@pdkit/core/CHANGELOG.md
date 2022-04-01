@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.14](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.13...@pdkit/core@2.0.14) (2022-04-01)
+
+
+### Bug Fixes
+
+* eslint and jest support fixes ([c15409d](https://github.com/justinm/pdkit/commit/c15409db1a981f3328a281dcad5f9664e8d35802))
+
 ## @pdkit/core [2.0.13](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.12...@pdkit/core@2.0.13) (2022-03-30)
 
 
