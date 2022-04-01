@@ -58,6 +58,7 @@ export interface EslintProps {
 
   readonly plugins?: string[];
   readonly extends?: string[];
+  readonly rules?: Record<string, unknown>;
 }
 
 export class EslintSupport extends XConstruct {
@@ -73,7 +74,7 @@ export class EslintSupport extends XConstruct {
     return Project.of(construct).tryFindDeepChild(EslintSupport);
   }
 
-  public rules: Record<string, unknown> = {};
+  public readonly rules: Record<string, unknown> = {};
   public readonly plugins: string[] = [];
   public readonly extends: string[] = [];
   public readonly devdirs: string[] = [];
@@ -201,7 +202,7 @@ export class EslintSupport extends XConstruct {
           "error",
           {
             // Only allow importing devDependencies from "devdirs".
-            devDependencies: Array.from(new Set((this.devdirs ?? []).map((dir) => `**/${dir}/**`))),
+            devDependencies: Array.from(new Set(this.devdirs ?? [])),
             optionalDependencies: false, // Disallow importing optional dependencies (those shouldn't be in use in the project)
             peerDependencies: true, // Allow importing peer dependencies (that aren't also direct dependencies)
           },
@@ -273,7 +274,7 @@ export class EslintSupport extends XConstruct {
           },
         },
         ignorePatterns: this.ignorePatterns,
-        rules: { ...this.rules, ...standardRules },
+        rules: { ...this.rules, ...standardRules, ...props.rules },
         overrides: [
           {
             files: [PDKIT_CONFIG_FILE],

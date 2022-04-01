@@ -619,7 +619,16 @@ export class JestSupport extends XConstruct {
     this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
       if (TypescriptSupport.hasSupport(this)) {
         new PackageDependency(this, "ts-jest", { type: PackageDependencyType.DEV });
-        new ManifestEntry(this, "TsJest", { jest: { preset: "ts-jest" } });
+        new ManifestEntry(this, "TsJest", {
+          jest: {
+            preset: "ts-jest",
+            globals: {
+              "ts-jest": {
+                tsconfig: "tsconfig.json",
+              },
+            },
+          },
+        });
       }
     });
   }
