@@ -1,7 +1,7 @@
-import { Workspace } from "../../../core";
+import { Project } from "../../../core";
 import { GithubSupport, GithubSupportProps } from "../../constructs/GithubSupport";
-import { BuildJobProps } from "../../github/jobs/BuildJob";
-import { ReleaseJobProps } from "../../github/jobs/ReleaseJob";
+import { BuildWorkflowProps } from "../../github/workflows/BuildWorkflow";
+import { ReleaseWorkflowProps } from "../../github/workflows/ReleaseWorkflow";
 import { NpmReleaseStep } from "../npm/steps/NpmReleaseStep";
 import { YarnBuildStep } from "./steps/YarnBuildStep";
 import { YarnInstallStep } from "./steps/YarnInstallStep";
@@ -11,17 +11,17 @@ export interface YarnGithubSupportProps extends Omit<GithubSupportProps, "workfl
   readonly workflows: {
     readonly build: {
       readonly enabled: boolean;
-    } & Partial<Omit<BuildJobProps, "installStep" | "buildStep" | "codeCoverageStep" | "uploadArtifactStep">>;
+    } & Partial<Omit<BuildWorkflowProps, "installStep" | "buildStep" | "codeCoverageStep" | "uploadArtifactStep">>;
     readonly release: {
       readonly enabled: boolean;
       readonly branches: string[];
-    } & Partial<Omit<ReleaseJobProps, "installStep" | "releaseStep">>;
+    } & Partial<Omit<ReleaseWorkflowProps, "installStep" | "releaseStep">>;
   };
 }
 
 export class YarnGithubSupport extends GithubSupport {
   public static readonly ID = "GithubSupport";
-  constructor(scope: Workspace, props: YarnGithubSupportProps) {
+  constructor(scope: Project, props: YarnGithubSupportProps) {
     super(scope, YarnGithubSupport.ID, {
       ...props,
       workflows: {

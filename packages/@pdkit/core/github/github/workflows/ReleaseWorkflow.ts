@@ -2,9 +2,8 @@ import { XConstruct } from "../../../core";
 import { GithubWorkflow, GithubWorkflowProps } from "../../constructs/GithubWorkflow";
 import { ReleaseJob, ReleaseJobProps } from "../jobs/ReleaseJob";
 
-export interface ReleaseWorkflowProps extends GithubWorkflowProps {
+export interface ReleaseWorkflowProps extends GithubWorkflowProps, ReleaseJobProps {
   branches: string[];
-  release: ReleaseJobProps;
 }
 
 export class ReleaseWorkflow extends GithubWorkflow {
@@ -19,6 +18,6 @@ export class ReleaseWorkflow extends GithubWorkflow {
       ...props,
     });
 
-    new ReleaseJob(this, "release", { priority: 10, ...props.release });
+    new ReleaseJob(this, "release", { priority: 10, ...props });
   }
 }

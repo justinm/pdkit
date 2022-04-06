@@ -1,13 +1,10 @@
-import { Workspace, File, XConstruct } from "../../core";
-import { PackageDependency, PackageDependencyType } from "../../nodejs";
-import { BuildJobProps } from "../github/jobs/BuildJob";
-import { ReleaseJobProps } from "../github/jobs/ReleaseJob";
-import { BuildWorkflow } from "../github/workflows/BuildWorkflow";
+import { File, XConstruct, Project } from "../../core";
+import { BuildWorkflow, BuildWorkflowProps } from "../github/workflows/BuildWorkflow";
 import {
   SemanticPullRequestLintWorkflowProps,
   PullRequestLintWorkflow,
 } from "../github/workflows/PullRequestLintWorkflow";
-import { ReleaseWorkflow } from "../github/workflows/ReleaseWorkflow";
+import { ReleaseWorkflow, ReleaseWorkflowProps } from "../github/workflows/ReleaseWorkflow";
 
 export interface GithubSupportProps {
   readonly pullRequestLint?: Omit<SemanticPullRequestLintWorkflowProps, "runsOn">;
@@ -15,21 +12,17 @@ export interface GithubSupportProps {
   readonly workflows?: {
     readonly build?: {
       readonly enabled: boolean;
-    } & BuildJobProps;
+    } & BuildWorkflowProps;
     readonly release?: {
       readonly branches: string[];
       readonly enabled: boolean;
-    } & ReleaseJobProps;
+    } & ReleaseWorkflowProps;
   };
 }
 
 export class GithubSupport extends XConstruct {
-  constructor(scope: Workspace, id: string, props?: GithubSupportProps) {
+  constructor(scope: Project, id: string, props?: GithubSupportProps) {
     super(scope, id);
-
-    new PackageDependency(this, "@pdkit/github", {
-      type: PackageDependencyType.DEV,
-    });
 
     if (props?.pullRequestLint) {
       new PullRequestLintWorkflow(this, "pull-request-lint", props?.pullRequestLint);
@@ -40,14 +33,11 @@ export class GithubSupport extends XConstruct {
     }
 
     if (props?.workflows?.build?.enabled) {
-      new BuildWorkflow(this, "build-workflow", { build: props.workflows.build });
+      new BuildWorkflow(this, "build-workflow", props.workflows.build);
     }
 
     if (props?.workflows?.release?.enabled) {
-      new ReleaseWorkflow(this, "release-workflow", {
-        branches: props?.workflows.release.branches,
-        release: props.workflows.release,
-      });
+      new ReleaseWorkflow(this, "release-workflow", props.workflows.release);
     }
   }
 }

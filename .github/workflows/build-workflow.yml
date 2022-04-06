@@ -54,3 +54,15 @@ jobs:
 
           exit 1
         id: FailOnMutation
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        id: Checkout
+      - name: Report
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        id: Download

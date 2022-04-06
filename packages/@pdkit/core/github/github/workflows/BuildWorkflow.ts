@@ -1,9 +1,10 @@
 import { XConstruct } from "../../../core";
 import { GithubWorkflow, GithubWorkflowProps } from "../../constructs/GithubWorkflow";
 import { BuildJob, BuildJobProps } from "../jobs/BuildJob";
+import { JestCoverageJob, JestCoverageJobProps } from "../jobs/JestCoverageJob";
 
-export interface BuildWorkflowProps extends GithubWorkflowProps {
-  build: BuildJobProps;
+export interface BuildWorkflowProps extends GithubWorkflowProps, BuildJobProps {
+  coverage?: { enabled: boolean } & JestCoverageJobProps;
 }
 
 export class BuildWorkflow extends GithubWorkflow {
@@ -16,6 +17,10 @@ export class BuildWorkflow extends GithubWorkflow {
       ...props,
     });
 
-    new BuildJob(this, "build", props.build);
+    new BuildJob(this, "build", props);
+
+    if (props.coverage?.enabled) {
+      new JestCoverageJob(this, "coverage", props.coverage);
+    }
   }
 }

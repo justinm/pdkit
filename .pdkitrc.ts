@@ -1,5 +1,4 @@
 import { SemanticReleaseSupport, YarnMonoWorkspace, YarnProject } from "@pdkit/core/nodejs";
-import { YarnGithubSupport } from "@pdkit/core/github";
 import { ManifestEntry, Project } from "@pdkit/core";
 
 const workspace = new YarnMonoWorkspace("pdkit", {
@@ -36,30 +35,32 @@ const workspace = new YarnMonoWorkspace("pdkit", {
     enabled: true,
   },
   gitignore: [".idea", ".js", ".d.ts"],
+  github: {
+    registryUrl: "https://registry.npmjs.org/",
+    pullRequestLint: {
+      enabled: true,
+    },
+    workflows: {
+      build: {
+        enabled: true,
+        failOnMutation: true,
+        commitMutations: false,
+        coverage: {
+          enabled: true,
+        },
+      },
+      release: {
+        branches: ["main"],
+        enabled: true,
+      },
+    },
+  },
 });
 
 new ManifestEntry(Project.of(workspace), "CustomResolutions", {
   resolutions: {
     "chalk": "^4.1.2",
   }
-});
-
-new YarnGithubSupport(workspace, {
-  registryUrl: "https://registry.npmjs.org/",
-  pullRequestLint: {
-    enabled: true,
-  },
-  workflows: {
-    build: {
-      enabled: true,
-      failOnMutation: true,
-      commitMutations: false,
-    },
-    release: {
-      branches: ["main"],
-      enabled: true,
-    },
-  },
 });
 
 new SemanticReleaseSupport(workspace, {

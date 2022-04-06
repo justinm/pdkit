@@ -1,11 +1,11 @@
 import { LifeCycle, ManifestEntry, Project, XConstruct } from "../../core";
-import { NodeProject, NodeProjectProps } from "./NodeProject";
+import { NodeProject } from "./NodeProject";
 import { NodeWorkspaceProps } from "./NodeWorkspace";
-import { YarnProject } from "./YarnProject";
+import { YarnProject, YarnProjectProps } from "./YarnProject";
 import { YarnWorkspace } from "./YarnWorkspace";
 
 export interface YarnMonoWorkspaceProps
-  extends Omit<NodeProjectProps, "packageName" | "projectPath">,
+  extends Omit<YarnProjectProps, "packageName" | "projectPath">,
     NodeWorkspaceProps {}
 
 /**

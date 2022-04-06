@@ -11,6 +11,7 @@ import {
   Workspace,
   XConstruct,
 } from "../../core";
+import { GithubSupport, GithubSupportProps } from "../../github";
 import {
   Author,
   AuthorProps,
@@ -54,6 +55,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly packageManagerType?: PackageManagerType;
   readonly packageJsonProps?: Partial<NodePackageJsonProps> & Record<string, unknown>;
   readonly disableAutoLib?: boolean;
+  readonly github?: GithubSupportProps;
 }
 
 export class NodeProject extends Project {
@@ -101,6 +103,10 @@ export class NodeProject extends Project {
 
     if (props?.yalc) {
       new YalcSupport(this);
+    }
+
+    if (props?.github) {
+      new GithubSupport(this, "Github", props.github);
     }
 
     // Courtesy of https://www.toptal.com/developers/gitignore/api/node
