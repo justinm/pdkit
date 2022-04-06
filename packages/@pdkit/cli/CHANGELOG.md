@@ -1,3 +1,18 @@
+## @pdkit/cli [1.5.17](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.16...@pdkit/cli@1.5.17) (2022-04-06)
+
+
+### Bug Fixes
+
+* embed github into projects for single point of entry ([a0f8aee](https://github.com/justinm/pdkit/commit/a0f8aee87889480a2a4beef256aabf41788a7eb4))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.0.15
+
 ## @pdkit/cli [1.5.16](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.15...@pdkit/cli@1.5.16) (2022-04-01)
 
 
