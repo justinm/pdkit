@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.15](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.14...@pdkit/core@2.0.15) (2022-04-06)
+
+
+### Bug Fixes
+
+* embed github into projects for single point of entry ([a0f8aee](https://github.com/justinm/pdkit/commit/a0f8aee87889480a2a4beef256aabf41788a7eb4))
+
 ## @pdkit/core [2.0.14](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.13...@pdkit/core@2.0.14) (2022-04-01)
 
 
