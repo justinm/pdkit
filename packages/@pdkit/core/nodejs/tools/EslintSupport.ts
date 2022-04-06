@@ -89,8 +89,8 @@ export class EslintSupport extends XConstruct {
 
     this.devdirs = props.devdirs ?? [];
     this.tsconfig = props.tsconfigPath ?? undefined;
-    this.plugins = props.plugins ?? ["@typescript-eslint", "import"];
-    this.extends = props.extends ?? ["plugin:import/typescript"];
+    this.plugins = props.plugins ?? ["@typescript-eslint"];
+    this.extends = props.extends ?? [];
     this.aliasMap = props.aliasMap;
     this.aliasExtensions = props.aliasExtensions;
     this.tsAlwaysTryTypes = props.tsAlwaysTryTypes;
