@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.17](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.16...@pdkit/core@2.0.17) (2022-04-06)
+
+
+### Bug Fixes
+
+* do not auto-add import plugin when enabling eslint ([c21b9b4](https://github.com/justinm/pdkit/commit/c21b9b46aed4ee9674689516f82f9934897c63bc))
+
 ## @pdkit/core [2.0.16](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.15...@pdkit/core@2.0.16) (2022-04-06)
 
 
