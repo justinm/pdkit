@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.16](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.15...@pdkit/core@2.0.16) (2022-04-06)
+
+
+### Bug Fixes
+
+* coverage github task requires write privs ([7818b0d](https://github.com/justinm/pdkit/commit/7818b0d3a4876b4cb16be007a2fb5e1ed019429c))
+
 ## @pdkit/core [2.0.15](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.14...@pdkit/core@2.0.15) (2022-04-06)
 
 
