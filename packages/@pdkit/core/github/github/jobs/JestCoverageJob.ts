@@ -13,7 +13,7 @@ export class JestCoverageJob extends GithubJob {
     super(scope, id, {
       name: "Coverage",
       permissions: {
-        contents: JobPermission.READ,
+        contents: JobPermission.WRITE,
       },
       runsOn: ["ubuntu-latest"],
       ...props?.job,
