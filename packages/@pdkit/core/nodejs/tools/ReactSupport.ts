@@ -90,6 +90,7 @@ export class ReactSupport extends XConstruct {
         declaration: false,
         target: "es5",
         jsx: TypeScriptJsxMode.REACT_JSX,
+        skipLibCheck: true,
       },
     });
     new GitIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
@@ -115,6 +116,8 @@ export class ReactSupport extends XConstruct {
         start: `${reactScriptsCommand} start`,
         build: `${reactScriptsCommand} build`,
         test: `${reactScriptsCommand} test`,
+        clean:
+          'find . -name "*.js" -not -path "./node_modules/*" -not -name config-overrides.js -not -name setupProxy.js -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
       },
       browserslist: [">0.2%", "not dead", "not op_mini all"],
     });
