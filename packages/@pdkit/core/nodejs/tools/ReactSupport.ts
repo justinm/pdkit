@@ -91,6 +91,7 @@ export class ReactSupport extends XConstruct {
         target: "es5",
         jsx: TypeScriptJsxMode.REACT_JSX,
         skipLibCheck: true,
+        ...(typescriptSupport?.file.fields.compilerOptions as object),
       },
     });
     new GitIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
