@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.18](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.17...@pdkit/core@2.0.18) (2022-04-11)
+
+
+### Bug Fixes
+
+* skipLibCheck and prevent cleaning of needed react .js files ([c8d03f7](https://github.com/justinm/pdkit/commit/c8d03f7b493cece544ff64b2ecfb08d0b855209e))
+
 ## @pdkit/core [2.0.17](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.16...@pdkit/core@2.0.17) (2022-04-06)
 
 
