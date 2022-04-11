@@ -4,13 +4,14 @@ import { GitIgnore, ManifestEntry, Project, XConstruct } from "../../core";
 import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
 import { EslintSupport } from "./EslintSupport";
 import { JestSupport } from "./JestSupport";
-import { TypeScriptJsxMode, TypescriptSupport } from "./TypescriptSupport";
+import { TypeScriptJsxMode, TypescriptSupport, TypescriptSupportProps } from "./TypescriptSupport";
 
 export interface ReactSupportProps {
   readonly enzyme?: boolean;
   readonly testingLibrary?: boolean;
   readonly rewire?: boolean;
   readonly craco?: boolean;
+  readonly tsconfig?: TypescriptSupportProps & { enabled: boolean };
 }
 
 export class ReactSupport extends XConstruct {
@@ -81,6 +82,7 @@ export class ReactSupport extends XConstruct {
         },
       });
     }
+
     typescriptSupport?.file.addDeepFields({
       include: [path.join(project.sourcePath, "*.tsx"), path.join(project.sourcePath, "**/*.tsx")],
       compilerOptions: {
@@ -88,10 +90,10 @@ export class ReactSupport extends XConstruct {
         module: "commonjs",
         noEmit: true,
         declaration: false,
-        target: "es5",
+        target: "ES5",
         jsx: TypeScriptJsxMode.REACT_JSX,
         skipLibCheck: true,
-        ...(typescriptSupport?.file.fields.compilerOptions as object),
+        ...props?.tsconfig?.compilerOptions,
       },
     });
     new GitIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
