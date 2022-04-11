@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.19](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.18...@pdkit/core@2.0.19) (2022-04-11)
+
+
+### Bug Fixes
+
+* project ts overrides should be priority over react ts overrides ([fbc31e8](https://github.com/justinm/pdkit/commit/fbc31e8a7f6a049039a726dcd24db4438c27fb79))
+
 ## @pdkit/core [2.0.18](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.17...@pdkit/core@2.0.18) (2022-04-11)
 
 
