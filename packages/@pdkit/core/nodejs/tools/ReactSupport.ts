@@ -11,6 +11,8 @@ export interface ReactSupportProps {
   readonly testingLibrary?: boolean;
   readonly rewire?: boolean;
   readonly craco?: boolean;
+  readonly reactVersion?: string;
+  readonly reactScriptsVersion?: string;
   readonly tsconfig?: TypescriptSupportProps & { enabled: boolean };
 }
 
@@ -35,9 +37,12 @@ export class ReactSupport extends XConstruct {
     const typescriptSupport = TypescriptSupport.tryOf(this);
     const project = Project.of(this);
 
-    new PackageDependency(this, "react");
-    new PackageDependency(this, "react-dom");
-    new PackageDependency(this, "react-scripts", { type: PackageDependencyType.DEV });
+    new PackageDependency(this, "react", { version: props?.reactVersion ?? "^18" });
+    new PackageDependency(this, "react-dom", { version: props?.reactVersion ?? "^18" });
+    new PackageDependency(this, "react-scripts", {
+      type: PackageDependencyType.DEV,
+      version: props?.reactScriptsVersion ?? "^5",
+    });
 
     if (typescriptSupport) {
       new PackageDependency(this, "@types/react", {
