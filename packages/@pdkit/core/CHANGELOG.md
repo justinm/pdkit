@@ -1,3 +1,10 @@
+## @pdkit/core [2.0.21](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.20...@pdkit/core@2.0.21) (2022-04-12)
+
+
+### Bug Fixes
+
+* allow specifying react and react-scripts version ([57f68ab](https://github.com/justinm/pdkit/commit/57f68abe90fc7d229b471498b7cbe7a923a0ce85))
+
 ## @pdkit/core [2.0.20](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.19...@pdkit/core@2.0.20) (2022-04-11)
 
 
