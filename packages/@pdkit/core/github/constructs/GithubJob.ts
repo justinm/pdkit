@@ -427,7 +427,7 @@ export class GithubJob extends XConstruct {
   }
 
   get content(): Omit<GithubJobProps, "outputs" | "runsOn" | "priority"> & {
-    outputs: Record<string, string> | undefined;
+    "outputs": Record<string, string> | undefined;
     "runs-on": string | string[] | undefined;
     "timeout-minutes": number | undefined;
     "continue-on-error": boolean | undefined;
@@ -438,22 +438,22 @@ export class GithubJob extends XConstruct {
       .map((b) => (b as GithubJobStep).content);
 
     return {
-      name: this.props.name,
-      needs: this.props.needs,
+      "name": this.props.name,
+      "needs": this.props.needs,
       "runs-on": arrayOrScalar(this.props.runsOn),
-      permissions: kebabCaseKeys(this.props.permissions),
-      environment: this.props.environment,
-      concurrency: this.props.concurrency,
-      outputs: this.renderJobOutputs(),
-      env: this.props.env,
-      defaults: kebabCaseKeys(this.props.defaults),
-      if: this.props.if,
+      "permissions": kebabCaseKeys(this.props.permissions),
+      "environment": this.props.environment,
+      "concurrency": this.props.concurrency,
+      "outputs": this.renderJobOutputs(),
+      "env": this.props.env,
+      "defaults": kebabCaseKeys(this.props.defaults),
+      "if": this.props.if,
       steps,
       "timeout-minutes": this.props.timeoutMinutes,
-      strategy: this.renderJobStrategy(),
+      "strategy": this.renderJobStrategy(),
       "continue-on-error": this.props.continueOnError,
-      container: this.props.container,
-      services: this.props.services,
+      "container": this.props.container,
+      "services": this.props.services,
     };
   }
 

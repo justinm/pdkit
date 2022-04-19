@@ -47,9 +47,11 @@ export class ReactSupport extends XConstruct {
     if (typescriptSupport) {
       new PackageDependency(this, "@types/react", {
         type: PackageDependencyType.DEV,
+        version: props?.reactVersion ?? "^18",
       });
       new PackageDependency(this, "@types/react-dom", {
         type: PackageDependencyType.DEV,
+        version: props?.reactVersion ?? "^18",
       });
     }
 
@@ -80,12 +82,15 @@ export class ReactSupport extends XConstruct {
       });
     }
 
-    if (EslintSupport.hasSupport(this)) {
+    const eslintSupport = EslintSupport.tryOf(this);
+    if (eslintSupport) {
       new ManifestEntry(this, "ReactEslintExtension", {
         eslintConfig: {
           extends: ["react-app", "react-app/jest"],
         },
       });
+
+      eslintSupport.fileExtensions.add("tsx");
     }
 
     typescriptSupport?.file.addDeepFields({

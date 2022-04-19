@@ -956,7 +956,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
   dependencies:
-    "@pdkit/core": 2.0.20
+    "@pdkit/core": 2.0.21
     "@types/diff": 5.0.2
     "@types/glob": 7.2.0
     "@types/jest": 27.4.1
@@ -965,8 +965,8 @@ __metadata:
     "@types/prompts": 2.4.0
     "@types/shell-escape": 0.2.0
     "@types/yargs": 17.0.10
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
+    "@typescript-eslint/eslint-plugin": 5.17.0
+    "@typescript-eslint/parser": 5.17.0
     chalk: ^4.1.2
     constructs: 10.0.97
     dependency-graph: 0.11.0
@@ -981,7 +981,6 @@ __metadata:
     glob-regex: 0.3.2
     jest: 27.5.1
     jest-junit: ^13
-    json-schema: 0.4.0
     ora: ^5.4.1
     prettier: 2.6.1
     prompts: 2.4.2
@@ -991,13 +990,13 @@ __metadata:
     typescript: 4.6.3
     yargs: 17.4.0
   peerDependencies:
-    "@pdkit/core": 2.0.20
+    "@pdkit/core": 2.0.21
   bin:
     pdkit: index.ts
   languageName: unknown
   linkType: soft
 
-"@pdkit/core@2.0.20, @pdkit/core@workspace:packages/@pdkit/core":
+"@pdkit/core@2.0.21, @pdkit/core@workspace:packages/@pdkit/core":
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
@@ -1007,8 +1006,8 @@ __metadata:
     "@types/node": 17.0.23
     "@types/object-hash": 2.2.1
     "@types/winston": 2.4.4
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
+    "@typescript-eslint/eslint-plugin": 5.17.0
+    "@typescript-eslint/parser": 5.17.0
     case: 1.6.3
     constructs: 10.0.97
     deepmerge: 4.2.2
@@ -1022,7 +1021,6 @@ __metadata:
     jest: 27.5.1
     jest-junit: ^13
     js-yaml: 4.1.0
-    json-schema: 0.4.0
     md5-file: 5.0.0
     memfs: 3.4.1
     mustache: 4.2.0
@@ -1649,7 +1647,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^5":
+"@typescript-eslint/eslint-plugin@npm:5.17.0":
   version: 5.17.0
   resolution: "@typescript-eslint/eslint-plugin@npm:5.17.0"
   dependencies:
@@ -1672,7 +1670,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5":
+"@typescript-eslint/parser@npm:5.17.0":
   version: 5.17.0
   resolution: "@typescript-eslint/parser@npm:5.17.0"
   dependencies:
@@ -10770,8 +10768,8 @@ __metadata:
     "@types/jest": 27.4.1
     "@types/mustache": 4.1.2
     "@types/node": 17.0.23
-    "@typescript-eslint/eslint-plugin": ^5
-    "@typescript-eslint/parser": ^5
+    "@typescript-eslint/eslint-plugin": 5.17.0
+    "@typescript-eslint/parser": 5.17.0
     conventional-changelog-conventionalcommits: 4.6.3
     eslint: 8.12.0
     eslint-config-prettier: 8.5.0
@@ -10781,7 +10779,6 @@ __metadata:
     eslint-plugin-prettier: 4.0.0
     jest: 27.5.1
     jest-junit: ^13
-    json-schema: 0.4.0
     mustache: 4.2.0
     prettier: 2.6.1
     semantic-release: ^17.4.6

@@ -1,14 +1,31 @@
 import { Construct } from "constructs";
 import { LifeCycle, ManifestEntry, PDKIT_CONFIG_FILE, Project, XConstruct } from "../../core";
 import { PackageDependency, PackageDependencyType } from "../constructs";
-import { EslintExtension } from "./EslintExtension";
+import { JestSupport } from "./JestSupport";
 import { TypescriptSupport } from "./TypescriptSupport";
 
 export interface EslintProps {
   /**
-   * Enable Prettier support
+   * Install Eslint for the project. Defaults to true
+   */
+  readonly install?: boolean;
+
+  /**
+   * Install eslint dependencies (i.e. plugins and configs) for the project. Defaults to true
+   */
+  readonly installDependencies?: boolean;
+
+  /**
+   * Enable Prettier
    */
   readonly prettier?: boolean;
+
+  /**
+   * Require double quotes when possible vs single quotes. Defaults to true.
+   */
+  readonly doubleQuotes?: boolean;
+
+  readonly lineWidth?: number;
 
   /**
    * Path to `tsconfig.json` which should be used by eslint.
@@ -17,11 +34,11 @@ export interface EslintProps {
   readonly tsconfigPath?: string;
 
   /**
-   * Directories with source files that include tests and build tools. These
+   * Patterns with source files that include tests and build tools. These
    * sources are linted but may also import packages from `devDependencies`.
    * @default []
    */
-  readonly devdirs?: string[];
+  readonly devSourcePatterns?: string[];
 
   /**
    * File types that should be linted (e.g. [ "js", "ts" ])
@@ -56,7 +73,7 @@ export interface EslintProps {
    */
   readonly tsAlwaysTryTypes?: boolean;
 
-  readonly plugins?: string[];
+  readonly extraPlugins?: string[];
   readonly extends?: string[];
   readonly rules?: Record<string, unknown>;
 }
@@ -77,7 +94,8 @@ export class EslintSupport extends XConstruct {
   public readonly rules: Record<string, unknown> = {};
   public readonly plugins: string[] = [];
   public readonly extends: string[] = [];
-  public readonly devdirs: string[] = [];
+  public readonly fileExtensions: Set<string>;
+  public readonly devSourcePatterns: string[] = [];
   public readonly ignorePatterns: string[] = [];
   public readonly tsconfig: string | undefined;
   readonly aliasMap?: { [key: string]: string };
@@ -87,88 +105,62 @@ export class EslintSupport extends XConstruct {
   constructor(scope: XConstruct, props: EslintProps) {
     super(scope, "EslintSupport");
 
-    this.devdirs = props.devdirs ?? [];
+    this.devSourcePatterns = props.devSourcePatterns ?? [];
     this.tsconfig = props.tsconfigPath ?? undefined;
-    this.plugins = props.plugins ?? ["@typescript-eslint"];
+    this.plugins = props.extraPlugins ?? [];
     this.extends = props.extends ?? [];
     this.aliasMap = props.aliasMap;
     this.aliasExtensions = props.aliasExtensions;
     this.tsAlwaysTryTypes = props.tsAlwaysTryTypes;
-
+    this.fileExtensions = new Set(props.fileExtensions ?? []);
     this.ignorePatterns = props.ignorePatterns ?? ["*.js", "*.d.ts", "node_modules/", "*.generated.ts", "coverage"];
 
-    new PackageDependency(this, "eslint", { type: PackageDependencyType.DEV });
-    new PackageDependency(this, "@typescript-eslint/eslint-plugin", { type: PackageDependencyType.DEV, version: "^5" });
-    new PackageDependency(this, "@typescript-eslint/parser", { type: PackageDependencyType.DEV, version: "^5" });
-    new PackageDependency(this, "eslint-import-resolver-node", { type: PackageDependencyType.DEV });
-    new PackageDependency(this, "eslint-import-resolver-typescript", { type: PackageDependencyType.DEV });
-    new PackageDependency(this, "eslint-plugin-import", { type: PackageDependencyType.DEV });
-    new PackageDependency(this, "json-schema", { type: PackageDependencyType.DEV });
+    const lineWidth = props.lineWidth ?? 80;
+    let rules = props.rules ?? {};
+    this.extends.push("plugin:import/recommended");
+    this.plugins.push("import");
 
-    if (props?.aliasMap) {
-      new PackageDependency(this, "eslint-import-resolver-alias", { type: PackageDependencyType.DEV });
+    const project = Project.of(this);
+    const hasTsSupport = project.tryFindDeepChildren(TypescriptSupport);
+
+    if (props?.install ?? true) {
+      new PackageDependency(this, "eslint", {
+        type: PackageDependencyType.DEV,
+      });
     }
 
-    if (props.fileExtensions) {
-      props.fileExtensions.forEach((ext) => new EslintExtension(this, ext));
+    if (props?.installDependencies ?? true) {
+      new PackageDependency(this, "eslint-import-resolver-node", {
+        type: PackageDependencyType.DEV,
+      });
+      new PackageDependency(this, "eslint-plugin-import", {
+        type: PackageDependencyType.DEV,
+      });
+
+      if (hasTsSupport) {
+        new PackageDependency(this, "@typescript-eslint/eslint-plugin", {
+          type: PackageDependencyType.DEV,
+        });
+        new PackageDependency(this, "@typescript-eslint/parser", {
+          type: PackageDependencyType.DEV,
+        });
+        new PackageDependency(this, "eslint-import-resolver-typescript", {
+          type: PackageDependencyType.DEV,
+        });
+      }
     }
 
-    this.rules = {
-      // see https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
-      indent: ["off"],
-      "@typescript-eslint/indent": ["error", 2],
+    this.fileExtensions.add("js");
 
-      // Style
-      quotes: ["error", "single", { avoidEscape: true }],
-      "comma-dangle": ["error", "always-multiline"], // ensures clean diffs, see https://medium.com/@nikgraf/why-you-should-enforce-dangling-commas-for-multiline-statements-d034c98e36f8
-      "comma-spacing": ["error", { before: false, after: true }], // space after, no space before
-      "no-multi-spaces": ["error", { ignoreEOLComments: false }], // no multi spaces
-      "array-bracket-spacing": ["error", "never"], // [1, 2, 3]
-      "array-bracket-newline": ["error", "consistent"], // enforce consistent line breaks between brackets
-      "object-curly-spacing": ["error", "always"], // { key: 'value' }
-      "object-curly-newline": ["error", { multiline: true, consistent: true }], // enforce consistent line breaks between braces
-      "object-property-newline": ["error", { allowAllPropertiesOnSameLine: true }], // enforce "same line" or "multiple line" on object properties
-      "keyword-spacing": ["error"], // require a space before & after keywords
-      "brace-style": ["error", "1tbs", { allowSingleLine: true }], // enforce one true brace style
-      "space-before-blocks": ["error"], // require space before blocks
-      curly: ["error", "multi-line", "consistent"], // require curly braces for multiline control statements
-      "@typescript-eslint/member-delimiter-style": ["error"],
+    if (hasTsSupport) {
+      this.fileExtensions.add("ts");
+      this.fileExtensions.delete("js");
+      this.plugins.push("@typescript-eslint");
 
-      // Require semicolons
-      semi: ["error", "always"],
-
-      // Max line lengths
-      "max-len": [
-        "error",
-        {
-          code: 150,
-          ignoreUrls: true, // Most common reason to disable it
-          ignoreStrings: true, // These are not fantastic but necessary for error messages
-          ignoreTemplateLiterals: true,
-          ignoreComments: true,
-          ignoreRegExpLiterals: true,
-        },
-      ],
-
-      // Don't unnecessarily quote properties
-      "quote-props": ["error", "consistent-as-needed"],
-    };
-
-    if (props.prettier) {
-      new PackageDependency(this, "prettier", { type: PackageDependencyType.DEV });
-      new PackageDependency(this, "eslint-plugin-prettier", { type: PackageDependencyType.DEV });
-      new PackageDependency(this, "eslint-config-prettier", { type: PackageDependencyType.DEV });
-
-      this.rules = {
-        "prettier/prettier": ["error"],
-      };
-
-      this.plugins.push("prettier");
-      this.extends.push("prettier", "plugin:prettier/recommended");
-    }
-
-    this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
-      const standardRules = {
+      rules = {
+        // see https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
+        "indent": ["off"],
+        "@typescript-eslint/member-delimiter-style": ["error"],
         // Require use of the `import { foo } from 'bar';` form instead of `import foo = require('bar');`
         "@typescript-eslint/no-require-imports": ["error"],
         "@typescript-eslint/no-shadow": ["error"],
@@ -196,41 +188,71 @@ export class EslintSupport extends XConstruct {
             ],
           },
         ],
+        ...rules,
+      };
+    }
 
-        // Require all imported dependencies are actually declared in package.json
-        "import/no-extraneous-dependencies": [
+    if (props.prettier) {
+      new PackageDependency(this, "prettier", {
+        type: PackageDependencyType.DEV,
+      });
+      new PackageDependency(this, "eslint-plugin-prettier", {
+        type: PackageDependencyType.DEV,
+      });
+      new PackageDependency(this, "eslint-config-prettier", {
+        type: PackageDependencyType.DEV,
+      });
+      this.plugins.push("prettier");
+      this.extends.push("prettier");
+
+      rules = {
+        "prettier/prettier": [
           "error",
           {
-            // Only allow importing devDependencies from "devdirs".
-            devDependencies: Array.from(new Set(this.devdirs ?? [])),
-            optionalDependencies: false, // Disallow importing optional dependencies (those shouldn't be in use in the project)
-            peerDependencies: true, // Allow importing peer dependencies (that aren't also direct dependencies)
+            singleQuote: !(props.doubleQuotes ?? true),
+            quoteProps: "consistent",
           },
         ],
-
-        // Require all imported libraries actually resolve (!!required for import/no-extraneous-dependencies to work!!)
-        "import/no-unresolved": ["error"],
-
-        // Require an ordering on all imports
-        "import/order": [
-          "warn",
+        ...rules,
+      };
+    } else {
+      rules = {
+        // Max line lengths
+        "max-len": [
+          "error",
           {
-            groups: ["builtin", "external"],
-            alphabetize: { order: "asc", caseInsensitive: true },
+            code: lineWidth,
+            ignoreUrls: true, // Most common reason to disable it
+            ignoreStrings: true, // These are not fantastic but necessary for error messages
+            ignoreTemplateLiterals: true,
+            ignoreComments: true,
+            ignoreRegExpLiterals: true,
           },
         ],
-
-        // Cannot import from the same module twice
-        "no-duplicate-imports": ["error"],
-
-        // Cannot shadow names
-        "no-shadow": ["off"],
+        // Style
+        "quotes": ["error", props.doubleQuotes ?? true ? "double" : "single", { avoidEscape: true }],
 
         // Required spacing in property declarations (copied from TSLint, defaults are good)
         "key-spacing": ["error"],
 
-        // No multiple empty lines
-        "no-multiple-empty-lines": ["error"],
+        "comma-dangle": ["error", "only-multiline"], // ensures clean diffs, see https://medium.com/@nikgraf/why-you-should-enforce-dangling-commas-for-multiline-statements-d034c98e36f8
+        "comma-spacing": ["error", { before: false, after: true }], // space after, no space before
+        "no-multi-spaces": ["error", { ignoreEOLComments: false }], // no multi spaces
+        "array-bracket-spacing": ["error", "never"], // [1, 2, 3]
+        "array-bracket-newline": ["error", "consistent"], // enforce consistent line breaks between brackets
+        "object-curly-spacing": ["error", "always"], // { key: 'value' }
+        "object-curly-newline": ["error", { multiline: true, consistent: true }], // enforce consistent line breaks between braces
+        "object-property-newline": ["error", { allowAllPropertiesOnSameLine: true }], // enforce "same line" or "multiple line" on object properties
+        "keyword-spacing": ["error"], // require a space before & after keywords
+
+        // Cannot import from the same module twice
+        "no-duplicate-imports": ["error"],
+        "brace-style": ["error", "1tbs", { allowSingleLine: true }], // enforce one true brace style
+        "space-before-blocks": ["error"], // require space before blocks
+        "curly": ["error", "multi-line", "consistent"], // require curly braces for multiline control statements
+
+        // Require semicolons
+        "semi": ["error", "always"],
 
         // Make sure that inside try/catch blocks, promises are 'return await'ed
         // (must disable the base rule as it can report incorrect errors)
@@ -244,15 +266,53 @@ export class EslintSupport extends XConstruct {
 
         // Are you sure | is not a typo for || ?
         "no-bitwise": ["error"],
-      };
 
+        // Don't unnecessarily quote properties
+        "quote-props": ["error", "consistent-as-needed"],
+
+        // Cannot shadow names
+        "no-shadow": ["off"],
+
+        // No multiple empty lines
+        "no-multiple-empty-lines": ["error"],
+
+        ...rules,
+      };
+    }
+
+    this.rules = {
+      // Require all imported dependencies are actually declared in package.json
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          // Only allow importing devDependencies from "devdirs".
+          devDependencies: Array.from(new Set(this.devSourcePatterns ?? [])),
+          optionalDependencies: false, // Disallow importing optional dependencies (those shouldn't be in use in the project)
+          peerDependencies: true, // Allow importing peer dependencies (that aren't also direct dependencies)
+        },
+      ],
+
+      // Require all imported libraries actually resolve (!!required for import/no-extraneous-dependencies to work!!)
+      "import/no-unresolved": ["error"],
+
+      // Require an ordering on all imports
+      "import/order": [
+        "warn",
+        {
+          groups: ["builtin", "external"],
+          alphabetize: { order: "asc", caseInsensitive: true },
+        },
+      ],
+      ...rules,
+    };
+
+    this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
       const config = {
         env: {
-          jest: true,
+          jest: JestSupport.hasSupport(this),
           node: true,
         },
         root: true,
-        parser: "@typescript-eslint/parser",
         plugins: this.plugins,
         extends: this.extends,
         settings: {
@@ -274,7 +334,7 @@ export class EslintSupport extends XConstruct {
           },
         },
         ignorePatterns: this.ignorePatterns,
-        rules: { ...this.rules, ...standardRules, ...props.rules },
+        rules: this.rules,
         overrides: [
           {
             files: [PDKIT_CONFIG_FILE],
@@ -286,35 +346,29 @@ export class EslintSupport extends XConstruct {
         ],
       } as Record<string, unknown>;
 
-      const project = Project.of(this);
-      const tsSupport = project.tryFindDeepChildren(TypescriptSupport);
-
-      if (tsSupport && tsSupport.length) {
-        new EslintExtension(this, "ts");
+      if (hasTsSupport && hasTsSupport.length) {
+        config.parser = "@typescript-eslint/parser";
 
         config.parserOptions = {
           ecmaVersion: 2018,
           sourceType: "module",
-          project: `./${tsSupport[0].fileName}`,
+          project: `./${hasTsSupport[0].fileName}`,
         };
-      } else {
-        new EslintExtension(this, "js");
       }
 
-      const fileExtensions = project.tryFindDeepChildren(EslintExtension).map((e) => `.${e.extension}`);
+      new ManifestEntry(this, "EslintConfig", { eslintConfig: config }, { shallow: true });
       new ManifestEntry(this, "EslintManifestScriptEntry", {
         scripts: {
           lint: [
             "eslint",
-            `--ext ${fileExtensions.join(",")}`,
+            `--ext ${Array.from(this.fileExtensions).join(",")}`,
             "--fix",
             "--no-error-on-unmatched-pattern",
             project.sourcePath,
-            ...this.devdirs,
+            ...this.devSourcePatterns,
           ].join(" "),
         },
       });
-      new ManifestEntry(this, "EslintConfig", { eslintConfig: config }, { shallow: true });
       new ManifestEntry(this, "LintCommand", {
         scripts: {
           lint: `eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern ${project.sourcePath}`,

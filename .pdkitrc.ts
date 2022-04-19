@@ -30,6 +30,7 @@ const workspace = new YarnMonoWorkspace("pdkit", {
   eslint: {
     enabled: true,
     prettier: true,
+    lineWidth: 140,
   },
   jest: {
     enabled: true,
@@ -98,6 +99,7 @@ new YarnProject(workspace, "core", {
   eslint: {
     enabled: true,
     prettier: true,
+    lineWidth: 140,
   },
   jest: {
     enabled: true,
@@ -150,6 +152,7 @@ new YarnProject(workspace, "cli", {
   eslint: {
     enabled: true,
     prettier: true,
+    lineWidth: 140,
   },
   jest: {
     enabled: true,

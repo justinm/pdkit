@@ -35,8 +35,8 @@
     "@types/node": "17.0.23",
     "@types/object-hash": "2.2.1",
     "@types/winston": "2.4.4",
-    "@typescript-eslint/eslint-plugin": "^5",
-    "@typescript-eslint/parser": "^5",
+    "@typescript-eslint/eslint-plugin": "5.17.0",
+    "@typescript-eslint/parser": "5.17.0",
     "eslint": "8.12.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-import-resolver-node": "0.3.6",
@@ -45,7 +45,6 @@
     "eslint-plugin-prettier": "4.0.0",
     "jest": "27.5.1",
     "jest-junit": "^13",
-    "json-schema": "0.4.0",
     "prettier": "2.6.1",
     "ts-jest": "27.1.4",
     "ts-node": "10.7.0",
@@ -57,16 +56,14 @@
       "node": true
     },
     "root": true,
-    "parser": "@typescript-eslint/parser",
     "plugins": [
-      "@typescript-eslint",
       "import",
+      "@typescript-eslint",
       "prettier"
     ],
     "extends": [
-      "plugin:import/typescript",
-      "prettier",
-      "plugin:prettier/recommended"
+      "plugin:import/recommended",
+      "prettier"
     ],
     "settings": {
       "import/parsers": {
@@ -90,7 +87,41 @@
       "coverage"
     ],
     "rules": {
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": [],
+          "optionalDependencies": false,
+          "peerDependencies": true
+        }
+      ],
+      "import/no-unresolved": [
+        "error"
+      ],
+      "import/order": [
+        "warn",
+        {
+          "groups": [
+            "builtin",
+            "external"
+          ],
+          "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+          }
+        }
+      ],
       "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": false,
+          "quoteProps": "consistent"
+        }
+      ],
+      "indent": [
+        "off"
+      ],
+      "@typescript-eslint/member-delimiter-style": [
         "error"
       ],
       "@typescript-eslint/no-require-imports": [
@@ -120,54 +151,6 @@
             "method"
           ]
         }
-      ],
-      "import/no-extraneous-dependencies": [
-        "error",
-        {
-          "devDependencies": [],
-          "optionalDependencies": false,
-          "peerDependencies": true
-        }
-      ],
-      "import/no-unresolved": [
-        "error"
-      ],
-      "import/order": [
-        "warn",
-        {
-          "groups": [
-            "builtin",
-            "external"
-          ],
-          "alphabetize": {
-            "order": "asc",
-            "caseInsensitive": true
-          }
-        }
-      ],
-      "no-duplicate-imports": [
-        "error"
-      ],
-      "no-shadow": [
-        "off"
-      ],
-      "key-spacing": [
-        "error"
-      ],
-      "no-multiple-empty-lines": [
-        "error"
-      ],
-      "no-return-await": [
-        "off"
-      ],
-      "no-trailing-spaces": [
-        "error"
-      ],
-      "dot-notation": [
-        "error"
-      ],
-      "no-bitwise": [
-        "error"
       ]
     },
     "overrides": [
@@ -181,6 +164,7 @@
         }
       }
     ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "ecmaVersion": 2018,
       "sourceType": "module",

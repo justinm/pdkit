@@ -16,7 +16,7 @@ export class SetupTools extends XConstruct {
     if (tools.java) {
       new GithubJobStep(this, "SetupJava", {
         uses: "actions/setup-java@v2",
-        with: { distribution: "temurin", "java-version": tools.java.version },
+        with: { "distribution": "temurin", "java-version": tools.java.version },
         priority: props.priority,
       });
     }

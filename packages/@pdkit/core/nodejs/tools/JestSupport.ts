@@ -557,12 +557,18 @@ export class JestSupport extends XConstruct {
     const reporters = props.jestConfig?.reporters ?? [];
     const ignore: string[] = [];
 
-    new PackageDependency(this, "jest", { version: props.version, type: PackageDependencyType.DEV });
+    new PackageDependency(this, "jest", {
+      version: props.version,
+      type: PackageDependencyType.DEV,
+    });
 
     if (props.junit ?? true) {
       reporters.push(["jest-junit", { outputDirectory: reportsDirectory }]);
 
-      new PackageDependency(this, "jest-junit", { version: "^13", type: PackageDependencyType.DEV });
+      new PackageDependency(this, "jest-junit", {
+        version: "^13",
+        type: PackageDependencyType.DEV,
+      });
 
       ignore.push(...["# jest-junit artifacts", `/${reportsDirectory}/`, "junit.xml"]);
     }
@@ -613,12 +619,16 @@ export class JestSupport extends XConstruct {
     });
 
     if (TypescriptSupport.hasSupport(this)) {
-      new PackageDependency(this, "@types/jest", { type: PackageDependencyType.DEV });
+      new PackageDependency(this, "@types/jest", {
+        type: PackageDependencyType.DEV,
+      });
     }
 
     this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
       if (TypescriptSupport.hasSupport(this)) {
-        new PackageDependency(this, "ts-jest", { type: PackageDependencyType.DEV });
+        new PackageDependency(this, "ts-jest", {
+          type: PackageDependencyType.DEV,
+        });
         new ManifestEntry(this, "TsJest", {
           jest: {
             preset: "ts-jest",
