@@ -1,3 +1,18 @@
+## @pdkit/cli [1.5.24](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.23...@pdkit/cli@1.5.24) (2022-04-19)
+
+
+### Bug Fixes
+
+* eslint and jest support fixes ([7b0abeb](https://github.com/justinm/pdkit/commit/7b0abeb38bd6e43233f219aa3d1f069939ce23d8))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.0.22
+
 ## @pdkit/cli [1.5.23](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.22...@pdkit/cli@1.5.23) (2022-04-12)
 
 
