@@ -1,3 +1,23 @@
+# @pdkit/cli [1.6.0](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.24...@pdkit/cli@1.6.0) (2022-04-21)
+
+
+### Bug Fixes
+
+* major eslint fixes ([0a1c8de](https://github.com/justinm/pdkit/commit/0a1c8de39694cfed401ba026875c89ca3ecd940e))
+
+
+### Features
+
+* split eslint config up into smaller constructs ([ba3e7b9](https://github.com/justinm/pdkit/commit/ba3e7b989e0ed548acf2e5e3dd0816ec265c9cc9))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.1.0
+
 ## @pdkit/cli [1.5.24](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.23...@pdkit/cli@1.5.24) (2022-04-19)
 
 
