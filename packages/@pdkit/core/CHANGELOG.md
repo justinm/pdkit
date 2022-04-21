@@ -1,3 +1,15 @@
+# @pdkit/core [2.1.0](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.22...@pdkit/core@2.1.0) (2022-04-21)
+
+
+### Bug Fixes
+
+* major eslint fixes ([0a1c8de](https://github.com/justinm/pdkit/commit/0a1c8de39694cfed401ba026875c89ca3ecd940e))
+
+
+### Features
+
+* split eslint config up into smaller constructs ([ba3e7b9](https://github.com/justinm/pdkit/commit/ba3e7b989e0ed548acf2e5e3dd0816ec265c9cc9))
+
 ## @pdkit/core [2.0.22](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.21...@pdkit/core@2.0.22) (2022-04-19)
 
 
