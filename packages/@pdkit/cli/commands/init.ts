@@ -15,14 +15,7 @@ export const builder: yargs.CommandBuilder<any, any> = function (y) {
   });
 };
 
-export const handler = async function ({
-  dryrun,
-}: {
-  config: string;
-  dryrun: boolean;
-  force: boolean;
-  verbose: number;
-}) {
+export const handler = async function ({ dryrun }: { config: string; dryrun: boolean; force: boolean; verbose: number }) {
   const cwd = process.cwd();
 
   const packageJsonPath = path.join(cwd, "package.json");
@@ -33,9 +26,7 @@ export const handler = async function ({
   }
 
   if (!fs.existsSync(packageJsonPath)) {
-    return spinner.fail(
-      "No package.json was found, first try initializing your project with `npm init` or `yarn init`"
-    );
+    return spinner.fail("No package.json was found, first try initializing your project with `npm init` or `yarn init`");
   }
 
   const data = fs.readFileSync(packageJsonPath).toString("utf8");
@@ -89,11 +80,7 @@ export const handler = async function ({
   const template = `
 import { YarnTypescriptWorkspace } from "@pdkit/nodejs";
 
-new YarnTypescriptWorkspace("${packageConfig.name.split("/").reverse()[0]}", ${JSON.stringify(
-    packageConfig,
-    undefined,
-    2
-  )});
+new YarnTypescriptWorkspace("${packageConfig.name.split("/").reverse()[0]}", ${JSON.stringify(packageConfig, undefined, 2)});
 `;
 
   if (dryrun) {

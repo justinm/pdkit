@@ -396,8 +396,7 @@ export class TypescriptSupport extends XConstruct {
     new ManifestEntry(this, "Scripts", {
       scripts: {
         compile: "tsc -p ./tsconfig.json",
-        clean:
-          'find . -name "*.js" -not -path "./node_modules/*" -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
+        clean: 'find . -name "*.js" -not -path "./node_modules/*" -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
       },
     });
 
@@ -405,16 +404,12 @@ export class TypescriptSupport extends XConstruct {
       files: [path.join(project.distPath, "*.d.ts"), path.join(project.distPath, "**/*.d.ts")],
     });
 
-    new GitIgnore(this, ["*.js", "*.d.ts"]);
+    new GitIgnore(this, ["**/*.js", "**/*.d.ts"]);
 
     this.file = new JsonFile(this, this.fileName);
     this.file.addDeepFields({
       exclude: [...(props?.exclude ?? []), "node_modules"],
-      include: [
-        ...(props?.include ?? []),
-        path.join(project.sourcePath, "*.ts"),
-        path.join(project.sourcePath, "**/*.ts"),
-      ],
+      include: [...(props?.include ?? []), path.join(project.sourcePath, "*.ts"), path.join(project.sourcePath, "**/*.ts")],
       compilerOptions: {
         outDir: project.distPath === "." ? undefined : project.distPath,
         alwaysStrict: true,

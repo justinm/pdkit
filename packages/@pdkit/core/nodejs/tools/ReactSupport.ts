@@ -1,18 +1,10 @@
 import path from "path";
 import { Construct } from "constructs";
 import { GitIgnore, ManifestEntry, Project, XConstruct } from "../../core";
-import {
-  NpmIgnore,
-  PackageDependency,
-  PackageDependencyType,
-} from "../constructs";
+import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
 import { EslintSupport } from "./eslint/EslintSupport";
 import { JestSupport } from "./JestSupport";
-import {
-  TypeScriptJsxMode,
-  TypescriptSupport,
-  TypescriptSupportProps,
-} from "./TypescriptSupport";
+import { TypeScriptJsxMode, TypescriptSupport, TypescriptSupportProps } from "./TypescriptSupport";
 
 export interface ReactSupportProps {
   readonly enzyme?: boolean;
@@ -43,6 +35,7 @@ export class ReactSupport extends XConstruct {
     super(scope, ReactSupport.ID);
 
     const typescriptSupport = TypescriptSupport.tryOf(this);
+    const eslintSupport = EslintSupport.tryOf(this);
     const project = Project.of(this);
 
     new PackageDependency(this, "react", {
@@ -94,24 +87,8 @@ export class ReactSupport extends XConstruct {
       });
     }
 
-    const eslintSupport = EslintSupport.tryOf(this);
-
-    if (eslintSupport) {
-      eslintSupport.extends.add("react-app");
-      eslintSupport.extends.add("react-app/jest");
-      eslintSupport.fileExtensions.add("tsx");
-      new ManifestEntry(this, "ReactSupport", {
-        eslintConfig: {
-          root: true,
-        },
-      });
-    }
-
     typescriptSupport?.file.addDeepFields({
-      include: [
-        path.join(project.sourcePath, "*.tsx"),
-        path.join(project.sourcePath, "**/*.tsx"),
-      ],
+      include: [path.join(project.sourcePath, "*.tsx"), path.join(project.sourcePath, "**/*.tsx")],
       compilerOptions: {
         lib: ["dom", "dom.iterable", "esnext"],
         module: "commonjs",
@@ -123,18 +100,8 @@ export class ReactSupport extends XConstruct {
         ...props?.tsconfig?.compilerOptions,
       },
     });
-    new GitIgnore(this, [
-      "build/*",
-      "!react-app-env.d.ts",
-      "!setupProxy.js",
-      "!setupTests.js",
-    ]);
-    new NpmIgnore(this, [
-      "build/*",
-      "!react-app-env.d.ts",
-      "!setupProxy.js",
-      "!setupTests.js",
-    ]);
+    new GitIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
+    new NpmIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
 
     let reactScriptsCommand = "npx react-scripts";
 
@@ -153,14 +120,12 @@ export class ReactSupport extends XConstruct {
       new PackageDependency(this, "@craco/craco", {
         type: PackageDependencyType.DEV,
       });
-      new GitIgnore(this, [
-        "!craco.config.ts",
-        "!craco.config.js",
-        "!.cracorc.ts",
-        "!.cracorc.js",
-        "!.cracorc",
-      ]);
+      new GitIgnore(this, ["!craco.config.ts", "!craco.config.js", "!.cracorc.ts", "!.cracorc.js", "!.cracorc"]);
       reactScriptsCommand = "yarn craco";
+    }
+
+    if (eslintSupport) {
+      eslintSupport.fileExtensions.add("tsx");
     }
 
     new ManifestEntry(this, "ReactScripts", {

@@ -4,9 +4,7 @@ import { NodeWorkspaceProps } from "./NodeWorkspace";
 import { YarnProject, YarnProjectProps } from "./YarnProject";
 import { YarnWorkspace } from "./YarnWorkspace";
 
-export interface YarnMonoWorkspaceProps
-  extends Omit<YarnProjectProps, "packageName" | "projectPath">,
-    NodeWorkspaceProps {}
+export interface YarnMonoWorkspaceProps extends Omit<YarnProjectProps, "packageName" | "projectPath">, NodeWorkspaceProps {}
 
 /**
  * A YarnMonoWorkspace creates a single YarnProject at the root of repository. All projects added after are considered

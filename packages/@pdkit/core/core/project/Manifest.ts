@@ -22,9 +22,7 @@ export class Manifest extends JsonFile implements IFile {
     const manifest = project.tryFindDeepChildren(Manifest)[0];
 
     if (!manifest) {
-      throw new Error(
-        `${construct}: No manifest was found in project ${project.node.id}`
-      );
+      throw new Error(`${construct}: No manifest was found in project ${project.node.id}`);
     }
 
     return manifest as Manifest;
@@ -38,11 +36,7 @@ export class Manifest extends JsonFile implements IFile {
 
       const parentManifestEntries = this.node.scopes
         .filter((s) => Project.is(s) && s !== project)
-        .map((p) =>
-          (p as Project)
-            .tryFindDeepChildren(ManifestEntry)
-            .filter((entry) => entry.propagate)
-        )
+        .map((p) => (p as Project).tryFindDeepChildren(ManifestEntry).filter((entry) => entry.propagate))
         .flat();
 
       for (const entry of parentManifestEntries) {

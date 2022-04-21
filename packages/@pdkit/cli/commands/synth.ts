@@ -26,13 +26,7 @@ export const builder: yargs.CommandBuilder<any, any> = function (y) {
     });
 };
 
-const runShellScripts = async (
-  workspace: Workspace | null,
-  name: string,
-  type: typeof ShellScript,
-  verbose: number,
-  dryrun: boolean
-) => {
+const runShellScripts = async (workspace: Workspace | null, name: string, type: typeof ShellScript, verbose: number, dryrun: boolean) => {
   return withSpinner(verbose, `Running ${name} shell scripts`, async () => {
     if (workspace) {
       const scripts = workspace.node
@@ -121,11 +115,7 @@ const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: b
 
           if (verbose > 1 && fs.existsSync(realPath)) {
             console.log(
-              Diff.createPatch(
-                filePath,
-                fs.readFileSync(realPath).toString("utf8"),
-                fileSynthesizer.readVFile(filePath) as string
-              )
+              Diff.createPatch(filePath, fs.readFileSync(realPath).toString("utf8"), fileSynthesizer.readVFile(filePath) as string)
             );
           }
         }

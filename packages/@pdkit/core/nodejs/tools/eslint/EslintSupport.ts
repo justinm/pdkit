@@ -1,23 +1,11 @@
 import { Construct } from "constructs";
-import {
-  LifeCycle,
-  ManifestEntry,
-  PDKIT_CONFIG_FILE,
-  Project,
-  XConstruct,
-} from "../../../core";
+import { LifeCycle, ManifestEntry, PDKIT_CONFIG_FILE, Project, XConstruct } from "../../../core";
 import { PackageDependency, PackageDependencyType } from "../../constructs";
 import { JestSupport } from "../JestSupport";
 import { TypescriptSupport } from "../TypescriptSupport";
 import { EslintImportRules, EslintImportRulesProps } from "./EslintImportRules";
-import {
-  EslintPrettierRules,
-  EslintPrettierRulesProps,
-} from "./EslintPrettierRules";
-import {
-  EslintTypescriptRules,
-  EslintTypescriptRulesProps,
-} from "./EslintTypescriptRules";
+import { EslintPrettierRules, EslintPrettierRulesProps } from "./EslintPrettierRules";
+import { EslintTypescriptRules, EslintTypescriptRulesProps } from "./EslintTypescriptRules";
 
 export interface EslintProps {
   /**
@@ -62,6 +50,9 @@ export interface EslintProps {
   readonly extraPlugins?: string[];
   readonly extends?: string[];
   readonly rules?: Record<string, unknown>;
+
+  readonly parser?: string;
+  readonly parserOptions?: { [key: string]: any };
 }
 
 export class EslintSupport extends XConstruct {
@@ -84,19 +75,17 @@ export class EslintSupport extends XConstruct {
   public readonly ignorePatterns: string[] = [];
   public readonly settings: Record<string, any>;
   public parser?: string;
-  public parserOptions?: { [key: string]: any };
+  public readonly parserOptions: { [key: string]: any };
 
   constructor(scope: XConstruct, props: EslintProps) {
     super(scope, "EslintSupport");
 
+    this.parser = props.parser;
+    this.parserOptions = props.parserOptions ?? {};
     this.plugins = new Set(props.extraPlugins ?? []);
     this.extends = new Set(props.extends ?? []);
     this.fileExtensions = new Set(props.fileExtensions ?? ["js"]);
-    this.ignorePatterns = props.ignorePatterns ?? [
-      "node_modules/",
-      "*.generated.ts",
-      "coverage",
-    ];
+    this.ignorePatterns = props.ignorePatterns ?? ["node_modules/", "*.generated.ts", "coverage"];
     this.settings = props.settings ?? {};
 
     const lineWidth = props.lineWidth ?? 80;
@@ -108,6 +97,10 @@ export class EslintSupport extends XConstruct {
       new PackageDependency(this, "eslint", {
         type: PackageDependencyType.DEV,
       });
+    }
+
+    if (!this.parserOptions.ecmaVersion) {
+      this.parserOptions.ecmaVersion = 2020;
     }
 
     this.rules = {
@@ -124,11 +117,7 @@ export class EslintSupport extends XConstruct {
         },
       ],
       // Style
-      "quotes": [
-        "error",
-        props.doubleQuotes ?? true ? "double" : "single",
-        { avoidEscape: true },
-      ],
+      "quotes": ["error", props.doubleQuotes ?? true ? "double" : "single", { avoidEscape: true }],
 
       // Required spacing in property declarations (copied from TSLint, defaults are good)
       "key-spacing": ["error"],
@@ -140,10 +129,7 @@ export class EslintSupport extends XConstruct {
       "array-bracket-newline": ["error", "consistent"], // enforce consistent line breaks between brackets
       "object-curly-spacing": ["error", "always"], // { key: 'value' }
       "object-curly-newline": ["error", { multiline: true, consistent: true }], // enforce consistent line breaks between braces
-      "object-property-newline": [
-        "error",
-        { allowAllPropertiesOnSameLine: true },
-      ], // enforce "same line" or "multiple line" on object properties
+      "object-property-newline": ["error", { allowAllPropertiesOnSameLine: true }], // enforce "same line" or "multiple line" on object properties
       "keyword-spacing": ["error"], // require a space before & after keywords
 
       // Cannot import from the same module twice
@@ -182,23 +168,27 @@ export class EslintSupport extends XConstruct {
 
     new EslintImportRules(this, props.import);
 
-    if (props.typescript || TypescriptSupport.hasSupport(project)) {
+    if (props.typescript || TypescriptSupport.hasSupport(this)) {
       new EslintTypescriptRules(this, props.typescript);
     }
 
     if (props.prettier) {
-      new EslintPrettierRules(this, props.prettier);
+      new EslintPrettierRules(this, {
+        ...props.prettier,
+        lineWidth: props.prettier.lineWidth ?? props.lineWidth,
+        doubleQuotes: props.prettier.doubleQuotes ?? props.doubleQuotes,
+      });
     }
 
     this.addLifeCycleScript(LifeCycle.SYNTH, () => {
       const config = {
+        root: true,
         env: {
           jest: JestSupport.hasSupport(this),
           node: true,
         },
         parser: this.parser,
         parserOptions: this.parserOptions,
-        root: !project.parentProject,
         plugins: Array.from(this.plugins),
         extends: Array.from(this.extends),
         settings: this.settings,
@@ -215,17 +205,14 @@ export class EslintSupport extends XConstruct {
         ],
       } as Record<string, unknown>;
 
-      new ManifestEntry(
-        this,
-        "EslintConfig",
-        { eslintConfig: config },
-        { shallow: true }
-      );
+      new ManifestEntry(this, "EslintConfig", { eslintConfig: config }, { shallow: true });
       new ManifestEntry(this, "EslintManifestScriptEntry", {
         scripts: {
           lint: [
             "eslint",
-            `--ext ${Array.from(this.fileExtensions).join(",")}`,
+            `--ext ${Array.from(this.fileExtensions)
+              .map((ext) => `.${ext}`)
+              .join(",")}`,
             project.sourcePath,
           ].join(" "),
         },

@@ -10,17 +10,13 @@ export interface IProject extends IXConstruct {
   readonly parentProject: IProject;
   readonly projects: IProject[];
 
-  tryFindDeepChildren<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
-    childType: T
-  ): TRet[];
+  tryFindDeepChildren<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(childType: T): TRet[];
 
   tryFindDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
     childType: T
   ): TRet | undefined;
 
-  findDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
-    childType: T
-  ): TRet;
+  findDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(childType: T): TRet;
 }
 
 export interface ProjectProps {
@@ -54,9 +50,7 @@ export abstract class Project extends XConstruct implements IProject {
       return construct;
     }
 
-    let project = (construct as XConstruct).node.scopes
-      .reverse()
-      .find((scope) => scope !== construct && scope instanceof Project);
+    let project = (construct as XConstruct).node.scopes.reverse().find((scope) => scope !== construct && scope instanceof Project);
 
     if (!project) {
       const workspace = Workspace.of(construct);
@@ -113,9 +107,7 @@ export abstract class Project extends XConstruct implements IProject {
   }
 
   get projectPath(): string {
-    const parent = this.node.scopes.reverse().find((scope) => scope !== this && Project.is(scope)) as
-      | Project
-      | undefined;
+    const parent = this.node.scopes.reverse().find((scope) => scope !== this && Project.is(scope)) as Project | undefined;
 
     return path.join(parent ? parent.projectPath : "/", this._projectPath ?? "");
   }
@@ -136,10 +128,9 @@ export abstract class Project extends XConstruct implements IProject {
    * Find all nodes by type that are owned by this project. Ownership is determined by the closest project scoped to a node.
    * @param childType
    */
-  public tryFindDeepChildren<
-    T extends Constructor<any> = Constructor<any>,
-    TRet extends InstanceType<T> = InstanceType<T>
-  >(childType: T): TRet[] {
+  public tryFindDeepChildren<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
+    childType: T
+  ): TRet[] {
     const parentProject = Project.of(this);
 
     return this.node
@@ -153,10 +144,9 @@ export abstract class Project extends XConstruct implements IProject {
    * Undefined is returned if the number of matching children is not exactly one.
    * @param childType
    */
-  public tryFindDeepChild<
-    T extends Constructor<any> = Constructor<any>,
-    TRet extends InstanceType<T> = InstanceType<T>
-  >(childType: T): TRet | undefined {
+  public tryFindDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
+    childType: T
+  ): TRet | undefined {
     const children = this.tryFindDeepChildren(childType);
 
     return (children.length === 1 && children[0]) || undefined;
@@ -167,9 +157,7 @@ export abstract class Project extends XConstruct implements IProject {
    * An error is thrown if the number of matching children is not exactly one.
    * @param childType
    */
-  public findDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
-    childType: T
-  ): TRet {
+  public findDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(childType: T): TRet {
     const child = this.tryFindDeepChild(childType);
 
     if (!child) {

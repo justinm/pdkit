@@ -12,22 +12,8 @@ import {
   XConstruct,
 } from "../../core";
 import { GithubSupport, GithubSupportProps } from "../../github";
-import {
-  Author,
-  AuthorProps,
-  NodePackageJsonProps,
-  PackageDependency,
-  PackageDependencyType,
-  PackageJson,
-} from "../constructs";
-import {
-  EslintProps,
-  EslintSupport,
-  JestProps,
-  JestSupport,
-  TypescriptSupport,
-  TypescriptSupportProps,
-} from "../tools";
+import { Author, AuthorProps, NodePackageJsonProps, PackageDependency, PackageDependencyType, PackageJson } from "../constructs";
+import { EslintProps, EslintSupport, JestProps, JestSupport, TypescriptSupport, TypescriptSupportProps } from "../tools";
 import { YalcSupport } from "../tools/YalcSupport";
 
 export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];

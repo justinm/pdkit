@@ -11,10 +11,7 @@ export class FailOnSelfMutationStep extends GithubJobStep {
 
     super(scope, "FailOnSelfMutation", {
       name: "Find mutations",
-      run: [
-        "git add .",
-        `git diff --staged --patch --exit-code > .repo.patch || echo "::set-output name=${outputId}::true"`,
-      ].join("\n"),
+      run: ["git add .", `git diff --staged --patch --exit-code > .repo.patch || echo "::set-output name=${outputId}::true"`].join("\n"),
       ...props,
     });
 

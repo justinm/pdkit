@@ -23,6 +23,8 @@ const workspace = new YarnMonoWorkspace("pdkit", {
     compile: "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     clean: "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
     yalc: "yarn workspaces foreach --verbose -p --topological-dev --no-private run yalc",
+    lint: "yarn workspaces foreach --verbose -p --topological-dev --no-private run lint",
+    "lint:fix": "yarn workspaces foreach --verbose -p --topological-dev --no-private run lint --fix",
   },
   tsconfig: {
     enabled: true,

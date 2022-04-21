@@ -36,14 +36,10 @@ export class Workspace extends XConstruct implements IWorkspace {
   constructor(id: string, props?: WorkspaceProps) {
     super(undefined as any, id);
 
-    this.fileSynthesizer =
-      props?.fileSynthesizer ??
-      new FileSynthesizer(props?.rootPath ?? process.cwd());
+    this.fileSynthesizer = props?.fileSynthesizer ?? new FileSynthesizer(props?.rootPath ?? process.cwd());
 
     this.addLifeCycleScript(LifeCycle.WRITE, () => {
-      const projects = this.node
-        .findAll()
-        .filter((p) => p instanceof Project) as Project[];
+      const projects = this.node.findAll().filter((p) => p instanceof Project) as Project[];
 
       for (const project of projects) {
         const files = project.tryFindDeepChildren(File);
@@ -70,34 +66,18 @@ export class Workspace extends XConstruct implements IWorkspace {
   synth() {
     this.node.validate();
 
-    const everyNode = this.node
-      .findAll()
-      .filter((child) => (child as IXConstruct).runLifeCycle);
+    const everyNode = this.node.findAll().filter((child) => (child as IXConstruct).runLifeCycle);
 
-    everyNode.forEach((child) =>
-      (child as IXConstruct).runLifeCycle(LifeCycle.BEFORE_SYNTH)
-    );
-    everyNode.forEach((child) =>
-      (child as IXConstruct).runLifeCycle(LifeCycle.SYNTH)
-    );
-    everyNode.forEach((child) =>
-      (child as IXConstruct).runLifeCycle(LifeCycle.VALIDATE)
-    );
-    everyNode.forEach((child) =>
-      (child as IXConstruct).runLifeCycle(LifeCycle.AFTER_SYNTH)
-    );
-    everyNode.forEach((child) =>
-      (child as IXConstruct).runLifeCycle(LifeCycle.BEFORE_WRITE)
-    );
-    everyNode.forEach((child) =>
-      (child as IXConstruct).runLifeCycle(LifeCycle.WRITE)
-    );
+    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.BEFORE_SYNTH));
+    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.SYNTH));
+    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.VALIDATE));
+    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.AFTER_SYNTH));
+    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.BEFORE_WRITE));
+    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.WRITE));
   }
 
   async runScripts(type: typeof Script) {
-    const scripts = this.node
-      .findAll()
-      .filter((n) => n instanceof type) as Script[];
+    const scripts = this.node.findAll().filter((n) => n instanceof type) as Script[];
 
     for (const script of scripts) {
       await script.runnable();

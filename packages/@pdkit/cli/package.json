@@ -63,7 +63,7 @@
     "@pdkit/core": "2.0.22"
   },
   "prettier": {
-    "printWidth": 80,
+    "printWidth": 140,
     "singleQuote": false,
     "quoteProps": "consistent"
   },

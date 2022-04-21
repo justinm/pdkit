@@ -1,9 +1,6 @@
 import { File, XConstruct, Project } from "../../core";
 import { BuildWorkflow, BuildWorkflowProps } from "../github/workflows/BuildWorkflow";
-import {
-  SemanticPullRequestLintWorkflowProps,
-  PullRequestLintWorkflow,
-} from "../github/workflows/PullRequestLintWorkflow";
+import { SemanticPullRequestLintWorkflowProps, PullRequestLintWorkflow } from "../github/workflows/PullRequestLintWorkflow";
 import { ReleaseWorkflow, ReleaseWorkflowProps } from "../github/workflows/ReleaseWorkflow";
 
 export interface GithubSupportProps {

@@ -1,6 +1,5 @@
 import { LifeCycle, Project, XConstruct } from "../../../core";
 import { PackageDependency, PackageDependencyType } from "../../constructs";
-import { ReactSupport } from "../ReactSupport";
 import { TypescriptSupport } from "../TypescriptSupport";
 import { EslintSupport } from "./EslintSupport";
 
@@ -60,8 +59,10 @@ export class EslintImportRules extends XConstruct {
       const eslint = EslintSupport.of(project);
       const tsSupport = TypescriptSupport.tryOf(project);
 
-      if (!ReactSupport.hasSupport(project)) {
-        eslint.extends.add("plugin:import/recommended");
+      eslint.extends.add("plugin:import/recommended");
+
+      if (!!tsSupport) {
+        eslint.extends.add("plugin:import/typescript");
       }
 
       eslint.settings["import/parsers"] = {
@@ -81,11 +82,8 @@ export class EslintImportRules extends XConstruct {
       };
 
       if (props?.aliasMap || props?.aliasExtensions) {
-        eslint.settings["import/resolver"].alias.map = Object.entries(
-          props.aliasMap ?? {}
-        ).map(([k, v]) => [k, v]);
-        eslint.settings["import/resolver"].alias.extensions =
-          props.aliasExtensions;
+        eslint.settings["import/resolver"].alias.map = Object.entries(props.aliasMap ?? {}).map(([k, v]) => [k, v]);
+        eslint.settings["import/resolver"].alias.extensions = props.aliasExtensions;
       }
 
       eslint.addRules({
@@ -94,9 +92,7 @@ export class EslintImportRules extends XConstruct {
           "error",
           {
             // Only allow importing devDependencies from "devdirs".
-            devDependencies: Array.from(
-              new Set(props?.devSourcePatterns ?? [])
-            ),
+            devDependencies: Array.from(new Set(props?.devSourcePatterns ?? ["**/__tests__/**", "**/test/**"])),
             optionalDependencies: false, // Disallow importing optional dependencies (those shouldn't be in use in the project)
             peerDependencies: true, // Allow importing peer dependencies (that aren't also direct dependencies)
           },

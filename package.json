@@ -14,7 +14,8 @@
     "compile": "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     "clean": "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
     "yalc": "yarn workspaces foreach --verbose -p --topological-dev --no-private run yalc",
-    "lint": "eslint --ext ts src",
+    "lint": "yarn workspaces foreach --verbose -p --topological-dev --no-private run lint",
+    "lint:fix": "yarn workspaces foreach --verbose -p --topological-dev --no-private run lint --fix",
     "test": "jest --passWithNoTests --all",
     "release": "npx multi-semantic-release"
   },
@@ -66,7 +67,7 @@
     "npm": "^6"
   },
   "prettier": {
-    "printWidth": 80,
+    "printWidth": 140,
     "singleQuote": false,
     "quoteProps": "consistent"
   },

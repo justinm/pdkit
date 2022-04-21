@@ -47,9 +47,7 @@ export abstract class XConstruct extends Construct implements IXConstruct {
     const errors = this.node.validate();
 
     if (errors.length) {
-      throw new Error(
-        `Construct ${this} did not validate: ${errors.join("\n")}`
-      );
+      throw new Error(`Construct ${this} did not validate: ${errors.join("\n")}`);
     }
   }
 

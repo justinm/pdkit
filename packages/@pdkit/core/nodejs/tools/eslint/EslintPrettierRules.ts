@@ -39,7 +39,7 @@ export class EslintPrettierRules extends XConstruct {
       const eslint = EslintSupport.of(project);
 
       eslint.plugins.add("prettier");
-      eslint.extends.add("prettier");
+      eslint.extends.add("plugin:prettier/recommended");
 
       eslint.rules["prettier/prettier"] = [
         "error",

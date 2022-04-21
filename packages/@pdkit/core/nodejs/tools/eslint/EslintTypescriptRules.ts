@@ -1,6 +1,5 @@
 import { LifeCycle, Project, XConstruct } from "../../../core";
 import { PackageDependency, PackageDependencyType } from "../../constructs";
-import { ReactSupport } from "../ReactSupport";
 import { TypescriptSupport } from "../TypescriptSupport";
 import { EslintSupport } from "./EslintSupport";
 
@@ -33,27 +32,20 @@ export class EslintTypescriptRules extends XConstruct {
       const eslint = EslintSupport.of(project);
       const tsSupport = TypescriptSupport.of(project);
 
+      eslint.plugins.add("@typescript-eslint");
+
       eslint.fileExtensions.add("ts");
       eslint.fileExtensions.delete("js");
-
-      if (!ReactSupport.hasSupport(project)) {
-        eslint.plugins.add("@typescript-eslint");
-      }
 
       eslint.ignorePatterns.push("*.js");
       eslint.ignorePatterns.push("*.d.ts");
 
-      eslint.settings["import/parsers"]["@typescript-eslint/parser"] = [
-        ".ts",
-        ".tsx",
-      ];
+      eslint.settings["import/parsers"]["@typescript-eslint/parser"] = [".ts", ".tsx"];
 
       eslint.parser = "@typescript-eslint/parser";
-      eslint.parserOptions = {
-        ecmaVersion: 2018,
-        sourceType: "module",
-        project: `./${tsSupport.fileName}`,
-      };
+      eslint.parserOptions.ecmaVersion = 2020;
+      eslint.parserOptions.sourceType = "module";
+      eslint.parserOptions.project = `./${tsSupport.fileName}`;
 
       eslint.addRules({
         // see https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
