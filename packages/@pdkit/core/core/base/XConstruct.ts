@@ -7,6 +7,8 @@ export enum LifeCycle {
   BEFORE_SYNTH = "BeforeSynth",
   SYNTH = "Synth",
   AFTER_SYNTH = "AfterSynth",
+  BEFORE_WRITE = "BeforeWrite",
+  WRITE = "Write",
 }
 
 export interface IXConstruct extends IConstruct {
@@ -36,6 +38,8 @@ export abstract class XConstruct extends Construct implements IXConstruct {
       BeforeSynth: [],
       Synth: [],
       AfterSynth: [],
+      BeforeWrite: [],
+      Write: [],
     };
   }
 
@@ -43,7 +47,9 @@ export abstract class XConstruct extends Construct implements IXConstruct {
     const errors = this.node.validate();
 
     if (errors.length) {
-      throw new Error(`Construct ${this} did not validate: ${errors.join("\n")}`);
+      throw new Error(
+        `Construct ${this} did not validate: ${errors.join("\n")}`
+      );
     }
   }
 

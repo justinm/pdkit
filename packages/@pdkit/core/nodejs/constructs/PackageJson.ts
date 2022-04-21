@@ -1,5 +1,12 @@
 import path from "path";
-import { LifeCycle, Manifest, Project, ValidLicense, Workspace, XConstruct } from "../../core";
+import {
+  LifeCycle,
+  Manifest,
+  Project,
+  ValidLicense,
+  Workspace,
+  XConstruct,
+} from "../../core";
 import { NodeProject } from "../project";
 
 export interface NodePackageJsonProps {
@@ -9,7 +16,9 @@ export interface NodePackageJsonProps {
   readonly private?: boolean;
   readonly license?: ValidLicense;
   readonly homepath?: string;
-  readonly repository?: string | { readonly type: string; readonly url: string };
+  readonly repository?:
+    | string
+    | { readonly type: string; readonly url: string };
   readonly keywords?: string[];
   readonly main?: string;
   readonly bin?: Record<string, string>;
@@ -28,10 +37,9 @@ export class PackageJson extends Manifest {
 
     const project = Project.of(this);
 
-    const packageJson = Workspace.of(this).fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(
-      this,
-      path.join(project.projectPath, "package.json")
-    );
+    const packageJson = Workspace.of(this).fileSynthesizer.tryReadRealJsonFile<{
+      [key: string]: any;
+    }>(this, path.join(project.projectPath, "package.json"));
 
     if (props) {
       this.addShallowFields({
@@ -51,8 +59,12 @@ export class PackageJson extends Manifest {
       });
     }
 
-    this.addLifeCycleScript(LifeCycle.SYNTH, () => {
-      const addPackageDependency = (key: string, packageName: string, version: string) => {
+    this.addLifeCycleScript(LifeCycle.BEFORE_WRITE, () => {
+      const addPackageDependency = (
+        key: string,
+        packageName: string,
+        version: string
+      ) => {
         this.addDeepFields({
           [key]: {
             [packageName]: version,
@@ -64,7 +76,12 @@ export class PackageJson extends Manifest {
         .node.findAll()
         .filter((p) => p instanceof NodeProject) as NodeProject[];
 
-      ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
+      [
+        "dependencies",
+        "devDependencies",
+        "peerDependencies",
+        "bundledDependencies",
+      ].forEach((key) => {
         if (this.fields[key]) {
           const field = this.fields[key] as Record<string, string>;
 
@@ -122,8 +139,18 @@ export class PackageJson extends Manifest {
 
       this._fields = Object.keys(this._fields)
         .sort((a, b) => {
-          if (packageOrdering.indexOf(a) !== -1 && packageOrdering.indexOf(b) === -1) return -1;
-          if (packageOrdering.indexOf(a) === -1 && packageOrdering.indexOf(b) !== -1) return 1;
+          if (
+            packageOrdering.indexOf(a) !== -1 &&
+            packageOrdering.indexOf(b) === -1
+          ) {
+            return -1;
+          }
+          if (
+            packageOrdering.indexOf(a) === -1 &&
+            packageOrdering.indexOf(b) !== -1
+          ) {
+            return 1;
+          }
           return packageOrdering.indexOf(a) - packageOrdering.indexOf(b);
         })
         .reduce((c, k) => {
@@ -143,7 +170,10 @@ export class PackageJson extends Manifest {
     const workspace = Workspace.of(this);
 
     const packageJson =
-      workspace.fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(this, `node_modules/${dep}/package.json`) ||
+      workspace.fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(
+        this,
+        `node_modules/${dep}/package.json`
+      ) ||
       workspace.fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(
         this,
         `${project.projectPath}/node_modules/${dep}/package.json`

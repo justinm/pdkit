@@ -1,10 +1,18 @@
 import path from "path";
 import { Construct } from "constructs";
 import { GitIgnore, ManifestEntry, Project, XConstruct } from "../../core";
-import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
-import { EslintSupport } from "./EslintSupport";
+import {
+  NpmIgnore,
+  PackageDependency,
+  PackageDependencyType,
+} from "../constructs";
+import { EslintSupport } from "./eslint/EslintSupport";
 import { JestSupport } from "./JestSupport";
-import { TypeScriptJsxMode, TypescriptSupport, TypescriptSupportProps } from "./TypescriptSupport";
+import {
+  TypeScriptJsxMode,
+  TypescriptSupport,
+  TypescriptSupportProps,
+} from "./TypescriptSupport";
 
 export interface ReactSupportProps {
   readonly enzyme?: boolean;
@@ -37,8 +45,12 @@ export class ReactSupport extends XConstruct {
     const typescriptSupport = TypescriptSupport.tryOf(this);
     const project = Project.of(this);
 
-    new PackageDependency(this, "react", { version: props?.reactVersion ?? "^18" });
-    new PackageDependency(this, "react-dom", { version: props?.reactVersion ?? "^18" });
+    new PackageDependency(this, "react", {
+      version: props?.reactVersion ?? "^18",
+    });
+    new PackageDependency(this, "react-dom", {
+      version: props?.reactVersion ?? "^18",
+    });
     new PackageDependency(this, "react-scripts", {
       type: PackageDependencyType.DEV,
       version: props?.reactScriptsVersion ?? "^5",
@@ -83,18 +95,23 @@ export class ReactSupport extends XConstruct {
     }
 
     const eslintSupport = EslintSupport.tryOf(this);
+
     if (eslintSupport) {
-      new ManifestEntry(this, "ReactEslintExtension", {
+      eslintSupport.extends.add("react-app");
+      eslintSupport.extends.add("react-app/jest");
+      eslintSupport.fileExtensions.add("tsx");
+      new ManifestEntry(this, "ReactSupport", {
         eslintConfig: {
-          extends: ["react-app", "react-app/jest"],
+          root: true,
         },
       });
-
-      eslintSupport.fileExtensions.add("tsx");
     }
 
     typescriptSupport?.file.addDeepFields({
-      include: [path.join(project.sourcePath, "*.tsx"), path.join(project.sourcePath, "**/*.tsx")],
+      include: [
+        path.join(project.sourcePath, "*.tsx"),
+        path.join(project.sourcePath, "**/*.tsx"),
+      ],
       compilerOptions: {
         lib: ["dom", "dom.iterable", "esnext"],
         module: "commonjs",
@@ -106,21 +123,43 @@ export class ReactSupport extends XConstruct {
         ...props?.tsconfig?.compilerOptions,
       },
     });
-    new GitIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
-    new NpmIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
+    new GitIgnore(this, [
+      "build/*",
+      "!react-app-env.d.ts",
+      "!setupProxy.js",
+      "!setupTests.js",
+    ]);
+    new NpmIgnore(this, [
+      "build/*",
+      "!react-app-env.d.ts",
+      "!setupProxy.js",
+      "!setupTests.js",
+    ]);
 
     let reactScriptsCommand = "npx react-scripts";
 
     if (props?.rewire) {
-      new PackageDependency(this, "react-app-rewired", { type: PackageDependencyType.DEV });
-      new PackageDependency(this, "customize-cra", { type: PackageDependencyType.DEV });
+      new PackageDependency(this, "react-app-rewired", {
+        type: PackageDependencyType.DEV,
+      });
+      new PackageDependency(this, "customize-cra", {
+        type: PackageDependencyType.DEV,
+      });
       new GitIgnore(this, ["!config-overrides.js"]);
       reactScriptsCommand = "npx react-app-rewired";
     }
 
     if (props?.craco) {
-      new PackageDependency(this, "@craco/craco", { type: PackageDependencyType.DEV });
-      new GitIgnore(this, ["!craco.config.ts", "!craco.config.js", "!.cracorc.ts", "!.cracorc.js", "!.cracorc"]);
+      new PackageDependency(this, "@craco/craco", {
+        type: PackageDependencyType.DEV,
+      });
+      new GitIgnore(this, [
+        "!craco.config.ts",
+        "!craco.config.js",
+        "!.cracorc.ts",
+        "!.cracorc.js",
+        "!.cracorc",
+      ]);
       reactScriptsCommand = "yarn craco";
     }
 

@@ -9,7 +9,7 @@
     "pdkit": "npx npx pdkit",
     "yalc": "npx yalc publish",
     "clean": "find . -name \"*.js\" -not -path \"./node_modules/*\" -delete && find . -name \"*.d.ts\" -not -path \"./node_modules/*\" -delete",
-    "lint": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern .",
+    "lint": "eslint --ext ts .",
     "test": "jest --passWithNoTests --all"
   },
   "files": [
@@ -27,33 +27,34 @@
     "@types/shell-escape": "0.2.0",
     "@types/yargs": "17.0.10",
     "chalk": "^4.1.2",
-    "constructs": "10.0.97",
+    "constructs": "10.0.121",
     "dependency-graph": "0.11.0",
     "diff": "5.0.0",
-    "glob": "7.2.0",
+    "glob": "8.0.1",
     "glob-regex": "0.3.2",
     "ora": "^5.4.1",
     "prompts": "2.4.2",
     "shell-escape": "0.2.0",
     "ts-node": "10.7.0",
     "typescript": "4.6.3",
-    "yargs": "17.4.0"
+    "yargs": "17.4.1"
   },
   "devDependencies": {
     "@pdkit/core": "2.0.22",
     "@types/jest": "27.4.1",
-    "@types/node": "17.0.23",
-    "@typescript-eslint/eslint-plugin": "5.17.0",
-    "@typescript-eslint/parser": "5.17.0",
-    "eslint": "8.12.0",
+    "@types/node": "17.0.25",
+    "@typescript-eslint/eslint-plugin": "5.20.0",
+    "@typescript-eslint/parser": "5.20.0",
+    "eslint": "8.13.0",
     "eslint-config-prettier": "8.5.0",
+    "eslint-import-resolver-alias": "1.1.2",
     "eslint-import-resolver-node": "0.3.6",
-    "eslint-import-resolver-typescript": "2.7.0",
-    "eslint-plugin-import": "2.25.4",
+    "eslint-import-resolver-typescript": "2.7.1",
+    "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.0.0",
     "jest": "27.5.1",
     "jest-junit": "^13",
-    "prettier": "2.6.1",
+    "prettier": "2.6.2",
     "ts-jest": "27.1.4",
     "ts-node": "10.7.0",
     "typescript": "4.6.3"
@@ -61,14 +62,24 @@
   "peerDependencies": {
     "@pdkit/core": "2.0.22"
   },
+  "prettier": {
+    "printWidth": 80,
+    "singleQuote": false,
+    "quoteProps": "consistent"
+  },
   "eslintConfig": {
     "env": {
       "jest": true,
       "node": true
     },
-    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "project": "./tsconfig.json"
+    },
+    "root": false,
     "plugins": [
-      "import",
       "@typescript-eslint",
       "prettier"
     ],
@@ -84,20 +95,132 @@
         ]
       },
       "import/resolver": {
+        "alias": {},
         "node": {},
         "typescript": {
+          "project": "tsconfig.json",
           "alwaysTryTypes": true
         }
       }
     },
     "ignorePatterns": [
-      "*.js",
-      "*.d.ts",
       "node_modules/",
       "*.generated.ts",
-      "coverage"
+      "coverage",
+      "*.js",
+      "*.d.ts"
     ],
     "rules": {
+      "max-len": [
+        "error",
+        {
+          "code": 140,
+          "ignoreUrls": true,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true,
+          "ignoreComments": true,
+          "ignoreRegExpLiterals": true
+        }
+      ],
+      "quotes": [
+        "error",
+        "double",
+        {
+          "avoidEscape": true
+        }
+      ],
+      "key-spacing": [
+        "error"
+      ],
+      "comma-dangle": [
+        "error",
+        "only-multiline"
+      ],
+      "comma-spacing": [
+        "error",
+        {
+          "before": false,
+          "after": true
+        }
+      ],
+      "no-multi-spaces": [
+        "error",
+        {
+          "ignoreEOLComments": false
+        }
+      ],
+      "array-bracket-spacing": [
+        "error",
+        "never"
+      ],
+      "array-bracket-newline": [
+        "error",
+        "consistent"
+      ],
+      "object-curly-spacing": [
+        "error",
+        "always"
+      ],
+      "object-curly-newline": [
+        "error",
+        {
+          "multiline": true,
+          "consistent": true
+        }
+      ],
+      "object-property-newline": [
+        "error",
+        {
+          "allowAllPropertiesOnSameLine": true
+        }
+      ],
+      "keyword-spacing": [
+        "error"
+      ],
+      "no-duplicate-imports": [
+        "error"
+      ],
+      "brace-style": [
+        "error",
+        "1tbs",
+        {
+          "allowSingleLine": true
+        }
+      ],
+      "space-before-blocks": [
+        "error"
+      ],
+      "curly": [
+        "error",
+        "multi-line",
+        "consistent"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "no-return-await": [
+        "off"
+      ],
+      "no-trailing-spaces": [
+        "error"
+      ],
+      "dot-notation": [
+        "error"
+      ],
+      "no-bitwise": [
+        "error"
+      ],
+      "quote-props": [
+        "error",
+        "consistent-as-needed"
+      ],
+      "no-shadow": [
+        "off"
+      ],
+      "no-multiple-empty-lines": [
+        "error"
+      ],
       "import/no-extraneous-dependencies": [
         "error",
         {
@@ -120,13 +243,6 @@
             "order": "asc",
             "caseInsensitive": true
           }
-        }
-      ],
-      "prettier/prettier": [
-        "error",
-        {
-          "singleQuote": false,
-          "quoteProps": "consistent"
         }
       ],
       "indent": [
@@ -162,6 +278,13 @@
             "method"
           ]
         }
+      ],
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": false,
+          "quoteProps": "consistent"
+        }
       ]
     },
     "overrides": [
@@ -174,13 +297,7 @@
           "import/no-extraneous-dependencies": "off"
         }
       }
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "ecmaVersion": 2018,
-      "sourceType": "module",
-      "project": "./tsconfig.json"
-    }
+    ]
   },
   "jest": {
     "clearMocks": true,
