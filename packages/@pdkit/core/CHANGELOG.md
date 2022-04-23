@@ -1,3 +1,10 @@
+# @pdkit/core [2.2.0](https://github.com/justinm/pdkit/compare/@pdkit/core@2.1.1...@pdkit/core@2.2.0) (2022-04-23)
+
+
+### Features
+
+* aws amplify support ([866f443](https://github.com/justinm/pdkit/commit/866f4433754383ca9f307d820057cca8261041f8))
+
 ## @pdkit/core [2.1.1](https://github.com/justinm/pdkit/compare/@pdkit/core@2.1.0...@pdkit/core@2.1.1) (2022-04-23)
 
 

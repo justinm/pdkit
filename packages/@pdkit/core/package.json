@@ -1,6 +1,6 @@
 {
   "name": "@pdkit/core",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "main": "./index.js",
   "scripts": {
     "yalc": "npx yalc publish",
