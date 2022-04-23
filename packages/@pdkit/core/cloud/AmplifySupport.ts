@@ -1,8 +1,8 @@
 import { GitIgnore, XConstruct } from "../core";
 
 export class AmplifySupport extends XConstruct {
-  constructor(scope: XConstruct, id: string) {
-    super(scope, id);
+  constructor(scope: XConstruct) {
+    super(scope, "AmplifySupport");
 
     new GitIgnore(this, [
       "amplify/#current-cloud-backend",
