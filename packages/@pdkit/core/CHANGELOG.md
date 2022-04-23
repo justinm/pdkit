@@ -1,3 +1,10 @@
+## @pdkit/core [2.1.1](https://github.com/justinm/pdkit/compare/@pdkit/core@2.1.0...@pdkit/core@2.1.1) (2022-04-23)
+
+
+### Bug Fixes
+
+* major eslint + react fixes, recommend pinning eslint to ^7 for react projects ([e3b435c](https://github.com/justinm/pdkit/commit/e3b435c90808965284df6b63e035af524cadaae6))
+
 # @pdkit/core [2.1.0](https://github.com/justinm/pdkit/compare/@pdkit/core@2.0.22...@pdkit/core@2.1.0) (2022-04-21)
 
 
