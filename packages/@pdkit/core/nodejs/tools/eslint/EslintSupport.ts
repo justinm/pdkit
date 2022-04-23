@@ -14,9 +14,9 @@ export interface EslintProps {
   readonly install?: boolean;
 
   /**
-   * Install eslint dependencies (i.e. plugins and configs) for the project. Defaults to true
+   * Install a specific version of eslint
    */
-  readonly installDependencies?: boolean;
+  readonly version?: string;
 
   readonly lineWidth?: number;
 
@@ -96,6 +96,7 @@ export class EslintSupport extends XConstruct {
     if (props?.install ?? true) {
       new PackageDependency(this, "eslint", {
         type: PackageDependencyType.DEV,
+        version: props.version,
       });
     }
 

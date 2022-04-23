@@ -40,6 +40,8 @@ export class EslintImportRules extends XConstruct {
   constructor(scope: XConstruct, props?: EslintImportRulesProps) {
     super(scope, "EslintImportRules");
 
+    const eslint = EslintSupport.of(this);
+
     if (props?.install ?? true) {
       new PackageDependency(this, "eslint-import-resolver-node", {
         type: PackageDependencyType.DEV,
@@ -54,9 +56,33 @@ export class EslintImportRules extends XConstruct {
       });
     }
 
+    eslint.addRules({
+      // Require all imported dependencies are actually declared in package.json
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          // Only allow importing devDependencies from "devdirs".
+          devDependencies: Array.from(new Set(props?.devSourcePatterns ?? ["**/__tests__/**", "**/test/**"])),
+          optionalDependencies: false, // Disallow importing optional dependencies (those shouldn't be in use in the project)
+          peerDependencies: true, // Allow importing peer dependencies (that aren't also direct dependencies)
+        },
+      ],
+
+      // Require all imported libraries actually resolve (!!required for import/no-extraneous-dependencies to work!!)
+      "import/no-unresolved": ["error"],
+
+      // Require an ordering on all imports
+      "import/order": [
+        "warn",
+        {
+          groups: ["builtin", "external"],
+          alphabetize: { order: "asc", caseInsensitive: true },
+        },
+      ],
+    });
+
     this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
       const project = Project.of(this);
-      const eslint = EslintSupport.of(project);
       const tsSupport = TypescriptSupport.tryOf(project);
 
       eslint.extends.add("plugin:import/recommended");
@@ -85,31 +111,6 @@ export class EslintImportRules extends XConstruct {
         eslint.settings["import/resolver"].alias.map = Object.entries(props.aliasMap ?? {}).map(([k, v]) => [k, v]);
         eslint.settings["import/resolver"].alias.extensions = props.aliasExtensions;
       }
-
-      eslint.addRules({
-        // Require all imported dependencies are actually declared in package.json
-        "import/no-extraneous-dependencies": [
-          "error",
-          {
-            // Only allow importing devDependencies from "devdirs".
-            devDependencies: Array.from(new Set(props?.devSourcePatterns ?? ["**/__tests__/**", "**/test/**"])),
-            optionalDependencies: false, // Disallow importing optional dependencies (those shouldn't be in use in the project)
-            peerDependencies: true, // Allow importing peer dependencies (that aren't also direct dependencies)
-          },
-        ],
-
-        // Require all imported libraries actually resolve (!!required for import/no-extraneous-dependencies to work!!)
-        "import/no-unresolved": ["error"],
-
-        // Require an ordering on all imports
-        "import/order": [
-          "warn",
-          {
-            groups: ["builtin", "external"],
-            alphabetize: { order: "asc", caseInsensitive: true },
-          },
-        ],
-      });
     });
   }
 }

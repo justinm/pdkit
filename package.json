@@ -72,24 +72,25 @@
     "quoteProps": "consistent"
   },
   "eslintConfig": {
+    "root": true,
     "env": {
       "jest": true,
       "node": true
     },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "ecmaVersion": 2018,
+      "ecmaVersion": 2020,
       "sourceType": "module",
       "project": "./tsconfig.json"
     },
-    "root": false,
     "plugins": [
       "@typescript-eslint",
       "prettier"
     ],
     "extends": [
       "plugin:import/recommended",
-      "prettier"
+      "plugin:import/typescript",
+      "plugin:prettier/recommended"
     ],
     "settings": {
       "import/parsers": {
@@ -228,7 +229,10 @@
       "import/no-extraneous-dependencies": [
         "error",
         {
-          "devDependencies": [],
+          "devDependencies": [
+            "**/__tests__/**",
+            "**/test/**"
+          ],
           "optionalDependencies": false,
           "peerDependencies": true
         }

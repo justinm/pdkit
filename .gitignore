@@ -1,6 +1,6 @@
 dist
-*.js
-*.d.ts
+**/*.js
+**/*.d.ts
 # jest-junit artifacts
 /test-reports/
 junit.xml

@@ -126,6 +126,20 @@ export class ReactSupport extends XConstruct {
 
     if (eslintSupport) {
       eslintSupport.fileExtensions.add("tsx");
+      eslintSupport.plugins.delete("@typescript-eslint");
+      eslintSupport.plugins.add("react-app");
+      eslintSupport.plugins.add("react-hooks");
+      eslintSupport.extends.delete("plugin:import/recommended");
+      eslintSupport.extends.delete("plugin:import/typescript");
+      eslintSupport.extends.add("plugin:react/jsx-runtime");
+      eslintSupport.extends.add("plugin:react-hooks/recommended");
+
+      new PackageDependency(this, "eslint-plugin-react-app", {
+        type: PackageDependencyType.DEV,
+      });
+      new PackageDependency(this, "eslint-plugin-react-hooks", {
+        type: PackageDependencyType.DEV,
+      });
     }
 
     new ManifestEntry(this, "ReactScripts", {
