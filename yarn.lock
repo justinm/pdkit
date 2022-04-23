@@ -946,7 +946,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
   dependencies:
-    "@pdkit/core": 2.1.0
+    "@pdkit/core": 2.1.1
     "@types/diff": 5.0.2
     "@types/glob": 7.2.0
     "@types/jest": 27.4.1
@@ -981,13 +981,13 @@ __metadata:
     typescript: 4.6.3
     yargs: 17.4.1
   peerDependencies:
-    "@pdkit/core": 2.1.0
+    "@pdkit/core": 2.1.1
   bin:
     pdkit: index.ts
   languageName: unknown
   linkType: soft
 
-"@pdkit/core@2.1.0, @pdkit/core@workspace:packages/@pdkit/core":
+"@pdkit/core@2.1.1, @pdkit/core@workspace:packages/@pdkit/core":
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
