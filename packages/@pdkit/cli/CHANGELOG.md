@@ -1,3 +1,18 @@
+## @pdkit/cli [1.6.1](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.6.0...@pdkit/cli@1.6.1) (2022-04-23)
+
+
+### Bug Fixes
+
+* major eslint + react fixes, recommend pinning eslint to ^7 for react projects ([e3b435c](https://github.com/justinm/pdkit/commit/e3b435c90808965284df6b63e035af524cadaae6))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.1.1
+
 # @pdkit/cli [1.6.0](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.5.24...@pdkit/cli@1.6.0) (2022-04-21)
 
 
