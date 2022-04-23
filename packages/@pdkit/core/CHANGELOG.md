@@ -1,3 +1,10 @@
+## @pdkit/core [2.2.1](https://github.com/justinm/pdkit/compare/@pdkit/core@2.2.0...@pdkit/core@2.2.1) (2022-04-23)
+
+
+### Bug Fixes
+
+* minor change to AmplifySupport api ([451e1f2](https://github.com/justinm/pdkit/commit/451e1f224ba385de1a107b4d666d2aa20b0e1830))
+
 # @pdkit/core [2.2.0](https://github.com/justinm/pdkit/compare/@pdkit/core@2.1.1...@pdkit/core@2.2.0) (2022-04-23)
 
 
