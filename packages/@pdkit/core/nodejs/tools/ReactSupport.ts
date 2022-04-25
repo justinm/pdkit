@@ -132,7 +132,6 @@ export class ReactSupport extends XConstruct {
       eslintSupport.extends.delete("plugin:import/recommended");
       eslintSupport.extends.delete("plugin:import/typescript");
       eslintSupport.extends.add("plugin:react/jsx-runtime");
-      eslintSupport.extends.add("plugin:react-hooks/recommended");
 
       new PackageDependency(this, "eslint-plugin-react-app", {
         type: PackageDependencyType.DEV,
