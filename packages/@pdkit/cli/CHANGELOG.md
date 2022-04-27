@@ -1,3 +1,18 @@
+## @pdkit/cli [1.6.9](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.6.8...@pdkit/cli@1.6.9) (2022-04-27)
+
+
+### Bug Fixes
+
+* add support for typescript types prop in package.json ([01d31f8](https://github.com/justinm/pdkit/commit/01d31f87d5fcddec3c34648a4080d206a2e3bddd))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.2.7
+
 ## @pdkit/cli [1.6.8](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.6.7...@pdkit/cli@1.6.8) (2022-04-27)
 
 
