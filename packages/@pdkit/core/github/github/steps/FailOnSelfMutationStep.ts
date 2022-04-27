@@ -3,32 +3,16 @@ import { GithubJobStep, GithubJobStepProps } from "../../constructs/GithubJobSte
 
 export interface SelfMutationStepProps extends GithubJobStepProps {
   readonly patchProps?: GithubJobStepProps;
+  readonly outputId?: string;
 }
 
-export class FailOnSelfMutationStep extends GithubJobStep {
+export class FailOnSelfMutationStep extends XConstruct {
   constructor(scope: XConstruct, id: string, props?: SelfMutationStepProps) {
-    const outputId = "self_mutation_happened";
+    super(scope, id);
 
-    super(scope, "FailOnSelfMutation", {
-      name: "Find mutations",
-      run: ["git add .", `git diff --staged --patch --exit-code > .repo.patch || echo "::set-output name=${outputId}::true"`].join("\n"),
-      ...props,
-    });
-
-    new GithubJobStep(scope, "UploadMutations", {
-      name: "Upload Patch",
-      uses: "actions/upload-artifact@v2",
-      if: `steps.self_mutation.outputs.${outputId}`,
-      with: {
-        name: ".repo.patch",
-        path: ".repo.patch",
-      },
-      ...props?.patchProps,
-    });
-
-    new GithubJobStep(scope, "FailOnMutation", {
+    new GithubJobStep(scope, "FailOnSelfMutationStep", {
       name: "Fail build on mutation",
-      if: `steps.self_mutation.outputs.${outputId}`,
+      if: `steps.self_mutation.outputs.${props?.outputId ?? "self_mutation_happened"}`,
       run: [
         'echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch."',
         "cat .repo.patch",

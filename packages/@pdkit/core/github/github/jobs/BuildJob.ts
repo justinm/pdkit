@@ -3,6 +3,7 @@ import { GithubJob, GithubJobProps, JobPermission, Tools } from "../../construct
 import { GithubJobStep } from "../../constructs/GithubJobStep";
 import { CacheStep } from "../steps/CacheStep";
 import { FailOnSelfMutationStep } from "../steps/FailOnSelfMutationStep";
+import { FindSelfMutationStep } from "../steps/FindMutationsStep";
 import { GithubCheckoutStep } from "../steps/GithubCheckoutStep";
 import { SelfMutationJob } from "./SelfMutationJob";
 import { SetupTools } from "./SetupTools";
@@ -49,10 +50,14 @@ export class BuildJob extends GithubJob {
       new props.codeCoverageStep(this, "Coverage", { priority: 50 });
     }
 
+    new FindSelfMutationStep(this, "FindSelfMutation", { priority: 60 });
+
     if (props.failOnMutation) {
-      new FailOnSelfMutationStep(this, "SelfMutation", { priority: 60 });
-    } else if (props.commitMutations) {
-      new SelfMutationJob(this, "SelfMutation", {
+      new FailOnSelfMutationStep(this, "SelfMutation", { priority: 70 });
+    }
+
+    if (props.commitMutations && !props.failOnMutation) {
+      new SelfMutationJob(scope, "SelfMutation", {
         priority: 60,
         buildJobName: "Build",
       });
