@@ -1,3 +1,10 @@
+## @pdkit/core [2.2.5](https://github.com/justinm/pdkit/compare/@pdkit/core@2.2.4...@pdkit/core@2.2.5) (2022-04-27)
+
+
+### Bug Fixes
+
+* add support for bundledDependencies ([75c70b5](https://github.com/justinm/pdkit/commit/75c70b597e86f1f7cd63d62707c7ad08786caf2d))
+
 ## @pdkit/core [2.2.4](https://github.com/justinm/pdkit/compare/@pdkit/core@2.2.3...@pdkit/core@2.2.4) (2022-04-27)
 
 
