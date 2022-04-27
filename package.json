@@ -7,8 +7,8 @@
     "email": "me@justinmccormick.com"
   },
   "private": true,
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "pdkit": "yarn workspace @pdkit/cli run pdkit",
     "build": "yarn compile",
@@ -21,10 +21,10 @@
     "release": "npx multi-semantic-release"
   },
   "files": [
-    "dist/*.js",
-    "dist/**/*.js",
-    "dist/*.d.ts",
-    "dist/**/*.d.ts"
+    "build/*.js",
+    "build/**/*.js",
+    "build/*.d.ts",
+    "build/**/*.d.ts"
   ],
   "workspaces": [
     "packages/@pdkit/core",

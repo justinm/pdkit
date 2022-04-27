@@ -12,6 +12,7 @@ export interface NodePackageJsonProps {
   readonly repository?: string | { readonly type: string; readonly url: string };
   readonly keywords?: string[];
   readonly main?: string;
+  readonly types?: string;
   readonly bin?: Record<string, string>;
   readonly scripts?: Record<string, string>;
   readonly bugs?: {

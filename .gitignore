@@ -1,4 +1,4 @@
-dist
+build
 **/*.js
 **/*.d.ts
 # jest-junit artifacts

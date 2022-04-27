@@ -78,7 +78,7 @@ new YarnProject(workspace, "core", {
   packageName: "@pdkit/core",
   projectPath: "packages/@pdkit/core",
   sourcePath: ".",
-  distPath: ".",
+  buildPath: ".",
   dependencies: [
     "case",
     "constructs",
@@ -114,7 +114,7 @@ new YarnProject(workspace, "cli", {
   packageName: "@pdkit/cli",
   projectPath: "packages/@pdkit/cli",
   sourcePath: ".",
-  distPath: ".",
+  buildPath: ".",
   dependencies: [
     "@types/diff",
     "@types/glob",

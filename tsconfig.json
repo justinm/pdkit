@@ -7,7 +7,7 @@
     "src/**/*.ts"
   ],
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "build",
     "alwaysStrict": true,
     "declaration": true,
     "noEmit": false,

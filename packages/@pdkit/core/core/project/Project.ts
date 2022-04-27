@@ -22,7 +22,7 @@ export interface IProject extends IXConstruct {
 export interface ProjectProps {
   readonly projectPath?: string;
   readonly sourcePath?: string;
-  readonly distPath?: string;
+  readonly buildPath?: string;
 }
 
 type Constructor<T> = abstract new (...args: any[]) => any;
@@ -78,7 +78,7 @@ export abstract class Project extends XConstruct implements IProject {
 
     this._projectPath = props?.projectPath;
     this._sourcePath = props?.sourcePath ?? "src";
-    this._distPath = props?.distPath ?? "dist";
+    this._distPath = props?.buildPath ?? "build";
 
     this.node.addValidation({
       validate: () => {
