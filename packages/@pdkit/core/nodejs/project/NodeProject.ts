@@ -29,6 +29,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly dependencies?: Dependencies;
   readonly devDependencies?: Dependencies;
   readonly peerDependencies?: Dependencies;
+  readonly bundledDependencies?: Dependencies;
   readonly author?: AuthorProps;
   readonly license?: ValidLicense;
   readonly eslint?: EslintProps & { enabled: boolean };
@@ -132,6 +133,10 @@ export class NodeProject extends Project {
         Object.keys(deps).forEach((dep) => new PackageDependency(this, dep, { version: deps[dep], type }));
       }
     };
+
+    if (props?.bundledDependencies) {
+      addDependencies(props?.bundledDependencies);
+    }
 
     if (props?.dependencies) {
       addDependencies(props?.dependencies);
