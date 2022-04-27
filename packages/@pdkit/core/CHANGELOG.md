@@ -1,3 +1,10 @@
+## @pdkit/core [2.2.6](https://github.com/justinm/pdkit/compare/@pdkit/core@2.2.5...@pdkit/core@2.2.6) (2022-04-27)
+
+
+### Bug Fixes
+
+* manifest inheritance for default workspace projects ([4243382](https://github.com/justinm/pdkit/commit/424338288ce0f69971cf76fd064a2eeca89ce9c6))
+
 ## @pdkit/core [2.2.5](https://github.com/justinm/pdkit/compare/@pdkit/core@2.2.4...@pdkit/core@2.2.5) (2022-04-27)
 
 
