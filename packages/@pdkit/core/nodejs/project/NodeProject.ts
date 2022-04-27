@@ -135,7 +135,7 @@ export class NodeProject extends Project {
     };
 
     if (props?.bundledDependencies) {
-      addDependencies(props?.bundledDependencies);
+      addDependencies(props?.bundledDependencies, PackageDependencyType.BUNDLED);
     }
 
     if (props?.dependencies) {
