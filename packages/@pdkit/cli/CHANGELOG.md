@@ -1,3 +1,18 @@
+## @pdkit/cli [1.6.8](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.6.7...@pdkit/cli@1.6.8) (2022-04-27)
+
+
+### Bug Fixes
+
+* manifest inheritance for default workspace projects ([4243382](https://github.com/justinm/pdkit/commit/424338288ce0f69971cf76fd064a2eeca89ce9c6))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.2.6
+
 ## @pdkit/cli [1.6.7](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.6.6...@pdkit/cli@1.6.7) (2022-04-27)
 
 
