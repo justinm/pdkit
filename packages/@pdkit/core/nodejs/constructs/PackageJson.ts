@@ -107,6 +107,7 @@ export class PackageJson extends Manifest {
         "bugs",
         "private",
         "main",
+        "types",
         "bin",
         "man",
         "scripts",

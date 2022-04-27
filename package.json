@@ -8,6 +8,7 @@
   },
   "private": true,
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "pdkit": "yarn workspace @pdkit/cli run pdkit",
     "build": "yarn compile",

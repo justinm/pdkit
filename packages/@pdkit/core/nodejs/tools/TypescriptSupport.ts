@@ -2,12 +2,19 @@ import path from "path";
 import { Construct } from "constructs";
 import { FieldFile, GitIgnore, JsonFile, ManifestEntry, Project, XConstruct } from "../../core";
 import { PackageDependency, PackageDependencyType } from "../constructs";
+import { NodeProject } from "../project";
 
 export interface TypescriptSupportProps {
   /**
    * @default "tsconfig.json"
    */
   readonly fileName?: string;
+
+  /**
+   * @default "[project]/index.d.ts"
+   */
+  readonly typesFile?: string;
+
   /**
    * Specifies a list of glob patterns that match TypeScript files to be included in compilation.
    *
@@ -385,9 +392,15 @@ export class TypescriptSupport extends XConstruct {
   constructor(scope: XConstruct, props?: TypescriptSupportProps) {
     super(scope, "TypescriptSupport");
 
-    const project = Project.of(this);
+    const project = NodeProject.of(this);
 
     this.fileName = props?.fileName ?? "tsconfig.json";
+
+    if (!props?.typesFile) {
+      new ManifestEntry(this, "Types", {
+        types: `${project.distPath}/index.d.ts`,
+      });
+    }
 
     new PackageDependency(this, "typescript", { type: PackageDependencyType.DEV });
     new PackageDependency(this, "ts-node", { type: PackageDependencyType.DEV });
