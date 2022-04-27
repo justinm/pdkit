@@ -1,3 +1,10 @@
+## @pdkit/core [2.2.7](https://github.com/justinm/pdkit/compare/@pdkit/core@2.2.6...@pdkit/core@2.2.7) (2022-04-27)
+
+
+### Bug Fixes
+
+* add support for typescript types prop in package.json ([01d31f8](https://github.com/justinm/pdkit/commit/01d31f87d5fcddec3c34648a4080d206a2e3bddd))
+
 ## @pdkit/core [2.2.6](https://github.com/justinm/pdkit/compare/@pdkit/core@2.2.5...@pdkit/core@2.2.6) (2022-04-27)
 
 
