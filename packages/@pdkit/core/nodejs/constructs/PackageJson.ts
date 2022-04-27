@@ -63,7 +63,7 @@ export class PackageJson extends Manifest {
         .node.findAll()
         .filter((p) => p instanceof NodeProject) as NodeProject[];
 
-      ["dependencies", "devDependencies", "peerDependencies", "bundledDependencies"].forEach((key) => {
+      ["dependencies", "devDependencies", "peerDependencies"].forEach((key) => {
         if (this.fields[key]) {
           const field = this.fields[key] as Record<string, string>;
 
