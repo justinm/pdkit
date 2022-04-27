@@ -3,6 +3,7 @@ import { LifeCycle, XConstruct } from "../base/XConstruct";
 import { IFile, JsonFile } from "../fs";
 import { ManifestEntry } from "./ManifestEntry";
 import { Project } from "./Project";
+import { Workspace } from "./Workspace";
 
 /**
  * Manifest represents a JSON manifest for a given project. Only one manifest may be present per project.
@@ -34,8 +35,13 @@ export class Manifest extends JsonFile implements IFile {
     this.addLifeCycleScript(LifeCycle.BEFORE_WRITE, () => {
       const project = Project.of(this);
 
-      const parentManifestEntries = this.node.scopes
-        .filter((s) => Project.is(s) && s !== project)
+      const parentProjects = this.node.scopes.filter((s) => Project.is(s) && project !== s);
+
+      if (Workspace.is(this.node.scopes[0])) {
+        parentProjects.push(Project.of(this.node.scopes[0]));
+      }
+
+      const parentManifestEntries = parentProjects
         .map((p) => (p as Project).tryFindDeepChildren(ManifestEntry).filter((entry) => entry.propagate))
         .flat();
 

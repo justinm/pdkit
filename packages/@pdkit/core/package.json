@@ -1,6 +1,10 @@
 {
   "name": "@pdkit/core",
   "version": "2.2.5",
+  "author": {
+    "name": "Justin McCormick",
+    "email": "me@justinmccormick.com"
+  },
   "main": "./index.js",
   "scripts": {
     "yalc": "npx yalc publish",

@@ -1,6 +1,10 @@
 {
   "name": "@pdkit/cli",
   "version": "1.6.7",
+  "author": {
+    "name": "Justin McCormick",
+    "email": "me@justinmccormick.com"
+  },
   "main": "./index.js",
   "bin": {
     "pdkit": "index.ts"
