@@ -118,36 +118,20 @@ export class NodeProject extends Project {
       new GitIgnore(this, props.gitignore);
     }
 
-    const addDependencies = (deps: Dependencies, type?: PackageDependencyType) => {
-      if (Array.isArray(deps)) {
-        deps.forEach((dep) => {
-          const d = dep as { name: string; version?: string };
-
-          if (d.name) {
-            new PackageDependency(this, d.name, { version: d.version, type });
-          } else {
-            new PackageDependency(this, dep as string, { type });
-          }
-        });
-      } else {
-        Object.keys(deps).forEach((dep) => new PackageDependency(this, dep, { version: deps[dep], type }));
-      }
-    };
-
     if (props?.bundledDependencies) {
-      addDependencies(props?.bundledDependencies, PackageDependencyType.BUNDLED);
+      this.addDependencies(props?.bundledDependencies, PackageDependencyType.BUNDLED);
     }
 
     if (props?.dependencies) {
-      addDependencies(props?.dependencies);
+      this.addDependencies(props?.dependencies);
     }
 
     if (props?.devDependencies) {
-      addDependencies(props?.devDependencies, PackageDependencyType.DEV);
+      this.addDependencies(props?.devDependencies, PackageDependencyType.DEV);
     }
 
     if (props?.peerDependencies) {
-      addDependencies(props?.peerDependencies, PackageDependencyType.PEER);
+      this.addDependencies(props?.peerDependencies, PackageDependencyType.PEER);
     }
 
     if (!props?.disableAutoLib && Project.of(this).isDefaultProject) {
@@ -192,5 +176,29 @@ export class NodeProject extends Project {
     return Workspace.of(this)
       .node.findAll()
       .find((p) => (p as NodeProject).packageName === packageName) as NodeProject | undefined;
+  }
+
+  extraFields(fields: Record<string, unknown>) {
+    this.packageJson.addDeepFields(fields);
+
+    return this;
+  }
+
+  addDependencies(deps: Dependencies, type?: PackageDependencyType) {
+    if (Array.isArray(deps)) {
+      deps.forEach((dep) => {
+        const d = dep as { name: string; version?: string };
+
+        if (d.name) {
+          new PackageDependency(this, d.name, { version: d.version, type });
+        } else {
+          new PackageDependency(this, dep as string, { type });
+        }
+      });
+    } else {
+      Object.keys(deps).forEach((dep) => new PackageDependency(this, dep, { version: deps[dep], type }));
+    }
+
+    return this;
   }
 }

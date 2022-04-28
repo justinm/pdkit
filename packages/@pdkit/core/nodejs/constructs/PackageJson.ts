@@ -15,6 +15,7 @@ export interface NodePackageJsonProps {
   readonly types?: string;
   readonly bin?: Record<string, string>;
   readonly scripts?: Record<string, string>;
+  readonly resolutions?: Record<string, string>;
   readonly bugs?: {
     readonly url?: string;
     readonly email?: string;
@@ -48,6 +49,7 @@ export class PackageJson extends Manifest {
         bugs: props.bugs,
         files: props.files,
         man: props.man,
+        resolutions: props.resolutions,
       });
     }
 
