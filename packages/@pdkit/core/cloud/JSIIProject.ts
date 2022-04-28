@@ -1,5 +1,6 @@
 import { GitIgnore, ManifestEntry, XConstruct } from "../core";
 import { EslintSupport, NodeProject, NodeProjectProps, PackageDependency, PackageDependencyType } from "../nodejs";
+import { EslintImportRules } from "../nodejs/tools/eslint/EslintImportRules";
 import { EslintTypescriptRules } from "../nodejs/tools/eslint/EslintTypescriptRules";
 
 export interface JSIIProjectProps extends Omit<NodeProjectProps, "tsconfig"> {
@@ -21,6 +22,18 @@ export class JSIIProject extends NodeProject {
 
     new GitIgnore(this, [buildPath, sourcePath, distPath]);
 
+    new GitIgnore(this, [".jsii", "tsconfig.json"]);
+
+    new PackageDependency(this, "typescript", { type: PackageDependencyType.DEV });
+    new PackageDependency(this, "jsii-docgen", { type: PackageDependencyType.DEV });
+    new PackageDependency(this, "jsii-pacmak", { type: PackageDependencyType.DEV });
+    new PackageDependency(this, "publib", { type: PackageDependencyType.DEV });
+
+    if (EslintSupport.hasSupport(this)) {
+      new EslintImportRules(this, { fileExtensions: [".ts", ".tsx"], tsAlwaysTryTypes: true });
+      new EslintTypescriptRules(this);
+    }
+
     new ManifestEntry(this, "JSII", {
       types: `${buildPath}/index.d.ts`,
       jsii: {
@@ -40,17 +53,6 @@ export class JSIIProject extends NodeProject {
         release: "bash $(yarn bin publib)",
       },
     });
-
-    new GitIgnore(this, [".jsii", "tsconfig.json"]);
-
-    new PackageDependency(this, "typescript", { type: PackageDependencyType.DEV });
-    new PackageDependency(this, "jsii-docgen", { type: PackageDependencyType.DEV });
-    new PackageDependency(this, "jsii-pacmak", { type: PackageDependencyType.DEV });
-    new PackageDependency(this, "publib", { type: PackageDependencyType.DEV });
-
-    if (EslintSupport.hasSupport(this)) {
-      new EslintTypescriptRules(this);
-    }
 
     if (props.pypi) {
       new ManifestEntry(this, "PyPi", {

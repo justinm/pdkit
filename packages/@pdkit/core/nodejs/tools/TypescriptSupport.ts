@@ -379,11 +379,11 @@ export class TypescriptSupport extends XConstruct {
   }
 
   public static of(construct: Construct) {
-    return Project.of(construct).findDeepChild(TypescriptSupport);
+    return (construct instanceof Project ? construct : Project.of(construct)).findDeepChild(TypescriptSupport);
   }
 
   public static tryOf(construct: Construct) {
-    return Project.of(construct).tryFindDeepChild(TypescriptSupport);
+    return (construct instanceof Project ? construct : Project.of(construct)).tryFindDeepChild(TypescriptSupport);
   }
 
   public readonly file: FieldFile;

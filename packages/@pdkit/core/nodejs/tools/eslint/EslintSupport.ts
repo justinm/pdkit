@@ -61,11 +61,11 @@ export class EslintSupport extends XConstruct {
   }
 
   public static of(construct: Construct) {
-    return Project.of(construct).findDeepChild(EslintSupport);
+    return (construct instanceof Project ? construct : Project.of(construct)).findDeepChild(EslintSupport);
   }
 
   public static tryOf(construct: Construct) {
-    return Project.of(construct).tryFindDeepChild(EslintSupport);
+    return (construct instanceof Project ? construct : Project.of(construct)).tryFindDeepChild(EslintSupport);
   }
 
   public readonly rules: Record<string, unknown> = {};

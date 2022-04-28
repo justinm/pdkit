@@ -24,11 +24,11 @@ export class ReactSupport extends XConstruct {
   }
 
   public static of(construct: Construct) {
-    return Project.of(construct).findDeepChild(ReactSupport);
+    return (construct instanceof Project ? construct : Project.of(construct)).findDeepChild(ReactSupport);
   }
 
   public static tryOf(construct: Construct) {
-    return Project.of(construct).tryFindDeepChild(ReactSupport);
+    return (construct instanceof Project ? construct : Project.of(construct)).tryFindDeepChild(ReactSupport);
   }
 
   constructor(scope: XConstruct, props?: ReactSupportProps) {

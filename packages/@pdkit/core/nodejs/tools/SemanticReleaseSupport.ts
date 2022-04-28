@@ -17,11 +17,11 @@ export class SemanticReleaseSupport extends XConstruct {
   }
 
   public static of(construct: Construct) {
-    return Project.of(construct).findDeepChild(SemanticReleaseSupport);
+    return (construct instanceof Project ? construct : Project.of(construct)).findDeepChild(SemanticReleaseSupport);
   }
 
   public static tryOf(construct: Construct) {
-    return Project.of(construct).tryFindDeepChild(SemanticReleaseSupport);
+    return (construct instanceof Project ? construct : Project.of(construct)).tryFindDeepChild(SemanticReleaseSupport);
   }
 
   constructor(scope: XConstruct, props: SemanticReleaseSupportProps) {

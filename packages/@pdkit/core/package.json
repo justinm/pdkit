@@ -91,7 +91,14 @@
       },
       "import/resolver": {
         "alias": {},
-        "node": {},
+        "node": {
+          "extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx"
+          ]
+        },
         "typescript": {
           "project": "tsconfig.json",
           "alwaysTryTypes": true

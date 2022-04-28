@@ -22,6 +22,13 @@ export interface EslintImportRulesProps {
   readonly aliasExtensions?: string[];
 
   /**
+   * A list of file extensions that should be importable
+   *
+   * @default [".js", ".jsx"]
+   */
+  readonly fileExtensions?: string[];
+
+  /**
    * Always try to resolve types under `<root>@types` directory even it doesn't contain any source code.
    * This prevents `import/no-unresolved` eslint errors when importing a `@types/*` module that would otherwise remain unresolved.
    * @default true
@@ -96,15 +103,18 @@ export class EslintImportRules extends XConstruct {
       };
       eslint.settings["import/resolver"] = {
         alias: {},
-        node: {},
-        typescript: !!tsSupport
-          ? {
-              project: tsSupport.fileName,
-              ...(props?.tsAlwaysTryTypes !== false && {
-                alwaysTryTypes: true,
-              }),
-            }
-          : undefined,
+        node: {
+          extensions: props?.fileExtensions ?? [".js", ".jsx"].concat(!!tsSupport ? [".ts", ".tsx"] : []),
+        },
+        typescript:
+          !!tsSupport || !!props?.tsAlwaysTryTypes
+            ? {
+                project: tsSupport?.fileName ?? "tsconfig.json",
+                ...(props?.tsAlwaysTryTypes !== false && {
+                  alwaysTryTypes: true,
+                }),
+              }
+            : undefined,
       };
 
       if (props?.aliasMap || props?.aliasExtensions) {

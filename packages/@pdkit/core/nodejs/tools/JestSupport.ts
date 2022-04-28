@@ -528,11 +528,11 @@ export class JestSupport extends XConstruct {
   }
 
   public static of(construct: Construct) {
-    return Project.of(construct).findDeepChild(JestSupport);
+    return (construct instanceof Project ? construct : Project.of(construct)).findDeepChild(JestSupport);
   }
 
   public static tryOf(construct: Construct) {
-    return Project.of(construct).tryFindDeepChild(JestSupport);
+    return (construct instanceof Project ? construct : Project.of(construct)).tryFindDeepChild(JestSupport);
   }
 
   public readonly config: any;
