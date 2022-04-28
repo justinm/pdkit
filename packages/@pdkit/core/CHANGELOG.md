@@ -1,3 +1,16 @@
+# @pdkit/core [2.3.0](https://github.com/justinm/pdkit/compare/@pdkit/core@2.2.7...@pdkit/core@2.3.0) (2022-04-28)
+
+
+### Bug Fixes
+
+* changes to github api ([8238050](https://github.com/justinm/pdkit/commit/82380507049f9a0089810a37187ef12a2f2d76c6))
+* jsii bug fixes ([f97a7ff](https://github.com/justinm/pdkit/commit/f97a7ff246566e5c64e287e059abe75b88f2da54))
+
+
+### Features
+
+* initial support for JSII projects ([2b57581](https://github.com/justinm/pdkit/commit/2b57581c69c1a63c116eb0e3f866567f0d44552e))
+
 ## @pdkit/core [2.2.7](https://github.com/justinm/pdkit/compare/@pdkit/core@2.2.6...@pdkit/core@2.2.7) (2022-04-27)
 
 
