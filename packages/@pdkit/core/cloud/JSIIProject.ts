@@ -1,5 +1,6 @@
 import { GitIgnore, ManifestEntry, XConstruct } from "../core";
-import { NodeProject, NodeProjectProps, PackageDependency, PackageDependencyType } from "../nodejs";
+import { EslintSupport, NodeProject, NodeProjectProps, PackageDependency, PackageDependencyType } from "../nodejs";
+import { EslintTypescriptRules } from "../nodejs/tools/eslint/EslintTypescriptRules";
 
 export interface JSIIProjectProps extends Omit<NodeProjectProps, "tsconfig"> {
   readonly distPath?: string;
@@ -32,10 +33,11 @@ export class JSIIProject extends NodeProject {
         excludeTypescript: ["src/lambdas", "src/**/__tests__"],
       },
       scripts: {
-        build: "jsii",
+        build: `rsync -a . ${buildPath} --exclude .git --exclude node_modules && jsii`,
+        clean: 'find . -name "*.js" -not -path "./node_modules/*" -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
         package: "jsii-pacmak",
         docgen: "jsii-docgen",
-        release: 'NPM_TOKEN="" bash $(yarn bin publib)',
+        release: "bash $(yarn bin publib)",
       },
     });
 
@@ -45,6 +47,10 @@ export class JSIIProject extends NodeProject {
     new PackageDependency(this, "jsii-docgen", { type: PackageDependencyType.DEV });
     new PackageDependency(this, "jsii-pacmak", { type: PackageDependencyType.DEV });
     new PackageDependency(this, "publib", { type: PackageDependencyType.DEV });
+
+    if (EslintSupport.hasSupport(this)) {
+      new EslintTypescriptRules(this);
+    }
 
     if (props.pypi) {
       new ManifestEntry(this, "PyPi", {

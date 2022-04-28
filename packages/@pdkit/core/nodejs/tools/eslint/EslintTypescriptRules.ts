@@ -30,7 +30,7 @@ export class EslintTypescriptRules extends XConstruct {
 
     this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
       const eslint = EslintSupport.of(project);
-      const tsSupport = TypescriptSupport.of(project);
+      const tsSupport = TypescriptSupport.tryOf(project);
 
       eslint.plugins.add("@typescript-eslint");
 
@@ -45,7 +45,7 @@ export class EslintTypescriptRules extends XConstruct {
       eslint.parser = "@typescript-eslint/parser";
       eslint.parserOptions.ecmaVersion = 2020;
       eslint.parserOptions.sourceType = "module";
-      eslint.parserOptions.project = `./${tsSupport.fileName}`;
+      eslint.parserOptions.project = `./${tsSupport?.fileName ?? "tsconfig.json"}`;
 
       eslint.addRules({
         // see https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
