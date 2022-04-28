@@ -1,5 +1,5 @@
 import path from "path";
-import { IXConstruct, XConstruct } from "../base/XConstruct";
+import { Constructor, IXConstruct, XConstruct } from "../base/XConstruct";
 import { Workspace } from "./Workspace";
 
 export interface IProject extends IXConstruct {
@@ -25,8 +25,6 @@ export interface ProjectProps {
   readonly buildPath?: string;
 }
 
-type Constructor<T> = abstract new (...args: any[]) => any;
-
 export abstract class Project extends XConstruct implements IProject {
   public static is(construct: any) {
     return construct instanceof this;
@@ -41,6 +39,7 @@ export abstract class Project extends XConstruct implements IProject {
 
     return project;
   }
+
   public static tryOf(construct: any): Project | undefined {
     if (!(construct instanceof XConstruct)) {
       throw new Error(`${construct.constructor.name} is not a construct`);
@@ -131,39 +130,6 @@ export abstract class Project extends XConstruct implements IProject {
   public tryFindDeepChildren<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
     childType: T
   ): TRet[] {
-    const parentProject = Project.of(this);
-
-    return this.node
-      .findAll()
-      .filter((c) => c instanceof childType)
-      .filter((c) => Project.of(c) === parentProject) as TRet[];
-  }
-
-  /**
-   * Find all nodes by type that are owned by this project. Ownership is determined by the closest project scoped to a node.
-   * Undefined is returned if the number of matching children is not exactly one.
-   * @param childType
-   */
-  public tryFindDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
-    childType: T
-  ): TRet | undefined {
-    const children = this.tryFindDeepChildren(childType);
-
-    return (children.length === 1 && children[0]) || undefined;
-  }
-
-  /**
-   * Find all nodes by type that are owned by this project. Ownership is determined by the closest project scoped to a node.
-   * An error is thrown if the number of matching children is not exactly one.
-   * @param childType
-   */
-  public findDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(childType: T): TRet {
-    const child = this.tryFindDeepChild(childType);
-
-    if (!child) {
-      throw new Error(`${this}: Project does not own a ${childType}`);
-    }
-
-    return child;
+    return super.tryFindDeepChildren(childType).filter((c) => Project.of(c) === this) as TRet[];
   }
 }

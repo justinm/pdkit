@@ -1,6 +1,7 @@
 import { Construct, IConstruct } from "constructs";
 
-type Callback = () => void;
+export type Constructor<T> = abstract new (...args: any[]) => any;
+export type Callback = () => void;
 
 export enum LifeCycle {
   VALIDATE = "Validate",
@@ -28,7 +29,7 @@ export abstract class XConstruct extends Construct implements IXConstruct {
     return construct instanceof this;
   }
 
-  private lifecycle: Record<LifeCycle, Callback[]>;
+  private readonly lifecycle: Record<LifeCycle, Callback[]>;
 
   constructor(scope: XConstruct, id: string) {
     super(scope, id.replace("/", "-"));
@@ -69,5 +70,43 @@ export abstract class XConstruct extends Construct implements IXConstruct {
     }
 
     this.lifecycle[lifecycle].push(callback);
+  }
+
+  /**
+   * Find all nodes by type that are owned by this project. Ownership is determined by the closest project scoped to a node.
+   * @param childType
+   */
+  public tryFindDeepChildren<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
+    childType: T
+  ): TRet[] {
+    return this.node.findAll().filter((c) => c instanceof childType) as TRet[];
+  }
+
+  /**
+   * Find all nodes by type that are owned by this project. Ownership is determined by the closest project scoped to a node.
+   * Undefined is returned if the number of matching children is not exactly one.
+   * @param childType
+   */
+  public tryFindDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
+    childType: T
+  ): TRet | undefined {
+    const children = this.tryFindDeepChildren(childType);
+
+    return (children.length === 1 && children[0]) || undefined;
+  }
+
+  /**
+   * Find all nodes by type that are owned by this project. Ownership is determined by the closest project scoped to a node.
+   * An error is thrown if the number of matching children is not exactly one.
+   * @param childType
+   */
+  public findDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(childType: T): TRet {
+    const child = this.tryFindDeepChild(childType);
+
+    if (!child) {
+      throw new Error(`${this}: Project does not own a ${childType}`);
+    }
+
+    return child;
   }
 }

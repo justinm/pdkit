@@ -46,6 +46,7 @@ export class JSIIProject extends NodeProject {
         excludeTypescript: ["src/lambdas", "src/**/__tests__"],
       },
       scripts: {
+        prebuild: "",
         build: `rsync -a . ${buildPath} --exclude .git --exclude node_modules && jsii`,
         clean: 'find . -name "*.js" -not -path "./node_modules/*" -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
         package: "jsii-pacmak",
