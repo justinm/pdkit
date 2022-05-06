@@ -2,6 +2,7 @@ import path from "path";
 import { Construct } from "constructs";
 import { GitIgnore, ManifestEntry, Project } from "../../core";
 import { Bindings } from "../../core/traits/Bindings";
+import { LifeCycle, LifeCycleStage } from "../../core/traits/Lifecycle";
 import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
 import { EslintSupport } from "./eslint/EslintSupport";
 import { JestSupport } from "./JestSupport";
@@ -43,8 +44,6 @@ export class ReactSupport extends Construct {
 
     Bindings.of(Project.of(this)).bind(this);
 
-    const typescriptSupport = TypescriptSupport.tryOf(this);
-    const eslintSupport = EslintSupport.tryOf(this);
     const project = Project.of(this);
 
     new PackageDependency(this, "react", {
@@ -58,17 +57,6 @@ export class ReactSupport extends Construct {
       version: props?.reactScriptsVersion ?? "^5",
     });
 
-    if (typescriptSupport) {
-      new PackageDependency(this, "@types/react", {
-        type: PackageDependencyType.DEV,
-        version: props?.reactVersion ?? "^18",
-      });
-      new PackageDependency(this, "@types/react-dom", {
-        type: PackageDependencyType.DEV,
-        version: props?.reactVersion ?? "^18",
-      });
-    }
-
     if (props?.enzyme) {
       new PackageDependency(this, "@wojtekmaj/enzyme-adapter-react-17", {
         type: PackageDependencyType.DEV,
@@ -76,12 +64,6 @@ export class ReactSupport extends Construct {
       new PackageDependency(this, "enzyme", {
         type: PackageDependencyType.DEV,
       });
-
-      if (typescriptSupport) {
-        new PackageDependency(this, "@types/enzyme", {
-          type: PackageDependencyType.DEV,
-        });
-      }
     }
 
     if (props?.testingLibrary) {
@@ -96,19 +78,6 @@ export class ReactSupport extends Construct {
       });
     }
 
-    typescriptSupport?.file.addDeepFields({
-      include: [path.join(project.sourcePath, "*.tsx"), path.join(project.sourcePath, "**/*.tsx")],
-      compilerOptions: {
-        lib: ["dom", "dom.iterable", "esnext"],
-        module: "commonjs",
-        noEmit: true,
-        declaration: false,
-        target: "ES5",
-        jsx: TypeScriptJsxMode.REACT_JSX,
-        skipLibCheck: true,
-        ...props?.tsconfig?.compilerOptions,
-      },
-    });
     new GitIgnore(this, "ReactGitIgnore", ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
     new NpmIgnore(this, "ReactNpmIgnore", ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
 
@@ -133,23 +102,6 @@ export class ReactSupport extends Construct {
       reactScriptsCommand = "yarn craco";
     }
 
-    if (eslintSupport) {
-      eslintSupport.fileExtensions.add("tsx");
-      eslintSupport.plugins.delete("@typescript-eslint");
-      eslintSupport.plugins.add("react-app");
-      eslintSupport.plugins.add("react-hooks");
-      eslintSupport.extends.delete("plugin:import/recommended");
-      eslintSupport.extends.delete("plugin:import/typescript");
-      eslintSupport.extends.add("plugin:react/jsx-runtime");
-
-      new PackageDependency(this, "eslint-plugin-react-app", {
-        type: PackageDependencyType.DEV,
-      });
-      new PackageDependency(this, "eslint-plugin-react-hooks", {
-        type: PackageDependencyType.DEV,
-      });
-    }
-
     new ManifestEntry(this, "ReactScripts", {
       scripts: {
         start: `${reactScriptsCommand} start`,
@@ -161,17 +113,74 @@ export class ReactSupport extends Construct {
       browserslist: [">0.2%", "not dead", "not op_mini all"],
     });
 
-    if (JestSupport.hasSupport(this)) {
-      new ManifestEntry(this, "JestFix", {
-        jest: {
-          collectCoverage: undefined as any,
-          coverageDirectory: undefined as any,
-          testPathIgnorePatterns: undefined as any,
-          watchIgnorePatterns: undefined as any,
-          reporters: undefined as any,
-          preset: undefined as any,
-        },
-      });
-    }
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.SYNTH, () => {
+      const eslintSupport = EslintSupport.tryOf(this);
+
+      if (eslintSupport) {
+        eslintSupport.fileExtensions.add("tsx");
+        eslintSupport.plugins.delete("@typescript-eslint");
+        eslintSupport.plugins.add("react-app");
+        eslintSupport.plugins.add("react-hooks");
+        eslintSupport.extends.delete("plugin:import/recommended");
+        eslintSupport.extends.delete("plugin:import/typescript");
+        eslintSupport.extends.add("plugin:react/jsx-runtime");
+
+        new PackageDependency(this, "eslint-plugin-react-app", {
+          type: PackageDependencyType.DEV,
+        });
+        new PackageDependency(this, "eslint-plugin-react-hooks", {
+          type: PackageDependencyType.DEV,
+        });
+      }
+
+      if (JestSupport.hasSupport(this)) {
+        new ManifestEntry(this, "JestFix", {
+          jest: {
+            collectCoverage: undefined as any,
+            coverageDirectory: undefined as any,
+            testPathIgnorePatterns: undefined as any,
+            watchIgnorePatterns: undefined as any,
+            reporters: undefined as any,
+            preset: undefined as any,
+          },
+        });
+      }
+
+      const typescriptSupport = TypescriptSupport.tryOf(this);
+
+      if (typescriptSupport) {
+        new PackageDependency(this, "@types/react", {
+          type: PackageDependencyType.DEV,
+          version: props?.reactVersion ?? "^18",
+        });
+        new PackageDependency(this, "@types/react-dom", {
+          type: PackageDependencyType.DEV,
+          version: props?.reactVersion ?? "^18",
+        });
+
+        typescriptSupport.file.addDeepFields({
+          include: [path.join(project.sourcePath, "*.tsx"), path.join(project.sourcePath, "**/*.tsx")],
+          compilerOptions: {
+            lib: ["dom", "dom.iterable", "esnext"],
+            module: "commonjs",
+            noEmit: true,
+            declaration: false,
+            target: "ES5",
+            jsx: TypeScriptJsxMode.REACT_JSX,
+            skipLibCheck: true,
+            ...props?.tsconfig?.compilerOptions,
+          },
+        });
+      }
+
+      if (props?.enzyme) {
+        if (typescriptSupport) {
+          new PackageDependency(this, "@types/enzyme", {
+            type: PackageDependencyType.DEV,
+          });
+        }
+      }
+    });
   }
 }
