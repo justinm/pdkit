@@ -33,6 +33,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly packageJsonProps?: Partial<NodePackageJsonProps> & Record<string, unknown>;
   readonly disableAutoLib?: boolean;
   readonly github?: GithubSupportProps;
+  readonly resolutions?: Record<string, string>;
 }
 
 export class NodeProject extends Project {
@@ -128,6 +129,10 @@ export class NodeProject extends Project {
 
     if (props?.scripts) {
       new ManifestEntry(this, "NpmEnsureScripts", { scripts: props.scripts });
+    }
+
+    if (props?.resolutions) {
+      new ManifestEntry(this, "Resolutions", props.resolutions);
     }
 
     let defaultInstallCommand: string[] | undefined;

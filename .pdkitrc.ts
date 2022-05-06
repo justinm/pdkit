@@ -1,5 +1,4 @@
 import { SemanticReleaseSupport, YarnMonoWorkspace, YarnProject } from "@pdkit/core/nodejs";
-import { ManifestEntry, Project } from "@pdkit/core";
 
 const workspace = new YarnMonoWorkspace("pdkit", {
   author: {
@@ -59,12 +58,9 @@ const workspace = new YarnMonoWorkspace("pdkit", {
       },
     },
   },
-});
-
-new ManifestEntry(Project.of(workspace), "CustomResolutions", {
   resolutions: {
     "chalk": "^4.1.2",
-  }
+  },
 });
 
 new SemanticReleaseSupport(workspace, {
