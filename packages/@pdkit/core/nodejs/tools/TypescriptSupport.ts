@@ -33,6 +33,11 @@ export interface TypescriptSupportProps {
    * Compiler options to use.
    */
   readonly compilerOptions?: TypeScriptCompilerOptions;
+
+  /**
+   * Specifies if the project should disable compile/clean scripts.
+   */
+  readonly disableCompileScripts?: boolean;
 }
 
 /**
@@ -406,12 +411,14 @@ export class TypescriptSupport extends XConstruct {
     new PackageDependency(this, "ts-node", { type: PackageDependencyType.DEV });
     new PackageDependency(this, "@types/node", { type: PackageDependencyType.DEV });
 
-    new ManifestEntry(this, "Scripts", {
-      scripts: {
-        compile: "tsc -p ./tsconfig.json",
-        clean: 'find . -name "*.js" -not -path "./node_modules/*" -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
-      },
-    });
+    if (!props?.disableCompileScripts) {
+      new ManifestEntry(this, "Scripts", {
+        scripts: {
+          compile: "tsc -p ./tsconfig.json",
+          clean: 'find . -name "*.js" -not -path "./node_modules/*" -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
+        },
+      });
+    }
 
     new ManifestEntry(this, "Files", {
       files: [path.join(project.distPath, "*.d.ts"), path.join(project.distPath, "**/*.d.ts")],
