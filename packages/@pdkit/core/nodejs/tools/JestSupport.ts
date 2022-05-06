@@ -501,6 +501,11 @@ export interface JestProps {
    * The directory Jest saves reports to
    */
   readonly reportsDirectory?: string;
+
+  /**
+   * The filename Jest saves reports to
+   */
+  readonly outputName?: string;
 }
 
 export interface CoverageThreshold {
@@ -551,6 +556,7 @@ export class JestSupport extends XConstruct {
     const testMatch = props.jestConfig?.testMatch ?? ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"];
     const coverageDirectory = props.jestConfig?.coverageDirectory ?? "coverage";
     const reportsDirectory = props.reportsDirectory ?? "test-reports";
+    const outputName = props.outputName;
     const snapshotResolver = props.jestConfig?.snapshotResolver;
     const clearMocks = props.jestConfig?.clearMocks ?? true;
 
@@ -563,7 +569,7 @@ export class JestSupport extends XConstruct {
     });
 
     if (props.junit ?? true) {
-      reporters.push(["jest-junit", { outputDirectory: reportsDirectory }]);
+      reporters.push(["jest-junit", { outputDirectory: reportsDirectory, outputName }]);
 
       new PackageDependency(this, "jest-junit", {
         version: "^13",
