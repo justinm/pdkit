@@ -1,6 +1,8 @@
 import * as path from "path";
 import { Construct } from "constructs";
-import { GitIgnore, JsonFile, LifeCycle, ManifestEntry, Project, XConstruct } from "../../core";
+import { GitIgnore, JsonFile, ManifestEntry, Project } from "../../core";
+import { Bindings } from "../../core/traits/Bindings";
+import { LifeCycle, LifeCycleStage } from "../../core/traits/Lifecycle";
 import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
 import { TypescriptSupport } from "./TypescriptSupport";
 
@@ -530,7 +532,7 @@ export interface HasteConfig {
 
 type JestReporter = [string, { [key: string]: any }] | string;
 
-export class JestSupport extends XConstruct {
+export class JestSupport extends Construct {
   public static readonly ID = "JestSupport";
 
   public static hasSupport(construct: Construct) {
@@ -538,16 +540,22 @@ export class JestSupport extends XConstruct {
   }
 
   public static of(construct: Construct) {
-    return (construct instanceof Project ? construct : Project.of(construct)).findDeepChild(JestSupport);
+    const ret = this.tryOf(construct);
+
+    if (!ret) {
+      throw new Error(`Construct ${construct} does not have JestSupport`);
+    }
+
+    return ret;
   }
 
   public static tryOf(construct: Construct) {
-    return (construct instanceof Project ? construct : Project.of(construct)).tryFindDeepChild(JestSupport);
+    return Bindings.of(Project.of(construct)).findByClass<JestSupport>(JestSupport);
   }
 
   public readonly config: any;
 
-  constructor(scope: XConstruct, props: JestProps) {
+  constructor(scope: Construct, props: JestProps) {
     super(scope, JestSupport.ID);
 
     // Jest defaults
@@ -567,6 +575,8 @@ export class JestSupport extends XConstruct {
 
     const reporters = props.jestConfig?.reporters ?? [];
     const ignore: string[] = [];
+
+    Bindings.of(Project.of(this)).bind(this);
 
     new PackageDependency(this, "jest", {
       version: props.version,
@@ -591,8 +601,8 @@ export class JestSupport extends XConstruct {
       coverageReporters.push("text");
     }
 
-    new GitIgnore(this, ignore);
-    new NpmIgnore(this, ignore);
+    new GitIgnore(this, "JestGitIgnore", ignore);
+    new NpmIgnore(this, "JestNpmIgnore", ignore);
 
     const fields = {
       jest: {
@@ -618,7 +628,7 @@ export class JestSupport extends XConstruct {
     }
 
     if (props.configFilePath) {
-      new JsonFile(this, props.configFilePath, { fields });
+      new JsonFile(this, "", { filePath: props.configFilePath, fields });
     } else {
       new ManifestEntry(this, "Jest", fields, { shallow: true });
     }
@@ -635,7 +645,8 @@ export class JestSupport extends XConstruct {
       });
     }
 
-    this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
       if (TypescriptSupport.hasSupport(this)) {
         new PackageDependency(this, "ts-jest", {
           type: PackageDependencyType.DEV,

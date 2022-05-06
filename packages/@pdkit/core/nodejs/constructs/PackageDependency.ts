@@ -1,4 +1,7 @@
-import { ManifestEntry, XConstruct } from "../../core";
+import { randomUUID } from "crypto";
+import { Construct } from "constructs";
+import { ManifestEntry } from "../../core";
+import { Fields } from "../../core/traits/Fields";
 
 export interface PackageDependencyProps {
   readonly type?: PackageDependencyType;
@@ -11,50 +14,39 @@ export enum PackageDependencyType {
   BUNDLED,
 }
 
-export class PackageDependency extends ManifestEntry {
-  private readonly keyName: string;
-  private readonly type?: PackageDependencyType;
+export class PackageDependency extends Construct {
+  constructor(scope: Construct, packageName: string, props?: PackageDependencyProps) {
+    super(scope, randomUUID());
 
-  constructor(scope: XConstruct, id: string, props?: PackageDependencyProps) {
-    super(scope, `Dependency${props?.type}-${id}`);
-
-    this.type = props?.type;
+    let keyName: string;
 
     switch (props?.type) {
       case PackageDependencyType.PEER:
-        this.keyName = "peerDependencies";
+        keyName = "peerDependencies";
         break;
       case PackageDependencyType.DEV:
-        this.keyName = "devDependencies";
+        keyName = "devDependencies";
         break;
       case PackageDependencyType.BUNDLED:
-        this.keyName = "bundledDependencies";
+        keyName = "bundledDependencies";
         break;
       default:
-        this.keyName = "dependencies";
+        keyName = "dependencies";
         break;
     }
+
+    const entry = new ManifestEntry(this, "Default", {});
 
     switch (props?.type) {
       case PackageDependencyType.BUNDLED:
-        this.addFields({ bundledDependencies: [id] });
+        Fields.of(entry).addDeepFields({ bundledDependencies: [packageName] });
         break;
       default:
-        this.addFields({
-          [this.keyName]: {
-            [id]: props?.version ?? "*",
+        Fields.of(entry).addDeepFields({
+          [keyName]: {
+            [packageName]: props?.version ?? "*",
           },
         });
-    }
-  }
-
-  public setVersion(version: string) {
-    if (this.type !== PackageDependencyType.BUNDLED) {
-      this.addFields({
-        [this.keyName]: {
-          [this.node.id]: version,
-        },
-      });
     }
   }
 }

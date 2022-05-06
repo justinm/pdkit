@@ -1,4 +1,4 @@
-import { XConstruct } from "../../../core";
+import { Construct } from "constructs";
 import { GithubJob, GithubJobProps, JobPermission } from "../../constructs/GithubJob";
 import { GithubJobStep, GithubJobStepProps } from "../../constructs/GithubJobStep";
 import { GithubCheckoutStep } from "../steps/GithubCheckoutStep";
@@ -10,7 +10,7 @@ export interface SelfMutationJobProps extends Partial<GithubJobProps> {
 }
 
 export class SelfMutationJob extends GithubJob {
-  constructor(scope: XConstruct, id: string, props: SelfMutationJobProps) {
+  constructor(scope: Construct, id: string, props: SelfMutationJobProps) {
     super(scope, id, {
       name: "SelfMutation",
       permissions: {

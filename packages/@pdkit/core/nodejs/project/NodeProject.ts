@@ -1,16 +1,6 @@
 import path from "path";
-import {
-  GitIgnore,
-  InstallShellScript,
-  License,
-  ManifestEntry,
-  Project,
-  ProjectProps,
-  StandardValidator,
-  ValidLicense,
-  Workspace,
-  XConstruct,
-} from "../../core";
+import { Construct } from "constructs";
+import { GitIgnore, InstallShellScript, License, ManifestEntry, Project, ProjectProps, ValidLicense, Workspace } from "../../core";
 import { GithubSupport, GithubSupportProps } from "../../github";
 import { Author, AuthorProps, NodePackageJsonProps, PackageDependency, PackageDependencyType, PackageJson } from "../constructs";
 import { EslintProps, EslintSupport, JestProps, JestSupport, TypescriptSupport, TypescriptSupportProps } from "../tools";
@@ -52,7 +42,7 @@ export class NodeProject extends Project {
   public readonly packageJson: PackageJson;
   public readonly packageName: string;
 
-  constructor(scope: XConstruct, id: string, props?: NodeProjectProps) {
+  constructor(scope: Construct, id: string, props?: NodeProjectProps) {
     super(scope, id, props);
 
     const tool = props?.packageManagerType ?? PackageManagerType.YARN;
@@ -60,12 +50,12 @@ export class NodeProject extends Project {
     this.packageName = props?.packageName ?? id;
     this.packageJson = new PackageJson(this, {
       name: this.packageName,
-      files: [path.join(this.distPath, "*.js"), path.join(this.distPath, "**/*.js")],
+      files: [path.join(this.buildPath, "*.js"), path.join(this.buildPath, "**/*.js")],
       ...props,
     });
 
-    if (this.distPath !== this.sourcePath) {
-      new GitIgnore(this, [this.distPath]);
+    if (this.buildPath !== this.sourcePath) {
+      new GitIgnore(this, "DistPath", [this.buildPath]);
     }
 
     if (props?.tsconfig?.enabled) {
@@ -97,7 +87,7 @@ export class NodeProject extends Project {
     }
 
     // Courtesy of https://www.toptal.com/developers/gitignore/api/node
-    new GitIgnore(this, [
+    new GitIgnore(this, "NodeJsIgnore", [
       "node_modules",
       "logs",
       "*.log",
@@ -112,11 +102,8 @@ export class NodeProject extends Project {
       ".npm",
       "*.tgz",
       ".yalc",
+      ...(props?.gitignore ?? []),
     ]);
-
-    if (props?.gitignore) {
-      new GitIgnore(this, props.gitignore);
-    }
 
     if (props?.bundledDependencies) {
       this.addDependencies(props?.bundledDependencies, PackageDependencyType.BUNDLED);
@@ -151,7 +138,7 @@ export class NodeProject extends Project {
         break;
       case PackageManagerType.YARN:
         defaultInstallCommand = ["yarn"];
-        new GitIgnore(this, [
+        new GitIgnore(this, "YarnIgnore", [
           ".yarn/*",
           "!.yarn/releases",
           "!.yarn/patches",
@@ -165,7 +152,6 @@ export class NodeProject extends Project {
     }
 
     new InstallShellScript(this, "InstallCommand", props?.installCommands ?? defaultInstallCommand);
-    new StandardValidator(this, "StandardValidator");
 
     if (props?.packageJsonProps) {
       new ManifestEntry(this, "ProvidedManifest", props.packageJsonProps);
@@ -176,12 +162,6 @@ export class NodeProject extends Project {
     return Workspace.of(this)
       .node.findAll()
       .find((p) => (p as NodeProject).packageName === packageName) as NodeProject | undefined;
-  }
-
-  extraFields(fields: Record<string, unknown>) {
-    this.packageJson.addDeepFields(fields);
-
-    return this;
   }
 
   addDependencies(deps: Dependencies, type?: PackageDependencyType) {

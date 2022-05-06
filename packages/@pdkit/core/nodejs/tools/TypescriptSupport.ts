@@ -1,6 +1,8 @@
 import path from "path";
 import { Construct } from "constructs";
-import { FieldFile, GitIgnore, JsonFile, ManifestEntry, Project, XConstruct } from "../../core";
+import { GitIgnore, JsonFile, ManifestEntry, Project } from "../../core";
+import { Bindings } from "../../core/traits/Bindings";
+import { Fields } from "../../core/traits/Fields";
 import { PackageDependency, PackageDependencyType } from "../constructs";
 import { NodeProject } from "../project";
 
@@ -13,7 +15,7 @@ export interface TypescriptSupportProps {
   /**
    * @default "[project]/index.d.ts"
    */
-  readonly typesFile?: string;
+  readonly types?: string;
 
   /**
    * Specifies a list of glob patterns that match TypeScript files to be included in compilation.
@@ -378,34 +380,36 @@ export interface TypeScriptCompilerOptions {
 /**
  * TypescriptSupport adds support for typescript for a given project.
  */
-export class TypescriptSupport extends XConstruct {
+export class TypescriptSupport extends Construct {
   public static hasSupport(construct: Construct) {
     return !!this.tryOf(construct);
   }
 
   public static of(construct: Construct) {
-    return (construct instanceof Project ? construct : Project.of(construct)).findDeepChild(TypescriptSupport);
+    const ret = this.tryOf(construct);
+
+    if (!ret) {
+      throw new Error(`Construct ${construct} does not have TypescriptSupport`);
+    }
+
+    return ret;
   }
 
   public static tryOf(construct: Construct) {
-    return (construct instanceof Project ? construct : Project.of(construct)).tryFindDeepChild(TypescriptSupport);
+    return Bindings.of(Project.of(construct)).findByClass<TypescriptSupport>(TypescriptSupport);
   }
 
-  public readonly file: FieldFile;
+  public readonly file: JsonFile;
   public readonly fileName: string;
 
-  constructor(scope: XConstruct, props?: TypescriptSupportProps) {
+  constructor(scope: Construct, props?: TypescriptSupportProps) {
     super(scope, "TypescriptSupport");
 
     const project = NodeProject.of(this);
 
     this.fileName = props?.fileName ?? "tsconfig.json";
 
-    if (!props?.typesFile) {
-      new ManifestEntry(this, "Types", {
-        types: `${project.distPath}/index.d.ts`,
-      });
-    }
+    Bindings.of(project).bind(this);
 
     new PackageDependency(this, "typescript", { type: PackageDependencyType.DEV });
     new PackageDependency(this, "ts-node", { type: PackageDependencyType.DEV });
@@ -420,42 +424,48 @@ export class TypescriptSupport extends XConstruct {
       });
     }
 
+    const mainEntrypoint = (Fields.of(project.packageJson).fields.main as string) ?? path.join(project.buildPath, "index.ts");
+    const typesFile = `${path.dirname(mainEntrypoint)}/${path.basename(mainEntrypoint, path.extname(mainEntrypoint))}.d.ts`;
+
     new ManifestEntry(this, "Files", {
-      files: [path.join(project.distPath, "*.d.ts"), path.join(project.distPath, "**/*.d.ts")],
+      types: props?.types ?? typesFile,
+      files: [path.join(project.buildPath, "*.d.ts"), path.join(project.buildPath, "**/*.d.ts")],
     });
 
-    new GitIgnore(this, ["**/*.js", "**/*.d.ts"]);
+    new GitIgnore(this, "CompiledScripts", ["**/*.js", "**/*.d.ts"]);
 
-    this.file = new JsonFile(this, this.fileName);
-    this.file.addDeepFields({
-      exclude: [...(props?.exclude ?? []), "node_modules"],
-      include: [...(props?.include ?? []), path.join(project.sourcePath, "*.ts"), path.join(project.sourcePath, "**/*.ts")],
-      compilerOptions: {
-        outDir: project.distPath === "." ? undefined : project.distPath,
-        alwaysStrict: true,
-        declaration: true,
-        noEmit: false,
-        esModuleInterop: true,
-        experimentalDecorators: true,
-        inlineSourceMap: true,
-        inlineSources: true,
-        lib: ["esnext"],
-        module: "commonjs",
-        noEmitOnError: false,
-        noFallthroughCasesInSwitch: true,
-        noImplicitAny: true,
-        noImplicitReturns: true,
-        noImplicitThis: true,
-        noUnusedLocals: true,
-        noUnusedParameters: false,
-        resolveJsonModule: true,
-        strict: true,
-        strictNullChecks: true,
-        strictPropertyInitialization: true,
-        stripInternal: true,
-        target: "ES6",
-        ...props?.compilerOptions,
-      },
-    } as TypescriptSupportProps);
+    this.file = new JsonFile(this, "Default", {
+      filePath: this.fileName,
+      fields: {
+        exclude: [...(props?.exclude ?? []), "node_modules"],
+        include: [...(props?.include ?? []), path.join(project.sourcePath, "*.ts"), path.join(project.sourcePath, "**/*.ts")],
+        compilerOptions: {
+          outDir: project.buildPath === "." ? undefined : project.buildPath,
+          alwaysStrict: true,
+          declaration: true,
+          noEmit: false,
+          esModuleInterop: true,
+          experimentalDecorators: true,
+          inlineSourceMap: true,
+          inlineSources: true,
+          lib: ["esnext"],
+          module: "commonjs",
+          noEmitOnError: false,
+          noFallthroughCasesInSwitch: true,
+          noImplicitAny: true,
+          noImplicitReturns: true,
+          noImplicitThis: true,
+          noUnusedLocals: true,
+          noUnusedParameters: false,
+          resolveJsonModule: true,
+          strict: true,
+          strictNullChecks: true,
+          strictPropertyInitialization: true,
+          stripInternal: true,
+          target: "ES6",
+          ...props?.compilerOptions,
+        },
+      } as TypescriptSupportProps as Record<string, unknown>,
+    });
   }
 }

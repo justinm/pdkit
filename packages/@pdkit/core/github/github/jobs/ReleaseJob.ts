@@ -1,4 +1,4 @@
-import { XConstruct } from "../../../core";
+import { Construct } from "constructs";
 import { GithubJob, GithubJobProps, JobPermission, Tools } from "../../constructs/GithubJob";
 import { GithubJobStep } from "../../constructs/GithubJobStep";
 import { CacheStep } from "../steps/CacheStep";
@@ -19,7 +19,7 @@ export interface ReleaseJobProps extends Partial<GithubJobProps> {
 }
 
 export class ReleaseJob extends GithubJob {
-  constructor(scope: XConstruct, id: string, props: ReleaseJobProps & Partial<GithubJobProps>) {
+  constructor(scope: Construct, id: string, props: ReleaseJobProps & Partial<GithubJobProps>) {
     super(scope, id, {
       name: "Release",
       permissions: {

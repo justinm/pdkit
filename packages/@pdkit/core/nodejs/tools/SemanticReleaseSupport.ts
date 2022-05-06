@@ -1,5 +1,6 @@
 import { Construct } from "constructs";
-import { ManifestEntry, Project, XConstruct } from "../../core";
+import { ManifestEntry, Project } from "../../core";
+import { Bindings } from "../../core/traits/Bindings";
 import { PackageDependency, PackageDependencyType } from "../constructs";
 
 export interface SemanticReleaseSupportProps {
@@ -11,23 +12,31 @@ export interface SemanticReleaseSupportProps {
   semanticReleaseArgs?: string;
 }
 
-export class SemanticReleaseSupport extends XConstruct {
+export class SemanticReleaseSupport extends Construct {
   public static hasSupport(construct: Construct) {
     return !!this.tryOf(construct);
   }
 
   public static of(construct: Construct) {
-    return (construct instanceof Project ? construct : Project.of(construct)).findDeepChild(SemanticReleaseSupport);
+    const ret = this.tryOf(construct);
+
+    if (!ret) {
+      throw new Error(`Construct ${construct} does not have SemanticReleaseSupport`);
+    }
+
+    return ret;
   }
 
   public static tryOf(construct: Construct) {
-    return (construct instanceof Project ? construct : Project.of(construct)).tryFindDeepChild(SemanticReleaseSupport);
+    return Bindings.of(Project.of(construct)).findByClass<SemanticReleaseSupport>(SemanticReleaseSupport);
   }
 
-  constructor(scope: XConstruct, props: SemanticReleaseSupportProps) {
+  constructor(scope: Construct, props: SemanticReleaseSupportProps) {
     const project = Project.of(scope);
 
     super(project, "SemanticReleaseSupport");
+
+    Bindings.of(Project.of(this)).bind(this);
 
     new PackageDependency(this, "@qiwi/multi-semantic-release", {
       type: PackageDependencyType.DEV,

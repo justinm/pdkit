@@ -1,10 +1,11 @@
 import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
-import { InstallShellScript, Project, Script, ShellScript, Workspace } from "@pdkit/core";
+import { FileSynthesizer, InstallShellScript, Project, Script, ShellScript, Workspace } from "@pdkit/core";
 import * as Diff from "diff";
 import yargs from "yargs";
 import { loadWorkspace, spinner, synthWorkspace, withSpinner } from "../utils";
+import { Bindings } from "@pdkit/core/core/traits/Bindings";
 
 export const command = "synth";
 export const desc = "Synthesizes the projects configuration";
@@ -34,7 +35,7 @@ const runShellScripts = async (workspace: Workspace | null, name: string, type: 
         .filter((b) => b instanceof Project)
         .map((p) => p.node.findAll().filter((b) => b instanceof type))
         .flat() as ShellScript[];
-      const rootPath = workspace.fileSynthesizer.rootPath;
+      const rootPath = workspace.rootPath;
 
       if (!scripts.length) {
         throw `No ${name} scripts were found`;
@@ -98,30 +99,34 @@ const runShellScripts = async (workspace: Workspace | null, name: string, type: 
 
 const writeFilesToDisk = async (workspace: Workspace, verbose: number, dryRun: boolean, _: boolean) => {
   await withSpinner(dryRun ? 1 : verbose, "Writing files to disk", async () => {
-    const fileSynthesizer = workspace.fileSynthesizer;
-    for (const filePath of fileSynthesizer.virtualFiles) {
-      if (fileSynthesizer.realFileIsDifferent(filePath)) {
-        if (!dryRun) {
-          workspace.fileSynthesizer.syncVFileToDisk(filePath);
-          if (verbose) {
-            spinner.succeed(`  ${filePath}: written successfully`);
+    const projects = Bindings.of(workspace).filterByClass(Project);
+    for (const project of projects) {
+      const fileSynthesizer = FileSynthesizer.of(project);
+
+      for (const filePath of fileSynthesizer.virtualFiles) {
+        if (fileSynthesizer.realFileIsDifferent(filePath)) {
+          if (!dryRun) {
+            fileSynthesizer.syncVFileToDisk(filePath);
+            if (verbose) {
+              spinner.succeed(`  ${filePath}: written successfully`);
+            }
+          } else {
+            if (verbose || dryRun) {
+              spinner.info(`  ${filePath}: would write`);
+            }
+
+            const realPath = path.join(fileSynthesizer.rootPath, filePath);
+
+            if (verbose > 1 && fs.existsSync(realPath)) {
+              console.log(
+                Diff.createPatch(filePath, fs.readFileSync(realPath).toString("utf8"), fileSynthesizer.readVFile(filePath) as string)
+              );
+            }
           }
         } else {
           if (verbose || dryRun) {
-            spinner.info(`  ${filePath}: would write`);
+            spinner.info(`  ${filePath}: skipping file, no differences`);
           }
-
-          const realPath = path.join(fileSynthesizer.rootPath, filePath);
-
-          if (verbose > 1 && fs.existsSync(realPath)) {
-            console.log(
-              Diff.createPatch(filePath, fs.readFileSync(realPath).toString("utf8"), fileSynthesizer.readVFile(filePath) as string)
-            );
-          }
-        }
-      } else {
-        if (verbose || dryRun) {
-          spinner.info(`  ${filePath}: skipping file, no differences`);
         }
       }
     }

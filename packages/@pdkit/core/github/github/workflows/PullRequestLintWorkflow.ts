@@ -1,4 +1,4 @@
-import { XConstruct } from "../../../core";
+import { Construct } from "constructs";
 import { GithubJob, GithubJobImplProps, JobPermission } from "../../constructs/GithubJob";
 import { GithubWorkflow, GithubWorkflowProps } from "../../constructs/GithubWorkflow";
 
@@ -25,7 +25,7 @@ export interface SemanticPullRequestLintWorkflowProps extends GithubWorkflowProp
 }
 
 export class PullRequestLintWorkflow extends GithubWorkflow {
-  constructor(scope: XConstruct, id: string, props?: SemanticPullRequestLintWorkflowProps) {
+  constructor(scope: Construct, id: string, props?: SemanticPullRequestLintWorkflowProps) {
     super(scope, id, {
       events: {
         pullRequestTarget: {

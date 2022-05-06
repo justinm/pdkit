@@ -1,4 +1,4 @@
-import { XConstruct } from "../../../core";
+import { Construct } from "constructs";
 import { GithubJobStep, GithubJobStepProps } from "../../constructs/GithubJobStep";
 
 export interface FindSelfMutationStepProps extends GithubJobStepProps {
@@ -6,7 +6,7 @@ export interface FindSelfMutationStepProps extends GithubJobStepProps {
 }
 
 export class FindSelfMutationStep extends GithubJobStep {
-  constructor(scope: XConstruct, id: string, props?: FindSelfMutationStepProps) {
+  constructor(scope: Construct, id: string, props?: FindSelfMutationStepProps) {
     const outputId = "self_mutation_happened";
 
     super(scope, "FindSelfMutationStep", {

@@ -4,7 +4,7 @@ export class AmplifySupport extends XConstruct {
   constructor(scope: XConstruct) {
     super(scope, "AmplifySupport");
 
-    new GitIgnore(this, [
+    new GitIgnore(this, "AmplifyIgnore", [
       "amplify/#current-cloud-backend",
       "amplify/.config/local-*",
       "amplify/logs",

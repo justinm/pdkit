@@ -1,6 +1,8 @@
 import { Construct } from "constructs";
-import { LifeCycle, XConstruct } from "../base/XConstruct";
-import { IFile, JsonFile } from "../fs";
+import { JsonFile } from "../fs";
+import { Bindings } from "../traits/Bindings";
+import { Fields } from "../traits/Fields";
+import { LifeCycle, LifeCycleStage } from "../traits/Lifecycle";
 import { ManifestEntry } from "./ManifestEntry";
 import { Project } from "./Project";
 import { Workspace } from "./Workspace";
@@ -8,7 +10,7 @@ import { Workspace } from "./Workspace";
 /**
  * Manifest represents a JSON manifest for a given project. Only one manifest may be present per project.
  */
-export class Manifest extends JsonFile implements IFile {
+export class Manifest extends JsonFile {
   /**
    * Check if a given construct is a Manifest.
    *
@@ -20,7 +22,7 @@ export class Manifest extends JsonFile implements IFile {
 
   public static of(construct: Construct): Manifest {
     const project = Project.of(construct);
-    const manifest = project.tryFindDeepChildren(Manifest)[0];
+    const manifest = Bindings.of(project).findByClass(Manifest);
 
     if (!manifest) {
       throw new Error(`${construct}: No manifest was found in project ${project.node.id}`);
@@ -29,56 +31,49 @@ export class Manifest extends JsonFile implements IFile {
     return manifest as Manifest;
   }
 
-  constructor(scope: XConstruct, filePath: string) {
-    super(scope, filePath);
+  constructor(scope: Construct, id: string, filePath: string) {
+    super(scope, id, { filePath });
 
-    this.addLifeCycleScript(LifeCycle.BEFORE_WRITE, () => {
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.SYNTH, () => {
       const project = Project.of(this);
-
       const parentProjects = this.node.scopes.filter((s) => Project.is(s) && project !== s);
+      const workspaceProject = Project.of(Workspace.of(this));
 
-      if (Workspace.is(this.node.scopes[0])) {
-        parentProjects.push(Project.of(this.node.scopes[0]));
+      if (workspaceProject && parentProjects.indexOf(workspaceProject) === -1) {
+        parentProjects.push(workspaceProject);
       }
 
       const parentManifestEntries = parentProjects
-        .map((p) => (p as Project).tryFindDeepChildren(ManifestEntry).filter((entry) => entry.propagate))
+        .map((p) =>
+          Bindings.of(p as Project)
+            .filterByClass(ManifestEntry)
+            .filter((entry) => entry.propagate)
+        )
         .flat();
 
       for (const entry of parentManifestEntries) {
-        if (entry.fields) {
+        const fields = Fields.of(entry);
+        if (fields.fields) {
           if (entry.shallow) {
-            this.addShallowFields(entry.fields);
+            this.addShallowFields(fields.fields);
           } else {
-            this.addDeepFields(entry.fields);
+            this.addDeepFields(fields.fields);
           }
         }
       }
 
-      const entries = project.tryFindDeepChildren(ManifestEntry);
+      const entries = Bindings.of(project).filterByClass(ManifestEntry);
 
       for (const entry of entries) {
+        const fields = Fields.of(entry);
+
         if (entry.shallow) {
-          this.addShallowFields(entry.fields);
+          this.addShallowFields(fields.fields);
         } else {
-          this.addDeepFields(entry.fields);
+          this.addDeepFields(fields.fields);
         }
       }
-    });
-
-    this.node.addValidation({
-      validate: (): string[] => {
-        const errors: string[] = [];
-        const siblings = Project.of(this)
-          .tryFindDeepChildren(Manifest)
-          .filter((m) => m !== this);
-
-        if (siblings.length) {
-          errors.push("Only one manifest is allowed per project");
-        }
-
-        return errors;
-      },
     });
   }
 }

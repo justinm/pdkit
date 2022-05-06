@@ -3,6 +3,7 @@
 # jest-junit artifacts
 /test-reports/
 junit.xml
+.jest
 /coverage/
 node_modules
 logs

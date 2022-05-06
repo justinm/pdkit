@@ -1,6 +1,7 @@
+import { Construct } from "constructs";
 import mustache from "mustache";
-import { Project } from "../project";
-import { IFile, File } from "./File";
+import { LifeCycle, LifeCycleStage } from "../traits/Lifecycle";
+import { File, FileProps, IFile } from "./File";
 
 export interface ITemplate extends IFile {
   readonly variables?: Record<string, any>;
@@ -9,26 +10,33 @@ export interface ITemplate extends IFile {
 /**
  * See mustache
  */
-export interface TemplateFileProps {
+export interface TemplateFileProps extends FileProps {
   readonly variables?: Record<string, any>;
 }
 
 /**
- * An XTemplate allows copying data to disk using the Mustache templating engine.
+ * A TemplateFile allows copying data to disk using the Mustache templating engine.
  */
-export class TemplateFile extends File {
-  public readonly variables?: Record<string, any>;
+export class TemplateFile extends Construct {
+  private _content?: string;
 
-  constructor(scope: Project, filePath: string, props: TemplateFileProps) {
-    super(scope, filePath);
+  constructor(scope: Construct, id: string, props: TemplateFileProps) {
+    super(scope, id);
 
-    this.variables = props.variables;
+    this._content = props.content;
+    const file = new File(this, "Default", props);
+
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_WRITE, () => {
+      if (!this.content) {
+        throw new Error(`Template ${this} did not contain any data to write`);
+      }
+
+      file.write(mustache.render(this.content, props.variables));
+    });
   }
 
-  /**
-   * Returns the contents of the file path, parsed with mustache templating.
-   */
   get content() {
-    return mustache.render(this._content, this.variables);
+    return this._content;
   }
 }

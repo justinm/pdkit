@@ -1,13 +1,17 @@
 import { Construct } from "constructs";
 import yaml from "js-yaml";
-import { XConstruct } from "../base/XConstruct";
-import { FieldFile, FieldFileProps } from "./FieldFile";
-import { IFile } from "./File";
+import { Fields } from "../traits/Fields";
+import { LifeCycle, LifeCycleStage } from "../traits/Lifecycle";
+import { File, FileProps } from "./File";
+
+export interface YamlFileProps extends Omit<FileProps, "content"> {
+  readonly fields: Record<string, unknown>;
+}
 
 /**
  * A YamlFile represents a YAML file for a given project.
  */
-export class YamlFile extends FieldFile implements IFile {
+export class YamlFile extends Construct {
   /**
    * Check if a given construct is a YamlFile.
    *
@@ -17,11 +21,18 @@ export class YamlFile extends FieldFile implements IFile {
     return construct instanceof this;
   }
 
-  constructor(scope: XConstruct, filePath: string, props?: FieldFileProps) {
-    super(scope, filePath, props);
+  constructor(scope: Construct, id: string, props: YamlFileProps) {
+    super(scope, id);
+
+    Fields.implement(this, props?.fields);
+
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_WRITE, () => {
+      new File(this, "Default", { ...props, content: this.content });
+    });
   }
 
-  protected transform(fields: Record<string, unknown>) {
-    return yaml.dump(fields, { lineWidth: 120, noRefs: true });
+  get content() {
+    return yaml.dump(Fields.of(this), { lineWidth: 120, noRefs: true });
   }
 }

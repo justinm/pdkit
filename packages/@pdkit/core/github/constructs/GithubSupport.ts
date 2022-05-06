@@ -1,23 +1,13 @@
-import { File, XConstruct, Project } from "../../core";
-import { BuildWorkflow, BuildWorkflowProps } from "../github/workflows/BuildWorkflow";
+import { Construct } from "constructs";
+import { File, Project } from "../../core";
 import { SemanticPullRequestLintWorkflowProps, PullRequestLintWorkflow } from "../github/workflows/PullRequestLintWorkflow";
-import { ReleaseWorkflow, ReleaseWorkflowProps } from "../github/workflows/ReleaseWorkflow";
 
 export interface GithubSupportProps {
   readonly pullRequestLint?: Omit<SemanticPullRequestLintWorkflowProps, "runsOn">;
   readonly pullRequestTemplate?: string;
-  readonly workflows?: {
-    readonly build?: {
-      readonly enabled: boolean;
-    } & BuildWorkflowProps;
-    readonly release?: {
-      readonly branches: string[];
-      readonly enabled: boolean;
-    } & ReleaseWorkflowProps;
-  };
 }
 
-export class GithubSupport extends XConstruct {
+export class GithubSupport extends Construct {
   constructor(scope: Project, id: string, props?: GithubSupportProps) {
     super(scope, id);
 
@@ -26,15 +16,7 @@ export class GithubSupport extends XConstruct {
     }
 
     if (props?.pullRequestTemplate) {
-      new File(this, ".github/pull_request_template.md").write(props.pullRequestTemplate);
-    }
-
-    if (props?.workflows?.build?.enabled) {
-      new BuildWorkflow(this, "build-workflow", props.workflows.build);
-    }
-
-    if (props?.workflows?.release?.enabled) {
-      new ReleaseWorkflow(this, "release-workflow", props.workflows.release);
+      new File(this, "PullRequestTemplate", { filePath: ".github/pull_request_template.md", content: props.pullRequestTemplate });
     }
   }
 }

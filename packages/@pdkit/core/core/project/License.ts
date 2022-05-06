@@ -1,5 +1,5 @@
+import { Construct } from "constructs";
 import request from "sync-request";
-import { XConstruct } from "../base/XConstruct";
 import { File } from "../fs";
 import { ManifestEntry } from "./ManifestEntry";
 
@@ -17,19 +17,19 @@ export type ValidLicense =
   | "LGPL-2.1"
   | "MIT"
   | "MPL-2.0"
-  | "UNLICENSED";
+  | "Unlicense";
 
 export class License extends ManifestEntry {
+  public static readonly ID = "License";
+
   readonly license: ValidLicense;
 
-  constructor(scope: XConstruct, license: ValidLicense, propagate?: boolean) {
-    super(scope, "License", { license: license }, { propagate });
+  constructor(scope: Construct, license: ValidLicense, propagate?: boolean) {
+    super(scope, License.ID, { license: license }, { propagate });
 
     this.license = license;
 
-    if (license !== "UNLICENSED") {
-      new File(this, "LICENSE").write(this.content);
-    }
+    new File(this, "Default", { filePath: "LICENSE", content: this.content });
   }
 
   get content() {

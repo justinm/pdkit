@@ -1,5 +1,8 @@
 import { Construct } from "constructs";
-import { LifeCycle, ManifestEntry, PDKIT_CONFIG_FILE, Project, XConstruct } from "../../../core";
+import { ManifestEntry, PDKIT_CONFIG_FILE, Project } from "../../../core";
+import { Bindings } from "../../../core/traits/Bindings";
+import { Fields } from "../../../core/traits/Fields";
+import { LifeCycle, LifeCycleStage } from "../../../core/traits/Lifecycle";
 import { PackageDependency, PackageDependencyType } from "../../constructs";
 import { JestSupport } from "../JestSupport";
 import { TypescriptSupport } from "../TypescriptSupport";
@@ -55,17 +58,23 @@ export interface EslintProps {
   readonly parserOptions?: { [key: string]: any };
 }
 
-export class EslintSupport extends XConstruct {
+export class EslintSupport extends Construct {
   public static hasSupport(construct: Construct) {
     return !!this.tryOf(construct);
   }
 
   public static of(construct: Construct) {
-    return (construct instanceof Project ? construct : Project.of(construct)).findDeepChild(EslintSupport);
+    const ret = this.tryOf(construct);
+
+    if (!ret) {
+      throw new Error(`Construct ${construct} does not have EslintSupport`);
+    }
+
+    return ret;
   }
 
   public static tryOf(construct: Construct) {
-    return (construct instanceof Project ? construct : Project.of(construct)).tryFindDeepChild(EslintSupport);
+    return Bindings.of(Project.of(construct)).findByClass<EslintSupport>(EslintSupport);
   }
 
   public readonly rules: Record<string, unknown> = {};
@@ -77,7 +86,7 @@ export class EslintSupport extends XConstruct {
   public parser?: string;
   public readonly parserOptions: { [key: string]: any };
 
-  constructor(scope: XConstruct, props: EslintProps) {
+  constructor(scope: Construct, props: EslintProps) {
     super(scope, "EslintSupport");
 
     this.parser = props.parser;
@@ -90,6 +99,8 @@ export class EslintSupport extends XConstruct {
 
     const lineWidth = props.lineWidth ?? 80;
     let rules = props.rules ?? {};
+
+    Bindings.of(Project.of(this)).bind(this);
 
     const project = Project.of(this);
 
@@ -181,7 +192,12 @@ export class EslintSupport extends XConstruct {
       });
     }
 
-    this.addLifeCycleScript(LifeCycle.SYNTH, () => {
+    LifeCycle.implement(this);
+
+    const entry = new ManifestEntry(this, "EslintConfig", {}, { shallow: true });
+    const scriptsEntry = new ManifestEntry(this, "EslintScripts", {});
+
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
       const config = {
         root: true,
         env: {
@@ -206,8 +222,8 @@ export class EslintSupport extends XConstruct {
         ],
       } as Record<string, unknown>;
 
-      new ManifestEntry(this, "EslintConfig", { eslintConfig: config }, { shallow: true });
-      new ManifestEntry(this, "EslintManifestScriptEntry", {
+      Fields.of(entry).addShallowFields({ eslintConfig: config });
+      Fields.of(scriptsEntry).addDeepFields({
         scripts: {
           lint: [
             "eslint",

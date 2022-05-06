@@ -1,4 +1,4 @@
-import { XConstruct } from "../../core";
+import { Construct } from "constructs";
 
 /**
  * A job step.
@@ -63,11 +63,11 @@ export interface GithubJobStepProps {
   readonly timeoutMinutes?: number;
 }
 
-export class GithubJobStep extends XConstruct {
+export class GithubJobStep extends Construct {
   protected _fields: GithubJobStepProps;
   public readonly priority: number;
 
-  constructor(scope: XConstruct, id: string, props?: GithubJobStepProps) {
+  constructor(scope: Construct, id: string, props?: GithubJobStepProps) {
     super(scope, id);
 
     this._fields = props ?? {};

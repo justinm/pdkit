@@ -1,4 +1,4 @@
-import { XConstruct } from "../../../core";
+import { Construct } from "constructs";
 import { GithubJob, GithubJobProps, JobPermission } from "../../constructs/GithubJob";
 import { GithubJobStep, GithubJobStepProps } from "../../constructs/GithubJobStep";
 import { GithubCheckoutStep } from "../steps/GithubCheckoutStep";
@@ -9,7 +9,7 @@ export interface JestCoverageJobProps extends Partial<GithubJobProps> {
 }
 
 export class JestCoverageJob extends GithubJob {
-  constructor(scope: XConstruct, id: string, props: JestCoverageJobProps) {
+  constructor(scope: Construct, id: string, props: JestCoverageJobProps) {
     super(scope, id, {
       name: "Coverage",
       permissions: {

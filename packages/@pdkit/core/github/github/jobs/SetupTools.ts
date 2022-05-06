@@ -1,4 +1,4 @@
-import { XConstruct } from "../../../core";
+import { Construct } from "constructs";
 import { GithubJobProps, Tools } from "../../constructs/GithubJob";
 import { GithubJobStep } from "../../constructs/GithubJobStep";
 
@@ -7,8 +7,8 @@ export interface SetupToolsProps extends Partial<GithubJobProps> {
   readonly tools: Tools;
 }
 
-export class SetupTools extends XConstruct {
-  constructor(scope: XConstruct, id: string, props: SetupToolsProps) {
+export class SetupTools extends Construct {
+  constructor(scope: Construct, id: string, props: SetupToolsProps) {
     super(scope, id);
 
     const { tools } = props;

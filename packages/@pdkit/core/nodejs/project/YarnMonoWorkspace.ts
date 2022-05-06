@@ -1,4 +1,5 @@
-import { LifeCycle, ManifestEntry, Project, XConstruct } from "../../core";
+import { ManifestEntry, Project, XConstruct } from "../../core";
+import { LifeCycle, LifeCycleStage } from "../../core/traits/Lifecycle";
 import { NodeProject } from "./NodeProject";
 import { NodeWorkspaceProps } from "./NodeWorkspace";
 import { YarnProject, YarnProjectProps } from "./YarnProject";
@@ -24,7 +25,8 @@ export class YarnMonoWorkspace extends YarnWorkspace {
       });
     }
 
-    this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
       const projects = this.node.findAll().filter((b) => Project.is(b) && b !== this.node.defaultChild);
       const projectPaths = projects.map((p) => (p as NodeProject).projectPath.substring(1));
 

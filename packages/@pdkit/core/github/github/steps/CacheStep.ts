@@ -1,4 +1,4 @@
-import { XConstruct } from "../../../core";
+import { Construct } from "constructs";
 import { GithubJobStep, GithubJobStepProps } from "../../constructs/GithubJobStep";
 
 export interface CacheStepProps extends GithubJobStepProps {
@@ -7,7 +7,7 @@ export interface CacheStepProps extends GithubJobStepProps {
 }
 
 export class CacheStep extends GithubJobStep {
-  constructor(scope: XConstruct, id: string, props: CacheStepProps) {
+  constructor(scope: Construct, id: string, props: CacheStepProps) {
     const { key, path, ...other } = props;
     super(scope, id, {
       name: "Cache",

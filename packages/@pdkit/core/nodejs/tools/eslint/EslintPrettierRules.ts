@@ -1,4 +1,6 @@
-import { LifeCycle, ManifestEntry, Project, XConstruct } from "../../../core";
+import { Construct } from "constructs";
+import { ManifestEntry, Project } from "../../../core";
+import { LifeCycle, LifeCycleStage } from "../../../core/traits/Lifecycle";
 import { PackageDependency, PackageDependencyType } from "../../constructs";
 import { EslintSupport } from "./EslintSupport";
 
@@ -16,8 +18,8 @@ export interface EslintPrettierRulesProps {
   readonly lineWidth?: number;
 }
 
-export class EslintPrettierRules extends XConstruct {
-  constructor(scope: XConstruct, props: EslintPrettierRulesProps) {
+export class EslintPrettierRules extends Construct {
+  constructor(scope: Construct, props: EslintPrettierRulesProps) {
     super(scope, "EslintPrettierRules");
 
     const lineWidth = props.lineWidth ?? 80;
@@ -35,7 +37,8 @@ export class EslintPrettierRules extends XConstruct {
       });
     }
 
-    this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
       const eslint = EslintSupport.of(project);
 
       eslint.plugins.add("prettier");

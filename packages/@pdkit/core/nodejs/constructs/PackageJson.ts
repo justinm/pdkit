@@ -1,5 +1,8 @@
 import path from "path";
-import { LifeCycle, Manifest, Project, ValidLicense, Workspace, XConstruct } from "../../core";
+import { Construct } from "constructs";
+import { FileSynthesizer, Manifest, Project, ValidLicense, Workspace } from "../../core";
+import { Fields } from "../../core/traits/Fields";
+import { LifeCycle, LifeCycleStage } from "../../core/traits/Lifecycle";
 import { NodeProject } from "../project";
 
 export interface NodePackageJsonProps {
@@ -24,18 +27,48 @@ export interface NodePackageJsonProps {
   readonly man?: string[];
 }
 
+// This determines the order at which package.json is written and is for visual purposes only
+const packageOrdering = [
+  "name",
+  "description",
+  "license",
+  "repository",
+  "version",
+  "author",
+  "bugs",
+  "private",
+  "main",
+  "types",
+  "bin",
+  "man",
+  "scripts",
+  "files",
+  "workspaces",
+  "dependencies",
+  "devDependencies",
+  "peerDependencies",
+  "bundledDependencies",
+  "resolutions",
+  "prettier",
+  "eslintConfig",
+  "jest",
+];
+
 export class PackageJson extends Manifest {
-  constructor(scope: XConstruct, props?: NodePackageJsonProps) {
-    super(scope, "package.json");
+  public static readonly ID = "PackageJson";
+  constructor(scope: Construct, props?: NodePackageJsonProps) {
+    super(scope, PackageJson.ID, "package.json");
 
     const project = Project.of(this);
 
-    const packageJson = Workspace.of(this).fileSynthesizer.tryReadRealJsonFile<{
+    const packageJson = FileSynthesizer.of(this).tryReadRealJsonFile<{
       [key: string]: any;
     }>(this, path.join(project.projectPath, "package.json"));
 
+    const fields = Fields.of(this);
+
     if (props) {
-      this.addShallowFields({
+      fields.addShallowFields({
         name: props.name,
         description: props.description,
         version: packageJson?.version ?? props.version ?? "0.0.0",
@@ -43,19 +76,20 @@ export class PackageJson extends Manifest {
         homepath: props.homepath,
         repository: props.repository,
         keywords: props.keywords,
-        main: props.main ?? `${project.distPath}/index.js`,
+        main: props.main ?? `${project.buildPath}/index.js`,
         bin: props.bin,
         scripts: props.scripts,
         bugs: props.bugs,
         files: props.files,
         man: props.man,
         resolutions: props.resolutions,
+        types: props.types,
       });
     }
 
-    this.addLifeCycleScript(LifeCycle.BEFORE_WRITE, () => {
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_WRITE, () => {
       const addPackageDependency = (key: string, packageName: string, version: string) => {
-        this.addDeepFields({
+        fields.addDeepFields({
           [key]: {
             [packageName]: version,
           },
@@ -66,9 +100,11 @@ export class PackageJson extends Manifest {
         .node.findAll()
         .filter((p) => p instanceof NodeProject) as NodeProject[];
 
+      const ftrait = Fields.of(this);
+
       ["dependencies", "devDependencies", "peerDependencies"].forEach((key) => {
-        if (this.fields[key]) {
-          const field = this.fields[key] as Record<string, string>;
+        if (ftrait.fields[key]) {
+          const field = ftrait.fields[key] as Record<string, string>;
 
           for (const dep of Object.keys(field)) {
             if (field[dep] && field[dep] !== "*") {
@@ -88,78 +124,35 @@ export class PackageJson extends Manifest {
         }
 
         // We need to sort our dependency keys to match npm/yarn
-        if (this.fields[key]) {
-          this.fields[key] = Object.keys(this.fields[key] as any)
+        if (ftrait.fields[key]) {
+          ftrait.fields[key] = Object.keys(ftrait.fields[key] as any)
             .sort()
             .reduce((c, k) => {
-              c[k] = (this.fields[key] as Record<string, string>)[k];
+              c[k] = (ftrait.fields[key] as Record<string, string>)[k];
 
               return c;
             }, {} as Record<string, string>);
         }
       });
+    });
 
-      // This determines the order at which package.json is written and is for visual purposes only
-      const packageOrdering = [
-        "name",
-        "description",
-        "license",
-        "repository",
-        "version",
-        "author",
-        "bugs",
-        "private",
-        "main",
-        "types",
-        "bin",
-        "man",
-        "scripts",
-        "files",
-        "workspaces",
-        "dependencies",
-        "devDependencies",
-        "peerDependencies",
-        "bundledDependencies",
-        "resolutions",
-      ];
-
-      this._fields = Object.keys(this._fields)
-        .sort((a, b) => {
-          if (packageOrdering.indexOf(a) !== -1 && packageOrdering.indexOf(b) === -1) {
-            return -1;
-          }
-          if (packageOrdering.indexOf(a) === -1 && packageOrdering.indexOf(b) !== -1) {
-            return 1;
-          }
-          return packageOrdering.indexOf(a) - packageOrdering.indexOf(b);
-        })
-        .reduce((c, k) => {
-          c[k] = this._fields[k];
-
-          return c;
-        }, {} as Record<string, unknown>);
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_WRITE, () => {
+      fields.orderFields(packageOrdering);
     });
   }
 
   get version() {
-    return this.fields.version as string;
+    return Fields.of(this).fields.version as string;
   }
 
   resolveDepVersion(dep: string) {
     const project = Project.of(this);
-    const workspace = Workspace.of(this);
+    const fileSynthesizer = FileSynthesizer.of(this);
 
     const packageJson =
-      workspace.fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(this, `node_modules/${dep}/package.json`) ||
-      workspace.fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(
-        this,
-        `${project.projectPath}/node_modules/${dep}/package.json`
-      );
+      fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(this, `node_modules/${dep}/package.json`) ||
+      fileSynthesizer.tryReadRealJsonFile<{ [key: string]: any }>(this, `${project.projectPath}/node_modules/${dep}/package.json`);
 
     return packageJson?.version ?? "*";
-  }
-
-  protected transform(fields: Record<string, unknown>): string {
-    return super.transform(fields) + "\n";
   }
 }

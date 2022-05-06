@@ -1,25 +1,24 @@
-import { Construct } from "constructs";
-import { IXConstruct, LifeCycle, XConstruct } from "../base/XConstruct";
-import { File } from "../fs";
+import { Construct, IConstruct } from "constructs";
 import { Script } from "../scripts/Script";
-import { FileSynthesizer } from "../synthesizers/FileSynthesizer";
-import { Project, ProjectProps } from "./Project";
+import { Bindings } from "../traits/Bindings";
+import { LifeCycle, LifeCycleStage } from "../traits/Lifecycle";
+import { logger } from "../util/logger";
+import { ProjectProps } from "./Project";
 
-export interface IWorkspace extends IXConstruct {
-  readonly fileSynthesizer: FileSynthesizer;
+export interface IWorkspace extends IConstruct {
+  readonly rootPath: string;
 
   synth(): void;
 }
 
 export interface WorkspaceProps extends Omit<ProjectProps, "projectPath"> {
   readonly rootPath?: string;
-  readonly fileSynthesizer?: FileSynthesizer;
 }
 
-export class Workspace extends XConstruct implements IWorkspace {
+export class Workspace extends Construct implements IWorkspace {
   public static of(construct: any) {
     if (!(construct instanceof Construct)) {
-      throw new Error(`${construct.constructor.name} is not a construct`);
+      throw new Error(`${construct.constructor.name}[${construct}] is not a construct`);
     }
 
     const workspace = (construct as Construct).node.scopes[0];
@@ -31,24 +30,13 @@ export class Workspace extends XConstruct implements IWorkspace {
     return workspace as unknown as IWorkspace;
   }
 
-  public readonly fileSynthesizer: FileSynthesizer;
+  public readonly rootPath: string;
 
   constructor(id: string, props?: WorkspaceProps) {
     super(undefined as any, id);
+    Bindings.implement(this);
 
-    this.fileSynthesizer = props?.fileSynthesizer ?? new FileSynthesizer(props?.rootPath ?? process.cwd());
-
-    this.addLifeCycleScript(LifeCycle.WRITE, () => {
-      const projects = this.node.findAll().filter((p) => p instanceof Project) as Project[];
-
-      for (const project of projects) {
-        const files = project.tryFindDeepChildren(File);
-
-        for (const file of files) {
-          this.fileSynthesizer.writeVFile(project, file);
-        }
-      }
-    });
+    this.rootPath = props?.rootPath ?? process.cwd();
 
     this.node.addValidation({
       validate: () => {
@@ -66,14 +54,22 @@ export class Workspace extends XConstruct implements IWorkspace {
   synth() {
     this.node.validate();
 
-    const everyNode = this.node.findAll().filter((child) => (child as IXConstruct).runLifeCycle);
+    const runLifecycle = (stage: LifeCycleStage) => {
+      const everyNode = this.node.findAll(1).filter((child) => LifeCycle.tryOf(child));
 
-    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.BEFORE_SYNTH));
-    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.SYNTH));
-    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.VALIDATE));
-    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.AFTER_SYNTH));
-    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.BEFORE_WRITE));
-    everyNode.forEach((child) => (child as IXConstruct).runLifeCycle(LifeCycle.WRITE));
+      everyNode.forEach((child) => LifeCycle.of(child)._run(stage));
+    };
+
+    logger.debug("Running lifecycle BEFORE_SYNTH");
+    runLifecycle(LifeCycleStage.BEFORE_SYNTH);
+    logger.debug("Running lifecycle SYNTH");
+    runLifecycle(LifeCycleStage.SYNTH);
+    logger.debug("Running lifecycle VALIDATE");
+    runLifecycle(LifeCycleStage.VALIDATE);
+    logger.debug("Running lifecycle BEFORE_WRITE");
+    runLifecycle(LifeCycleStage.BEFORE_WRITE);
+    logger.debug("Running lifecycle WRITE");
+    runLifecycle(LifeCycleStage.WRITE);
   }
 
   async runScripts(type: typeof Script) {
@@ -82,9 +78,5 @@ export class Workspace extends XConstruct implements IWorkspace {
     for (const script of scripts) {
       await script.runnable();
     }
-  }
-
-  get projects() {
-    return this.node.findAll().filter((b) => Project.is(b)) as Project[];
   }
 }

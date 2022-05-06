@@ -1,6 +1,7 @@
 import path from "path";
 import { Construct } from "constructs";
-import { GitIgnore, ManifestEntry, Project, XConstruct } from "../../core";
+import { GitIgnore, ManifestEntry, Project } from "../../core";
+import { Bindings } from "../../core/traits/Bindings";
 import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
 import { EslintSupport } from "./eslint/EslintSupport";
 import { JestSupport } from "./JestSupport";
@@ -16,7 +17,7 @@ export interface ReactSupportProps {
   readonly tsconfig?: TypescriptSupportProps & { enabled: boolean };
 }
 
-export class ReactSupport extends XConstruct {
+export class ReactSupport extends Construct {
   public static readonly ID = "ReactSupport";
 
   public static hasSupport(construct: Construct) {
@@ -24,15 +25,23 @@ export class ReactSupport extends XConstruct {
   }
 
   public static of(construct: Construct) {
-    return (construct instanceof Project ? construct : Project.of(construct)).findDeepChild(ReactSupport);
+    const ret = this.tryOf(construct);
+
+    if (!ret) {
+      throw new Error(`Construct ${construct} does not have ReactSupport`);
+    }
+
+    return ret;
   }
 
   public static tryOf(construct: Construct) {
-    return (construct instanceof Project ? construct : Project.of(construct)).tryFindDeepChild(ReactSupport);
+    return Bindings.of(Project.of(construct)).findByClass<ReactSupport>(ReactSupport);
   }
 
-  constructor(scope: XConstruct, props?: ReactSupportProps) {
+  constructor(scope: Construct, props?: ReactSupportProps) {
     super(scope, ReactSupport.ID);
+
+    Bindings.of(Project.of(this)).bind(this);
 
     const typescriptSupport = TypescriptSupport.tryOf(this);
     const eslintSupport = EslintSupport.tryOf(this);
@@ -100,8 +109,8 @@ export class ReactSupport extends XConstruct {
         ...props?.tsconfig?.compilerOptions,
       },
     });
-    new GitIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
-    new NpmIgnore(this, ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
+    new GitIgnore(this, "ReactGitIgnore", ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
+    new NpmIgnore(this, "ReactNpmIgnore", ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
 
     let reactScriptsCommand = "npx react-scripts";
 
@@ -112,7 +121,7 @@ export class ReactSupport extends XConstruct {
       new PackageDependency(this, "customize-cra", {
         type: PackageDependencyType.DEV,
       });
-      new GitIgnore(this, ["!config-overrides.js"]);
+      new GitIgnore(this, "IgnoreConfigOverrides", ["!config-overrides.js"]);
       reactScriptsCommand = "npx react-app-rewired";
     }
 
@@ -120,7 +129,7 @@ export class ReactSupport extends XConstruct {
       new PackageDependency(this, "@craco/craco", {
         type: PackageDependencyType.DEV,
       });
-      new GitIgnore(this, ["!craco.config.ts", "!craco.config.js", "!.cracorc.ts", "!.cracorc.js", "!.cracorc"]);
+      new GitIgnore(this, "IgnoreCraco", ["!craco.config.ts", "!craco.config.js", "!.cracorc.ts", "!.cracorc.js", "!.cracorc"]);
       reactScriptsCommand = "yarn craco";
     }
 

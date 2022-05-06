@@ -1,7 +1,8 @@
 import { Construct } from "constructs";
-import { ManifestEntry, Project, XConstruct } from "../../core";
+import { ManifestEntry, Project } from "../../core";
+import { Bindings } from "../../core/traits/Bindings";
 
-export class YalcSupport extends XConstruct {
+export class YalcSupport extends Construct {
   public static readonly ID = "YalcSupport";
 
   public static hasSupport(construct: Construct) {
@@ -9,15 +10,23 @@ export class YalcSupport extends XConstruct {
   }
 
   public static of(construct: Construct) {
-    return Project.of(construct).findDeepChild(YalcSupport);
+    const ret = this.tryOf(construct);
+
+    if (!ret) {
+      throw new Error(`Construct ${construct} does not have SemanticReleaseSupport`);
+    }
+
+    return ret;
   }
 
   public static tryOf(construct: Construct) {
-    return Project.of(construct).tryFindDeepChild(YalcSupport);
+    return Bindings.of(Project.of(construct)).findByClass<YalcSupport>(YalcSupport);
   }
 
-  constructor(scope: XConstruct) {
+  constructor(scope: Construct) {
     super(scope, YalcSupport.ID);
+
+    Bindings.of(Project.of(this)).bind(this);
 
     new ManifestEntry(this, "Yalc", {
       scripts: {

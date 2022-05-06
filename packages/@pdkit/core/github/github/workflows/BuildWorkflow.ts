@@ -1,4 +1,4 @@
-import { XConstruct } from "../../../core";
+import { Construct } from "constructs";
 import { GithubWorkflow, GithubWorkflowProps } from "../../constructs/GithubWorkflow";
 import { BuildJob, BuildJobProps } from "../jobs/BuildJob";
 import { JestCoverageJob, JestCoverageJobProps } from "../jobs/JestCoverageJob";
@@ -8,7 +8,7 @@ export interface BuildWorkflowProps extends GithubWorkflowProps, BuildJobProps {
 }
 
 export class BuildWorkflow extends GithubWorkflow {
-  constructor(scope: XConstruct, id: string, props: BuildWorkflowProps) {
+  constructor(scope: Construct, id: string, props: BuildWorkflowProps) {
     super(scope, id, {
       events: {
         pullRequest: {},

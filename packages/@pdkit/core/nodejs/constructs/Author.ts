@@ -1,4 +1,5 @@
-import { ManifestEntry, Project } from "../../core";
+import { Construct } from "constructs";
+import { ManifestEntry } from "../../core";
 
 /**
  * The properties required to construct an author construct.
@@ -26,7 +27,7 @@ export interface AuthorProps {
  * Defines an author for a given project tree. Only one Author may be present per project.
  */
 export class Author extends ManifestEntry {
-  constructor(scope: Project, props: AuthorProps) {
+  constructor(scope: Construct, props: AuthorProps) {
     super(
       scope,
       "Author",

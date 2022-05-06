@@ -1,6 +1,7 @@
-import { IXConstruct, XConstruct } from "../base/XConstruct";
+import { Construct, IConstruct } from "constructs";
+import { Bindings } from "../traits/Bindings";
 
-export interface IFile extends IXConstruct {
+export interface IFile extends IConstruct {
   /**
    * Specify the entries path relative to the project root
    */
@@ -13,7 +14,15 @@ export interface IFile extends IXConstruct {
 }
 
 export interface FileProps {
-  readonly id?: string;
+  /**
+   * The contents of the file, modified via writeFile or appendFile.
+   */
+  readonly content?: string;
+
+  /**
+   * Specify the files path relative to the parent project's source root.
+   */
+  readonly filePath: string;
 }
 
 /**
@@ -21,7 +30,7 @@ export interface FileProps {
  * given path may exist at any one time and all files are staged in memory prior to
  * being written to disk.
  */
-export class File extends XConstruct implements IFile {
+export class File extends Construct implements IFile {
   /**
    * Determine if an object inherits this a File.
    *
@@ -42,31 +51,17 @@ export class File extends XConstruct implements IFile {
    */
   protected _content: string;
 
-  constructor(scope: XConstruct, filePath: string, props?: FileProps) {
-    super(scope, props?.id ?? `File-${filePath}`);
+  constructor(scope: Construct, id: string, props: FileProps) {
+    super(scope, id);
 
-    this.filePath = filePath;
-    this._content = "";
+    this.filePath = props.filePath;
+    this._content = props?.content ?? "";
+
+    Bindings.implement(this);
   }
 
-  /**
-   * Prepares the construct with data to write to disk. The data is not written to disk until after
-   * synthesis.
-   *
-   * @param text
-   */
-  write(text: string) {
-    this._content = text;
-  }
-
-  /**
-   * Prepares the construct with data to write to disk. The data is not written to disk until after
-   * synthesis.
-   *
-   * @param text
-   */
-  append(text: string) {
-    this._content += text;
+  write(content: string) {
+    this._content = content;
   }
 
   /**

@@ -2,9 +2,6 @@ import { Project } from "../../../core";
 import { GithubSupport, GithubSupportProps } from "../../constructs/GithubSupport";
 import { BuildWorkflowProps } from "../../github/workflows/BuildWorkflow";
 import { ReleaseWorkflowProps } from "../../github/workflows/ReleaseWorkflow";
-import { NpmReleaseStep } from "../npm/steps/NpmReleaseStep";
-import { YarnBuildStep } from "./steps/YarnBuildStep";
-import { YarnInstallStep } from "./steps/YarnInstallStep";
 
 export interface YarnGithubSupportProps extends Omit<GithubSupportProps, "workflows"> {
   readonly registryUrl?: string;
@@ -21,10 +18,12 @@ export interface YarnGithubSupportProps extends Omit<GithubSupportProps, "workfl
 
 export class YarnGithubSupport extends GithubSupport {
   public static readonly ID = "GithubSupport";
+
   constructor(scope: Project, props: YarnGithubSupportProps) {
-    super(scope, YarnGithubSupport.ID, {
-      ...props,
-      workflows: {
+    super(scope, YarnGithubSupport.ID);
+
+    /*
+          workflows: {
         ...props.workflows,
         build: {
           cache: {
@@ -64,6 +63,6 @@ export class YarnGithubSupport extends GithubSupport {
           releaseStep: NpmReleaseStep,
         },
       },
-    });
+     */
   }
 }

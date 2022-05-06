@@ -1,13 +1,13 @@
-import { XConstruct } from "../base/XConstruct";
+import { Construct } from "constructs";
 
-export abstract class ShellScript extends XConstruct {
+export abstract class ShellScript extends Construct {
   static is(construct: any) {
     return construct instanceof this;
   }
 
   readonly command?: string[];
 
-  constructor(scope: XConstruct, id: string, command?: string[]) {
+  constructor(scope: Construct, id: string, command?: string[]) {
     super(scope, id);
 
     this.command = command;

@@ -1,9 +1,11 @@
-import { snakeCaseKeys, YamlFile, XConstruct } from "../../core";
+import { Construct } from "constructs";
+import { snakeCaseKeys, YamlFile } from "../../core";
+import { Fields } from "../../core/traits/Fields";
+import { LifeCycle, LifeCycleStage } from "../../core/traits/Lifecycle";
 import { GithubEventProps } from "./GithubEvent";
 import { GithubJob, GithubJobProps } from "./GithubJob";
 
 // @see https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
-
 export interface GithubWorkflowProps {
   /**
    * Concurrency ensures that only a single job or workflow using the same concurrency group will run at a time.
@@ -31,7 +33,7 @@ export interface GithubWorkflowProps {
 }
 
 export class GithubWorkflow extends YamlFile {
-  public static of(construct: XConstruct): GithubWorkflow {
+  public static of(construct: Construct): GithubWorkflow {
     const workflow = construct.node.scopes.find((s) => s instanceof this) as GithubWorkflow;
 
     if (!workflow) {
@@ -43,8 +45,8 @@ export class GithubWorkflow extends YamlFile {
 
   readonly props: GithubWorkflowProps;
 
-  constructor(scope: XConstruct, id: string, props: GithubWorkflowProps) {
-    super(scope, `.github/workflows/${id}.yml`);
+  constructor(scope: Construct, id: string, props: GithubWorkflowProps) {
+    super(scope, id, { filePath: `.github/workflows/${id}.yml`, fields: {} });
 
     this.props = props;
 
@@ -53,25 +55,26 @@ export class GithubWorkflow extends YamlFile {
 
       Object.keys(jobs).forEach((key) => new GithubJob(this, key, jobs[key]));
     }
-  }
 
-  get content() {
-    const jobs = this.node
-      .findAll()
-      .filter((b) => b instanceof GithubJob)
-      .reduce((coll, job) => {
-        const ghj = job as GithubJob;
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
+      const jobs = this.node
+        .findAll()
+        .filter((b) => b instanceof GithubJob)
+        .reduce((coll, job) => {
+          const ghj = job as GithubJob;
 
-        coll[ghj.node.id] = ghj.content;
+          coll[ghj.node.id] = ghj.content;
 
-        return coll;
-      }, {} as Record<string, unknown>);
+          return coll;
+        }, {} as Record<string, unknown>);
 
-    return this.transform({
-      env: this.props.env,
-      on: snakeCaseKeys(this.props.events),
-      concurrency: this.props.concurrency ?? "1",
-      jobs,
+      Fields.of(this).addShallowFields({
+        env: this.props.env,
+        on: snakeCaseKeys(this.props.events),
+        concurrency: this.props.concurrency ?? "1",
+        jobs,
+      });
     });
   }
 }

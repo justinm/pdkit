@@ -3,25 +3,53 @@ import fs from "fs";
 import path from "path";
 import { Construct } from "constructs";
 import { Volume } from "memfs/lib/volume";
-import { XConstruct } from "../base/XConstruct";
-import { AppendableFile, IFile } from "../fs";
-import { IProject } from "../project";
+import { File, IFile } from "../fs";
+import { IProject, Project, Workspace } from "../project";
+import { Bindings } from "../traits/Bindings";
+import { LifeCycle, LifeCycleStage } from "../traits/Lifecycle";
 import { logger } from "../util/logger";
 
 /**
  * The FileSynthesizer provides a staging area for writing files prior to persisting changes to disk.
  */
-export class FileSynthesizer extends XConstruct {
+export class FileSynthesizer extends Construct {
   public static readonly ID = "FileSynthesizer";
+
+  public static of(construct: Construct): FileSynthesizer {
+    const project = Project.of(construct);
+    const synthesizer = Bindings.of(project).findByClass<FileSynthesizer>(this);
+
+    if (!synthesizer) {
+      throw new Error(`${construct}: No FileSynthesizer was found in the project ${project.node.path}`);
+    }
+
+    return synthesizer;
+  }
+
   public readonly rootPath: string;
   private readonly fs: Volume;
-  private owners: Record<string, IFile>;
+  private readonly owners: Record<string, IFile>;
 
-  constructor(rootPath: string) {
-    super(undefined as any, FileSynthesizer.ID);
+  constructor(scope: Construct) {
+    super(scope, FileSynthesizer.ID);
     this.fs = new Volume();
     this.owners = {};
-    this.rootPath = rootPath;
+
+    const workspace = Workspace.of(this);
+    const project = Project.of(this);
+
+    this.rootPath = workspace.rootPath;
+
+    Bindings.of(project).bind(this);
+
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.WRITE, () => {
+      const files = Bindings.of(project).filterByClass(File);
+
+      for (const file of files) {
+        this.writeVFile(project, file);
+      }
+    });
   }
 
   readVFile(pathRelativeToWorkspace: string) {
@@ -39,7 +67,13 @@ export class FileSynthesizer extends XConstruct {
 
     logger.debug(`${file.node.path} is attempting write to ${filePath}`);
 
-    if (!(file instanceof AppendableFile) && this.fs.existsSync(filePath)) {
+    if (!file.content || file.content === "") {
+      logger.warn(`${file.node.path} is attempting write to ${filePath} with no data`);
+    } else {
+      logger.silly(`${file.node.path} is attempting write to ${filePath} with: ${file.content}`);
+    }
+
+    if (this.fs.existsSync(filePath)) {
       const creator = this.creatorOf(filePath);
 
       throw new Error(`${file}: ${filePath} is already owned by ${creator?.node.path ?? "N/A"}`);

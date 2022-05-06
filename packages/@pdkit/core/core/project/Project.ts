@@ -1,31 +1,28 @@
 import path from "path";
-import { Constructor, IXConstruct, XConstruct } from "../base/XConstruct";
+import { Construct, IConstruct } from "constructs";
+import { File } from "../fs";
+import { FileSynthesizer } from "../synthesizers/FileSynthesizer";
+import { Bindings } from "../traits/Bindings";
+import { logger } from "../util/logger";
 import { Workspace } from "./Workspace";
 
-export interface IProject extends IXConstruct {
+export interface IProject extends IConstruct {
   readonly projectRelativeSourcePath: string;
   readonly projectPath: string;
   readonly sourcePath: string;
-  readonly distPath: string;
+  readonly buildPath: string;
   readonly parentProject: IProject;
   readonly projects: IProject[];
-
-  tryFindDeepChildren<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(childType: T): TRet[];
-
-  tryFindDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
-    childType: T
-  ): TRet | undefined;
-
-  findDeepChild<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(childType: T): TRet;
 }
 
 export interface ProjectProps {
   readonly projectPath?: string;
   readonly sourcePath?: string;
+  readonly fileSynthesizer?: FileSynthesizer;
   readonly buildPath?: string;
 }
 
-export abstract class Project extends XConstruct implements IProject {
+export abstract class Project extends Construct implements IProject {
   public static is(construct: any) {
     return construct instanceof this;
   }
@@ -41,7 +38,7 @@ export abstract class Project extends XConstruct implements IProject {
   }
 
   public static tryOf(construct: any): Project | undefined {
-    if (!(construct instanceof XConstruct)) {
+    if (!(construct instanceof Construct)) {
       throw new Error(`${construct.constructor.name} is not a construct`);
     }
 
@@ -49,7 +46,7 @@ export abstract class Project extends XConstruct implements IProject {
       return construct;
     }
 
-    let project = (construct as XConstruct).node.scopes.reverse().find((scope) => scope !== construct && scope instanceof Project);
+    let project = (construct as Construct).node.scopes.reverse().find((scope) => scope !== construct && scope instanceof Project);
 
     if (!project) {
       const workspace = Workspace.of(construct);
@@ -70,14 +67,28 @@ export abstract class Project extends XConstruct implements IProject {
 
   private readonly _projectPath?: string;
   private readonly _sourcePath: string;
-  private readonly _distPath: string;
+  private readonly _buildPath: string;
 
-  constructor(scope: XConstruct, id: string, props?: ProjectProps) {
+  constructor(scope: Construct, id: string, props?: ProjectProps) {
     super(scope, id);
 
     this._projectPath = props?.projectPath;
     this._sourcePath = props?.sourcePath ?? "src";
-    this._distPath = props?.buildPath ?? "build";
+    this._buildPath = props?.buildPath ?? "build";
+
+    const workspace = Workspace.of(this);
+
+    Bindings.implement(this, {
+      acceptChildCallback: (child) => {
+        if (child instanceof File && Project.of(child) === this) {
+          logger.silly(`Will auto bind file ${child} to project ${this}`);
+          Bindings.of(this).bind(child);
+        }
+      },
+    });
+    Bindings.of(workspace).bind(this);
+
+    new FileSynthesizer(this);
 
     this.node.addValidation({
       validate: () => {
@@ -98,11 +109,11 @@ export abstract class Project extends XConstruct implements IProject {
   }
 
   get parentProject() {
-    return Project.of(this.node.scope);
+    return Project.of(this);
   }
 
   get projects(): Project[] {
-    return this.tryFindDeepChildren(Project);
+    return Bindings.of(this).filterByClass(Project);
   }
 
   get projectPath(): string {
@@ -119,17 +130,7 @@ export abstract class Project extends XConstruct implements IProject {
     return this._sourcePath;
   }
 
-  get distPath(): string {
-    return this._distPath;
-  }
-
-  /**
-   * Find all nodes by type that are owned by this project. Ownership is determined by the closest project scoped to a node.
-   * @param childType
-   */
-  public tryFindDeepChildren<T extends Constructor<any> = Constructor<any>, TRet extends InstanceType<T> = InstanceType<T>>(
-    childType: T
-  ): TRet[] {
-    return super.tryFindDeepChildren(childType).filter((c) => Project.of(c) === this) as TRet[];
+  get buildPath(): string {
+    return this._buildPath;
   }
 }

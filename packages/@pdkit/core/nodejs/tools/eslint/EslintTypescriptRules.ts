@@ -1,4 +1,6 @@
-import { LifeCycle, Project, XConstruct } from "../../../core";
+import { Construct } from "constructs";
+import { Project } from "../../../core";
+import { LifeCycle, LifeCycleStage } from "../../../core/traits/Lifecycle";
 import { PackageDependency, PackageDependencyType } from "../../constructs";
 import { TypescriptSupport } from "../TypescriptSupport";
 import { EslintSupport } from "./EslintSupport";
@@ -10,8 +12,8 @@ export interface EslintTypescriptRulesProps {
   readonly install?: boolean;
 }
 
-export class EslintTypescriptRules extends XConstruct {
-  constructor(scope: XConstruct, props?: EslintTypescriptRulesProps) {
+export class EslintTypescriptRules extends Construct {
+  constructor(scope: Construct, props?: EslintTypescriptRulesProps) {
     super(scope, "EslintTypescriptRules");
 
     const project = Project.of(this);
@@ -28,7 +30,8 @@ export class EslintTypescriptRules extends XConstruct {
       });
     }
 
-    this.addLifeCycleScript(LifeCycle.BEFORE_SYNTH, () => {
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
       const eslint = EslintSupport.of(project);
       const tsSupport = TypescriptSupport.tryOf(project);
 

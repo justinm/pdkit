@@ -12,7 +12,7 @@ export function synthWorkspace(workspace: Workspace) {
 }
 
 export async function loadWorkspace(configPath: string) {
-  const workspace = await withSpinner<IWorkspace>(0, "Loading project...", () => {
+  const workspace = await withSpinner<IWorkspace>(0, "Loading workspace...", () => {
     process.chdir(path.dirname(configPath));
 
     if (!fs.existsSync(configPath)) {

@@ -1,7 +1,9 @@
-import deepmerge from "deepmerge";
-import { IXConstruct, XConstruct } from "../base/XConstruct";
+import { Construct, IConstruct } from "constructs";
+import { Bindings } from "../traits/Bindings";
+import { Fields } from "../traits/Fields";
+import { Project } from "./Project";
 
-export interface IManifestEntry extends IXConstruct {
+export interface IManifestEntry extends IConstruct {
   readonly fields?: Record<string, unknown>;
   readonly propagate?: boolean;
 }
@@ -15,40 +17,22 @@ export interface ManifestEntryProps {
  * A ManifestEntry is an additional way of adding arbitrary fields to the projects
  * main manifest.
  */
-export class ManifestEntry extends XConstruct implements IManifestEntry {
+export class ManifestEntry extends Construct implements IManifestEntry {
   public static is(construct: any) {
     return construct instanceof this;
   }
 
-  public fields: Record<string, unknown>;
-  public propagate: boolean;
-  public shallow: boolean;
+  public readonly propagate: boolean;
+  public readonly shallow: boolean;
 
-  constructor(scope: XConstruct, id: string, fields?: Record<string, unknown>, props?: ManifestEntryProps) {
+  constructor(scope: Construct, id: string, fields: Record<string, unknown>, props?: ManifestEntryProps) {
     super(scope, id);
 
-    this.fields = fields ?? {};
     this.propagate = props?.propagate ?? false;
     this.shallow = props?.shallow ?? false;
 
-    this.node.addValidation({
-      validate: (): string[] => {
-        const errors: string[] = [];
-
-        if (!Object.keys(this.fields).length) {
-          errors.push("The manifest entry contains no fields");
-        }
-
-        return errors;
-      },
-    });
-  }
-
-  /**
-   * Deepmerges the given fields with entries existing data
-   * @param fields
-   */
-  public addFields(fields: Record<string, unknown> | {}) {
-    this.fields = deepmerge(this.fields, fields);
+    Fields.implement(this);
+    Fields.of(this).addDeepFields(fields);
+    Bindings.of(Project.of(this)).bind(this);
   }
 }

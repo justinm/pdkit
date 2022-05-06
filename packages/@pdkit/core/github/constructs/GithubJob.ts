@@ -1,4 +1,7 @@
-import { arrayOrScalar, kebabCaseKeys, XConstruct } from "../../core";
+import { Construct } from "constructs";
+import { arrayOrScalar, kebabCaseKeys } from "../../core";
+import { Fields } from "../../core/traits/Fields";
+import { LifeCycle, LifeCycleStage } from "../../core/traits/Lifecycle";
 import { GithubJobStep, GithubJobStepProps } from "./GithubJobStep";
 import { GithubWorkflow } from "./GithubWorkflow";
 
@@ -399,8 +402,8 @@ export interface GithubJobProps {
 
 export type GithubJobImplProps = Partial<Pick<GithubJobProps, "runsOn">>;
 
-export class GithubJob extends XConstruct {
-  public static of(construct: XConstruct): GithubJob {
+export class GithubJob extends Construct {
+  public static of(construct: Construct): GithubJob {
     const workflow = construct.node.scopes.find((s) => s instanceof this) as GithubJob;
 
     if (!workflow) {
@@ -413,17 +416,18 @@ export class GithubJob extends XConstruct {
   readonly props: GithubJobProps;
   readonly priority: number;
 
-  constructor(scope: XConstruct, id: string, props: GithubJobProps) {
+  constructor(scope: Construct, id: string, props: GithubJobProps) {
     super(scope, id);
 
     this.props = props;
     this.priority = props.priority ?? 10;
 
     props.steps?.forEach((step, i) => new GithubJobStep(this, `Step-${i}`, step));
-  }
 
-  _beforeSynth() {
-    GithubWorkflow.of(this).addDeepFields(this.content);
+    LifeCycle.implement(this);
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
+      Fields.of(GithubWorkflow.of(this)).addDeepFields(this.content);
+    });
   }
 
   get content(): Omit<GithubJobProps, "outputs" | "runsOn" | "priority"> & {
