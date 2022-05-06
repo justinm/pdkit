@@ -576,7 +576,7 @@ export class JestSupport extends XConstruct {
         type: PackageDependencyType.DEV,
       });
 
-      ignore.push(...["# jest-junit artifacts", `/${reportsDirectory}/`, "junit.xml"]);
+      ignore.push(...["# jest-junit artifacts", `/${reportsDirectory}/`, "junit.xml", ".jest"]);
     }
 
     const coverageDirectoryPath = path.posix.join("/", coverageDirectory, "/");
