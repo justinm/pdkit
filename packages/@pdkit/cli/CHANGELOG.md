@@ -1,3 +1,18 @@
+## @pdkit/cli [1.6.11](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.6.10...@pdkit/cli@1.6.11) (2022-05-06)
+
+
+### Bug Fixes
+
+* eslint node file extensions ([f28067f](https://github.com/justinm/pdkit/commit/f28067f7720ac961e2eed710ca4cf690c1e68a61))
+
+
+
+
+
+### Dependencies
+
+* **@pdkit/core:** upgraded to 2.4.0
+
 ## @pdkit/cli [1.6.10](https://github.com/justinm/pdkit/compare/@pdkit/cli@1.6.9...@pdkit/cli@1.6.10) (2022-04-28)
 
 
