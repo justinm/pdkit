@@ -1,3 +1,17 @@
+# @pdkit/core [2.4.0](https://github.com/justinm/pdkit/compare/@pdkit/core@2.3.0...@pdkit/core@2.4.0) (2022-05-06)
+
+
+### Bug Fixes
+
+* allow specifying outputName for jest junit reports ([2276571](https://github.com/justinm/pdkit/commit/227657193cc5f7e0470d60f391daaa9aa46875b6))
+* eslint node file extensions ([f28067f](https://github.com/justinm/pdkit/commit/f28067f7720ac961e2eed710ca4cf690c1e68a61))
+* support finding children on all constructs and jsii fixes ([fc452b0](https://github.com/justinm/pdkit/commit/fc452b0a274afa60f2ed64641305654d3383e5bb))
+
+
+### Features
+
+* a few chainable helpers for managing node package.json files ([edfe840](https://github.com/justinm/pdkit/commit/edfe840b2e42c67a6f9ac1b8881ffcca5d315290))
+
 # @pdkit/core [2.3.0](https://github.com/justinm/pdkit/compare/@pdkit/core@2.2.7...@pdkit/core@2.3.0) (2022-04-28)
 
 
