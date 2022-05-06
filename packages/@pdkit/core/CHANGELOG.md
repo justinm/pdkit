@@ -1,3 +1,11 @@
+## @pdkit/core [2.4.1](https://github.com/justinm/pdkit/compare/@pdkit/core@2.4.0...@pdkit/core@2.4.1) (2022-05-06)
+
+
+### Bug Fixes
+
+* allow disabling of compile scripts for TypescriptSupport ([6a85e67](https://github.com/justinm/pdkit/commit/6a85e67da5a696f9e87d9dbe5b61360d255227d5))
+* ignore jest cache ([d3c207a](https://github.com/justinm/pdkit/commit/d3c207af01c8dba87c52dc433aec3acc89b82a4f))
+
 # @pdkit/core [2.4.0](https://github.com/justinm/pdkit/compare/@pdkit/core@2.3.0...@pdkit/core@2.4.0) (2022-05-06)
 
 
