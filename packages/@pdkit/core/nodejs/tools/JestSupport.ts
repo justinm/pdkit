@@ -81,7 +81,12 @@ export interface JestConfigOptions {
    * If thresholds aren't met, jest will fail.
    * @default - undefined
    */
-  readonly coverageThreshold?: CoverageThreshold;
+  readonly coverageThreshold?:
+    | {
+        [key: string]: CoverageThreshold;
+        readonly global: CoverageThreshold;
+      }
+    | CoverageThreshold;
 
   /**
    * This option allows the use of a custom dependency extractor.
