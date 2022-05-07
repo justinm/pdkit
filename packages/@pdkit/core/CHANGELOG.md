@@ -1,3 +1,10 @@
+## @pdkit/core [2.4.2](https://github.com/justinm/pdkit/compare/@pdkit/core@2.4.1...@pdkit/core@2.4.2) (2022-05-07)
+
+
+### Bug Fixes
+
+* jest coverage threshold interface ([dfd9b9f](https://github.com/justinm/pdkit/commit/dfd9b9f342d0db214d8dd6ea09879b070bc4ab18))
+
 ## @pdkit/core [2.4.1](https://github.com/justinm/pdkit/compare/@pdkit/core@2.4.0...@pdkit/core@2.4.1) (2022-05-06)
 
 
