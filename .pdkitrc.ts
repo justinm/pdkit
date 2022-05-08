@@ -38,26 +38,6 @@ const workspace = new YarnMonoWorkspace("pdkit", {
     enabled: true,
   },
   gitignore: [".idea", ".js", ".d.ts"],
-  github: {
-    registryUrl: "https://registry.npmjs.org/",
-    pullRequestLint: {
-      enabled: true,
-    },
-    workflows: {
-      build: {
-        enabled: true,
-        failOnMutation: true,
-        commitMutations: false,
-        coverage: {
-          enabled: true,
-        },
-      },
-      release: {
-        branches: ["main"],
-        enabled: true,
-      },
-    },
-  },
   resolutions: {
     "chalk": "^4.1.2",
   },

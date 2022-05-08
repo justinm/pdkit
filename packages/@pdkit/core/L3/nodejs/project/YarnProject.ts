@@ -1,11 +1,9 @@
 import { Construct } from "constructs";
 import { ManifestEntry } from "../../../L2";
-import { YarnGithubSupport, YarnGithubSupportProps } from "../../github";
 import { NodeProject, NodeProjectProps, PackageManagerType } from "./index";
 
 export interface YarnProjectProps extends Omit<NodeProjectProps, "github"> {
   readonly yalc?: boolean;
-  readonly github?: YarnGithubSupportProps;
 }
 
 export class YarnProject extends NodeProject {
@@ -16,10 +14,6 @@ export class YarnProject extends NodeProject {
       new ManifestEntry(this, "Yalc", {
         workspaces: [".yalc/*", ".yalc/*/*"],
       });
-    }
-
-    if (props?.github) {
-      new YarnGithubSupport(this, props.github);
     }
   }
 }
