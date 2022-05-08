@@ -1,6 +1,6 @@
 import * as path from "path";
 import { Construct } from "constructs";
-import { JsonFile, Project, Bindings, LifeCycle, LifeCycleStage } from "../../../L1";
+import { JsonFile, Project, Bindings, LifeCycle, LifeCycleStage, Fields } from "../../../L1";
 import { GitIgnore, ManifestEntry } from "../../../L2";
 import { NpmIgnore, PackageDependency, PackageDependencyType } from "../constructs";
 import { TypescriptSupport } from "./TypescriptSupport";
@@ -495,7 +495,7 @@ export interface JestProps {
    *
    * @default - No separate config file, jest settings are stored in package.json
    */
-  readonly configFilePath?: string;
+  readonly configFilePath?: string | boolean;
 
   /**
    * Jest configuration.
@@ -626,17 +626,21 @@ export class JestSupport extends Construct {
       };
     }
 
-    if (props.configFilePath) {
-      new JsonFile(this, "", { filePath: props.configFilePath, fields });
-    } else {
-      new ManifestEntry(this, "Jest", fields, { shallow: true });
-    }
-
     new ManifestEntry(this, "JestCommand", {
       scripts: {
         test: "jest --passWithNoTests --all",
       },
     });
+
+    let jestConfig: Construct;
+
+    if (props.configFilePath === true) {
+      jestConfig = new JsonFile(this, "JestConfig", { filePath: "jest.config.json", fields: fields.jest });
+    } else if (props.configFilePath) {
+      jestConfig = new JsonFile(this, "JestConfig", { filePath: props.configFilePath, fields: fields.jest });
+    } else {
+      jestConfig = new ManifestEntry(this, "JestConfig", fields, { shallow: true });
+    }
 
     if (TypescriptSupport.hasSupport(this)) {
       new PackageDependency(this, "@types/jest", {
@@ -650,16 +654,23 @@ export class JestSupport extends Construct {
         new PackageDependency(this, "ts-jest", {
           type: PackageDependencyType.DEV,
         });
-        new ManifestEntry(this, "TsJest", {
-          jest: {
-            preset: "ts-jest",
-            globals: {
-              "ts-jest": {
-                tsconfig: "tsconfig.json",
-              },
+
+        const additionalConfig = {
+          preset: "ts-jest",
+          globals: {
+            "ts-jest": {
+              tsconfig: "tsconfig.json",
             },
           },
-        });
+        };
+
+        if (props.configFilePath) {
+          Fields.of(jestConfig).addDeepFields(additionalConfig);
+        } else {
+          Fields.of(jestConfig).addDeepFields({
+            jest: additionalConfig,
+          });
+        }
       }
     });
   }
