@@ -13,8 +13,8 @@ export interface YarnMonoWorkspaceProps extends Omit<YarnProjectProps, "packageN
  * children of this project.
  */
 export class YarnMonoWorkspace extends YarnWorkspace {
-  constructor(id: string, props: YarnMonoWorkspaceProps) {
-    super(id, props);
+  constructor(props: YarnMonoWorkspaceProps) {
+    super(props);
 
     const defaultProject = new YarnProject(this, "Default", { ...props, name: props.name ?? "workspace" });
 

@@ -65,18 +65,6 @@ export class ReactSupport extends Construct {
       });
     }
 
-    if (props?.testingLibrary) {
-      new PackageDependency(this, "@testing-library/jest-dom", {
-        type: PackageDependencyType.DEV,
-      });
-      new PackageDependency(this, "@testing-library/react", {
-        type: PackageDependencyType.DEV,
-      });
-      new PackageDependency(this, "@testing-library/user-event", {
-        type: PackageDependencyType.DEV,
-      });
-    }
-
     new GitIgnore(this, "ReactGitIgnore", ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
     new NpmIgnore(this, "ReactNpmIgnore", ["build/*", "!react-app-env.d.ts", "!setupProxy.js", "!setupTests.js"]);
 
@@ -170,6 +158,18 @@ export class ReactSupport extends Construct {
             skipLibCheck: true,
             ...props?.tsconfig?.compilerOptions,
           },
+        });
+      }
+
+      if (props?.testingLibrary) {
+        new PackageDependency(this, "@testing-library/jest-dom", {
+          type: PackageDependencyType.DEV,
+        });
+        new PackageDependency(this, "@testing-library/react", {
+          type: PackageDependencyType.DEV,
+        });
+        new PackageDependency(this, "@testing-library/user-event", {
+          type: PackageDependencyType.DEV,
         });
       }
 

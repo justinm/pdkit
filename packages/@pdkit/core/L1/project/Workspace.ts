@@ -31,8 +31,8 @@ export class Workspace extends Construct implements IWorkspace {
 
   public readonly rootPath: string;
 
-  constructor(id: string, props?: WorkspaceProps) {
-    super(undefined as any, id);
+  constructor(props?: WorkspaceProps) {
+    super(undefined as any, "workspace");
     Bindings.implement(this);
 
     this.rootPath = props?.rootPath ?? process.cwd();
