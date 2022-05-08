@@ -5,7 +5,7 @@ import { FileSynthesizer, InstallShellScript, Project, Script, ShellScript, Work
 import * as Diff from "diff";
 import yargs from "yargs";
 import { loadWorkspace, spinner, synthWorkspace, withSpinner } from "../utils";
-import { Bindings } from "@pdkit/core/core/traits/Bindings";
+import { Bindings } from "@pdkit/core";
 
 export const command = "synth";
 export const desc = "Synthesizes the projects configuration";

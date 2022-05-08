@@ -1,4 +1,4 @@
-import { SemanticReleaseSupport, YarnMonoWorkspace, YarnProject } from "@pdkit/core/nodejs";
+import { SemanticReleaseSupport, YarnMonoWorkspace, YarnProject } from "@pdkit/core";
 
 const workspace = new YarnMonoWorkspace("pdkit", {
   author: {

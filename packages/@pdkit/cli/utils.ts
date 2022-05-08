@@ -1,7 +1,9 @@
 import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
-import { IWorkspace, logger, PDKIT_CONFIG_FILE, Workspace, XConstruct } from "@pdkit/core";
+import { IWorkspace, PDKIT_CONFIG_FILE, Workspace } from "@pdkit/core";
+import { logger } from "@pdkit/core/util/logger";
+import { Construct } from "constructs";
 import ora from "ora";
 import shellEscape from "shell-escape";
 
@@ -20,7 +22,7 @@ export async function loadWorkspace(configPath: string) {
     }
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const kit = require(configPath).default;
-    const ws = Workspace.of(kit as XConstruct);
+    const ws = Workspace.of(kit as Construct);
 
     if (!ws) {
       throw new Error("No workspace could be found for project.");
