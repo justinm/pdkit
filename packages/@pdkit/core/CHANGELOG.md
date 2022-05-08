@@ -1,3 +1,17 @@
+# @pdkit/core [3.0.0](https://github.com/justinm/pdkit/compare/@pdkit/core@2.4.2...@pdkit/core@3.0.0) (2022-05-08)
+
+
+### Bug Fixes
+
+* ReactSupport for misordered support constructs ([ddbf5b7](https://github.com/justinm/pdkit/commit/ddbf5b7947c732297da31349629df76de99c34eb))
+
+
+### Features
+
+* allow eslint to be configured in package.json or .eslintrc.json ([ea2ba68](https://github.com/justinm/pdkit/commit/ea2ba68cec623c2dfe8d0a5ab74fb8e97d43fa95))
+* allow jest to be configured in package.json or jest.config.json ([34b49cc](https://github.com/justinm/pdkit/commit/34b49ccbf77e667dc9583b5918303c02e9404172))
+* support resolutions for node projects ([35aaae3](https://github.com/justinm/pdkit/commit/35aaae395e0bebf783eed9e6a1a554556c14cbc1))
+
 ## @pdkit/core [2.4.2](https://github.com/justinm/pdkit/compare/@pdkit/core@2.4.1...@pdkit/core@2.4.2) (2022-05-07)
 
 
