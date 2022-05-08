@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { ManifestEntry, PDKIT_CONFIG_FILE } from "../../../../index";
+import { JsonFile, ManifestEntry, PDKIT_CONFIG_FILE } from "../../../../index";
 import { Project, Bindings, Fields, LifeCycle, LifeCycleStage } from "../../../../L1";
 import { PackageDependency, PackageDependencyType } from "../../constructs";
 import { JestSupport } from "../JestSupport";
@@ -13,6 +13,13 @@ export interface EslintProps {
    * Install Eslint for the project. Defaults to true
    */
   readonly install?: boolean;
+
+  /**
+   * Path to JSON config file for Eslint
+   *
+   * @default - No separate config file, eslint settings are stored in package.json
+   */
+  readonly configFilePath?: string | boolean;
 
   /**
    * Install a specific version of eslint
@@ -192,7 +199,16 @@ export class EslintSupport extends Construct {
 
     LifeCycle.implement(this);
 
-    const entry = new ManifestEntry(this, "EslintConfig", {}, { shallow: true });
+    let entry: Construct;
+
+    if (props.configFilePath === true) {
+      entry = new JsonFile(this, "EslintConfig", { filePath: ".eslintrc.json", fields: {} });
+    } else if (props.configFilePath) {
+      entry = new JsonFile(this, "EslintConfig", { filePath: props.configFilePath, fields: {} });
+    } else {
+      entry = new ManifestEntry(this, "EslintConfig", {}, { shallow: true });
+    }
+
     const scriptsEntry = new ManifestEntry(this, "EslintScripts", {});
 
     LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
@@ -220,7 +236,11 @@ export class EslintSupport extends Construct {
         ],
       } as Record<string, unknown>;
 
-      Fields.of(entry).addShallowFields({ eslintConfig: config });
+      if (props.configFilePath) {
+        Fields.of(entry).addShallowFields(config);
+      } else {
+        Fields.of(entry).addShallowFields({ eslintConfig: config });
+      }
       Fields.of(scriptsEntry).addDeepFields({
         scripts: {
           lint: [
