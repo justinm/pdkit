@@ -1,3 +1,10 @@
+## @pdkit/core [3.0.2](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.1...@pdkit/core@3.0.2) (2022-05-09)
+
+
+### Bug Fixes
+
+* allow for UNLICENSED licensing ([cce046d](https://github.com/justinm/pdkit/commit/cce046d91967544ca8ed2602daf3c091932d2dd6))
+
 ## @pdkit/core [3.0.1](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.0...@pdkit/core@3.0.1) (2022-05-09)
 
 
