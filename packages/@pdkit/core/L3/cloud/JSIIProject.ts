@@ -23,8 +23,8 @@ export class JSIIProject extends NodeProject {
     const distPath = props.distPath ?? "dist";
     const sourcePath = props.sourcePath ?? "src";
 
-    new GitIgnore(this, "JsiiGitIgnore", [buildPath, sourcePath, distPath]);
-    new NpmIgnore(this, "JsiiNpmIgnore", [".jsii", "tsconfig.json"]);
+    new GitIgnore(this, "JsiiGitIgnore", [buildPath, distPath, ".jsii", "tsconfig.json"]);
+    new NpmIgnore(this, "JsiiNpmIgnore", [buildPath, distPath, ".jsii", "tsconfig.json"]);
 
     new PackageDependency(this, "typescript", { type: PackageDependencyType.DEV });
     new PackageDependency(this, "jsii-docgen", { type: PackageDependencyType.DEV });
