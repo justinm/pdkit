@@ -1,3 +1,10 @@
+## @pdkit/core [3.0.3](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.2...@pdkit/core@3.0.3) (2022-05-09)
+
+
+### Bug Fixes
+
+* JSII ignore fixes ([68b12eb](https://github.com/justinm/pdkit/commit/68b12eb84048de12889d16c95c95bc0305432fb0))
+
 ## @pdkit/core [3.0.2](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.1...@pdkit/core@3.0.2) (2022-05-09)
 
 
