@@ -1,3 +1,11 @@
+## @pdkit/core [3.0.1](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.0...@pdkit/core@3.0.1) (2022-05-09)
+
+
+### Bug Fixes
+
+* allow for NOLICENSE licensing ([e9bca3f](https://github.com/justinm/pdkit/commit/e9bca3f1de2e51557ada0daf3a09bd201876c785))
+* manifests and single project repos ([c682d54](https://github.com/justinm/pdkit/commit/c682d54285434d8fce64db4f5700b346d756e048))
+
 # @pdkit/core [3.0.0](https://github.com/justinm/pdkit/compare/@pdkit/core@2.4.2...@pdkit/core@3.0.0) (2022-05-08)
 
 
