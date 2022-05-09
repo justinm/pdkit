@@ -18,7 +18,7 @@ export type ValidLicense =
   | "MIT"
   | "MPL-2.0"
   | "Unlicense"
-  | "NOLICENSE";
+  | "UNLICENSED";
 
 export class License extends ManifestEntry {
   public static readonly ID = "License";
@@ -30,7 +30,7 @@ export class License extends ManifestEntry {
 
     this.license = license;
 
-    if (license !== "NOLICENSE") {
+    if (license !== "UNLICENSED") {
       new File(this, "Default", { filePath: "LICENSE", content: this.content });
     }
   }
