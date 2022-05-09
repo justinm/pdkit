@@ -1,6 +1,6 @@
 import { SemanticReleaseSupport, YarnMonoWorkspace, YarnProject } from "@pdkit/core";
 
-const workspace = new YarnMonoWorkspace("pdkit", {
+const workspace = new YarnMonoWorkspace({
   author: {
     name: "Justin McCormick",
     email: "me@justinmccormick.com",

@@ -4,7 +4,9 @@ import { EslintSupport, NodeProject, NodeProjectProps, NpmIgnore, PackageDepende
 import { EslintImportRules } from "../nodejs/tools/eslint/EslintImportRules";
 import { EslintTypescriptRules } from "../nodejs/tools/eslint/EslintTypescriptRules";
 
-export interface JSIIProjectProps extends Omit<NodeProjectProps, "tsconfig"> {
+export interface JSIIProjectProps
+  extends Omit<NodeProjectProps, "tsconfig" | "license" | "repository">,
+    Required<Pick<NodeProjectProps, "license" | "repository">> {
   readonly distPath?: string;
   readonly versionFormat?: string;
   readonly pypi?: {

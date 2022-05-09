@@ -17,7 +17,8 @@ export type ValidLicense =
   | "LGPL-2.1"
   | "MIT"
   | "MPL-2.0"
-  | "Unlicense";
+  | "Unlicense"
+  | "NOLICENSE";
 
 export class License extends ManifestEntry {
   public static readonly ID = "License";
@@ -29,7 +30,9 @@ export class License extends ManifestEntry {
 
     this.license = license;
 
-    new File(this, "Default", { filePath: "LICENSE", content: this.content });
+    if (license !== "NOLICENSE") {
+      new File(this, "Default", { filePath: "LICENSE", content: this.content });
+    }
   }
 
   get content() {
