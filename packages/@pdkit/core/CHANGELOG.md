@@ -1,3 +1,10 @@
+## @pdkit/core [3.0.4](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.3...@pdkit/core@3.0.4) (2022-05-13)
+
+
+### Bug Fixes
+
+* allow creation of scripts ([c0995e5](https://github.com/justinm/pdkit/commit/c0995e5f3c1fb0d49b38b490fa3c309f9267bc25))
+
 ## @pdkit/core [3.0.3](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.2...@pdkit/core@3.0.3) (2022-05-09)
 
 
