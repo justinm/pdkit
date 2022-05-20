@@ -101,7 +101,7 @@ export class ReactSupport extends Construct {
     });
 
     LifeCycle.implement(this);
-    LifeCycle.of(this).on(LifeCycleStage.SYNTH, () => {
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
       const eslintSupport = EslintSupport.tryOf(this);
 
       if (eslintSupport) {

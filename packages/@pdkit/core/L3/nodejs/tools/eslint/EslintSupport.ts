@@ -211,7 +211,7 @@ export class EslintSupport extends Construct {
 
     const scriptsEntry = new ManifestEntry(this, "EslintScripts", {});
 
-    LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
+    LifeCycle.of(this).on(LifeCycleStage.SYNTH, () => {
       const config = {
         root: true,
         env: {
