@@ -1,3 +1,10 @@
+## @pdkit/core [3.0.9](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.8...@pdkit/core@3.0.9) (2022-05-20)
+
+
+### Bug Fixes
+
+* ignore additional jest props when using cra ([712daa9](https://github.com/justinm/pdkit/commit/712daa9cb89b61930822fb02bbef1f158df680f1))
+
 ## @pdkit/core [3.0.8](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.7...@pdkit/core@3.0.8) (2022-05-20)
 
 
