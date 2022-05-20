@@ -128,9 +128,11 @@ export class ReactSupport extends Construct {
             collectCoverage: undefined as any,
             coverageDirectory: undefined as any,
             testPathIgnorePatterns: undefined as any,
+            modulePathIgnorePatterns: undefined as any,
             watchIgnorePatterns: undefined as any,
             reporters: undefined as any,
             preset: undefined as any,
+            globals: undefined as any,
           },
         });
       }
