@@ -1,3 +1,10 @@
+## @pdkit/core [3.0.5](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.4...@pdkit/core@3.0.5) (2022-05-20)
+
+
+### Bug Fixes
+
+* typescript extensions not added to eslint script ([452aa72](https://github.com/justinm/pdkit/commit/452aa72edfac277983f0681ecd6bc6fc8092e6ae))
+
 ## @pdkit/core [3.0.4](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.3...@pdkit/core@3.0.4) (2022-05-13)
 
 
