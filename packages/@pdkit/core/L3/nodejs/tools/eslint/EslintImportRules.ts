@@ -95,10 +95,6 @@ export class EslintImportRules extends Construct {
 
       eslint.extends.add("plugin:import/recommended");
 
-      if (!!tsSupport) {
-        eslint.extends.add("plugin:import/typescript");
-      }
-
       eslint.settings["import/parsers"] = {
         "@typescript-eslint/parser": [".ts", ".tsx"],
       };

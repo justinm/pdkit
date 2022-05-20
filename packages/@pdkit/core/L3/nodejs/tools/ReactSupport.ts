@@ -106,12 +106,13 @@ export class ReactSupport extends Construct {
 
       if (eslintSupport) {
         eslintSupport.fileExtensions.add("tsx");
-        eslintSupport.plugins.delete("@typescript-eslint");
         eslintSupport.plugins.add("react-app");
         eslintSupport.plugins.add("react-hooks");
-        eslintSupport.extends.delete("plugin:import/recommended");
-        eslintSupport.extends.delete("plugin:import/typescript");
         eslintSupport.extends.add("plugin:react/jsx-runtime");
+        // Not sure how to handle this...
+        // eslintSupport.extends.delete("plugin:import/recommended");
+        // eslintSupport.extends.delete("plugin:import/typescript");
+        // eslintSupport.plugins.delete("@typescript-eslint");
 
         new PackageDependency(this, "eslint-plugin-react-app", {
           type: PackageDependencyType.DEV,
