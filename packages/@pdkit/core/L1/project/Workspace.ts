@@ -59,6 +59,8 @@ export class Workspace extends Construct implements IWorkspace {
       everyNode.forEach((child) => LifeCycle.of(child)._run(stage));
     };
 
+    logger.debug("Running lifecycle PREPARE");
+    runLifecycle(LifeCycleStage.PREPARE);
     logger.debug("Running lifecycle BEFORE_SYNTH");
     runLifecycle(LifeCycleStage.BEFORE_SYNTH);
     logger.debug("Running lifecycle SYNTH");

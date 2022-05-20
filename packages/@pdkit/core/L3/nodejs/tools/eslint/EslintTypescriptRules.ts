@@ -35,6 +35,7 @@ export class EslintTypescriptRules extends Construct {
       const tsSupport = TypescriptSupport.tryOf(project);
 
       eslint.plugins.add("@typescript-eslint");
+      eslint.extends.add("plugin:import/typescript");
 
       eslint.fileExtensions.add("ts");
       eslint.fileExtensions.delete("js");
@@ -42,7 +43,9 @@ export class EslintTypescriptRules extends Construct {
       eslint.ignorePatterns.push("*.js");
       eslint.ignorePatterns.push("*.d.ts");
 
-      eslint.settings["import/parsers"]["@typescript-eslint/parser"] = [".ts", ".tsx"];
+      eslint.settings["import/parsers"] = {
+        "@typescript-eslint/parser": [".ts", ".tsx"],
+      };
 
       eslint.parser = "@typescript-eslint/parser";
       eslint.parserOptions.ecmaVersion = 2020;

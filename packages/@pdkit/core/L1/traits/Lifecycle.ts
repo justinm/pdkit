@@ -4,16 +4,17 @@ import { logger } from "../../util/logger";
 type Callback = () => void;
 
 export enum LifeCycleStage {
-  BEFORE_SYNTH = "BeforeSynth",
-  SYNTH = "Synth",
+  PREPARE = "Prepare", // Allow constructs time to internally initialize
+  BEFORE_SYNTH = "BeforeSynth", // Allow constructs to interact with eachother post-preparation
+  SYNTH = "Synth", // Allows constructs to finalize their configuration prior to writing
   VALIDATE = "Validate",
-  BEFORE_WRITE = "BeforeWrite",
-  WRITE = "Write",
+  BEFORE_WRITE = "BeforeWrite", // Allows constructs one last chance to finalize prior to disk write
+  WRITE = "Write", // Occurs after the write has occurred
 }
 
 export interface ILifeCycle {}
 
-const LIFECYCLE_SYMBOL = Symbol.for("@pdkit/core/core/traits/Ordering");
+const LIFECYCLE_SYMBOL = Symbol.for("@pdkit/core/core/traits/LifeCycle");
 
 export class LifeCycle<T extends Construct> implements ILifeCycle {
   public static implement<T extends Construct>(instance: ILifeCycle) {
@@ -44,6 +45,7 @@ export class LifeCycle<T extends Construct> implements ILifeCycle {
   constructor() {
     this.lifecycle = {
       Validate: [],
+      Prepare: [],
       BeforeSynth: [],
       Synth: [],
       BeforeWrite: [],

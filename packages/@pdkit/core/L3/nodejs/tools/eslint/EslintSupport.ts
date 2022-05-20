@@ -241,6 +241,7 @@ export class EslintSupport extends Construct {
       } else {
         Fields.of(entry).addShallowFields({ eslintConfig: config });
       }
+
       Fields.of(scriptsEntry).addDeepFields({
         scripts: {
           lint: [

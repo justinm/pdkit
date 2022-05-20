@@ -30,7 +30,7 @@ export class Manifest extends JsonFile {
     super(scope, id, { filePath });
 
     LifeCycle.implement(this);
-    LifeCycle.of(this).on(LifeCycleStage.SYNTH, () => {
+    LifeCycle.of(this).on(LifeCycleStage.BEFORE_WRITE, () => {
       const project = Project.of(this);
       const parentProjects = this.node.scopes.filter((s) => Project.is(s) && project !== s);
       const workspaceProject = Project.tryOf(Workspace.of(this));
