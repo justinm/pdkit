@@ -63,7 +63,7 @@ export class EslintImportRules extends Construct {
     }
 
     LifeCycle.implement(this);
-    LifeCycle.of(this).on(LifeCycleStage.BEFORE_SYNTH, () => {
+    LifeCycle.of(this).on(LifeCycleStage.SYNTH, () => {
       const project = Project.of(this);
       const tsSupport = TypescriptSupport.tryOf(project);
       const eslint = EslintSupport.of(this);
