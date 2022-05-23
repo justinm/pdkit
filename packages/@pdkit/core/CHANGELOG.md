@@ -1,3 +1,10 @@
+## @pdkit/core [3.0.10](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.9...@pdkit/core@3.0.10) (2022-05-23)
+
+
+### Bug Fixes
+
+* jest test matching ([922f007](https://github.com/justinm/pdkit/commit/922f007beda60cdcf05be55d73f027f5c87f8dc4))
+
 ## @pdkit/core [3.0.9](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.8...@pdkit/core@3.0.9) (2022-05-20)
 
 
