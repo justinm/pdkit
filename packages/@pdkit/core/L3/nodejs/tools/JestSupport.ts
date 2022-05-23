@@ -565,7 +565,7 @@ export class JestSupport extends Construct {
     const coverageReporters = props.jestConfig?.coverageReporters ?? ["json", "lcov", "clover", "cobertura"];
     const coveragePathIgnorePatterns = props.jestConfig?.coveragePathIgnorePatterns ?? ignorePatterns;
     const testPathIgnorePatterns = props.jestConfig?.testPathIgnorePatterns ?? ignorePatterns;
-    const testMatch = props.jestConfig?.testMatch ?? ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"];
+    const testMatch = props.jestConfig?.testMatch ?? ["**/__tests__/**/?(*.)+(spec|test).[tj]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"];
     const coverageDirectory = props.jestConfig?.coverageDirectory ?? "coverage";
     const reportsDirectory = props.reportsDirectory ?? "test-reports";
     const outputName = props.outputName;
