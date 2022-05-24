@@ -1,3 +1,11 @@
+## @pdkit/core [3.0.11](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.10...@pdkit/core@3.0.11) (2022-05-24)
+
+
+### Bug Fixes
+
+* jsii should use npx ([43d7701](https://github.com/justinm/pdkit/commit/43d770152ab7d4e78110d380ba093aa5b5af65de))
+* jsii should use npx ([d195c4e](https://github.com/justinm/pdkit/commit/d195c4eb55f06dbb0a9513b9b232fe919fb6e071))
+
 ## @pdkit/core [3.0.10](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.9...@pdkit/core@3.0.10) (2022-05-23)
 
 
