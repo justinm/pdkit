@@ -49,11 +49,11 @@ export class JSIIProject extends NodeProject {
       },
       scripts: {
         prebuild: "",
-        build: `rsync -a . ${buildPath} --exclude .git --exclude node_modules && jsii`,
+        build: `rsync -a . ${buildPath} --exclude .git --exclude node_modules && npx jsii`,
         clean: 'find . -name "*.js" -not -path "./node_modules/*" -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
-        package: "jsii-pacmak",
-        docgen: "jsii-docgen",
-        release: "bash $(yarn bin publib)",
+        package: "npx jsii-pacmak",
+        docgen: "npx jsii-docgen",
+        release: "npx publib",
       },
     });
 
