@@ -1,3 +1,5 @@
+# @pdkit/core [4.0.0](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.11...@pdkit/core@4.0.0) (2022-06-10)
+
 ## @pdkit/core [3.0.11](https://github.com/justinm/pdkit/compare/@pdkit/core@3.0.10...@pdkit/core@3.0.11) (2022-05-24)
 
 
