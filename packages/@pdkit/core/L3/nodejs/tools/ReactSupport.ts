@@ -14,7 +14,7 @@ export interface ReactSupportProps {
   readonly craco?: boolean;
   readonly reactVersion?: string;
   readonly reactScriptsVersion?: string;
-  readonly tsconfig?: TypescriptSupportProps & { enabled: boolean };
+  readonly typescript?: TypescriptSupportProps;
 }
 
 export class ReactSupport extends Construct {
@@ -94,8 +94,6 @@ export class ReactSupport extends Construct {
         start: `${reactScriptsCommand} start`,
         build: `${reactScriptsCommand} build`,
         test: `${reactScriptsCommand} test`,
-        clean:
-          'find . -name "*.js" -not -path "./node_modules/*" -not -name config-overrides.js -not -name setupProxy.js -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
       },
       browserslist: [">0.2%", "not dead", "not op_mini all"],
     });
@@ -149,6 +147,13 @@ export class ReactSupport extends Construct {
           version: props?.reactVersion ?? "^18",
         });
 
+        new ManifestEntry(this, "IgnoreReactClean", {
+          scripts: {
+            clean:
+              'find . -name "*.js" -not -path "./node_modules/*" -not -name config-overrides.js -not -name setupProxy.js -delete && find . -name "*.d.ts" -not -path "./node_modules/*" -delete',
+          },
+        });
+
         typescriptSupport.file.addDeepFields({
           include: [path.join(project.sourcePath, "*.tsx"), path.join(project.sourcePath, "**/*.tsx")],
           compilerOptions: {
@@ -159,7 +164,7 @@ export class ReactSupport extends Construct {
             target: "ES5",
             jsx: TypeScriptJsxMode.REACT_JSX,
             skipLibCheck: true,
-            ...props?.tsconfig?.compilerOptions,
+            ...props?.typescript?.compilerOptions,
           },
         });
       }

@@ -21,21 +21,15 @@ const workspace = new YarnMonoWorkspace({
     build: "yarn compile",
     compile: "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     clean: "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
-    yalc: "yarn workspaces foreach --verbose -p --topological-dev --no-private run yalc",
-    lint: "yarn workspaces foreach --verbose -p --topological-dev --no-private run lint",
-    "lint:fix": "yarn workspaces foreach --verbose -p --topological-dev --no-private run lint --fix",
+    // lint: "yarn workspaces foreach --verbose -p --topological-dev --no-private run lint",
+    // "lint:fix": "yarn workspaces foreach --verbose -p --topological-dev --no-private run lint --fix",
   },
-  tsconfig: {
-    enabled: true,
-  },
+  typescript: {},
+  jest: {},
   eslint: {
-    enabled: true,
     prettier: {},
     lineWidth: 140,
     doubleQuotes: true,
-  },
-  jest: {
-    enabled: true,
   },
   gitignore: [".idea", ".js", ".d.ts"],
   resolutions: {
@@ -51,6 +45,7 @@ new SemanticReleaseSupport(workspace, {
 });
 
 new YarnProject(workspace, "core", {
+  license: "Apache-2.0",
   packageName: "@pdkit/core",
   projectPath: "packages/@pdkit/core",
   sourcePath: ".",
@@ -72,23 +67,21 @@ new YarnProject(workspace, "core", {
     yalc: "npx yalc publish"
   },
   devDependencies: ["@types/mustache", "@types/js-yaml", "@types/object-hash", "@types/winston"],
-  tsconfig: {
-    enabled: true,
+  typescript: {
   },
   eslint: {
-    enabled: true,
     prettier: {},
     lineWidth: 140,
     doubleQuotes: true,
   },
   jest: {
-    enabled: true,
   },
 });
 
 new YarnProject(workspace, "cli", {
   packageName: "@pdkit/cli",
   projectPath: "packages/@pdkit/cli",
+  license: "Apache-2.0",
   sourcePath: ".",
   buildPath: ".",
   dependencies: [
@@ -126,17 +119,12 @@ new YarnProject(workspace, "cli", {
   bin: {
     pdkit: "index.ts",
   },
-  tsconfig: {
-    enabled: true,
+  typescript: {
   },
   eslint: {
-    enabled: true,
     prettier: {},
     lineWidth: 140,
     doubleQuotes: true,
-  },
-  jest: {
-    enabled: true,
   },
 });
 

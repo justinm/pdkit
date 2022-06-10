@@ -1,5 +1,6 @@
 {
   "name": "@pdkit/cli",
+  "license": "Apache-2.0",
   "version": "2.0.11",
   "author": {
     "name": "Justin McCormick",
@@ -14,8 +15,7 @@
     "pdkit": "npx npx pdkit",
     "yalc": "npx yalc publish",
     "clean": "find . -name \"*.js\" -not -path \"./node_modules/*\" -delete && find . -name \"*.d.ts\" -not -path \"./node_modules/*\" -delete",
-    "lint": "eslint --ext .ts .",
-    "test": "jest --passWithNoTests --all"
+    "lint": "eslint --ext .ts ."
   },
   "files": [
     "*.ts",
@@ -46,7 +46,6 @@
   },
   "devDependencies": {
     "@pdkit/core": "3.0.11",
-    "@types/jest": "27.4.1",
     "@types/node": "17.0.25",
     "@typescript-eslint/eslint-plugin": "5.20.0",
     "@typescript-eslint/parser": "5.20.0",
@@ -57,10 +56,7 @@
     "eslint-import-resolver-typescript": "2.7.1",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.0.0",
-    "jest": "27.5.1",
-    "jest-junit": "^13",
     "prettier": "2.6.2",
-    "ts-jest": "27.1.4",
     "ts-node": "10.7.0",
     "typescript": "4.6.3"
   },
@@ -75,7 +71,7 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "jest": true,
+      "jest": false,
       "node": true
     },
     "parser": "@typescript-eslint/parser",
@@ -314,47 +310,5 @@
         }
       }
     ]
-  },
-  "jest": {
-    "clearMocks": true,
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "lcov",
-      "clover",
-      "cobertura",
-      "text"
-    ],
-    "coverageDirectory": "coverage",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "modulePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "watchPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testMatch": [
-      "**/__tests__/**/?(*.)+(spec|test).[tj]s?(x)",
-      "**/?(*.)+(spec|test).[tj]s?(x)"
-    ],
-    "reporters": [
-      [
-        "jest-junit",
-        {
-          "outputDirectory": "test-reports"
-        }
-      ]
-    ],
-    "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.json"
-      }
-    }
   }
 }

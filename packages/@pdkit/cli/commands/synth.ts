@@ -1,11 +1,10 @@
 import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
-import { FileSynthesizer, InstallShellScript, Project, Script, ShellScript, Workspace } from "@pdkit/core";
+import { Bindings, FileSynthesizer, InstallShellScript, Project, Script, ShellScript, Workspace } from "@pdkit/core";
 import * as Diff from "diff";
 import yargs from "yargs";
-import { loadWorkspace, spinner, synthWorkspace, withSpinner } from "../utils";
-import { Bindings } from "@pdkit/core";
+import { loadWorkspace, spinner, withSpinner } from "../utils";
 
 export const command = "synth";
 export const desc = "Synthesizes the projects configuration";
@@ -140,7 +139,7 @@ export const handler = async function (argv: { config: string; dryrun: boolean; 
   const verbose = (argv.verbose as number) ?? false;
   const workspace = await loadWorkspace(config);
 
-  synthWorkspace(workspace);
+  workspace.synth();
 
   await writeFilesToDisk(workspace, verbose, dryRun, force);
   await runShellScripts(workspace, "install", InstallShellScript, verbose, dryRun);

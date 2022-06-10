@@ -224,7 +224,7 @@ export class EslintSupport extends Construct {
         extends: Array.from(this.extends),
         settings: this.settings,
         ignorePatterns: this.ignorePatterns,
-        rules: this.rules,
+        rules: { ...this.rules, ...props.rules },
         overrides: [
           {
             files: [PDKIT_CONFIG_FILE],

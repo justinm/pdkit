@@ -946,10 +946,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
   dependencies:
-    "@pdkit/core": 3.0.10
+    "@pdkit/core": 3.0.11
     "@types/diff": 5.0.2
     "@types/glob": 7.2.0
-    "@types/jest": 27.4.1
     "@types/node": 17.0.25
     "@types/ora": 3.1.0
     "@types/prompts": 2.4.0
@@ -970,24 +969,21 @@ __metadata:
     eslint-plugin-prettier: 4.0.0
     glob: 8.0.1
     glob-regex: 0.3.2
-    jest: 27.5.1
-    jest-junit: ^13
     ora: ^5.4.1
     prettier: 2.6.2
     prompts: 2.4.2
     shell-escape: 0.2.0
-    ts-jest: 27.1.4
     ts-node: 10.7.0
     typescript: 4.6.3
     yargs: 17.4.1
   peerDependencies:
-    "@pdkit/core": 3.0.10
+    "@pdkit/core": 3.0.11
   bin:
     pdkit: index.ts
   languageName: unknown
   linkType: soft
 
-"@pdkit/core@3.0.10, @pdkit/core@workspace:packages/@pdkit/core":
+"@pdkit/core@3.0.11, @pdkit/core@workspace:packages/@pdkit/core":
   version: 0.0.0-use.local
   resolution: "@pdkit/core@workspace:packages/@pdkit/core"
   dependencies:
@@ -10349,7 +10345,7 @@ __metadata:
 
 "typescript@patch:typescript@4.6.3#~builtin<compat/typescript>":
   version: 4.6.3
-  resolution: "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"
+  resolution: "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver

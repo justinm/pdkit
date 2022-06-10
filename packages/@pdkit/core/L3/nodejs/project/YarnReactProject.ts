@@ -6,7 +6,7 @@ import { YarnProject, YarnProjectProps } from "./YarnProject";
 export interface YarnReactProjectProps extends YarnProjectProps, ReactSupportProps {}
 
 export class YarnReactProject extends YarnProject {
-  constructor(scope: Construct, id: string, props: YarnReactProjectProps) {
+  constructor(scope: Construct, id: string, props?: YarnReactProjectProps) {
     super(scope, id, props);
 
     new ReactSupport(this, props);

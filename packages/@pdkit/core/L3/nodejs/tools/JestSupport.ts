@@ -59,7 +59,7 @@ export interface JestConfigOptions {
   /**
    * An array of regexp pattern strings that are matched against all file paths before executing the test.
    * If the file path matches any of the patterns, coverage information will be skipped
-   * @default "/node_modules/"
+   * @default "node_modules"
    */
   readonly coveragePathIgnorePatterns?: string[];
 
@@ -72,7 +72,7 @@ export interface JestConfigOptions {
 
   /**
    * A list of reporter names that Jest uses when writing coverage reports. Any istanbul reporter can be used
-   * @default - ["json", "lcov", "text", "clover", "cobertura"]
+   * @default - ["json"]
    */
   readonly coverageReporters?: string[];
 
@@ -353,24 +353,16 @@ export interface JestConfigOptions {
    * The glob patterns Jest uses to detect test files. By default it looks for .js, .jsx, .ts and .tsx
    * files inside of __tests__ folders, as well as any files with a suffix of .test or .spec
    * (e.g. Component.test.js or Component.spec.js). It will also find files called test.js or spec.js.
-   * @default ['**\/__tests__/**\/*.[jt]s?(x)', '**\/?(*.)+(spec|test).[tj]s?(x)']
+   * @default ['**\/__tests__/**\/*.[jt]s?(x)', '**\/__tests__\/*.[jt]s?(x)', '**\/?(*.)+(spec|test).[tj]s?(x)']
    */
   readonly testMatch?: string[];
 
   /**
    * An array of regexp pattern strings that are matched against all test paths before executing the test.
    * If the test path matches any of the patterns, it will be skipped.
-   * @default - ["/node_modules/"]
+   * @default - ["node_modules"]
    */
   readonly testPathIgnorePatterns?: string[];
-
-  /**
-   * The pattern or patterns Jest uses to detect test files. By default it looks for .js, .jsx, .ts and .tsx
-   * files inside of __tests__ folders, as well as any files with a suffix of .test or .spec
-   * (e.g. Component.test.js or Component.spec.js). It will also find files called test.js or spec.js.
-   * @default - (/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$
-   */
-  readonly testRegex?: string | string[];
 
   /**
    * This option allows the use of a custom results processor.
@@ -421,7 +413,7 @@ export interface JestConfigOptions {
   /**
    * An array of regexp pattern strings that are matched against all source file paths before transformation.
    * If the test path matches any of the patterns, it will not be transformed.
-   * @default - ["/node_modules/", "\\.pnp\\.[^\\\/]+$"]
+   * @default - ["node_modules", "\\.pnp\\.[^\\\/]+$"]
    */
   readonly transformIgnorePatterns?: string[];
 
@@ -511,7 +503,7 @@ export interface JestProps {
   /**
    * The filename Jest saves reports to
    */
-  readonly outputName?: string;
+  readonly reportName?: string;
 }
 
 export interface CoverageThreshold {
@@ -558,21 +550,25 @@ export class JestSupport extends Construct {
     super(scope, JestSupport.ID);
 
     // Jest defaults
-    const ignorePatterns = props.jestConfig?.testPathIgnorePatterns ?? ["/node_modules/"];
+    const ignorePatterns = props.jestConfig?.testPathIgnorePatterns ?? ["node_modules"];
     const modulePathIgnorePatterns = props.jestConfig?.modulePathIgnorePatterns ?? ignorePatterns;
     const collectCoverage = props.jestConfig?.collectCoverage ?? true;
     const watchPathIgnorePatterns = props.jestConfig?.watchPathIgnorePatterns ?? ignorePatterns;
-    const coverageReporters = props.jestConfig?.coverageReporters ?? ["json", "lcov", "clover", "cobertura"];
+    const coverageReporters = props.jestConfig?.coverageReporters ?? ["json"];
     const coveragePathIgnorePatterns = props.jestConfig?.coveragePathIgnorePatterns ?? ignorePatterns;
     const testPathIgnorePatterns = props.jestConfig?.testPathIgnorePatterns ?? ignorePatterns;
-    const testMatch = props.jestConfig?.testMatch ?? ["**/__tests__/**/?(*.)+(spec|test).[tj]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"];
+    const testMatch = props.jestConfig?.testMatch ?? [
+      "**/__tests__/?(*.)+(spec|test).[tj]s?(x)",
+      "**/__tests__/**/?(*.)+(spec|test).[tj]s?(x)",
+      "**/?(*.)+(spec|test).[tj]s?(x)",
+    ];
     const coverageDirectory = props.jestConfig?.coverageDirectory ?? "coverage";
     const reportsDirectory = props.reportsDirectory ?? "test-reports";
-    const outputName = props.outputName;
+    const reportName = props.reportName;
     const snapshotResolver = props.jestConfig?.snapshotResolver;
     const clearMocks = props.jestConfig?.clearMocks ?? true;
 
-    const reporters = props.jestConfig?.reporters ?? [];
+    const reporters = props.jestConfig?.reporters ?? ["default"];
     const ignore: string[] = [];
 
     Bindings.of(Project.of(this)).bind(this);
@@ -583,7 +579,7 @@ export class JestSupport extends Construct {
     });
 
     if (props.junit ?? true) {
-      reporters.push(["jest-junit", { outputDirectory: reportsDirectory, outputName }]);
+      reporters.push(["jest-junit", { outputDirectory: reportsDirectory, outputName: reportName }]);
 
       new PackageDependency(this, "jest-junit", {
         version: "^13",

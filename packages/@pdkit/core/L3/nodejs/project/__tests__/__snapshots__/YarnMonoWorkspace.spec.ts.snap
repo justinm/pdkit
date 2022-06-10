@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`YarnMonoWorkspace creates a generic YarnMonoWorkspace 1`] = `
+Object {
+  "bin": undefined,
+  "bugs": undefined,
+  "description": "MyDescription",
+  "devDependencies": Object {
+    "@pdkit/cli": "*",
+    "@pdkit/core": "*",
+  },
+  "files": Array [
+    "build/*.js",
+    "build/**/*.js",
+  ],
+  "homepath": undefined,
+  "keywords": undefined,
+  "main": "build/index.js",
+  "man": undefined,
+  "name": "workspace",
+  "private": true,
+  "repository": Object {
+    "type": "git",
+    "url": "http://localhost",
+  },
+  "resolutions": Object {
+    "a": "b",
+  },
+  "scripts": undefined,
+  "types": undefined,
+  "version": "3.0.11",
+  "workspaces": Array [],
+}
+`;
+
+exports[`YarnMonoWorkspace with a project 1`] = `
+Object {
+  "bin": undefined,
+  "bugs": undefined,
+  "description": "MyDescription",
+  "files": Array [
+    "build/*.js",
+    "build/**/*.js",
+  ],
+  "homepath": undefined,
+  "keywords": undefined,
+  "main": "build/index.js",
+  "man": undefined,
+  "name": "my-yarn-project",
+  "private": true,
+  "repository": Object {
+    "type": "git",
+    "url": "http://localhost",
+  },
+  "resolutions": undefined,
+  "scripts": undefined,
+  "types": undefined,
+  "version": "0.0.0",
+}
+`;
+
+exports[`YarnMonoWorkspace with a project supporting yalc 1`] = `
+Object {
+  "bin": undefined,
+  "bugs": undefined,
+  "description": "MyDescription",
+  "files": Array [
+    "build/*.js",
+    "build/**/*.js",
+  ],
+  "homepath": undefined,
+  "keywords": undefined,
+  "main": "build/index.js",
+  "man": undefined,
+  "name": "my-yarn-project",
+  "private": true,
+  "repository": Object {
+    "type": "git",
+    "url": "http://localhost",
+  },
+  "resolutions": undefined,
+  "scripts": Object {
+    "yalc": "npx yalc publish",
+  },
+  "types": undefined,
+  "version": "0.0.0",
+}
+`;

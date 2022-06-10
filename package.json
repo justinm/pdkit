@@ -14,10 +14,8 @@
     "build": "yarn compile",
     "compile": "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     "clean": "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
-    "yalc": "yarn workspaces foreach --verbose -p --topological-dev --no-private run yalc",
-    "lint": "yarn workspaces foreach --verbose -p --topological-dev --no-private run lint",
-    "lint:fix": "yarn workspaces foreach --verbose -p --topological-dev --no-private run lint --fix",
-    "test": "jest --passWithNoTests --all",
+    "lint": "yarn workspaces foreach --verbose -p --topological-dev --exclude \"workspace\" run lint",
+    "test": "yarn workspaces foreach --verbose -p --topological-dev --exclude \"workspace\" run test",
     "release": "npx multi-semantic-release"
   },
   "files": [
@@ -320,29 +318,28 @@
     "collectCoverage": true,
     "coverageReporters": [
       "json",
-      "lcov",
-      "clover",
-      "cobertura",
       "text"
     ],
     "coverageDirectory": "coverage",
     "coveragePathIgnorePatterns": [
-      "/node_modules/"
+      "node_modules"
     ],
     "testPathIgnorePatterns": [
-      "/node_modules/"
+      "node_modules"
     ],
     "modulePathIgnorePatterns": [
-      "/node_modules/"
+      "node_modules"
     ],
     "watchPathIgnorePatterns": [
-      "/node_modules/"
+      "node_modules"
     ],
     "testMatch": [
+      "**/__tests__/?(*.)+(spec|test).[tj]s?(x)",
       "**/__tests__/**/?(*.)+(spec|test).[tj]s?(x)",
       "**/?(*.)+(spec|test).[tj]s?(x)"
     ],
     "reporters": [
+      "default",
       [
         "jest-junit",
         {
@@ -357,7 +354,6 @@
       }
     }
   },
-  "chalk": "^4.1.2",
   "release": {
     "branches": [
       "main"

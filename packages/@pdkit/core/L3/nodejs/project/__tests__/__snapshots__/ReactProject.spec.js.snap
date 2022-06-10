@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReactSupport creates a simple react project 1`] = `
+Object {
+  "author": Object {
+    "email": "test@example.com",
+    "name": "Test Example",
+    "organization": true,
+    "url": undefined,
+  },
+  "bin": undefined,
+  "browserslist": Array [
+    ">0.2%",
+    "not dead",
+    "not op_mini all",
+  ],
+  "bugs": undefined,
+  "bundledDependencies": Array [
+    "@devPackage/latest",
+  ],
+  "dependencies": Object {
+    "@package/latest": "*",
+    "@package/version": "^1",
+    "react": "^18",
+    "react-dom": "^18",
+  },
+  "description": "MyDescription",
+  "devDependencies": Object {
+    "@devPackage/latest": "*",
+    "@devPackage/version": "^2",
+    "@pdkit/cli": "*",
+    "@pdkit/core": "*",
+    "react-scripts": "^5",
+  },
+  "files": Array [
+    "build/*.js",
+    "build/**/*.js",
+  ],
+  "homepath": undefined,
+  "keywords": undefined,
+  "main": "build/index.js",
+  "man": undefined,
+  "name": "my-react-project",
+  "peerDependencies": Object {
+    "@peerPackage/latest": "*",
+    "@peerPackage/version": "^3",
+  },
+  "private": true,
+  "repository": Object {
+    "type": "git",
+    "url": "http://localhost",
+  },
+  "resolutions": Object {
+    "a": "b",
+  },
+  "scripts": Object {
+    "build": "npx react-scripts build",
+    "start": "npx react-scripts start",
+    "test": "./myTestScript.sh",
+  },
+  "types": undefined,
+  "version": "3.0.11",
+}
+`;
+
+exports[`ReactSupport creates a typescript react project 1`] = `
+Object {
+  "author": Object {
+    "email": "test@example.com",
+    "name": "Test Example",
+    "organization": true,
+    "url": undefined,
+  },
+  "bin": undefined,
+  "browserslist": Array [
+    ">0.2%",
+    "not dead",
+    "not op_mini all",
+  ],
+  "bugs": undefined,
+  "bundledDependencies": Array [
+    "@devPackage/latest",
+  ],
+  "dependencies": Object {
+    "@package/latest": "*",
+    "@package/version": "^1",
+    "react": "^18",
+    "react-dom": "^18",
+  },
+  "description": "MyDescription",
+  "devDependencies": Object {
+    "@devPackage/latest": "*",
+    "@devPackage/version": "^2",
+    "@pdkit/cli": "*",
+    "@pdkit/core": "*",
+    "@types/node": "*",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "react-scripts": "^5",
+    "ts-node": "*",
+    "typescript": "*",
+  },
+  "files": Array [
+    "build/*.js",
+    "build/**/*.js",
+    "build/*.d.ts",
+    "build/**/*.d.ts",
+  ],
+  "homepath": undefined,
+  "keywords": undefined,
+  "main": "build/index.js",
+  "man": undefined,
+  "name": "my-react-project",
+  "peerDependencies": Object {
+    "@peerPackage/latest": "*",
+    "@peerPackage/version": "^3",
+  },
+  "private": true,
+  "repository": Object {
+    "type": "git",
+    "url": "http://localhost",
+  },
+  "resolutions": Object {
+    "a": "b",
+  },
+  "scripts": Object {
+    "build": "npx react-scripts build",
+    "clean": "find . -name \\"*.js\\" -not -path \\"./node_modules/*\\" -not -name config-overrides.js -not -name setupProxy.js -delete && find . -name \\"*.d.ts\\" -not -path \\"./node_modules/*\\" -delete",
+    "compile": "tsc -p ./tsconfig.json",
+    "start": "npx react-scripts start",
+    "test": "./myTestScript.sh",
+  },
+  "types": "build/index.d.ts",
+  "version": "3.0.11",
+}
+`;

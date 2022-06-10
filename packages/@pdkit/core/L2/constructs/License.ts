@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import request from "sync-request";
-import { File } from "../../L1";
+import { File, FileSynthesizer } from "../../L1";
 import { ManifestEntry } from "./ManifestEntry";
 
 // TODO extend based on https://github.com/github/choosealicense.com/tree/gh-pages/_licenses
@@ -30,8 +30,12 @@ export class License extends ManifestEntry {
 
     this.license = license;
 
+    const vfs = FileSynthesizer.of(this);
+
     if (license !== "UNLICENSED") {
-      new File(this, "Default", { filePath: "LICENSE", content: this.content });
+      const existingLicense = vfs.tryReadRealFile(this, "LICENSE");
+
+      new File(this, "Default", { filePath: "LICENSE", content: existingLicense?.toString() ?? this.content });
     }
   }
 

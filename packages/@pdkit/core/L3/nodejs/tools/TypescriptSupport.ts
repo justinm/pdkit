@@ -98,6 +98,11 @@ export enum TypeScriptJsxMode {
 
 export interface TypeScriptCompilerOptions {
   /**
+   * An escape hook to allow for defining properties not yet supported in PDKit's interface.
+   */
+  [key: string]: unknown;
+
+  /**
    * Allow JavaScript files to be compiled.
    *
    * @default false

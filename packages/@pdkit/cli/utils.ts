@@ -9,10 +9,6 @@ import shellEscape from "shell-escape";
 
 export const spinner = ora();
 
-export function synthWorkspace(workspace: Workspace) {
-  workspace.synth();
-}
-
 export async function loadWorkspace(configPath: string) {
   const workspace = await withSpinner<IWorkspace>(0, "Loading workspace...", () => {
     process.chdir(path.dirname(configPath));

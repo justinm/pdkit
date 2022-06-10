@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`YarnProject creates a generic YarnProject 1`] = `
+Object {
+  "bin": undefined,
+  "bugs": undefined,
+  "description": "MyDescription",
+  "devDependencies": Object {
+    "@pdkit/cli": "*",
+    "@pdkit/core": "*",
+  },
+  "files": Array [
+    "build/*.js",
+    "build/**/*.js",
+  ],
+  "homepath": undefined,
+  "keywords": undefined,
+  "main": "build/index.js",
+  "man": undefined,
+  "name": "my-yarn-project",
+  "private": true,
+  "repository": Object {
+    "type": "git",
+    "url": "http://localhost",
+  },
+  "resolutions": Object {
+    "a": "b",
+  },
+  "scripts": undefined,
+  "types": undefined,
+  "version": "3.0.11",
+}
+`;
+
+exports[`YarnProject creates a generic YarnProject with Yalc 1`] = `
+Object {
+  "bin": undefined,
+  "bugs": undefined,
+  "description": "MyDescription",
+  "devDependencies": Object {
+    "@pdkit/cli": "*",
+    "@pdkit/core": "*",
+  },
+  "files": Array [
+    "build/*.js",
+    "build/**/*.js",
+  ],
+  "homepath": undefined,
+  "keywords": undefined,
+  "main": "build/index.js",
+  "man": undefined,
+  "name": "my-yarn-project",
+  "private": true,
+  "repository": Object {
+    "type": "git",
+    "url": "http://localhost",
+  },
+  "resolutions": Object {
+    "a": "b",
+  },
+  "scripts": Object {
+    "yalc": "npx yalc publish",
+  },
+  "types": undefined,
+  "version": "3.0.11",
+}
+`;
