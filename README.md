@@ -111,7 +111,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-We eat our own dogfood, check out our [.pdkitrc](./.pdkitrc) for an idea on how to get started. We use Typescript to
+We eat our own dogfood, check out our [.pdkitrc.ts](./.pdkitrc.ts) for an idea on how to get started. We use Typescript to
 help ensure optimum IDE support.
 
 ** This is ALPHA software, use at your own risk! **
