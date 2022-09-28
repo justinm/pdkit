@@ -62,6 +62,7 @@ new YarnProject(workspace, "core", {
     "winston",
     "dependency-graph",
     "md5-file",
+    "spdx-license-list"
   ],
   scripts: {
     yalc: "npx yalc publish"

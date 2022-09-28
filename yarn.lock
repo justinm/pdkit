@@ -1014,6 +1014,7 @@ __metadata:
     mustache: 4.2.0
     object-hash: 3.0.0
     prettier: 2.6.2
+    spdx-license-list: 6.6.0
     sync-request: 6.1.0
     ts-jest: 27.1.4
     ts-node: 10.7.0
@@ -9482,6 +9483,13 @@ __metadata:
   version: 3.0.11
   resolution: "spdx-license-ids@npm:3.0.11"
   checksum: 1da1acb090257773e60b022094050e810ae9fec874dc1461f65dc0400cd42dd830ab2df6e64fb49c2db3dce386dd0362110780e1b154db7c0bb413488836aaeb
+  languageName: node
+  linkType: hard
+
+"spdx-license-list@npm:6.6.0":
+  version: 6.6.0
+  resolution: "spdx-license-list@npm:6.6.0"
+  checksum: 180a7e940910ed68d4ee1e0c0ce34450ae048b353f4b71691caccd472267fd70dd2152e93cb6257505e0ab05f346d0c5917d533e2c6189b646a8836dd186a865
   languageName: node
   linkType: hard
 
