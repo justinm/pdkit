@@ -57,7 +57,6 @@ new YarnProject(workspace, "core", {
     "memfs",
     "mustache",
     "object-hash",
-    "sync-request",
     "js-yaml",
     "winston",
     "dependency-graph",
