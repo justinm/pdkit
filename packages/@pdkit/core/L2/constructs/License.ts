@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
-import request from "sync-request";
 import { File, FileSynthesizer } from "../../L1";
 import { ManifestEntry } from "./ManifestEntry";
+import licenses from 'spdx-license-list/full'
 
 // Run packages/@pdkit/core/util/CodeGenValidLicense.ts to regenerate this list
 export type ValidLicense =
@@ -515,14 +515,6 @@ export class License extends ManifestEntry {
   }
 
   get content() {
-    // TODO this is a terrible way to retrieve licenses...
-    const licenseData = request(
-      "GET",
-      `https://raw.githubusercontent.com/github/choosealicense.com/gh-pages/_licenses/${this.license.toLowerCase()}.txt`
-    );
-
-    const license = licenseData.body.toString("utf8");
-
-    return license.substring(license.indexOf("---", 4) + 3);
+    return licenses[this.license].licenseText
   }
 }
