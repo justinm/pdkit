@@ -7,7 +7,12 @@ import { Author, AuthorProps, NodePackageJsonProps, PackageDependency, PackageDe
 import { EslintProps, EslintSupport, JestProps, JestSupport, TypescriptSupport, TypescriptSupportProps } from "../tools";
 import { YalcSupport } from "../tools/YalcSupport";
 
-export type Dependencies = { [key: string]: string } | (string | { name: string; version: string })[];
+export type VersionedDependency = {
+  name: string
+  version: string
+}
+
+export type Dependencies = Record<string, string> | (string | VersionedDependency)[];
 
 export enum PackageManagerType {
   NPM,

@@ -1,4 +1,23 @@
-import { SemanticReleaseSupport, YarnMonoWorkspace, YarnProject } from "@pdkit/core";
+import { SemanticReleaseSupport, YarnMonoWorkspace, YarnProject, VersionedDependency } from "@pdkit/core";
+
+const ORG = '@pdkit'
+
+function scopedPackageName (name: string) {
+  return [ORG, name].join('/')
+}
+
+/**
+ * Helper to generate a package dependency for the project itself, with Yarn workspace links.
+ */
+function pdKitDep(packageName: string): VersionedDependency {
+  return {
+    name: packageName,
+    version: ["workspace:packages", packageName].join('/')
+  }
+}
+
+const PACKAGE_CLI = scopedPackageName('cli')
+const PACKAGE_CORE = scopedPackageName('core')
 
 const workspace = new YarnMonoWorkspace({
   author: {
@@ -9,7 +28,7 @@ const workspace = new YarnMonoWorkspace({
   dependencies: ["mustache"],
   disableAutoLib: true,
   devDependencies: [
-    { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" },
+    pdKitDep(PACKAGE_CORE),
     "@types/mustache",
     "@types/node",
     "prettier",
@@ -17,7 +36,7 @@ const workspace = new YarnMonoWorkspace({
     "typescript"
   ],
   scripts: {
-    pdkit: "yarn workspace @pdkit/cli run pdkit",
+    pdkit: `yarn workspace ${PACKAGE_CLI} run pdkit`,
     build: "yarn compile",
     compile: "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     clean: "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
@@ -46,8 +65,8 @@ new SemanticReleaseSupport(workspace, {
 
 new YarnProject(workspace, "core", {
   license: "Apache-2.0",
-  packageName: "@pdkit/core",
-  projectPath: "packages/@pdkit/core",
+  packageName: PACKAGE_CORE,
+  projectPath: `packages/${PACKAGE_CORE}`,
   sourcePath: ".",
   buildPath: ".",
   dependencies: [
@@ -79,8 +98,8 @@ new YarnProject(workspace, "core", {
 });
 
 new YarnProject(workspace, "cli", {
-  packageName: "@pdkit/cli",
-  projectPath: "packages/@pdkit/cli",
+  packageName: PACKAGE_CLI,
+  projectPath: `packages/${PACKAGE_CLI}`,
   license: "Apache-2.0",
   sourcePath: ".",
   buildPath: ".",
@@ -104,8 +123,8 @@ new YarnProject(workspace, "cli", {
     "ts-node",
     "yargs",
   ],
-  devDependencies: ["@pdkit/core"],
-  peerDependencies: ["@pdkit/core"],
+  devDependencies: [PACKAGE_CORE],
+  peerDependencies: [PACKAGE_CORE],
   files: [
     "*.ts",
     "**/*.ts",
