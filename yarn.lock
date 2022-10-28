@@ -942,11 +942,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pdkit/cli@workspace:packages/@pdkit/cli":
+"@pdkit/cli@workspace:packages/cli":
   version: 0.0.0-use.local
-  resolution: "@pdkit/cli@workspace:packages/@pdkit/cli"
+  resolution: "@pdkit/cli@workspace:packages/cli"
   dependencies:
-    "@pdkit/core": 3.0.11
+    "@pdkit/core": 4.0.0
     "@types/diff": 5.0.2
     "@types/glob": 7.2.0
     "@types/node": 17.0.25
@@ -977,15 +977,15 @@ __metadata:
     typescript: 4.6.3
     yargs: 17.4.1
   peerDependencies:
-    "@pdkit/core": 3.0.11
+    "@pdkit/core": 4.0.0
   bin:
     pdkit: index.ts
   languageName: unknown
   linkType: soft
 
-"@pdkit/core@3.0.11, @pdkit/core@workspace:packages/@pdkit/core":
+"@pdkit/core@4.0.0, @pdkit/core@workspace:*, @pdkit/core@workspace:packages/core":
   version: 0.0.0-use.local
-  resolution: "@pdkit/core@workspace:packages/@pdkit/core"
+  resolution: "@pdkit/core@workspace:packages/core"
   dependencies:
     "@types/jest": 27.4.1
     "@types/js-yaml": 4.0.5
@@ -10808,7 +10808,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "workspace@workspace:."
   dependencies:
-    "@pdkit/core": "workspace:packages/@pdkit/core"
+    "@pdkit/core": "workspace:*"
     "@qiwi/multi-semantic-release": ^3.17.1
     "@semantic-release/changelog": 6.0.1
     "@semantic-release/commit-analyzer": 9.0.2
