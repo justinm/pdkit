@@ -45,7 +45,7 @@
 
 ## About The Project
 
-StackGen, or the Project Development Kit, is a new way of managing your projects using code. Based on the idea of constructs,
+StackGen is a new way of managing your projects using code. Based on the idea of constructs,
 StackGen allows you to manage single or monorepos through code.
 
 This project is still in early alpha and not yet available via typical distribution methods (ie. npm). My intention
