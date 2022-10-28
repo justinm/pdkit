@@ -10,7 +10,7 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "pdkit": "yarn workspace @pdkit/cli run pdkit",
+    "stackgen": "yarn workspace @pdkit/cli run pdkit",
     "build": "yarn compile",
     "compile": "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     "clean": "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
@@ -25,14 +25,13 @@
     "build/**/*.d.ts"
   ],
   "workspaces": [
-    "packages/@pdkit/core",
-    "packages/@pdkit/cli"
+    "packages/*"
   ],
   "dependencies": {
     "mustache": "4.2.0"
   },
   "devDependencies": {
-    "@pdkit/core": "workspace:packages/@pdkit/core",
+    "@pdkit/core": "workspace:*",
     "@qiwi/multi-semantic-release": "^3.17.1",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
