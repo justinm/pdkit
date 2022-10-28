@@ -1,12 +1,12 @@
 import { strict as assert } from "assert";
 import fs from "fs";
 import path from "path";
-import { PDKIT_CONFIG_FILE } from "@stackgen/core";
+import { SG_CONFIG_FILE } from "@stackgen/core";
 import yargs from "yargs";
 import { spawnCommand, spinner } from "../utils";
 
 export const command = "init";
-export const desc = "Converts an existing npm/yarn project into a PDKit compatible repository";
+export const desc = "Converts an existing npm/yarn project into a StackGen compatible repository";
 
 export const builder: yargs.CommandBuilder<any, any> = function (y) {
   return y.option("dryrun", {
@@ -19,9 +19,9 @@ export const handler = async function ({ dryrun }: { config: string; dryrun: boo
   const cwd = process.cwd();
 
   const packageJsonPath = path.join(cwd, "package.json");
-  const pdkitPath = path.join(cwd, PDKIT_CONFIG_FILE);
+  const sgPath = path.join(cwd, SG_CONFIG_FILE);
 
-  if (fs.existsSync(pdkitPath) && !dryrun) {
+  if (fs.existsSync(sgPath) && !dryrun) {
     return spinner.fail("This project has already been initialized");
   }
 
@@ -84,15 +84,15 @@ new YarnTypescriptWorkspace("${packageConfig.name.split("/").reverse()[0]}", ${J
 `;
 
   if (dryrun) {
-    spinner.info(`Would write new ${PDKIT_CONFIG_FILE} with contents`);
+    spinner.info(`Would write new ${SG_CONFIG_FILE} with contents`);
     console.log(template);
   } else {
-    fs.writeFileSync(pdkitPath, template);
-    spinner.succeed(`Writing to ${PDKIT_CONFIG_FILE}`);
+    fs.writeFileSync(sgPath, template);
+    spinner.succeed(`Writing to ${SG_CONFIG_FILE}`);
   }
 
   spinner.start("Running first-time synth");
-  let code = await spawnCommand(["yarn", "pdkit", "synth", "-v"]);
+  let code = await spawnCommand(["yarn", "stackgen", "synth", "-v"]);
   if (!code) {
     return;
   }

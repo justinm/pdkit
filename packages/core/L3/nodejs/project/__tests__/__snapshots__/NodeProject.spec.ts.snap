@@ -70,7 +70,7 @@ Object {
   "overrides": Array [
     Object {
       "files": Array [
-        ".pdkitrc.ts",
+        ".stackgenrc.ts",
       ],
       "rules": Object {
         "@typescript-eslint/no-require-imports": "off",
@@ -310,7 +310,7 @@ Object {
   "overrides": Array [
     Object {
       "files": Array [
-        ".pdkitrc.ts",
+        ".stackgenrc.ts",
       ],
       "rules": Object {
         "@typescript-eslint/no-require-imports": "off",

@@ -303,7 +303,7 @@
     "overrides": [
       {
         "files": [
-          ".pdkitrc.ts"
+          ".stackgenrc.ts"
         ],
         "rules": {
           "@typescript-eslint/no-require-imports": "off",

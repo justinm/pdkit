@@ -1,6 +1,6 @@
 # Overwriting package.json fields
 
-Since PDKit uses multiple merge strategies, you can merge and/or override generated fields as needed using the
+Since StackGen uses multiple merge strategies, you can merge and/or override generated fields as needed using the
 ManifestEntry construct. For example
 
 ```typescript

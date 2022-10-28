@@ -98,7 +98,7 @@ export enum TypeScriptJsxMode {
 
 export interface TypeScriptCompilerOptions {
   /**
-   * An escape hook to allow for defining properties not yet supported in PDKit's interface.
+   * An escape hook to allow for defining properties not yet supported in StackGen's interface.
    */
   [key: string]: unknown;
 

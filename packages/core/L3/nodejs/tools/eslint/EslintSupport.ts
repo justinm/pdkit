@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { JsonFile, ManifestEntry, PDKIT_CONFIG_FILE } from "../../../../index";
+import { JsonFile, ManifestEntry, SG_CONFIG_FILE } from "../../../../index";
 import { Project, Bindings, Fields, LifeCycle, LifeCycleStage } from "../../../../L1";
 import { PackageDependency, PackageDependencyType } from "../../constructs";
 import { JestSupport } from "../JestSupport";
@@ -227,7 +227,7 @@ export class EslintSupport extends Construct {
         rules: { ...this.rules, ...props.rules },
         overrides: [
           {
-            files: [PDKIT_CONFIG_FILE],
+            files: [SG_CONFIG_FILE],
             rules: {
               "@typescript-eslint/no-require-imports": "off",
               "import/no-extraneous-dependencies": "off",

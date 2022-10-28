@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
-import { IWorkspace, PDKIT_CONFIG_FILE, Workspace } from "@stackgen/core";
+import { IWorkspace, SG_CONFIG_FILE, Workspace } from "@stackgen/core";
 import { logger } from "@stackgen/core/util/logger";
 import { Construct } from "constructs";
 import ora from "ora";
@@ -14,7 +14,7 @@ export async function loadWorkspace(configPath: string) {
     process.chdir(path.dirname(configPath));
 
     if (!fs.existsSync(configPath)) {
-      throw new Error(`No ${PDKIT_CONFIG_FILE} could be found`);
+      throw new Error(`No ${SG_CONFIG_FILE} could be found`);
     }
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const kit = require(configPath).default;

@@ -30,7 +30,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
    * A list of package dependencies required for the project. Dependencies can be added using a simple
    * string or a more complex object. String dependencies automatically installs the latest package version.
    *
-   * Please note, PDKit uses pinning for installed packages. To update a package, refer to your package manager's
+   * Please note, StackGen uses pinning for installed packages. To update a package, refer to your package manager's
    * install process and resynth.
    */
   readonly dependencies?: Dependencies;
@@ -39,7 +39,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
    * A list of package devDependencies required for the project. Dependencies can be added using a simple
    * string or a more complex object. String dependencies automatically installs the latest package version.
    *
-   * Please note, PDKit uses pinning for installed packages. To update a package, refer to your package manager's
+   * Please note, StackGen uses pinning for installed packages. To update a package, refer to your package manager's
    * install process and resynth.
    */
   readonly devDependencies?: Dependencies;
@@ -48,7 +48,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
    * A list of package peerDependencies required for the project. Dependencies can be added using a simple
    * string or a more complex object. String dependencies automatically installs the latest package version.
    *
-   * Please note, PDKit uses pinning for installed packages. To update a package, refer to your package manager's
+   * Please note, StackGen uses pinning for installed packages. To update a package, refer to your package manager's
    * install process and resynth.
    */
   readonly peerDependencies?: Dependencies;
@@ -57,7 +57,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
    * A list of package bundledDependencies required for the project. Dependencies can be added using a simple
    * string or a more complex object. String dependencies automatically installs the latest package version.
    *
-   * Please note, PDKit uses pinning for installed packages. To update a package, refer to your package manager's
+   * Please note, StackGen uses pinning for installed packages. To update a package, refer to your package manager's
    * install process and resynth.
    */
   readonly bundledDependencies?: string[];
@@ -68,7 +68,7 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly author?: AuthorProps;
 
   /**
-   * Defines the project's licensing. PDKit automatically maintains a LICENSE.md.
+   * Defines the project's licensing. StackGen automatically maintains a LICENSE.md.
    */
   readonly license?: ValidLicense;
 
@@ -104,9 +104,9 @@ export interface NodeProjectProps extends ProjectProps, NodePackageJsonProps {
   readonly packageJsonProps?: Partial<NodePackageJsonProps> & Record<string, unknown>;
 
   /**
-   * Disable PDKit's automatic library inclusion.
+   * Disable StackGen's automatic library inclusion.
    *
-   * Note: Setting this property may result in uninstalling PDKit!
+   * Note: Setting this property may result in uninstalling StackGen!
    */
   readonly disableAutoLib?: boolean;
 

@@ -83,7 +83,7 @@ export class SemanticReleaseSupport extends Construct {
 
     if (props.tool === "npm") {
       plugins.push("@semantic-release/npm");
-      plugins.push(["@semantic-release/exec", { publishCmd: "npm run pdkit synth" }]);
+      plugins.push(["@semantic-release/exec", { publishCmd: "npm run stackgen synth" }]);
     }
 
     if (props.tool === "yarn") {
@@ -94,7 +94,7 @@ export class SemanticReleaseSupport extends Construct {
       plugins.push(["@semantic-release/npm", { npmPublish: false }]);
       plugins.push(["@semantic-release/exec", { publishCmd: "yarn npm publish" }]);
       // We resynth the project to ensure package.json updates correctly after release bump
-      plugins.push(["@semantic-release/exec", { publishCmd: "YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn run -T pdkit synth" }]);
+      plugins.push(["@semantic-release/exec", { publishCmd: "YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn run -T stackgen synth" }]);
     }
 
     new ManifestEntry(this, "SemanticRelease", {

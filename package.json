@@ -304,7 +304,7 @@
     "overrides": [
       {
         "files": [
-          ".pdkitrc.ts"
+          ".stackgenrc.ts"
         ],
         "rules": {
           "@typescript-eslint/no-require-imports": "off",
@@ -396,7 +396,7 @@
       [
         "@semantic-release/exec",
         {
-          "publishCmd": "YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn run -T pdkit synth"
+          "publishCmd": "YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn run -T stackgen synth"
         }
       ],
       [
