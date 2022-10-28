@@ -1,22 +1,5 @@
 <div id="top"></div>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
 
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -26,7 +9,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h3 align="center">PDKit - The Project Development Kit</h3>
+  <h3 align="center">StackGen</h3>
   <p align="center">
     A construct driven approach to project and repository management.
   </p>
@@ -63,8 +46,8 @@
 
 ## About The Project
 
-PDKit, or the Project Development Kit, is a new way of managing your projects using code. Based on the idea of constructs,
-PDKit allows you to manage single or monorepos through code.
+StackGen, or the Project Development Kit, is a new way of managing your projects using code. Based on the idea of constructs,
+StackGen allows you to manage single or monorepos through code.
 
 This project is still in early alpha and not yet available via typical distribution methods (ie. npm). My intention
 is to first fully support the needs of this project prior to general availability.
@@ -73,7 +56,7 @@ is to first fully support the needs of this project prior to general availabilit
 
 ### Goals
 
-The PDKit project has several key goals it intends to keep:
+The StackGen project has several key goals it intends to keep:
 
 * Highly Configurable
 * Highly Extendable
@@ -102,7 +85,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 3. Install PDKit packages
    ```sh
-   npm install @pdkit/cli
+   npm install @stackgen/cli
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -111,7 +94,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-We eat our own dogfood, check out our [.pdkitrc](./.pdkitrc) for an idea on how to get started. We use Typescript to
+We eat our own dogfood, check out our [stackgen.rc](./.stackgenrc) for an idea on how to get started. We use Typescript to
 help ensure optimum IDE support.
 
 ** This is ALPHA software, use at your own risk! **
@@ -127,7 +110,7 @@ Additional documentation is available at [./docs](./docs).
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/justinm/pdkit/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/StackBakery/stackgen/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -163,12 +146,9 @@ Distributed under the Apache 2.0 License. See [LICENSE](./LICENSE) for more info
 <!-- CONTACT -->
 ## Contact
 
-Justin McCormick - [@justinm](https://twitter.com/justinm) - me@justinmccormick.com
-
-Project Link: [https://github.com/justinm/pdkit](https://github.com/justinm/pdkit)
+Project Link: [https://github.com/StackBakery/stackgen](https://github.com/StackBakery/stackgen)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- ACKNOWLEDGMENTS -->
@@ -177,22 +157,8 @@ Project Link: [https://github.com/justinm/pdkit](https://github.com/justinm/pdki
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
 * [Projen](https://www.github.com/projen/projen)
+* [PDKit](https://github.com/justinm/pdkit)
 * [Choose an Open Source License](https://choosealicense.com)
 * [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/justinm/pdkit.svg?style=for-the-badge
-[contributors-url]: https://github.com/justinm/pdkit/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/justinm/pdkit.svg?style=for-the-badge
-[forks-url]: https://github.com/justinm/pdkit/network/members
-[stars-shield]: https://img.shields.io/github/stars/justinm/pdkit.svg?style=for-the-badge
-[stars-url]: https://github.com/justinm/pdkit/stargazers
-[issues-shield]: https://img.shields.io/github/issues/justinm/pdkit.svg?style=for-the-badge
-[issues-url]: https://github.com/justinm/pdkit/issues
-[license-shield]: https://img.shields.io/github/license/justinm/pdkit.svg?style=for-the-badge
-[license-url]: https://github.com/justinm/pdkit/blob/master/LICENSE
