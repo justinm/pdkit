@@ -43,7 +43,6 @@
   </ol>
 </details>
 
-
 ## About The Project
 
 StackGen, or the Project Development Kit, is a new way of managing your projects using code. Based on the idea of constructs,
@@ -58,40 +57,40 @@ is to first fully support the needs of this project prior to general availabilit
 
 The StackGen project has several key goals it intends to keep:
 
-* Highly Configurable
-* Highly Extendable
-* Concentrate on the NodeJS ecosystem, but build with compatibility for more in mind
-* Community Driven
+- Highly Configurable
+- Highly Extendable
+- Concentrate on the NodeJS ecosystem, but build with compatibility for more in mind
+- Community Driven
 
 ### Built With
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-* [Typescript](https://github.com/microsoft/TypeScript)
-* [Constructs](https://github.com/aws/constructs)
-* [Yarn](https://yarnpkg.com/)
-* [Prettier](https://prettier.io/)
+- [Typescript](https://github.com/microsoft/TypeScript)
+- [Constructs](https://github.com/aws/constructs)
+- [Yarn](https://yarnpkg.com/)
+- [Prettier](https://prettier.io/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 ** This is ALPHA software, use at your own risk! **
 
 ### Installation
 
-3. Install PDKit packages
-   ```sh
-   npm install @stackgen/cli
-   ```
+Install StackGen packages
+
+```sh
+npm install @stackgen/cli
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 We eat our own dogfood, check out our [stackgen.rc](./.stackgenrc) for an idea on how to get started. We use Typescript to
@@ -101,21 +100,20 @@ help ensure optimum IDE support.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 ## Documentation
 
 Additional documentation is available at [./docs](./docs).
 
-
 <!-- ROADMAP -->
+
 ## Roadmap
 
 See the [open issues](https://github.com/StackBakery/stackgen/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -133,32 +131,45 @@ See also: [Contributing Guidelines](./.github/CONTRIBUTING.md)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the Apache 2.0 License. See [LICENSE](./LICENSE) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 <!-- CONTACT -->
+
 ## Contact
 
 Project Link: [https://github.com/StackBakery/stackgen](https://github.com/StackBakery/stackgen)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
-* [Projen](https://www.github.com/projen/projen)
-* [PDKit](https://github.com/justinm/pdkit)
-* [Choose an Open Source License](https://choosealicense.com)
-* [Img Shields](https://shields.io)
+- [Projen](https://www.github.com/projen/projen)
+- [PDKit](https://github.com/justinm/pdkit)
+- [Choose an Open Source License](https://choosealicense.com)
+- [Img Shields](https://shields.io)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
+[contributors-shield]: https://img.shields.io/github/contributors/StackBakery/stackgen.svg?style=for-the-badge
+[contributors-url]: https://github.com/StackBakery/stackgen/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/StackBakery/stackgen.svg?style=for-the-badge
+[forks-url]: https://github.com/StackBakery/stackgen/network/members
+[stars-shield]: https://img.shields.io/github/stars/StackBakery/stackgen.svg?style=for-the-badge
+[stars-url]: https://github.com/StackBakery/stackgen/stargazers
+[issues-shield]: https://img.shields.io/github/issues/StackBakery/stackgen.svg?style=for-the-badge
+[issues-url]: https://github.com/StackBakery/stackgen/issues
+[license-shield]: https://img.shields.io/github/license/StackBakery/stackgen.svg?style=for-the-badge
+[license-url]: https://github.com/StackBakery/stackgen/blob/master/LICENSE
