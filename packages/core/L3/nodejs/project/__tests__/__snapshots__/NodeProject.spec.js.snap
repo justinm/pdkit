@@ -21,8 +21,8 @@ Object {
   "devDependencies": Object {
     "@devPackage/latest": "*",
     "@devPackage/version": "^2",
-    "@pdkit/cli": "*",
-    "@pdkit/core": "*",
+    "@stackgen/cli": "*",
+    "@stackgen/core": "*",
   },
   "files": Array [
     "build/*.js",
@@ -651,8 +651,8 @@ Object {
   "bugs": undefined,
   "description": "MyDescription",
   "devDependencies": Object {
-    "@pdkit/cli": "*",
-    "@pdkit/core": "*",
+    "@stackgen/cli": "*",
+    "@stackgen/core": "*",
   },
   "files": Array [
     "build/*.js",
@@ -685,8 +685,8 @@ Object {
   "bugs": undefined,
   "description": "MyDescription",
   "devDependencies": Object {
-    "@pdkit/cli": "*",
-    "@pdkit/core": "*",
+    "@stackgen/cli": "*",
+    "@stackgen/core": "*",
   },
   "files": Array [
     "build/*.js",
@@ -720,8 +720,8 @@ Object {
   "bugs": undefined,
   "description": "MyDescription",
   "devDependencies": Object {
-    "@pdkit/cli": "*",
-    "@pdkit/core": "*",
+    "@stackgen/cli": "*",
+    "@stackgen/core": "*",
   },
   "files": Array [
     "build/*.js",

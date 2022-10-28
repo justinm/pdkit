@@ -28,8 +28,8 @@ Object {
   "devDependencies": Object {
     "@devPackage/latest": "*",
     "@devPackage/version": "^2",
-    "@pdkit/cli": "*",
-    "@pdkit/core": "*",
+    "@stackgen/cli": "*",
+    "@stackgen/core": "*",
     "react-scripts": "^5",
   },
   "files": Array [
@@ -91,8 +91,8 @@ Object {
   "devDependencies": Object {
     "@devPackage/latest": "*",
     "@devPackage/version": "^2",
-    "@pdkit/cli": "*",
-    "@pdkit/core": "*",
+    "@stackgen/cli": "*",
+    "@stackgen/core": "*",
     "@types/node": "*",
     "@types/react": "^18",
     "@types/react-dom": "^18",

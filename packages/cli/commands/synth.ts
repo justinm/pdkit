@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
-import { Bindings, FileSynthesizer, InstallShellScript, Project, Script, ShellScript, Workspace } from "@pdkit/core";
+import { Bindings, FileSynthesizer, InstallShellScript, Project, Script, ShellScript, Workspace } from "@stackgen/core";
 import * as Diff from "diff";
 import yargs from "yargs";
 import { loadWorkspace, spinner, withSpinner } from "../utils";

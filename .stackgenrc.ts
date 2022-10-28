@@ -1,4 +1,4 @@
-import { SemanticReleaseSupport, YarnMonoWorkspace, YarnProject } from "@pdkit/core";
+import { SemanticReleaseSupport, YarnMonoWorkspace, YarnProject } from "@stackgen/core";
 
 const workspace = new YarnMonoWorkspace({
   author: {
@@ -9,15 +9,16 @@ const workspace = new YarnMonoWorkspace({
   dependencies: ["mustache"],
   disableAutoLib: true,
   devDependencies: [
-    { name: "@pdkit/core", version: "workspace:packages/@pdkit/core" },
+    { name: "@stackgen/core", version: "workspace:*" },
     "@types/mustache",
     "@types/node",
     "prettier",
     "ts-node",
-    "typescript"
+    "typescript",
   ],
   scripts: {
-    pdkit: "yarn workspace @pdkit/cli run pdkit",
+    stackgen: "yarn workspace @stackgen/cli run stackgen",
+    sg: "yarn stackgen",
     build: "yarn compile",
     compile: "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     clean: "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
@@ -33,7 +34,7 @@ const workspace = new YarnMonoWorkspace({
   },
   gitignore: [".idea", ".js", ".d.ts"],
   resolutions: {
-    "chalk": "^4.1.2",
+    chalk: "^4.1.2",
   },
 });
 
@@ -46,8 +47,8 @@ new SemanticReleaseSupport(workspace, {
 
 new YarnProject(workspace, "core", {
   license: "Apache-2.0",
-  packageName: "@pdkit/core",
-  projectPath: "packages/@pdkit/core",
+  packageName: "@stackgen/core",
+  projectPath: "packages/core",
   sourcePath: ".",
   buildPath: ".",
   dependencies: [
@@ -64,23 +65,21 @@ new YarnProject(workspace, "core", {
     "md5-file",
   ],
   scripts: {
-    yalc: "npx yalc publish"
+    yalc: "npx yalc publish",
   },
   devDependencies: ["@types/mustache", "@types/js-yaml", "@types/object-hash", "@types/winston"],
-  typescript: {
-  },
+  typescript: {},
   eslint: {
     prettier: {},
     lineWidth: 140,
     doubleQuotes: true,
   },
-  jest: {
-  },
+  jest: {},
 });
 
 new YarnProject(workspace, "cli", {
-  packageName: "@pdkit/cli",
-  projectPath: "packages/@pdkit/cli",
+  packageName: "@stackgen/cli",
+  projectPath: "packages/cli",
   license: "Apache-2.0",
   sourcePath: ".",
   buildPath: ".",
@@ -104,23 +103,19 @@ new YarnProject(workspace, "cli", {
     "ts-node",
     "yargs",
   ],
-  devDependencies: ["@pdkit/core"],
-  peerDependencies: ["@pdkit/core"],
-  files: [
-    "*.ts",
-    "**/*.ts",
-    "tsconfig.json"
-  ],
+  devDependencies: ["@stackgen/core"],
+  peerDependencies: ["@stackgen/core"],
+  files: ["*.ts", "**/*.ts", "tsconfig.json"],
   scripts: {
     compile: undefined as any,
-    pdkit: "npx npx pdkit",
-    yalc: "npx yalc publish"
+    stackgen: "npx npx stackgen",
+    yalc: "npx yalc publish",
   },
   bin: {
-    pdkit: "index.ts",
+    sg: "index.ts",
+    stackgen: "index.ts",
   },
-  typescript: {
-  },
+  typescript: {},
   eslint: {
     prettier: {},
     lineWidth: 140,

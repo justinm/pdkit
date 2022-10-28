@@ -6,12 +6,12 @@ import yargs, { CommandModule } from "yargs";
 import { hideBin } from "yargs/helpers";
 import { init, synth } from "./commands";
 
-const findPdk = () => {
+const findConfig = () => {
   const parts = process.cwd().split("/");
 
   for (let x = parts.length; x >= 1; x--) {
     const rejoinedSegment = parts.slice(0, x).join("/");
-    const check = path.join(rejoinedSegment, ".pdkitrc.ts");
+    const check = path.join(rejoinedSegment, ".stackgenrc.ts");
     const hits = glob.sync(check);
 
     if (hits.length) {
@@ -22,7 +22,7 @@ const findPdk = () => {
   return undefined;
 };
 
-const pdk = findPdk();
+const config = findConfig();
 
 function wrapCommand<T extends CommandModule>(command: T): T {
   const handler = command.handler;
@@ -46,18 +46,18 @@ void yargs(hideBin(process.argv))
   .completion()
   .option("project-root", {
     alias: "r",
-    default: pdk ? path.dirname(pdk) : undefined,
+    default: config ? path.dirname(config) : undefined,
   })
   .option("config", {
     alias: "c",
-    default: pdk ?? "pdk.js",
+    default: config ?? "stackgenrc.js",
     requiresArg: true,
     required: true,
     require: true,
   })
   .option("task-config", {
     alias: "t",
-    default: ".pdk/tasks.json",
+    default: ".stackgen/tasks.json",
   })
   .check((args) => {
     if (!fs.existsSync(args.config)) {

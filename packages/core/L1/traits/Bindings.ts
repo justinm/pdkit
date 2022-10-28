@@ -7,7 +7,7 @@ export type AcceptBindingCallback = (construct: Construct) => void;
 export type AcceptChildCallback = (construct: Construct) => void;
 type Constructor<T> = abstract new (...args: any[]) => any;
 
-const BINDINGS_SYMBOL = Symbol.for("@pdkit/core/core/traits/Bindings");
+const BINDINGS_SYMBOL = Symbol.for("@stackgen/core/core/traits/Bindings");
 
 export class Bindings implements IBindings {
   public static implement<T extends Construct>(

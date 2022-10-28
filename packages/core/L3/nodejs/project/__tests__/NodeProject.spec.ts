@@ -46,8 +46,8 @@ describe("NodeProject", () => {
     expect(fields.dependencies).toStrictEqual({ "@package/latest": "*", "@package/version": "^1" });
     expect(fields.peerDependencies).toStrictEqual({ "@peerPackage/latest": "*", "@peerPackage/version": "^3" });
     expect(fields.devDependencies).toStrictEqual({
-      "@pdkit/cli": "*",
-      "@pdkit/core": "*",
+      "@stackgen/cli": "*",
+      "@stackgen/core": "*",
       "@devPackage/latest": "*",
       "@devPackage/version": "^2",
     });
@@ -95,7 +95,7 @@ describe("NodeProject", () => {
     expect(fields.private).toBe(true);
     expect(fields.main).toBe("build/index.js");
     expect(fields.files).toStrictEqual(["build/*.js", "build/**/*.js"]);
-    expect(fields.devDependencies).toStrictEqual({ "@pdkit/cli": "*", "@pdkit/core": "*" });
+    expect(fields.devDependencies).toStrictEqual({ "@stackgen/cli": "*", "@stackgen/core": "*" });
     expect(fields.resolutions).toStrictEqual({ a: "b" });
     expect(fields.repository).toStrictEqual({
       type: "git",
@@ -133,7 +133,7 @@ describe("NodeProject", () => {
     expect(fields.private).toBe(true);
     expect(fields.main).toBe("build/index.js");
     expect(fields.files).toStrictEqual(["build/*.js", "build/**/*.js"]);
-    expect(fields.devDependencies).toStrictEqual({ "@pdkit/cli": "*", "@pdkit/core": "*" });
+    expect(fields.devDependencies).toStrictEqual({ "@stackgen/cli": "*", "@stackgen/core": "*" });
     expect(fields.resolutions).toStrictEqual({ a: "b" });
     expect(fields.repository).toStrictEqual({
       type: "git",
@@ -175,7 +175,7 @@ describe("NodeProject", () => {
     expect(fields.license).toBe("Apache-2.0");
     expect(fields.main).toBe("build/index.js");
     expect(fields.files).toStrictEqual(["build/*.js", "build/**/*.js"]);
-    expect(fields.devDependencies).toStrictEqual({ "@pdkit/cli": "*", "@pdkit/core": "*" });
+    expect(fields.devDependencies).toStrictEqual({ "@stackgen/cli": "*", "@stackgen/core": "*" });
     expect(fields.resolutions).toStrictEqual({ a: "b" });
     expect(fields.repository).toStrictEqual({
       type: "git",
@@ -212,7 +212,7 @@ describe("NodeProject", () => {
     expect(fields.private).toBe(true);
     expect(fields.main).toBe("build/index.js");
     expect(fields.files).toStrictEqual(["build/*.js", "build/**/*.js"]);
-    expect(fields.devDependencies).toStrictEqual({ "@pdkit/cli": "*", "@pdkit/core": "*", "jest": "*", "jest-junit": "^13" });
+    expect(fields.devDependencies).toStrictEqual({ "@stackgen/cli": "*", "@stackgen/core": "*", "jest": "*", "jest-junit": "^13" });
     expect(fields.resolutions).toStrictEqual({ a: "b" });
     expect(fields.repository).toStrictEqual({
       type: "git",
@@ -249,8 +249,8 @@ describe("NodeProject", () => {
     expect(fields.main).toBe("build/index.js");
     expect(fields.files).toStrictEqual(["build/*.js", "build/**/*.js"]);
     expect(fields.devDependencies).toStrictEqual({
-      "@pdkit/cli": "*",
-      "@pdkit/core": "*",
+      "@stackgen/cli": "*",
+      "@stackgen/core": "*",
       "eslint": "*",
       "eslint-import-resolver-alias": "*",
       "eslint-import-resolver-node": "*",
@@ -293,8 +293,8 @@ describe("NodeProject", () => {
     expect(fields.main).toBe("build/index.js");
     expect(fields.files).toStrictEqual(["build/*.js", "build/**/*.js", "build/*.d.ts", "build/**/*.d.ts"]);
     expect(fields.devDependencies).toStrictEqual({
-      "@pdkit/cli": "*",
-      "@pdkit/core": "*",
+      "@stackgen/cli": "*",
+      "@stackgen/core": "*",
       "@types/node": "*",
       "ts-node": "*",
       "typescript": "*",
@@ -341,8 +341,8 @@ describe("NodeProject", () => {
     expect(fields.main).toBe("build/index.js");
     expect(fields.files).toStrictEqual(["build/*.js", "build/**/*.js", "build/*.d.ts", "build/**/*.d.ts"]);
     expect(fields.devDependencies).toStrictEqual({
-      "@pdkit/cli": "*",
-      "@pdkit/core": "*",
+      "@stackgen/cli": "*",
+      "@stackgen/core": "*",
       "@types/node": "*",
       "@types/jest": "*",
       "@typescript-eslint/eslint-plugin": "*",
@@ -406,6 +406,6 @@ describe("NodeProject", () => {
     const manifest = Manifest.of(project);
     const fields = manifest.fields;
 
-    expect(fields.devDependencies).toStrictEqual({ "a": "^7", "@pdkit/cli": "*", "@pdkit/core": "*" });
+    expect(fields.devDependencies).toStrictEqual({ "a": "^7", "@stackgen/cli": "*", "@stackgen/core": "*" });
   });
 });

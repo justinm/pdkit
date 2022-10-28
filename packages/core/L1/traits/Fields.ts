@@ -3,7 +3,7 @@ import deepmerge from "deepmerge";
 
 export interface IFields {}
 
-const FIELDS_SYMBOL = Symbol.for("@pdkit/core/core/traits/Fields");
+const FIELDS_SYMBOL = Symbol.for("@stackgen/core/core/traits/Fields");
 
 export class Fields implements IFields {
   public static implement<T extends Construct>(instance: IFields, fields?: Record<string, unknown>) {

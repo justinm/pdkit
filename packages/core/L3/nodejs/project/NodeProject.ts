@@ -199,8 +199,8 @@ export class NodeProject extends Project {
     }
 
     if (!props?.disableAutoLib && Project.of(this).isDefaultProject) {
-      new PackageDependency(this, "@pdkit/core", { type: PackageDependencyType.DEV });
-      new PackageDependency(this, "@pdkit/cli", { type: PackageDependencyType.DEV });
+      new PackageDependency(this, "@stackgen/core", { type: PackageDependencyType.DEV });
+      new PackageDependency(this, "@stackgen/cli", { type: PackageDependencyType.DEV });
     }
 
     let defaultInstallCommand: string[] | undefined;

@@ -1096,86 +1096,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pdkit/cli@workspace:packages/cli":
-  version: 0.0.0-use.local
-  resolution: "@pdkit/cli@workspace:packages/cli"
-  dependencies:
-    "@pdkit/core": 4.0.0
-    "@types/diff": 5.0.2
-    "@types/glob": 8.0.0
-    "@types/node": 17.0.45
-    "@types/ora": 3.2.0
-    "@types/prompts": 2.4.1
-    "@types/shell-escape": 0.2.1
-    "@types/yargs": 17.0.13
-    "@typescript-eslint/eslint-plugin": 5.41.0
-    "@typescript-eslint/parser": 5.41.0
-    chalk: ^4.1.2
-    constructs: 10.1.142
-    dependency-graph: 0.11.0
-    diff: 5.1.0
-    eslint: 8.26.0
-    eslint-config-prettier: 8.5.0
-    eslint-import-resolver-alias: 1.1.2
-    eslint-import-resolver-node: 0.3.6
-    eslint-import-resolver-typescript: 2.7.1
-    eslint-plugin-import: 2.26.0
-    eslint-plugin-prettier: 4.2.1
-    glob: 8.0.3
-    glob-regex: 0.3.2
-    ora: ^5.4.1
-    prettier: 2.7.1
-    prompts: 2.4.2
-    shell-escape: 0.2.0
-    ts-node: 10.9.1
-    typescript: 4.8.4
-    yargs: 17.6.0
-  peerDependencies:
-    "@pdkit/core": 4.0.0
-  bin:
-    pdkit: index.ts
-  languageName: unknown
-  linkType: soft
-
-"@pdkit/core@4.0.0, @pdkit/core@workspace:*, @pdkit/core@workspace:packages/core":
-  version: 0.0.0-use.local
-  resolution: "@pdkit/core@workspace:packages/core"
-  dependencies:
-    "@types/jest": 29.2.0
-    "@types/js-yaml": 4.0.5
-    "@types/mustache": 4.2.1
-    "@types/node": 17.0.45
-    "@types/object-hash": 2.2.1
-    "@types/winston": 2.4.4
-    "@typescript-eslint/eslint-plugin": 5.41.0
-    "@typescript-eslint/parser": 5.41.0
-    case: 1.6.3
-    constructs: 10.1.142
-    deepmerge: 4.2.2
-    dependency-graph: 0.11.0
-    eslint: 8.26.0
-    eslint-config-prettier: 8.5.0
-    eslint-import-resolver-alias: 1.1.2
-    eslint-import-resolver-node: 0.3.6
-    eslint-import-resolver-typescript: 2.7.1
-    eslint-plugin-import: 2.26.0
-    eslint-plugin-prettier: 4.2.1
-    jest: 27.5.1
-    jest-junit: ^13.2.0
-    js-yaml: 4.1.0
-    md5-file: 5.0.0
-    memfs: 3.4.8
-    mustache: 4.2.0
-    object-hash: 3.0.0
-    prettier: 2.7.1
-    sync-request: 6.1.0
-    ts-jest: 27.1.5
-    ts-node: 10.9.1
-    typescript: 4.8.4
-    winston: 3.8.2
-  languageName: unknown
-  linkType: soft
-
 "@qiwi/multi-semantic-release@npm:^6.5.1":
   version: 6.5.1
   resolution: "@qiwi/multi-semantic-release@npm:6.5.1"
@@ -1475,6 +1395,87 @@ __metadata:
   checksum: 09b5a158ce013a6c37613258bad79ca4efeb99b1f59c41c73cca36cac00b258aefcf46eeea970fccf06b989414d86fe9f54c1102272c0c3bdd51a313cea80949
   languageName: node
   linkType: hard
+
+"@stackgen/cli@workspace:packages/cli":
+  version: 0.0.0-use.local
+  resolution: "@stackgen/cli@workspace:packages/cli"
+  dependencies:
+    "@stackgen/core": 4.0.0
+    "@types/diff": 5.0.2
+    "@types/glob": 8.0.0
+    "@types/node": 17.0.45
+    "@types/ora": 3.2.0
+    "@types/prompts": 2.4.1
+    "@types/shell-escape": 0.2.1
+    "@types/yargs": 17.0.13
+    "@typescript-eslint/eslint-plugin": 5.41.0
+    "@typescript-eslint/parser": 5.41.0
+    chalk: ^4.1.2
+    constructs: 10.1.142
+    dependency-graph: 0.11.0
+    diff: 5.1.0
+    eslint: 8.26.0
+    eslint-config-prettier: 8.5.0
+    eslint-import-resolver-alias: 1.1.2
+    eslint-import-resolver-node: 0.3.6
+    eslint-import-resolver-typescript: 2.7.1
+    eslint-plugin-import: 2.26.0
+    eslint-plugin-prettier: 4.2.1
+    glob: 8.0.3
+    glob-regex: 0.3.2
+    ora: ^5.4.1
+    prettier: 2.7.1
+    prompts: 2.4.2
+    shell-escape: 0.2.0
+    ts-node: 10.9.1
+    typescript: 4.8.4
+    yargs: 17.6.0
+  peerDependencies:
+    "@stackgen/core": 4.0.0
+  bin:
+    sg: index.ts
+    stackgen: index.ts
+  languageName: unknown
+  linkType: soft
+
+"@stackgen/core@4.0.0, @stackgen/core@workspace:*, @stackgen/core@workspace:packages/core":
+  version: 0.0.0-use.local
+  resolution: "@stackgen/core@workspace:packages/core"
+  dependencies:
+    "@types/jest": 29.2.0
+    "@types/js-yaml": 4.0.5
+    "@types/mustache": 4.2.1
+    "@types/node": 17.0.45
+    "@types/object-hash": 2.2.1
+    "@types/winston": 2.4.4
+    "@typescript-eslint/eslint-plugin": 5.41.0
+    "@typescript-eslint/parser": 5.41.0
+    case: 1.6.3
+    constructs: 10.1.142
+    deepmerge: 4.2.2
+    dependency-graph: 0.11.0
+    eslint: 8.26.0
+    eslint-config-prettier: 8.5.0
+    eslint-import-resolver-alias: 1.1.2
+    eslint-import-resolver-node: 0.3.6
+    eslint-import-resolver-typescript: 2.7.1
+    eslint-plugin-import: 2.26.0
+    eslint-plugin-prettier: 4.2.1
+    jest: 27.5.1
+    jest-junit: ^13.2.0
+    js-yaml: 4.1.0
+    md5-file: 5.0.0
+    memfs: 3.4.8
+    mustache: 4.2.0
+    object-hash: 3.0.0
+    prettier: 2.7.1
+    sync-request: 6.1.0
+    ts-jest: 27.1.5
+    ts-node: 10.9.1
+    typescript: 4.8.4
+    winston: 3.8.2
+  languageName: unknown
+  linkType: soft
 
 "@tootallnate/once@npm:1":
   version: 1.1.2
@@ -11639,7 +11640,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "workspace@workspace:."
   dependencies:
-    "@pdkit/core": "workspace:*"
     "@qiwi/multi-semantic-release": ^6.5.1
     "@semantic-release/changelog": 6.0.1
     "@semantic-release/commit-analyzer": 9.0.2
@@ -11647,6 +11647,7 @@ __metadata:
     "@semantic-release/git": 10.0.1
     "@semantic-release/github": 8.0.6
     "@semantic-release/release-notes-generator": 10.0.3
+    "@stackgen/core": "workspace:*"
     "@types/jest": 29.2.0
     "@types/mustache": 4.2.1
     "@types/node": 17.0.45

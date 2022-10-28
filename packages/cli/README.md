@@ -1,3 +1,3 @@
-# @pdkit/cli - part of the PDKit!
+# @stackgen/cli - part of the Stackgen!
 
-For more information on PDKit, see the [PDKit README.md](https://github.com/justinm/pdkit/blob/main/README.md).
+For more information on Stackgen, see the [Stackgen README.md](https://github.com/StackBakery/stackgen/blob/main/README.md).

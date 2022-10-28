@@ -14,7 +14,7 @@ export enum LifeCycleStage {
 
 export interface ILifeCycle {}
 
-const LIFECYCLE_SYMBOL = Symbol.for("@pdkit/core/core/traits/LifeCycle");
+const LIFECYCLE_SYMBOL = Symbol.for("@stackgen/core/core/traits/LifeCycle");
 
 export class LifeCycle<T extends Construct> implements ILifeCycle {
   public static implement<T extends Construct>(instance: ILifeCycle) {

@@ -26,7 +26,7 @@ describe("YarnProject", () => {
     expect(fields.private).toBe(true);
     expect(fields.main).toBe("build/index.js");
     expect(fields.files).toStrictEqual(["build/*.js", "build/**/*.js"]);
-    expect(fields.devDependencies).toStrictEqual({ "@pdkit/cli": "*", "@pdkit/core": "*" });
+    expect(fields.devDependencies).toStrictEqual({ "@stackgen/cli": "*", "@stackgen/core": "*" });
     expect(fields.resolutions).toStrictEqual({ a: "b" });
     expect(fields.repository).toStrictEqual({
       type: "git",
@@ -65,7 +65,7 @@ describe("YarnProject", () => {
     expect(fields.private).toBe(true);
     expect(fields.main).toBe("build/index.js");
     expect(fields.files).toStrictEqual(["build/*.js", "build/**/*.js"]);
-    expect(fields.devDependencies).toStrictEqual({ "@pdkit/cli": "*", "@pdkit/core": "*" });
+    expect(fields.devDependencies).toStrictEqual({ "@stackgen/cli": "*", "@stackgen/core": "*" });
     expect(fields.resolutions).toStrictEqual({ a: "b" });
     expect(fields.repository).toStrictEqual({
       type: "git",

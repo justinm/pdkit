@@ -10,7 +10,8 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "stackgen": "yarn workspace @pdkit/cli run pdkit",
+    "stackgen": "yarn workspace @stackgen/cli run stackgen",
+    "sg": "yarn stackgen",
     "build": "yarn compile",
     "compile": "yarn workspaces foreach --verbose -p --topological-dev --no-private run compile",
     "clean": "yarn workspaces foreach --verbose -p --topological-dev --no-private run clean",
@@ -31,7 +32,6 @@
     "mustache": "4.2.0"
   },
   "devDependencies": {
-    "@pdkit/core": "workspace:*",
     "@qiwi/multi-semantic-release": "^6.5.1",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
@@ -39,6 +39,7 @@
     "@semantic-release/git": "10.0.1",
     "@semantic-release/github": "8.0.6",
     "@semantic-release/release-notes-generator": "10.0.3",
+    "@stackgen/core": "workspace:*",
     "@types/jest": "29.2.0",
     "@types/mustache": "4.2.1",
     "@types/node": "17.0.45",

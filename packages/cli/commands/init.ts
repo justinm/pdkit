@@ -1,7 +1,7 @@
 import { strict as assert } from "assert";
 import fs from "fs";
 import path from "path";
-import { PDKIT_CONFIG_FILE } from "@pdkit/core";
+import { PDKIT_CONFIG_FILE } from "@stackgen/core";
 import yargs from "yargs";
 import { spawnCommand, spinner } from "../utils";
 
@@ -78,7 +78,7 @@ export const handler = async function ({ dryrun }: { config: string; dryrun: boo
   }
 
   const template = `
-import { YarnTypescriptWorkspace } from "@pdkit/nodejs";
+import { YarnTypescriptWorkspace } from "@stackgen/nodejs";
 
 new YarnTypescriptWorkspace("${packageConfig.name.split("/").reverse()[0]}", ${JSON.stringify(packageConfig, undefined, 2)});
 `;

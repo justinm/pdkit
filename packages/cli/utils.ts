@@ -1,8 +1,8 @@
 import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
-import { IWorkspace, PDKIT_CONFIG_FILE, Workspace } from "@pdkit/core";
-import { logger } from "@pdkit/core/util/logger";
+import { IWorkspace, PDKIT_CONFIG_FILE, Workspace } from "@stackgen/core";
+import { logger } from "@stackgen/core/util/logger";
 import { Construct } from "constructs";
 import ora from "ora";
 import shellEscape from "shell-escape";

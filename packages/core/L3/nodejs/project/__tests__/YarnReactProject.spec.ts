@@ -47,8 +47,8 @@ describe("ReactSupport", () => {
     expect(fields.dependencies).toStrictEqual({ "@package/latest": "*", "@package/version": "^1", "react": "^18", "react-dom": "^18" });
     expect(fields.peerDependencies).toStrictEqual({ "@peerPackage/latest": "*", "@peerPackage/version": "^3" });
     expect(fields.devDependencies).toStrictEqual({
-      "@pdkit/cli": "*",
-      "@pdkit/core": "*",
+      "@stackgen/cli": "*",
+      "@stackgen/core": "*",
       "@devPackage/latest": "*",
       "@devPackage/version": "^2",
       "react-scripts": "^5",
@@ -121,8 +121,8 @@ describe("ReactSupport", () => {
     expect(fields.dependencies).toStrictEqual({ "@package/latest": "*", "@package/version": "^1", "react": "^18", "react-dom": "^18" });
     expect(fields.peerDependencies).toStrictEqual({ "@peerPackage/latest": "*", "@peerPackage/version": "^3" });
     expect(fields.devDependencies).toStrictEqual({
-      "@pdkit/cli": "*",
-      "@pdkit/core": "*",
+      "@stackgen/cli": "*",
+      "@stackgen/core": "*",
       "@devPackage/latest": "*",
       "@devPackage/version": "^2",
       "react-scripts": "^5",
